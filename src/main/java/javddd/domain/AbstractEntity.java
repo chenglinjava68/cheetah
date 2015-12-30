@@ -1,22 +1,21 @@
 package javddd.domain;
 
+import java.io.Serializable;
+
 /**
  * 基本实体的抽象类
  * Created by Max on 2015/12/25.
  */
-public abstract class AbstractEntity implements Entity<AbstractEntity> {
-    private TrackingId trackingId;
-    private Timist timist = new Timist();
+public abstract class AbstractEntity<ID extends Serializable>
+        implements Entity<AbstractEntity, ID> {
+    protected TrackingId<ID> trackingId;
+    protected Timist timist = new Timist();
 
     AbstractEntity() {
     }
 
     public AbstractEntity(TrackingId trackingId) {
         this.trackingId = trackingId;
-    }
-
-    public TrackingId trackingId() {
-        return trackingId;
     }
 
     public Timist timist() {
