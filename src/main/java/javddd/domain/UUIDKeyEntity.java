@@ -8,9 +8,4 @@ public class UUIDKeyEntity extends AbstractEntity<String> {
     public UUIDKeyEntity() {
         super(new UUIDTrackingId());
     }
-
-    @Override
-    public TrackingId<String> id() {
-        return this.trackingId;
-    }
 }

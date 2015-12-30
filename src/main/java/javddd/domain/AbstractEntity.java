@@ -7,19 +7,36 @@ import java.io.Serializable;
  * Created by Max on 2015/12/25.
  */
 public abstract class AbstractEntity<ID extends Serializable>
-        implements Entity<AbstractEntity, ID> {
-    protected TrackingId<ID> trackingId;
-    protected Timist timist = new Timist();
+        implements OptLockEntity<AbstractEntity, ID> {
+    private TrackingId<ID> trackingId;
+    private Timist timist = new Timist();
+    private Long version;
 
-    AbstractEntity() {
+    public AbstractEntity() {
     }
 
-    public AbstractEntity(TrackingId trackingId) {
+    public AbstractEntity(TrackingId<ID> trackingId) {
         this.trackingId = trackingId;
+    }
+
+    public AbstractEntity(TrackingId<ID> trackingId, Timist timist, Long version) {
+        this.trackingId = trackingId;
+        this.timist = timist;
+        this.version = version;
     }
 
     public Timist timist() {
         return timist;
+    }
+
+    @Override
+    public TrackingId<ID> getId() {
+        return this.trackingId;
+    }
+
+    @Override
+    public Long getVersion() {
+        return this.version;
     }
 
     @Override
@@ -50,7 +67,7 @@ public abstract class AbstractEntity<ID extends Serializable>
 
     @Override
     public String toString() {
-        return trackingId.toString();
+        return "[" + this.getClass().getName() + " getId=" + getId() + " version=" + getVersion() + "]";
     }
 
 }

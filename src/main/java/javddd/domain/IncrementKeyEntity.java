@@ -9,8 +9,4 @@ public class IncrementKeyEntity extends AbstractEntity<Long> {
         super(new NumberTrackingId());
     }
 
-    @Override
-    public TrackingId<Long> id() {
-        return this.trackingId;
-    }
 }
