@@ -1,5 +1,7 @@
-package jvddd.spring;
+package jvddd.container.spring;
 
+import jvddd.container.BeanFactory;
+import jvddd.container.BeanFactoryProvider;
 import org.springframework.context.ApplicationContext;
 
 import java.util.Map;

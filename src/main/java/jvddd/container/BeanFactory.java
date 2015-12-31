@@ -1,4 +1,4 @@
-package jvddd.spring;
+package jvddd.container;
 
 import java.util.Map;
 
