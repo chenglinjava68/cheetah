@@ -1,8 +1,6 @@
 package jvddd.container.spring;
 
 import jvddd.container.BeanFactory;
-import jvddd.container.BeanFactoryProvider;
-import org.springframework.context.ApplicationContext;
 
 import java.util.Map;
 
@@ -10,9 +8,9 @@ import java.util.Map;
  * Created by Max on 2015/12/28.
  */
 public class SpringBeanFactory implements BeanFactory {
-    private BeanFactoryProvider<ApplicationContext> factoryProvider;
+    private SpringBeanFactoryProvider factoryProvider;
 
-    public void setFactoryProvider(BeanFactoryProvider<ApplicationContext> factoryProvider) {
+    public void setFactoryProvider(SpringBeanFactoryProvider factoryProvider) {
         this.factoryProvider = factoryProvider;
     }
 
@@ -30,6 +28,5 @@ public class SpringBeanFactory implements BeanFactory {
     public <T> Map<String, T> getBeans(Class<T> beanType) {
         return this.factoryProvider.getBeans(beanType);
     }
-
 
 }
