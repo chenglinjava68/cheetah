@@ -1,25 +1,31 @@
 package jvddd.domain;
 
-import java.io.Serializable;
+import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
+import javax.persistence.MappedSuperclass;
 
 /**
  * 基本实体的抽象类
  * Created by Max on 2015/12/25.
  */
-public abstract class AbstractEntity<ID extends Serializable>
+@MappedSuperclass
+public abstract class AbstractEntity<ID extends TrackingId>
         implements OptLockEntity<AbstractEntity, ID> {
-    private TrackingId<ID> trackingId;
+    @EmbeddedId
+    private ID trackingId;
+    @Embedded
     private Timist timist = new Timist();
+
     private Long version;
 
     public AbstractEntity() {
     }
 
-    public AbstractEntity(TrackingId<ID> trackingId) {
+    public AbstractEntity(ID trackingId) {
         this.trackingId = trackingId;
     }
 
-    public AbstractEntity(TrackingId<ID> trackingId, Timist timist, Long version) {
+    public AbstractEntity(ID trackingId, Timist timist, Long version) {
         this.trackingId = trackingId;
         this.timist = timist;
         this.version = version;
@@ -30,7 +36,7 @@ public abstract class AbstractEntity<ID extends Serializable>
     }
 
     @Override
-    public TrackingId<ID> id() {
+    public ID trackingId() {
         return this.trackingId;
     }
 
@@ -67,7 +73,7 @@ public abstract class AbstractEntity<ID extends Serializable>
 
     @Override
     public String toString() {
-        return "[" + this.getClass().getName() + " getId=" + id() + " version=" + version() + "]";
+        return "[" + this.getClass().getName() + " getId=" + trackingId().toString() + " version=" + version() + "]";
     }
 
 }

@@ -7,22 +7,19 @@ import java.io.Serializable;
  * Created by Max on 2015/12/25.
  */
 public abstract class TrackingId<ID extends Serializable> implements ValueObject<TrackingId> {
-    protected ID id;
 
     TrackingId() {
     }
 
-    public TrackingId(ID id) {
-        this.id = id;
-    }
+//    public TrackingId(ID id) {
+//        this.id = id;
+//    }
 
-    public ID id() {
-        return id;
-    }
+    public abstract ID id();
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return id().hashCode();
     }
 
     @Override
@@ -37,6 +34,6 @@ public abstract class TrackingId<ID extends Serializable> implements ValueObject
 
     @Override
     public String toString() {
-        return id.toString();
+        return id().toString();
     }
 }

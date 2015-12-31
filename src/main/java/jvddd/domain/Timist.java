@@ -2,10 +2,13 @@ package jvddd.domain;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
+import javax.persistence.Embeddable;
+
 /**
  * 值对象-记时器
  * Created by Max on 2015/12/25.
  */
+@Embeddable
 public class Timist implements ValueObject<Timist> {
     private Long createTime = System.currentTimeMillis();
     private Long modifyTime = System.currentTimeMillis();
