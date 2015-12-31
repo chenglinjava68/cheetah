@@ -7,7 +7,6 @@ import javax.persistence.Embeddable;
  * 实现UUID的主键生成规则
  * Created by Max on 2015/12/25.
  */
-@Embeddable
 public class UUIDTrackingId extends TrackingId<String> {
     @Column(name = "id")
     protected String id;

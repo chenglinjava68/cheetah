@@ -19,5 +19,4 @@ public class UUIDKeyEntity extends AbstractEntity<UUIDTrackingId> {
     public UUIDKeyEntity(UUIDTrackingId trackingId, Timist timist, Long version) {
         super(trackingId, timist, version);
     }
-
 }

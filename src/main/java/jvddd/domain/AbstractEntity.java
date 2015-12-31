@@ -3,6 +3,7 @@ package jvddd.domain;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
 
 /**
  * 基本实体的抽象类
@@ -15,7 +16,7 @@ public abstract class AbstractEntity<ID extends TrackingId>
     private ID trackingId;
     @Embedded
     private Timist timist = new Timist();
-
+    @Version
     private Long version;
 
     public AbstractEntity() {
