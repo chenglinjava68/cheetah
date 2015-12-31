@@ -2,6 +2,7 @@ package jvddd.domain;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
@@ -10,7 +11,9 @@ import javax.persistence.Embeddable;
  */
 @Embeddable
 public class Timist implements ValueObject<Timist> {
+    @Column(name = "create_time")
     private Long createTime = System.currentTimeMillis();
+    @Column(name = "modify_time")
     private Long modifyTime = System.currentTimeMillis();
 
     Timist() {

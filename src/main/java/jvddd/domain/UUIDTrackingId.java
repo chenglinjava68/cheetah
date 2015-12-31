@@ -11,13 +11,13 @@ import javax.persistence.Embeddable;
 public class UUIDTrackingId extends TrackingId<String> {
     @Column(name = "id")
     protected String id;
-//    public UUIDTrackingId() {
-//        this.id = UUID.randomUUID().toString();
-//    }
 
-//    public UUIDTrackingId(String id) {
-//        super(id);
-//    }
+    public UUIDTrackingId() {
+    }
+
+    public UUIDTrackingId(String id) {
+        this.id = id;
+    }
 
     @Override
     public boolean sameAs(TrackingId other) {

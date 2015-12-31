@@ -10,6 +10,14 @@ import javax.persistence.Column;
 public class NumberTrackingId extends TrackingId<Long> {
     @Column(name = "id")
     protected Long id;
+
+    public NumberTrackingId() {
+    }
+
+    public NumberTrackingId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public boolean sameAs(TrackingId other) {
         return other != null && this.id() == other.id();

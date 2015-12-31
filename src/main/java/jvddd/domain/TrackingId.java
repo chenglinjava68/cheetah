@@ -8,13 +8,6 @@ import java.io.Serializable;
  */
 public abstract class TrackingId<ID extends Serializable> implements ValueObject<TrackingId> {
 
-    TrackingId() {
-    }
-
-//    public TrackingId(ID id) {
-//        this.id = id;
-//    }
-
     public abstract ID id();
 
     @Override
