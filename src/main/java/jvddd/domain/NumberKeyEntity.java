@@ -13,7 +13,7 @@ public class NumberKeyEntity extends AbstractEntity<NumberTrackingId> {
         super(trackingId);
     }
 
-    public NumberKeyEntity(NumberTrackingId trackingId, Timist timist, Long version) {
-        super(trackingId, timist, version);
+    public NumberKeyEntity(EntityBuilder builder) {
+        super((NumberTrackingId) builder.trackingId, builder.timist, builder.version);
     }
 }

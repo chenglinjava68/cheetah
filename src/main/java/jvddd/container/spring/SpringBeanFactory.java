@@ -1,5 +1,6 @@
 package jvddd.container.spring;
 
+import java.lang.annotation.Annotation;
 import java.util.Map;
 
 /**
@@ -15,9 +16,11 @@ public class SpringBeanFactory {
         return SpringBeanFactoryProvider.getBeanFactory().getBean(beanType, bean);
     }
 
-    public static <T> Map<String, T> getBeans(Class<T> beanType) {
+    public static <T> Map<String, T> getBeansOfType(Class<T> beanType) {
         return SpringBeanFactoryProvider.getBeanFactory().getBeansOfType(beanType);
     }
 
-
+    public static Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annoClass) {
+        return SpringBeanFactoryProvider.getBeanFactory().getBeansWithAnnotation(annoClass);
+    }
 }

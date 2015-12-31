@@ -16,7 +16,7 @@ public class UUIDKeyEntity extends AbstractEntity<UUIDTrackingId> {
         super(trackingId);
     }
 
-    public UUIDKeyEntity(UUIDTrackingId trackingId, Timist timist, Long version) {
-        super(trackingId, timist, version);
+    public UUIDKeyEntity(EntityBuilder builder) {
+        super((UUIDTrackingId) builder.trackingId, builder.timist, builder.version);
     }
 }

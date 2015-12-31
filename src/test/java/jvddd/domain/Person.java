@@ -20,7 +20,7 @@ public class Person extends UUIDKeyEntity {
     }
 
     public Person(Builder builder) {
-        super(builder.trackingId, builder.timist, builder.version);
+        super(builder);
         this.name= builder.name;
         this.sex = builder.sex;
         this.age = builder.age;

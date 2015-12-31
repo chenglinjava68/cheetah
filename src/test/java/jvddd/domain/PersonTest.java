@@ -1,7 +1,10 @@
 package jvddd.domain;
 
+import jvddd.repository.PersonRepo;
+import jvddd.repository.PersonRepoImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -20,6 +23,10 @@ import javax.transaction.Transactional;
 public class PersonTest {
     @PersistenceContext
     private EntityManager em;
+    @Autowired
+    private PersonRepoImpl personRepoImpl;
+    @Autowired
+    private PersonRepo personRepo;
     @Test
     public void save() {
         Person p = em.find(Person.class,
@@ -33,6 +40,12 @@ public class PersonTest {
                 .version(p.version())
                 .build();
         em.merge(p2);
+    }
+
+    @Test
+    public void find() {
+        personRepo.findOne(QueryHelper.createQueryTrackingId("1ae50a1e-3c87-48b4-b4ed-cc4922de68d0"));
+        personRepoImpl.find();
     }
 
 }
