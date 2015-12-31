@@ -1,7 +1,6 @@
 package jvddd.domain;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 
 /**
  * 实现UUID的主键生成规则
@@ -27,4 +26,5 @@ public class UUIDTrackingId extends TrackingId<String> {
     public String id() {
         return id();
     }
+
 }

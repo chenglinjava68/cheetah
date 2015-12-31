@@ -27,4 +27,5 @@ public class NumberTrackingId extends TrackingId<Long> {
     public Long id() {
         return id;
     }
+
 }
