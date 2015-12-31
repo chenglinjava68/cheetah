@@ -18,4 +18,5 @@ public class SpringBeanFactoryProvider implements ApplicationContextAware {
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         SpringBeanFactoryProvider.applicationContext = applicationContext;
     }
+
 }
