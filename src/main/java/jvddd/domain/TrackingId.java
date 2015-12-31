@@ -3,7 +3,7 @@ package jvddd.domain;
 import java.io.Serializable;
 
 /**
- * 实体的唯一标示基类
+ * 实体的唯一标识符基类
  * Created by Max on 2015/12/25.
  */
 public abstract class TrackingId<ID extends Serializable> implements ValueObject<TrackingId> {
