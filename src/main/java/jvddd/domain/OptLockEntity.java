@@ -7,6 +7,6 @@ import java.io.Serializable;
  */
 public interface OptLockEntity<T, ID extends Serializable>
         extends Entity<T, ID> {
-    Long getVersion();
+    Long version();
 
 }

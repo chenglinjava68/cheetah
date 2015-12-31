@@ -9,4 +9,7 @@ public class IncrementKeyEntity extends AbstractEntity<Long> {
         super(new NumberTrackingId());
     }
 
+    public IncrementKeyEntity(TrackingId<Long> trackingId, Timist timist, Long version) {
+        super(trackingId, timist, version);
+    }
 }

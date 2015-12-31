@@ -30,12 +30,12 @@ public abstract class AbstractEntity<ID extends Serializable>
     }
 
     @Override
-    public TrackingId<ID> getId() {
+    public TrackingId<ID> id() {
         return this.trackingId;
     }
 
     @Override
-    public Long getVersion() {
+    public Long version() {
         return this.version;
     }
 
@@ -67,7 +67,7 @@ public abstract class AbstractEntity<ID extends Serializable>
 
     @Override
     public String toString() {
-        return "[" + this.getClass().getName() + " getId=" + getId() + " version=" + getVersion() + "]";
+        return "[" + this.getClass().getName() + " getId=" + id() + " version=" + version() + "]";
     }
 
 }

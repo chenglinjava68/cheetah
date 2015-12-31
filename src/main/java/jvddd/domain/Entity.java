@@ -11,5 +11,5 @@ public interface Entity<T, ID extends Serializable> extends Serializable {
 
     void changed();
 
-    TrackingId<ID> getId();
+    TrackingId<ID> id();
 }
