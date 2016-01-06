@@ -42,17 +42,6 @@ public final class QueryHelper {
         predicates.add(criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()])));
     }
 
-    private static <T> Expression fieldProcessing(Root<T> from, Map.Entry<String, ?> entry) {
-        Expression expression = null;
-        if (entry.getKey().contains(".")) {
-            String[] keys = entry.getKey().split("\\.");
-            expression = doFieldProcessing(keys, from);
-        } else
-            expression = from.get(entry.getKey());
-        return expression;
-    }
-
-
     public static <T> void or(PageRequest request, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
         if (CollectionUtils.isEmpty(request.getOrParameters())) return;
         final List<Predicate> predicateList = new ArrayList<Predicate>();
@@ -75,6 +64,17 @@ public final class QueryHelper {
         tTypedQuery.setFirstResult(request.getOffset()).setMaxResults(request.getPageSize());
     }
 
+
+    private static <T> Expression fieldProcessing(Root<T> from, Map.Entry<String, ?> entry) {
+        Expression expression = null;
+        if (entry.getKey().contains(".")) {
+            String[] keys = entry.getKey().split("\\.");
+            expression = doFieldProcessing(keys, from);
+        } else
+            expression = from.get(entry.getKey());
+        return expression;
+    }
+
     private static <T> Expression doFieldProcessing(String[] keys, Root<T> from) {
         switch (keys.length) {
             case 2:
@@ -95,4 +95,5 @@ public final class QueryHelper {
                 throw new RuntimeException("doFieldProcessing failure");
         }
     }
+
 }

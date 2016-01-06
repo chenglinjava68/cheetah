@@ -35,7 +35,10 @@ public class PersonTest {
     @Test
     public void list() {
         PageRequest request = new PageRequest(0, 10);
+
         request.like("job.name", "li");
+        request.or("name", "qwe");
+        request.or("age", 11);
         Page<Person> list = personRepoImpl.find(request);
     }
 
