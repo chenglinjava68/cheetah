@@ -1,6 +1,9 @@
-package jvddd.domain;
+package jvddd.domain.hibernate;
 
-import jvddd.domain.hibernate.FromHelper;
+import jvddd.domain.EntityUtils;
+import jvddd.domain.NumberTrackingId;
+import jvddd.domain.PageRequest;
+import jvddd.domain.UUIDTrackingId;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.TypedQuery;
