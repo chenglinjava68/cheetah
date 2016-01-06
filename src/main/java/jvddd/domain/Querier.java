@@ -1,5 +1,6 @@
 package jvddd.domain;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ public class Querier {
     private final Map<String, Object> and = new HashMap<String, Object>();
     private final Map<String, Object> or = new HashMap<String, Object>();
     private final Map<String, String> like = new HashMap<String, String>();
+    private final List<String> groupby = new ArrayList<String>();
 
     public final SortList sortList() {
         return sortList;
@@ -33,6 +35,14 @@ public class Querier {
         this.like.put(name, value);
     }
 
+    public final  void groupby(String name) {
+        this.groupby.add(name);
+    }
+
+    public final  List<String> groupby() {
+        return this.groupby;
+    }
+
     public final Map<String, String> getLikeParameters() {
         return like;
     }
@@ -50,6 +60,7 @@ public class Querier {
         this.and.clear();
         this.or.clear();
         this.like.clear();
+        this.groupby.clear();
     }
 
 }
