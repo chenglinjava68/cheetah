@@ -1,6 +1,5 @@
 package jvddd.domain;
 
-import jvddd.repository.PersonRepo;
 import jvddd.repository.PersonRepoImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,9 +8,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import javax.xml.ws.RequestWrapper;
+import java.util.List;
 
 /**
  * Created by Max on 2015/12/31.
@@ -21,31 +20,30 @@ import javax.transaction.Transactional;
 @TransactionConfiguration(defaultRollback = false)
 @Transactional
 public class PersonTest {
-    @PersistenceContext
-    private EntityManager em;
     @Autowired
     private PersonRepoImpl personRepoImpl;
-    @Autowired
-    private PersonRepo personRepo;
     @Test
     public void save() {
-        Person p = em.find(Person.class,
-                QueryHelper.createQueryTrackingId("1ae50a1e-3c87-48b4-b4ed-cc4922de68d0"));
-        Person p2 = Person.newBuilder()
-                .age(33)
-                .trackingId(p.trackingId())
-                .name(p.name())
-                .sex(p.sex())
-                .timist(p.timist())
-                .version(p.version())
+        Person p = Person.newBuilder()
+                .age(22)
+                .name("huangfeng")
+                .sex((short) 1)
                 .build();
-        em.merge(p2);
+        personRepoImpl.put(p);
     }
 
     @Test
-    public void find() {
-        personRepo.findOne(QueryHelper.createQueryTrackingId("1ae50a1e-3c87-48b4-b4ed-cc4922de68d0"));
-        personRepoImpl.find();
+    public void list() {
+        PageRequest request = new PageRequest(0, 10);
+        request.and("job.name", "qwe");
+        request.and("age", 11);
+        request.and("sex", 1);
+        Page<Person> list = personRepoImpl.find(request);
+    }
+
+    @Test
+    public void getPropertyValue() {
+        Person p = personRepoImpl.getByPropertyValue("name", "huangfeng");
     }
 
 }

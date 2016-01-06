@@ -1,9 +1,7 @@
 package jvddd.domain;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 /**
  * Created by Max on 2015/12/31.
@@ -15,6 +13,8 @@ public class Person extends UUIDKeyEntity {
     private String name;
     private short sex;
     private int age;
+    @Embedded
+    private Job job;
     Person() {
 
     }
@@ -46,6 +46,7 @@ public class Person extends UUIDKeyEntity {
         private String name;
         private short sex;
         private int age;
+        Job job;
 
         @Override
         public Person build() {
@@ -80,6 +81,11 @@ public class Person extends UUIDKeyEntity {
 
         public Builder sex(short sex) {
             this.sex = sex;
+            return this;
+        }
+
+        public Builder job(Job job) {
+            this.job = job;
             return this;
         }
     }

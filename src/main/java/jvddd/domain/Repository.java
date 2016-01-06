@@ -15,8 +15,6 @@ public interface Repository<I extends TrackingId, T extends AbstractEntity<I>> {
 
     void refresh(I objectId);
 
-    boolean isRemoveAllowed();
-
     void remove(T object);
 
     void remove(I objectId);
@@ -24,23 +22,5 @@ public interface Repository<I extends TrackingId, T extends AbstractEntity<I>> {
     List<T> list();
 
     T getByPropertyValue(String propertyName, Object value);
-
-    void setFirst(int first);
-
-    int getFirst();
-
-    void setLast(int last);
-
-    int getLast();
-
-    void setOrder(String property, boolean reverse);
-
-    void addOrder(String property, boolean reverse);
-
-    void removeLastOrder();
-
-    String getOrderProperty();
-
-    boolean isReverseOrder();
 
 }
