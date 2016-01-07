@@ -13,10 +13,6 @@ public class PageRequest extends AbstractPageable {
         super(page, size);
     }
 
-    public PageRequest(int page, int size, SortList sortList) {
-        super(page, size);
-    }
-
     public final SortList sortList() {
         return querier.sortList();
     }

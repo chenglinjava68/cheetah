@@ -9,6 +9,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
+ * 支持分页查询的仓储
  * Created by Max on 2016/1/5.
  */
 public abstract class PagingHibernateRepository<I extends TrackingId, T extends AbstractEntity<I>>
@@ -21,7 +22,7 @@ public abstract class PagingHibernateRepository<I extends TrackingId, T extends 
         ccQuery.select(criteriaBuilder.count(cfrom));
         QueryHelper.where(request, criteriaBuilder, ccQuery, cfrom);
         TypedQuery<Long> cQuery = entityManager.createQuery(ccQuery);
-        long total = cQuery.getSingleResult();
+        long countTotal = cQuery.getSingleResult();
 
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(getEntityClass());
         Root<T> bfrom = criteriaQuery.from(this.getEntityClass());
@@ -29,6 +30,6 @@ public abstract class PagingHibernateRepository<I extends TrackingId, T extends 
         TypedQuery<T> tTypedQuery = entityManager.createQuery(criteriaQuery);
         QueryHelper.limit(tTypedQuery, request);
         List<T> result = tTypedQuery.getResultList();
-        return Page.create(total, result, request.getPageSize(), request.getNextPage());
+        return Page.create(countTotal, result, request.getPageSize(), request.getNextPage());
     }
 }
