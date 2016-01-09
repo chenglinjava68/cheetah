@@ -13,7 +13,8 @@ import java.util.List;
  * Created by Max on 2016/1/5.
  */
 public abstract class PagingHibernateRepository<I extends TrackingId, T extends AbstractEntity<I>>
-        extends AbstractHibernateRepository<I, T> {
+        extends AbstractRepository<I, T> implements PagingRepository<I, T> {
+    @Override
     public Page<T> find(PageRequest request) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 

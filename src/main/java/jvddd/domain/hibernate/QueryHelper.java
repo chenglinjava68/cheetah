@@ -66,13 +66,11 @@ public final class QueryHelper {
 
 
     private static <T> Expression fieldProcessing(Root<T> from, Map.Entry<String, ?> entry) {
-        Expression expression = null;
         if (entry.getKey().contains(".")) {
             String[] keys = entry.getKey().split("\\.");
-            expression = doFieldProcessing(keys, from);
+            return doFieldProcessing(keys, from);
         } else
-            expression = from.get(entry.getKey());
-        return expression;
+            return from.get(entry.getKey());
     }
 
     private static <T> Expression doFieldProcessing(String[] keys, Root<T> from) {

@@ -32,7 +32,7 @@ public class PageRequest extends AbstractPageable {
         return this;
     }
 
-    public final  PageRequest like(String name, String value) {
+    public final PageRequest like(String name, String value) {
         querier.like(name, value);
         return this;
     }
