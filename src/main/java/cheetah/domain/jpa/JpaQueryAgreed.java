@@ -1,8 +1,8 @@
 package cheetah.domain.jpa;
 
-import cheetah.domain.AmpleQuerier;
+import cheetah.domain.AmpleEnquirer;
 import cheetah.domain.PageRequest;
-import cheetah.domain.Querier;
+import cheetah.domain.Enquirer;
 import cheetah.domain.QueryAgreed;
 
 import javax.persistence.TypedQuery;
@@ -16,31 +16,31 @@ import java.util.List;
  * Created by Max on 2016/1/10.
  */
 public interface JpaQueryAgreed extends QueryAgreed {
-    <R extends CriteriaQuery, T> void where(Querier querier, CriteriaBuilder criteriaBuilder, R criteriaQuery, Root<T> from);
+    <R extends CriteriaQuery, T> void where(Enquirer enquirer, CriteriaBuilder criteriaBuilder, R criteriaQuery, Root<T> from);
 
-    <T> void and(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
+    <T> void and(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
 
-    <T> void or(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
+    <T> void or(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
 
-    <T> void in(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
+    <T> void in(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
 
-    <T> void notIn(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
+    <T> void notIn(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
 
-    <T> void gt(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
+    <T> void gt(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
 
-    <T> void lt(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
+    <T> void lt(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
 
-    <T> void ge(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
+    <T> void ge(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
 
-    <T> void le(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
+    <T> void le(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
 
-    <T> void between(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
+    <T> void between(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
 
-    <T> void like(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
+    <T> void like(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);
 
     <T> void limit(TypedQuery<T> tTypedQuery, PageRequest request);
 
-    <T> void orderby(Querier querier, CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<T> from);
+    <T> void orderby(Enquirer enquirer, CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<T> from);
 
-    <T> void groupby(AmpleQuerier querier, CriteriaQuery<?> criteriaQuery, Root<T> from);
+    <T> void groupby(AmpleEnquirer enquirer, CriteriaQuery<?> criteriaQuery, Root<T> from);
 }

@@ -7,7 +7,7 @@ import java.util.Map;
  * 条件接口
  * Created by Max on 2016/1/9.
  */
-public interface Querier {
+public interface Enquirer {
 
     boolean hasWhere();
 
@@ -59,7 +59,7 @@ public interface Querier {
 
     Map<String, Object> getAnd();
 
-    QuerierImpl.Between getBetween();
+    EnquirerImpl.Between getBetween();
 
     OrderList orderList();
 

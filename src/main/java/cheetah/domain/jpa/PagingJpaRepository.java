@@ -39,7 +39,6 @@ public class PagingJpaRepository<I extends TrackingId, T extends AbstractEntity<
 
     @Override
     public Page<T> find(PageRequest request, JpaCallback<Page<T>> callback) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         return callback.doCallback(entityManager, request);
     }
 }

@@ -1,8 +1,8 @@
 package cheetah.domain.jpa;
 
-import cheetah.domain.AmpleQuerier;
+import cheetah.domain.AmpleEnquirer;
 import cheetah.domain.PageRequest;
-import cheetah.domain.Querier;
+import cheetah.domain.Enquirer;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -16,27 +16,27 @@ import java.util.*;
 public class JpaQueryAgreedImpl implements JpaQueryAgreed {
 
     @Override
-    public <R extends CriteriaQuery, T> void where(Querier querier, CriteriaBuilder criteriaBuilder, R criteriaQuery, Root<T> from) {
-        if(!querier.hasWhere()) return ;
+    public <R extends CriteriaQuery, T> void where(Enquirer enquirer, CriteriaBuilder criteriaBuilder, R criteriaQuery, Root<T> from) {
+        if(!enquirer.hasWhere()) return ;
         final List<Predicate> predicates = new ArrayList<Predicate>();
-        and(querier, criteriaBuilder, from, predicates);
-        or(querier, criteriaBuilder, from, predicates);
-        in(querier, criteriaBuilder, from, predicates);
-        notIn(querier, criteriaBuilder, from, predicates);
-        gt(querier, criteriaBuilder, from, predicates);
-        lt(querier, criteriaBuilder, from, predicates);
-        ge(querier, criteriaBuilder, from, predicates);
-        le(querier, criteriaBuilder, from, predicates);
-        between(querier, criteriaBuilder, from, predicates);
-        like(querier, criteriaBuilder, from, predicates);
+        and(enquirer, criteriaBuilder, from, predicates);
+        or(enquirer, criteriaBuilder, from, predicates);
+        in(enquirer, criteriaBuilder, from, predicates);
+        notIn(enquirer, criteriaBuilder, from, predicates);
+        gt(enquirer, criteriaBuilder, from, predicates);
+        lt(enquirer, criteriaBuilder, from, predicates);
+        ge(enquirer, criteriaBuilder, from, predicates);
+        le(enquirer, criteriaBuilder, from, predicates);
+        between(enquirer, criteriaBuilder, from, predicates);
+        like(enquirer, criteriaBuilder, from, predicates);
         criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]));
     }
 
     @Override
-    public <T> void and(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
-        if (CollectionUtils.isEmpty(querier.getAnd())) return;
+    public <T> void and(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
+        if (CollectionUtils.isEmpty(enquirer.getAnd())) return;
         final List<Predicate> predicateList = new ArrayList<Predicate>();
-        for (Map.Entry<String, Object> entry : querier.getAnd().entrySet()) {
+        for (Map.Entry<String, Object> entry : enquirer.getAnd().entrySet()) {
             Expression expression = QueryHelper.fieldProcessing(from, entry.getKey());
             predicateList.add(criteriaBuilder.equal(expression, entry.getValue()));
         }
@@ -44,10 +44,10 @@ public class JpaQueryAgreedImpl implements JpaQueryAgreed {
     }
 
     @Override
-    public <T> void or(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
-        if (CollectionUtils.isEmpty(querier.getOr())) return;
+    public <T> void or(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
+        if (CollectionUtils.isEmpty(enquirer.getOr())) return;
         final List<Predicate> predicateList = new ArrayList<Predicate>();
-        for (Map.Entry<String, Object> entry : querier.getOr().entrySet()) {
+        for (Map.Entry<String, Object> entry : enquirer.getOr().entrySet()) {
             Expression expression = QueryHelper.fieldProcessing(from, entry.getKey());
             predicateList.add(criteriaBuilder.equal(expression, entry.getValue()));
         }
@@ -55,9 +55,9 @@ public class JpaQueryAgreedImpl implements JpaQueryAgreed {
     }
 
     @Override
-    public <T> void in(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
-        if (CollectionUtils.isEmpty(querier.in())) return;
-        for (Map.Entry<String, List<Object>> entry : querier.in().entrySet()) {
+    public <T> void in(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
+        if (CollectionUtils.isEmpty(enquirer.in())) return;
+        for (Map.Entry<String, List<Object>> entry : enquirer.in().entrySet()) {
             Expression expression = QueryHelper.fieldProcessing(from, entry.getKey());
             CriteriaBuilder.In in = criteriaBuilder.in(expression);
             Iterator<Object> iter = entry.getValue().iterator();
@@ -69,9 +69,9 @@ public class JpaQueryAgreedImpl implements JpaQueryAgreed {
     }
 
     @Override
-    public <T> void notIn(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
-        if (CollectionUtils.isEmpty(querier.notIn())) return;
-        for (Map.Entry<String, List<Object>> entry : querier.notIn().entrySet()) {
+    public <T> void notIn(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
+        if (CollectionUtils.isEmpty(enquirer.notIn())) return;
+        for (Map.Entry<String, List<Object>> entry : enquirer.notIn().entrySet()) {
             Expression expression = QueryHelper.fieldProcessing(from, entry.getKey());
             CriteriaBuilder.In in = criteriaBuilder.in(expression);
             Iterator<Object> iter = entry.getValue().iterator();
@@ -84,10 +84,10 @@ public class JpaQueryAgreedImpl implements JpaQueryAgreed {
     }
 
     @Override
-    public <T> void gt(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
-        if (CollectionUtils.isEmpty(querier.getGt())) return;
+    public <T> void gt(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
+        if (CollectionUtils.isEmpty(enquirer.getGt())) return;
         final List<Predicate> predicateList = new ArrayList<Predicate>();
-        for (Map.Entry<String, Number> entry : querier.getGt().entrySet()) {
+        for (Map.Entry<String, Number> entry : enquirer.getGt().entrySet()) {
             Expression expression = QueryHelper.fieldProcessing(from, entry.getKey());
             predicateList.add(criteriaBuilder.gt(expression, entry.getValue()));
         }
@@ -95,10 +95,10 @@ public class JpaQueryAgreedImpl implements JpaQueryAgreed {
     }
 
     @Override
-    public <T> void lt(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
-        if (CollectionUtils.isEmpty(querier.getLt())) return;
+    public <T> void lt(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
+        if (CollectionUtils.isEmpty(enquirer.getLt())) return;
         final List<Predicate> predicateList = new ArrayList<Predicate>();
-        for (Map.Entry<String, Number> entry : querier.getLt().entrySet()) {
+        for (Map.Entry<String, Number> entry : enquirer.getLt().entrySet()) {
             Expression expression = QueryHelper.fieldProcessing(from, entry.getKey());
             predicateList.add(criteriaBuilder.lt(expression, entry.getValue()));
         }
@@ -106,10 +106,10 @@ public class JpaQueryAgreedImpl implements JpaQueryAgreed {
     }
 
     @Override
-    public <T> void ge(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
-        if (CollectionUtils.isEmpty(querier.getGe())) return;
+    public <T> void ge(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
+        if (CollectionUtils.isEmpty(enquirer.getGe())) return;
         final List<Predicate> predicateList = new ArrayList<Predicate>();
-        for (Map.Entry<String, Number> entry : querier.getGe().entrySet()) {
+        for (Map.Entry<String, Number> entry : enquirer.getGe().entrySet()) {
             Expression expression = QueryHelper.fieldProcessing(from, entry.getKey());
             predicateList.add(criteriaBuilder.ge(expression, entry.getValue()));
         }
@@ -117,10 +117,10 @@ public class JpaQueryAgreedImpl implements JpaQueryAgreed {
     }
 
     @Override
-    public <T> void le(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
-        if (CollectionUtils.isEmpty(querier.getLe())) return;
+    public <T> void le(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
+        if (CollectionUtils.isEmpty(enquirer.getLe())) return;
         final List<Predicate> predicateList = new ArrayList<Predicate>();
-        for (Map.Entry<String, Number> entry : querier.getLe().entrySet()) {
+        for (Map.Entry<String, Number> entry : enquirer.getLe().entrySet()) {
             Expression expression = QueryHelper.fieldProcessing(from, entry.getKey());
             predicateList.add(criteriaBuilder.le(expression, entry.getValue()));
         }
@@ -128,27 +128,27 @@ public class JpaQueryAgreedImpl implements JpaQueryAgreed {
     }
 
     @Override
-    public <T> void between(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
-        if (Objects.isNull(querier.getBetween())) return;
-        Expression expression = QueryHelper.fieldProcessing(from, querier.getBetween().getName());
-        if (querier.getBetween().getStart() instanceof String)
-            predicates.add(criteriaBuilder.between(expression, (String) querier.getBetween().getStart(), (String) querier.getBetween().getEnd()));
-        else if (querier.getBetween().getStart() instanceof Long)
-            predicates.add(criteriaBuilder.between(expression, (Long) querier.getBetween().getStart(), (Long) querier.getBetween().getEnd()));
-        else if (querier.getBetween().getStart() instanceof Integer)
-            predicates.add(criteriaBuilder.between(expression, (Integer) querier.getBetween().getStart(), (Integer) querier.getBetween().getEnd()));
-        else if (querier.getBetween().getStart() instanceof Short)
-            predicates.add(criteriaBuilder.between(expression, (Short) querier.getBetween().getStart(), (Short) querier.getBetween().getEnd()));
-        else if (querier.getBetween().getStart() instanceof Float)
-            predicates.add(criteriaBuilder.between(expression, (Float) querier.getBetween().getStart(), (Float) querier.getBetween().getEnd()));
-        else if (querier.getBetween().getStart() instanceof Double)
-            predicates.add(criteriaBuilder.between(expression, (Double) querier.getBetween().getStart(), (Double) querier.getBetween().getEnd()));
+    public <T> void between(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
+        if (Objects.isNull(enquirer.getBetween())) return;
+        Expression expression = QueryHelper.fieldProcessing(from, enquirer.getBetween().getName());
+        if (enquirer.getBetween().getStart() instanceof String)
+            predicates.add(criteriaBuilder.between(expression, (String) enquirer.getBetween().getStart(), (String) enquirer.getBetween().getEnd()));
+        else if (enquirer.getBetween().getStart() instanceof Long)
+            predicates.add(criteriaBuilder.between(expression, (Long) enquirer.getBetween().getStart(), (Long) enquirer.getBetween().getEnd()));
+        else if (enquirer.getBetween().getStart() instanceof Integer)
+            predicates.add(criteriaBuilder.between(expression, (Integer) enquirer.getBetween().getStart(), (Integer) enquirer.getBetween().getEnd()));
+        else if (enquirer.getBetween().getStart() instanceof Short)
+            predicates.add(criteriaBuilder.between(expression, (Short) enquirer.getBetween().getStart(), (Short) enquirer.getBetween().getEnd()));
+        else if (enquirer.getBetween().getStart() instanceof Float)
+            predicates.add(criteriaBuilder.between(expression, (Float) enquirer.getBetween().getStart(), (Float) enquirer.getBetween().getEnd()));
+        else if (enquirer.getBetween().getStart() instanceof Double)
+            predicates.add(criteriaBuilder.between(expression, (Double) enquirer.getBetween().getStart(), (Double) enquirer.getBetween().getEnd()));
     }
 
     @Override
-    public <T> void like(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
-        if (CollectionUtils.isEmpty(querier.getLike())) return;
-        for (Map.Entry<String, String> entry : querier.getLike().entrySet()) {
+    public <T> void like(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
+        if (CollectionUtils.isEmpty(enquirer.getLike())) return;
+        for (Map.Entry<String, String> entry : enquirer.getLike().entrySet()) {
             Expression expression = QueryHelper.fieldProcessing(from, entry.getKey());
             predicates.add(criteriaBuilder.like(expression, String.format("%%%s%%", entry.getValue())));
         }
@@ -160,11 +160,11 @@ public class JpaQueryAgreedImpl implements JpaQueryAgreed {
     }
 
     @Override
-    public <T> void orderby(Querier querier, CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<T> from) {
-        if (Objects.isNull(querier.orderList()) || querier.orderList().isEmpty())
+    public <T> void orderby(Enquirer enquirer, CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<T> from) {
+        if (Objects.isNull(enquirer.orderList()) || enquirer.orderList().isEmpty())
             return;
         List<Order> orders = new ArrayList<Order>();
-        for (cheetah.domain.Order order : querier.orderList().orders()) {
+        for (cheetah.domain.Order order : enquirer.orderList().orders()) {
             if (order.getDirection() == cheetah.domain.Order.Direction.DESC)
                 orders.add(criteriaBuilder.desc(from.get(order.getproperty())));
             else
@@ -174,8 +174,8 @@ public class JpaQueryAgreedImpl implements JpaQueryAgreed {
     }
 
     @Override
-    public <T> void groupby(AmpleQuerier querier, CriteriaQuery<?> criteriaQuery, Root<T> from) {
-        if (StringUtils.isBlank(querier.groupby())) return;
-        criteriaQuery.groupBy(from.get(querier.groupby()));
+    public <T> void groupby(AmpleEnquirer enquirer, CriteriaQuery<?> criteriaQuery, Root<T> from) {
+        if (StringUtils.isBlank(enquirer.groupby())) return;
+        criteriaQuery.groupBy(from.get(enquirer.groupby()));
     }
 }

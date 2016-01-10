@@ -10,10 +10,10 @@ import java.util.List;
 public interface ChunkRepository<I extends TrackingId, T extends AbstractEntity<I>> {
     List<T> list();
 
-    List<T> list(AmpleQuerier querier);
+    List<T> list(AmpleEnquirer querier);
 
-    List<T> list(AmpleQuerier querier, JpaCallback<List<T>> callback);
+    List<T> list(AmpleEnquirer querier, JpaCallback<List<T>> callback);
 
-    long count(AmpleQuerier ampleQuerier);
+    long count(AmpleEnquirer ampleQuerier);
 
 }

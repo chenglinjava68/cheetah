@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * Created by Max on 2016/1/6.
  */
-public class QuerierImpl implements AmpleQuerier {
+public class EnquirerImpl implements AmpleEnquirer {
 
     private final OrderList orderby = new OrderList();
     private final Map<String, Object> and = new HashMap<String, Object>();

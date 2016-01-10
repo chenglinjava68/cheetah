@@ -6,8 +6,8 @@ import java.util.Map;
 /**
  * Created by Max on 2016/1/6.
  */
-public class PageRequest extends AbstractPageable  implements Querier {
-    private final Querier querier = new QuerierImpl();
+public class PageRequest extends AbstractPageable  implements Enquirer {
+    private final Enquirer enquirer = new EnquirerImpl();
 
     public PageRequest(int page, int size) {
         super(page, size);
@@ -15,139 +15,139 @@ public class PageRequest extends AbstractPageable  implements Querier {
 
     @Override
     public final OrderList orderList() {
-        return querier.orderList();
+        return enquirer.orderList();
     }
 
     @Override
     public boolean hasWhere() {
-        return querier.hasWhere();
+        return enquirer.hasWhere();
     }
 
     @Override
     public final void orderby(String property, Order.Direction order) {
-        querier.orderby(property, order);
+        enquirer.orderby(property, order);
     }
 
     @Override
     public final void getAnd(String name, Object value) {
-        querier.getAnd(name, value);
+        enquirer.getAnd(name, value);
     }
 
     @Override
     public final void or(String name, Object value) {
-        querier.or(name, value);
+        enquirer.or(name, value);
     }
 
     @Override
     public final void getLike(String name, String value) {
-        querier.getLike(name, value);
+        enquirer.getLike(name, value);
     }
 
     @Override
     public void in(String property, List<Object> params) {
-        querier.in(property, params);
+        enquirer.in(property, params);
     }
 
     @Override
     public void notIn(String property, List<Object> params) {
-        querier.notIn(property, params);
+        enquirer.notIn(property, params);
     }
 
     @Override
     public void isNull(String property) {
-        querier.isNull(property);
+        enquirer.isNull(property);
     }
 
     @Override
     public void notNull(String property) {
-        querier.notNull(property);
+        enquirer.notNull(property);
     }
 
     @Override
     public void between(String property, Number start, Number end) {
-        querier.between(property, start, end);
+        enquirer.between(property, start, end);
     }
 
     @Override
     public void gt(String property, Number value) {
-        querier.gt(property, value);
+        enquirer.gt(property, value);
     }
 
     @Override
     public void lt(String property, Number value) {
-        querier.lt(property, value);
+        enquirer.lt(property, value);
     }
 
     @Override
     public void ge(String property, Number value) {
-        querier.ge(property, value);
+        enquirer.ge(property, value);
     }
 
     @Override
     public void le(String property, Number value) {
-        querier.le(property, value);
+        enquirer.le(property, value);
     }
 
     @Override
     public Map<String, List<Object>> in() {
-        return querier.in();
+        return enquirer.in();
     }
 
     @Override
     public Map<String, List<Object>> notIn() {
-        return querier.notIn();
+        return enquirer.notIn();
     }
 
     @Override
     public String isNull() {
-        return querier.isNull();
+        return enquirer.isNull();
     }
 
     @Override
     public String notNull() {
-        return querier.notNull();
+        return enquirer.notNull();
     }
 
     @Override
     public Map<String, Number> getGt() {
-        return querier.getGt();
+        return enquirer.getGt();
     }
 
     @Override
     public Map<String, Number> getLt() {
-        return querier.getLt();
+        return enquirer.getLt();
     }
 
     @Override
     public Map<String, Number> getGe() {
-        return querier.getGe();
+        return enquirer.getGe();
     }
 
     @Override
     public Map<String, Number> getLe() {
-        return querier.getLe();
+        return enquirer.getLe();
     }
 
     @Override
     public void clearAll() {
-        querier.clearAll();
+        enquirer.clearAll();
     }
 
     public final Map<String, String> getLike() {
-        return querier.getLike();
+        return enquirer.getLike();
     }
 
     public final Map<String, Object> getOr() {
-        return querier.getOr();
+        return enquirer.getOr();
     }
 
     public final Map<String, Object> getAnd() {
-        return querier.getAnd();
+        return enquirer.getAnd();
     }
 
     @Override
-    public QuerierImpl.Between getBetween() {
-        return querier.getBetween();
+    public EnquirerImpl.Between getBetween() {
+        return enquirer.getBetween();
     }
 
     @Override
