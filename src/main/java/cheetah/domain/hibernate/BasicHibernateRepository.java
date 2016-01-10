@@ -10,10 +10,10 @@ import javax.persistence.PersistenceContext;
 /**
  * Created by Max on 2016/1/9.
  */
-public abstract class BasicRepository<I extends TrackingId, T extends AbstractEntity<I>> {
+public abstract class BasicHibernateRepository<I extends TrackingId, T extends AbstractEntity<I>> {
     private Class<T> entityClass;
 
-    public BasicRepository() {
+    public BasicHibernateRepository() {
         entityClass = DomainUtils.getType(getClass(), 1);
     }
 

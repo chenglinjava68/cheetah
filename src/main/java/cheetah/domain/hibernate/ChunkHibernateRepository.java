@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Max on 2016/1/9.
  */
-public class ChunkHibernateRepository<I extends TrackingId, T extends AbstractEntity<I>> extends BasicRepository<I, T> implements ChunkRepository<I, T> {
+public class ChunkHibernateRepository<I extends TrackingId, T extends AbstractEntity<I>> extends BasicHibernateRepository<I, T> implements ChunkRepository<I, T> {
     private final HibernateQueryInjector queryInjector = new HibernateQueryInjectorImpl();
     @Override
     public List<T> list() {

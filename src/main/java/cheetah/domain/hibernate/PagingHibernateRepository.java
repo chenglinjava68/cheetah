@@ -12,7 +12,7 @@ import java.util.List;
  * Created by Max on 2016/1/5.
  */
 public class PagingHibernateRepository<I extends TrackingId, T extends AbstractEntity<I>>
-        extends BasicRepository<I, T> implements PagingRepository<I, T> {
+        extends BasicHibernateRepository<I, T> implements PagingRepository<I, T> {
     private final HibernateQueryInjector queryInjector = new HibernateQueryInjectorImpl();
 
     @Override
