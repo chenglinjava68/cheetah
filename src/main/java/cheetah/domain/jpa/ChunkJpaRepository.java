@@ -12,7 +12,7 @@ import java.util.List;
  * Created by Max on 2016/1/9.
  */
 public class ChunkJpaRepository<I extends TrackingId, T extends AbstractEntity<I>> extends BasicJpaRepository<I, T> implements ChunkRepository<I, T> {
-    private final JpaQueryInjector queryInjector = new JpaQueryInjectorImpl();
+    private final JpaQueryAgreed queryInjector = new JpaQueryAgreedImpl();
     @Override
     public List<T> list() {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

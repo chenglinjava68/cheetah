@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class PagingJpaRepository<I extends TrackingId, T extends AbstractEntity<I>>
         extends BasicJpaRepository<I, T> implements PagingRepository<I, T> {
-    private final JpaQueryInjector queryInjector = new JpaQueryInjectorImpl();
+    private final JpaQueryAgreed queryInjector = new JpaQueryAgreedImpl();
 
     @Override
     public Page<T> find(PageRequest request) {

@@ -3,7 +3,7 @@ package cheetah.domain.jpa;
 import cheetah.domain.AmpleQuerier;
 import cheetah.domain.PageRequest;
 import cheetah.domain.Querier;
-import cheetah.domain.QueryInjector;
+import cheetah.domain.QueryAgreed;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Max on 2016/1/10.
  */
-public interface JpaQueryInjector extends QueryInjector {
+public interface JpaQueryAgreed extends QueryAgreed {
     <R extends CriteriaQuery, T> void where(Querier querier, CriteriaBuilder criteriaBuilder, R criteriaQuery, Root<T> from);
 
     <T> void and(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);

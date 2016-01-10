@@ -13,7 +13,7 @@ import java.util.*;
 /**
  * Created by Max on 2016/1/10.
  */
-public class JpaQueryInjectorImpl implements JpaQueryInjector {
+public class JpaQueryAgreedImpl implements JpaQueryAgreed {
 
     @Override
     public <R extends CriteriaQuery, T> void where(Querier querier, CriteriaBuilder criteriaBuilder, R criteriaQuery, Root<T> from) {
