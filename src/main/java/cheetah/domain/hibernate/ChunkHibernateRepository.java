@@ -1,19 +1,18 @@
 package cheetah.domain.hibernate;
 
-import cheetah.domain.AbstractEntity;
-import cheetah.domain.ChunkRepository;
-import cheetah.domain.Querier;
-import cheetah.domain.TrackingId;
+import cheetah.domain.*;
 
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
  * Created by Max on 2016/1/9.
  */
 public class ChunkHibernateRepository<I extends TrackingId, T extends AbstractEntity<I>> extends BasicRepository<I, T> implements ChunkRepository<I, T> {
-
+    private final HibernateQueryInjector queryInjector = new HibernateQueryInjectorImpl();
     @Override
     public List<T> list() {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -23,7 +22,27 @@ public class ChunkHibernateRepository<I extends TrackingId, T extends AbstractEn
     }
 
     @Override
-    public List<T> list(Querier querier) {
-        return null;
+    public List<T> list(AmpleQuerier querier) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(getEntityClass());
+        Root<T> bfrom = criteriaQuery.from(this.getEntityClass());
+        queryInjector.where(querier, criteriaBuilder, criteriaQuery, bfrom);
+        queryInjector.groupby(querier, criteriaQuery, bfrom);
+        queryInjector.orderby(querier, criteriaBuilder, criteriaQuery, bfrom);
+        TypedQuery<T> tTypedQuery = entityManager.createQuery(criteriaQuery);
+        return tTypedQuery.getResultList();
     }
+
+    @Override
+    public long count(AmpleQuerier querier) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> ccQuery = criteriaBuilder.createQuery(Long.class);
+        Root<T> cfrom = ccQuery.from(this.getEntityClass());
+        ccQuery.select(criteriaBuilder.count(cfrom));
+        queryInjector.where(querier, criteriaBuilder, ccQuery, cfrom);
+        TypedQuery<Long> cQuery = entityManager.createQuery(ccQuery);
+        return cQuery.getSingleResult();
+    }
+
+
 }

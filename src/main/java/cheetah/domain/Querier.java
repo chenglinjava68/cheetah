@@ -1,66 +1,56 @@
 package cheetah.domain;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Max on 2016/1/6.
+ * 条件接口
+ * Created by Max on 2016/1/9.
  */
-public class Querier {
-    private final SortList sortList = new SortList();
-    private final Map<String, Object> and = new HashMap<String, Object>();
-    private final Map<String, Object> or = new HashMap<String, Object>();
-    private final Map<String, String> like = new HashMap<String, String>();
-    private final List<String> groupby = new ArrayList<String>();
+public interface Querier {
 
-    public final SortList sortList() {
-        return sortList;
-    }
+    void orderby(String property, Order.Direction order);
 
-    public final void sort(List<String> properties, Sort.Order order) {
-        sortList.add(properties, order);
-    }
+    void and(String name, Object value);
 
-    public final void and(String name, Object value) {
-        and.put(name, value);
-    }
+    void or(String name, Object value);
 
-    public final void or(String name, Object value) {
-        or.put(name, value);
-    }
+    void like(String name, String value);
 
-    public final  void like(String name, String value) {
-        this.like.put(name, value);
-    }
+    void in(String property, List<Object> params);
 
-    public final  void groupby(String name) {
-        this.groupby.add(name);
-    }
+    void notIn(String property, List<Object> params);
 
-    public final  List<String> groupby() {
-        return this.groupby;
-    }
+    void isNull(String property);
 
-    public final Map<String, String> getLikeParameters() {
-        return like;
-    }
+    void notNull(String property);
 
-    public final Map<String, Object> getOrParameters() {
-        return or;
-    }
+    void between(String property, Object start, Object end);
 
-    public final Map<String, Object> getAndParameters() {
-        return and;
-    }
+    void gt(String property, Object value);
 
-    public final void clearAll() {
-        this.sortList.clear();
-        this.and.clear();
-        this.or.clear();
-        this.like.clear();
-        this.groupby.clear();
-    }
+    void lt(String property, Object value);
 
+    void ge(String property, Object value);
+
+    void le(String property, Object value);
+
+    HashMap<String, Object> gt();
+
+    Map<String, Object> lt();
+
+    Map<String, Object> ge();
+
+    Map<String, Object> le();
+
+    Map<String, String> like();
+
+    Map<String, Object> or();
+
+    Map<String, Object> and();
+
+    OrderList orderList();
+
+    void clearAll();
 }

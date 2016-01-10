@@ -1,5 +1,6 @@
 package cheetah.domain;
 
+import cheetah.repository.PersonQueryRepoImpl;
 import cheetah.repository.PersonRepoImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,8 @@ import javax.transaction.Transactional;
 public class PersonTest {
     @Autowired
     private PersonRepoImpl personRepoImpl;
+    @Autowired
+    private PersonQueryRepoImpl personQueryRepo;
     @Test
     public void save() {
         Person p = Person.newBuilder()
@@ -35,14 +38,8 @@ public class PersonTest {
         PageRequest request = new PageRequest(0, 10);
 
         request.like("job.name", "li");
-        request.or("name", "qwe");
-        request.or("age", 11);
-        Page<Person> list = personRepoImpl.find(request);
-    }
-
-    @Test
-    public void getPropertyValue() {
-        Person p = personRepoImpl.getByPropertyValue("name", "huangfeng");
+        request.orderby("age", Order.Direction.DESC);
+        Page<Person> list = personQueryRepo.find(request);
     }
 
 }

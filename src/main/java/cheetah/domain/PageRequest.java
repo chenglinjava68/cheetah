@@ -1,56 +1,124 @@
 package cheetah.domain;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by Max on 2016/1/6.
  */
-public class PageRequest extends AbstractPageable {
-    private final Querier querier = new Querier();
+public class PageRequest extends AbstractPageable  implements Querier {
+    private final Querier querier = new QuerierImpl();
 
     public PageRequest(int page, int size) {
         super(page, size);
     }
 
-    public final SortList sortList() {
-        return querier.sortList();
+    @Override
+    public final OrderList orderList() {
+        return querier.orderList();
     }
 
-    public final PageRequest sort(List<String> properties, Sort.Order order) {
-        querier.sort(properties, order);
-        return this;
+    @Override
+    public final void orderby(String property, Order.Direction order) {
+        querier.orderby(property, order);
     }
 
-    public final PageRequest and(String name, Object value) {
+    @Override
+    public final void and(String name, Object value) {
         querier.and(name, value);
-        return this;
     }
 
-    public final PageRequest or(String name, Object value) {
+    @Override
+    public final void or(String name, Object value) {
         querier.or(name, value);
-        return this;
     }
 
-    public final PageRequest like(String name, String value) {
+    @Override
+    public final void like(String name, String value) {
         querier.like(name, value);
-        return this;
     }
 
-    public final Map<String, String> getLikeParameters() {
-        return querier.getLikeParameters();
+    @Override
+    public void in(String property, List<Object> params) {
+        querier.in(property, params);
     }
 
-    public final Map<String, Object> getOrParameters() {
-        return querier.getOrParameters();
+    @Override
+    public void notIn(String property, List<Object> params) {
+        querier.notIn(property, params);
     }
 
-    public final Map<String, Object> getAndParameters() {
-        return querier.getAndParameters();
+    @Override
+    public void isNull(String property) {
+        querier.isNull(property);
     }
 
-    public final void clearParameters() {
+    @Override
+    public void notNull(String property) {
+        querier.notNull(property);
+    }
+
+    @Override
+    public void between(String property, Object start, Object end) {
+        querier.between(property, start, end);
+    }
+
+    @Override
+    public void gt(String property, Object value) {
+        querier.gt(property, value);
+    }
+
+    @Override
+    public void lt(String property, Object value) {
+        querier.lt(property, value);
+    }
+
+    @Override
+    public void ge(String property, Object value) {
+        querier.ge(property, value);
+    }
+
+    @Override
+    public void le(String property, Object value) {
+        querier.le(property, value);
+    }
+
+    @Override
+    public HashMap<String, Object> gt() {
+        return querier.gt();
+    }
+
+    @Override
+    public Map<String, Object> lt() {
+        return querier.lt();
+    }
+
+    @Override
+    public Map<String, Object> ge() {
+        return querier.ge();
+    }
+
+    @Override
+    public Map<String, Object> le() {
+        return querier.le();
+    }
+
+    @Override
+    public void clearAll() {
         querier.clearAll();
+    }
+
+    public final Map<String, String> like() {
+        return querier.like();
+    }
+
+    public final Map<String, Object> or() {
+        return querier.or();
+    }
+
+    public final Map<String, Object> and() {
+        return querier.and();
     }
 
     @Override

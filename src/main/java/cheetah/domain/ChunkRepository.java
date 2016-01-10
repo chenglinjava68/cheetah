@@ -8,5 +8,8 @@ import java.util.List;
 public interface ChunkRepository<I extends TrackingId, T extends AbstractEntity<I>> {
     List<T> list();
 
-    List<T> list(Querier querier);
+    List<T> list(AmpleQuerier querier);
+
+    long count(AmpleQuerier ampleQuerier);
+
 }

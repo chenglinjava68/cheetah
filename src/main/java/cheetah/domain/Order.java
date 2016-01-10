@@ -1,28 +1,35 @@
 package cheetah.domain;
 
-import java.util.List;
 import java.util.Locale;
 
 /**
  * Created by Max on 2016/1/4.
  */
-public class Sort {
-    private List<String> properties;
-    private Order order;
+public class Order {
+    private String property;
+    private Direction direction = Direction.ASC;
 
-    public Sort(List<String> properties, Order order) {
-        this.properties = properties;
-        this.order = order;
+    public Order(String property, Direction direction) {
+        this.property = property;
+        this.direction = direction;
     }
 
-    public static enum Order {
+    public String getproperty() {
+        return property;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public static enum Direction {
         ASC,
         DESC;
 
-        private Order() {
+        private Direction() {
         }
 
-        public static Sort.Order fromString(String value) {
+        public static Direction fromString(String value) {
             try {
                 return valueOf(value.toUpperCase(Locale.US));
             } catch (Exception var2) {
@@ -30,7 +37,7 @@ public class Sort {
             }
         }
 
-        public static Sort.Order fromStringOrNull(String value) {
+        public static Direction fromStringOrNull(String value) {
             try {
                 return fromString(value);
             } catch (IllegalArgumentException var2) {

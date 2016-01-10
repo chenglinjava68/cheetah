@@ -2,14 +2,10 @@ package cheetah.domain.hibernate;
 
 import cheetah.domain.EntityUtils;
 import cheetah.domain.NumberTrackingId;
-import cheetah.domain.PageRequest;
 import cheetah.domain.UUIDTrackingId;
-import org.springframework.util.CollectionUtils;
 
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Root;
 import java.util.Map;
 
 /**
@@ -24,48 +20,7 @@ public final class QueryHelper {
         return EntityUtils.createTrackingId(trackingId);
     }
 
-    public static <R extends CriteriaQuery, T> void where(PageRequest request, CriteriaBuilder criteriaBuilder, R criteriaQuery, Root<T> from) {
-        final List<Predicate> predicates = new ArrayList<Predicate>();
-        and(request, criteriaBuilder, from, predicates);
-        or(request, criteriaBuilder, from, predicates);
-        like(request, criteriaBuilder, from, predicates);
-        criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]));
-    }
-
-    public static <T> void and(PageRequest request, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
-        if (CollectionUtils.isEmpty(request.getAndParameters())) return;
-        final List<Predicate> predicateList = new ArrayList<Predicate>();
-        for (Map.Entry<String, Object> entry : request.getAndParameters().entrySet()) {
-            Expression expression = fieldProcessing(from, entry);
-            predicateList.add(criteriaBuilder.equal(expression, entry.getValue()));
-        }
-        predicates.add(criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()])));
-    }
-
-    public static <T> void or(PageRequest request, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
-        if (CollectionUtils.isEmpty(request.getOrParameters())) return;
-        final List<Predicate> predicateList = new ArrayList<Predicate>();
-        for (Map.Entry<String, Object> entry : request.getOrParameters().entrySet()) {
-            Expression expression = fieldProcessing(from, entry);
-            predicateList.add(criteriaBuilder.equal(expression, entry.getValue()));
-        }
-        predicates.add(criteriaBuilder.or(predicateList.toArray(new Predicate[predicates.size()])));
-    }
-
-    public static <T> void like(PageRequest request, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
-        if (CollectionUtils.isEmpty(request.getLikeParameters())) return;
-        for (Map.Entry<String, String> entry : request.getLikeParameters().entrySet()) {
-            Expression expression = fieldProcessing(from, entry);
-            predicates.add(criteriaBuilder.like(expression, String.format("%%%s%%", entry.getValue())));
-        }
-    }
-
-    public static <T> void limit(TypedQuery<T> tTypedQuery, PageRequest request) {
-        tTypedQuery.setFirstResult(request.getOffset()).setMaxResults(request.getPageSize());
-    }
-
-
-    private static <T> Expression fieldProcessing(Root<T> from, Map.Entry<String, ?> entry) {
+    static <T> Expression fieldProcessing(Root<T> from, Map.Entry<String, ?> entry) {
         if (entry.getKey().contains(".")) {
             String[] keys = entry.getKey().split("\\.");
             return doFieldProcessing(keys, from);
@@ -73,7 +28,7 @@ public final class QueryHelper {
             return from.get(entry.getKey());
     }
 
-    private static <T> Expression doFieldProcessing(String[] keys, Root<T> from) {
+    static <T> Expression doFieldProcessing(String[] keys, Root<T> from) {
         switch (keys.length) {
             case 2:
                 return FromHelper.get(keys[0], keys[1], from);
@@ -93,5 +48,6 @@ public final class QueryHelper {
                 throw new RuntimeException("doFieldProcessing failure");
         }
     }
+
 
 }

@@ -5,4 +5,5 @@ package cheetah.domain;
  */
 public interface PagingRepository<I extends TrackingId, T extends AbstractEntity<I>> {
     Page<T> find(PageRequest request);
+
 }

@@ -11,7 +11,7 @@ import javax.persistence.criteria.Root;
 /**
  * Created by Max on 2015/12/31.
  */
-public abstract class HibernateRepository<I extends TrackingId, T extends AbstractEntity<I>> extends BasicRepository<I, T>
+public class HibernateRepository<I extends TrackingId, T extends AbstractEntity<I>> extends BasicRepository<I, T>
         implements Repository<I, T> {
 
     @Override

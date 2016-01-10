@@ -9,11 +9,12 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
- * 支持分页查询的仓储
  * Created by Max on 2016/1/5.
  */
-public abstract class PagingHibernateRepository<I extends TrackingId, T extends AbstractEntity<I>>
+public class PagingHibernateRepository<I extends TrackingId, T extends AbstractEntity<I>>
         extends BasicRepository<I, T> implements PagingRepository<I, T> {
+    private final HibernateQueryInjector queryInjector = new HibernateQueryInjectorImpl();
+
     @Override
     public Page<T> find(PageRequest request) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -21,15 +22,17 @@ public abstract class PagingHibernateRepository<I extends TrackingId, T extends 
         CriteriaQuery<Long> ccQuery = criteriaBuilder.createQuery(Long.class);
         Root<T> cfrom = ccQuery.from(this.getEntityClass());
         ccQuery.select(criteriaBuilder.count(cfrom));
-        QueryHelper.where(request, criteriaBuilder, ccQuery, cfrom);
+        queryInjector.where(request, criteriaBuilder, ccQuery, cfrom);
+        queryInjector.orderby(request, criteriaBuilder, ccQuery, cfrom);
         TypedQuery<Long> cQuery = entityManager.createQuery(ccQuery);
         long countTotal = cQuery.getSingleResult();
 
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(getEntityClass());
         Root<T> bfrom = criteriaQuery.from(this.getEntityClass());
-        QueryHelper.where(request, criteriaBuilder, criteriaQuery, bfrom);
+        queryInjector.where(request, criteriaBuilder, criteriaQuery, bfrom);
+        queryInjector.orderby(request, criteriaBuilder, criteriaQuery, bfrom);
         TypedQuery<T> tTypedQuery = entityManager.createQuery(criteriaQuery);
-        QueryHelper.limit(tTypedQuery, request);
+        queryInjector.limit(tTypedQuery, request);
         List<T> result = tTypedQuery.getResultList();
         return Page.create(countTotal, result, request.getPageSize(), request.getNextPage());
     }
