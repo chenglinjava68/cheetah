@@ -6,7 +6,6 @@ import cheetah.domain.UUIDTrackingId;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
-import java.util.Map;
 
 /**
  * Created by Max on 2015/12/31.
@@ -20,12 +19,12 @@ public final class QueryHelper {
         return EntityUtils.createTrackingId(trackingId);
     }
 
-    static <T> Expression fieldProcessing(Root<T> from, Map.Entry<String, ?> entry) {
-        if (entry.getKey().contains(".")) {
-            String[] keys = entry.getKey().split("\\.");
+    static <T> Expression fieldProcessing(Root<T> from, String property) {
+        if (property.contains(".")) {
+            String[] keys = property.split("\\.");
             return doFieldProcessing(keys, from);
         } else
-            return from.get(entry.getKey());
+            return from.get(property);
     }
 
     static <T> Expression doFieldProcessing(String[] keys, Root<T> from) {

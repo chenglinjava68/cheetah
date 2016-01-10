@@ -1,8 +1,11 @@
 package cheetah.domain;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by Max on 2016/1/6.
@@ -15,10 +18,10 @@ public class QuerierImpl implements AmpleQuerier {
     private final Map<String, String> like = new HashMap<String, String>();
     private final Map<String, List<Object>> in = new HashMap<String, List<Object>>();
     private final Map<String, List<Object>> notIn = new HashMap<String, List<Object>>();
-    private final Map<String, Object> gt = new HashMap<String, Object>();
-    private final Map<String, Object> lt = new HashMap<String, Object>();
-    private final Map<String, Object> ge = new HashMap<String, Object>();
-    private final Map<String, Object> le = new HashMap<String, Object>();
+    private final Map<String, Number> gt = new HashMap<String, Number>();
+    private final Map<String, Number> lt = new HashMap<String, Number>();
+    private final Map<String, Number> ge = new HashMap<String, Number>();
+    private final Map<String, Number> le = new HashMap<String, Number>();
     private String isNull;
     private String notNull;
     private Between between;
@@ -30,12 +33,19 @@ public class QuerierImpl implements AmpleQuerier {
     }
 
     @Override
+    public boolean hasWhere() {
+        return !and.isEmpty() || !or.isEmpty() || !like.isEmpty() || !in.isEmpty() || !notIn.isEmpty() ||
+                !gt.isEmpty() || !lt.isEmpty() || !ge.isEmpty() || !le.isEmpty() || !StringUtils.isBlank(isNull) ||
+                !StringUtils.isBlank(notNull) || !Objects.isNull(between);
+    }
+
+    @Override
     public final void orderby(String property, Order.Direction order) {
         orderby.add(property, order);
     }
 
     @Override
-    public final void and(String name, Object value) {
+    public final void getAnd(String name, Object value) {
         and.put(name, value);
     }
 
@@ -45,7 +55,7 @@ public class QuerierImpl implements AmpleQuerier {
     }
 
     @Override
-    public final  void like(String name, String value) {
+    public final void getLike(String name, String value) {
         this.like.put(name, value);
     }
 
@@ -70,63 +80,88 @@ public class QuerierImpl implements AmpleQuerier {
     }
 
     @Override
-    public void between(String property, Object start, Object end) {
-        this.between = new Between(property, start, end);
+    public void between(String property, Number start, Number end) {
+        this.between = new Between<Number>(property, start, end);
     }
 
     @Override
-    public void gt(String property, Object value) {
+    public void gt(String property, Number value) {
         gt.put(property, value);
     }
 
     @Override
-    public void lt(String property, Object value) {
-        gt.put(property, value);
+    public void lt(String property, Number value) {
+        lt.put(property, value);
     }
 
     @Override
-    public void ge(String property, Object value) {
+    public void ge(String property, Number value) {
         ge.put(property, value);
     }
 
     @Override
-    public void le(String property, Object value) {
+    public void le(String property, Number value) {
         le.put(property, value);
     }
 
     @Override
-    public HashMap<String, Object> gt() {
-        return new HashMap<String, Object>(gt);
+    public Map<String, List<Object>> in() {
+        return new HashMap<String, List<Object>>(in);
     }
 
     @Override
-    public Map<String, Object> lt() {
-        return new HashMap<String, Object>(lt);
+    public Map<String, List<Object>> notIn() {
+        return new HashMap<String, List<Object>>(notIn);
     }
 
     @Override
-    public Map<String, Object> ge() {
-        return new HashMap<String, Object>(ge);
+    public String isNull() {
+        return isNull;
     }
 
     @Override
-    public Map<String, Object> le() {
-        return new HashMap<String, Object>(le);
+    public String notNull() {
+        return notNull;
     }
 
     @Override
-    public final Map<String, String> like() {
+    public Map<String, Number> getGt() {
+        return new HashMap<String, Number>(gt);
+    }
+
+    @Override
+    public Map<String, Number> getLt() {
+        return new HashMap<String, Number>(lt);
+    }
+
+    @Override
+    public Map<String, Number> getGe() {
+        return new HashMap<String, Number>(ge);
+    }
+
+    @Override
+    public Map<String, Number> getLe() {
+        return new HashMap<String, Number>(le);
+    }
+
+    @Override
+    public final Map<String, String> getLike() {
         return new HashMap<String, String>(like);
     }
 
     @Override
-    public final Map<String, Object> or() {
+    public final Map<String, Object> getOr() {
         return new HashMap<String, Object>(or);
     }
 
     @Override
-    public final Map<String, Object> and() {
+    public final Map<String, Object> getAnd() {
         return new HashMap<String, Object>(and);
+    }
+
+    @Override
+    public Between getBetween() {
+        return between;
     }
 
     @Override
@@ -157,12 +192,13 @@ public class QuerierImpl implements AmpleQuerier {
         this.between = null;
     }
 
-    public static class Between {
+    public static class Between<T> {
         private String name;
-        private Object start;
-        private Object end;
+        private T start;
+        private T end;
 
-        public Between(String name, Object start, Object end) {
+
+        public Between(String name, T start, T end) {
             this.name = name;
             this.start = start;
             this.end = end;
@@ -172,11 +208,11 @@ public class QuerierImpl implements AmpleQuerier {
             return name;
         }
 
-        public Object getStart() {
+        public T getStart() {
             return start;
         }
 
-        public Object getEnd() {
+        public T getEnd() {
             return end;
         }
     }

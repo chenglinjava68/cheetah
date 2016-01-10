@@ -1,6 +1,5 @@
 package cheetah.domain;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,13 +19,18 @@ public class PageRequest extends AbstractPageable  implements Querier {
     }
 
     @Override
+    public boolean hasWhere() {
+        return querier.hasWhere();
+    }
+
+    @Override
     public final void orderby(String property, Order.Direction order) {
         querier.orderby(property, order);
     }
 
     @Override
-    public final void and(String name, Object value) {
-        querier.and(name, value);
+    public final void getAnd(String name, Object value) {
+        querier.getAnd(name, value);
     }
 
     @Override
@@ -35,8 +39,8 @@ public class PageRequest extends AbstractPageable  implements Querier {
     }
 
     @Override
-    public final void like(String name, String value) {
-        querier.like(name, value);
+    public final void getLike(String name, String value) {
+        querier.getLike(name, value);
     }
 
     @Override
@@ -60,48 +64,68 @@ public class PageRequest extends AbstractPageable  implements Querier {
     }
 
     @Override
-    public void between(String property, Object start, Object end) {
+    public void between(String property, Number start, Number end) {
         querier.between(property, start, end);
     }
 
     @Override
-    public void gt(String property, Object value) {
+    public void gt(String property, Number value) {
         querier.gt(property, value);
     }
 
     @Override
-    public void lt(String property, Object value) {
+    public void lt(String property, Number value) {
         querier.lt(property, value);
     }
 
     @Override
-    public void ge(String property, Object value) {
+    public void ge(String property, Number value) {
         querier.ge(property, value);
     }
 
     @Override
-    public void le(String property, Object value) {
+    public void le(String property, Number value) {
         querier.le(property, value);
     }
 
     @Override
-    public HashMap<String, Object> gt() {
-        return querier.gt();
+    public Map<String, List<Object>> in() {
+        return querier.in();
     }
 
     @Override
-    public Map<String, Object> lt() {
-        return querier.lt();
+    public Map<String, List<Object>> notIn() {
+        return querier.notIn();
     }
 
     @Override
-    public Map<String, Object> ge() {
-        return querier.ge();
+    public String isNull() {
+        return querier.isNull();
     }
 
     @Override
-    public Map<String, Object> le() {
-        return querier.le();
+    public String notNull() {
+        return querier.notNull();
+    }
+
+    @Override
+    public Map<String, Number> getGt() {
+        return querier.getGt();
+    }
+
+    @Override
+    public Map<String, Number> getLt() {
+        return querier.getLt();
+    }
+
+    @Override
+    public Map<String, Number> getGe() {
+        return querier.getGe();
+    }
+
+    @Override
+    public Map<String, Number> getLe() {
+        return querier.getLe();
     }
 
     @Override
@@ -109,16 +133,21 @@ public class PageRequest extends AbstractPageable  implements Querier {
         querier.clearAll();
     }
 
-    public final Map<String, String> like() {
-        return querier.like();
+    public final Map<String, String> getLike() {
+        return querier.getLike();
     }
 
-    public final Map<String, Object> or() {
-        return querier.or();
+    public final Map<String, Object> getOr() {
+        return querier.getOr();
     }
 
-    public final Map<String, Object> and() {
-        return querier.and();
+    public final Map<String, Object> getAnd() {
+        return querier.getAnd();
+    }
+
+    @Override
+    public QuerierImpl.Between getBetween() {
+        return querier.getBetween();
     }
 
     @Override
