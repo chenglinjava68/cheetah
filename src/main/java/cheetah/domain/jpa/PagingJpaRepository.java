@@ -1,4 +1,4 @@
-package cheetah.domain.hibernate;
+package cheetah.domain.jpa;
 
 import cheetah.domain.*;
 
@@ -11,9 +11,9 @@ import java.util.List;
 /**
  * Created by Max on 2016/1/5.
  */
-public class PagingHibernateRepository<I extends TrackingId, T extends AbstractEntity<I>>
-        extends BasicHibernateRepository<I, T> implements PagingRepository<I, T> {
-    private final HibernateQueryInjector queryInjector = new HibernateQueryInjectorImpl();
+public class PagingJpaRepository<I extends TrackingId, T extends AbstractEntity<I>>
+        extends BasicJpaRepository<I, T> implements PagingRepository<I, T> {
+    private final JpaQueryInjector queryInjector = new JpaQueryInjectorImpl();
 
     @Override
     public Page<T> find(PageRequest request) {

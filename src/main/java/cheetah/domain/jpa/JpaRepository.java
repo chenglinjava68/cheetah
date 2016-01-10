@@ -1,4 +1,4 @@
-package cheetah.domain.hibernate;
+package cheetah.domain.jpa;
 
 import cheetah.domain.AbstractEntity;
 import cheetah.domain.Repository;
@@ -11,7 +11,7 @@ import javax.persistence.criteria.Root;
 /**
  * Created by Max on 2015/12/31.
  */
-public class HibernateRepository<I extends TrackingId, T extends AbstractEntity<I>> extends BasicHibernateRepository<I, T>
+public class JpaRepository<I extends TrackingId, T extends AbstractEntity<I>> extends BasicJpaRepository<I, T>
         implements Repository<I, T> {
 
     @Override

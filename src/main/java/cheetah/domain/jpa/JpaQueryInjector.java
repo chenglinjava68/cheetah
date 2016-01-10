@@ -1,4 +1,4 @@
-package cheetah.domain.hibernate;
+package cheetah.domain.jpa;
 
 import cheetah.domain.AmpleQuerier;
 import cheetah.domain.PageRequest;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Max on 2016/1/10.
  */
-public interface HibernateQueryInjector extends QueryInjector {
+public interface JpaQueryInjector extends QueryInjector {
     <R extends CriteriaQuery, T> void where(Querier querier, CriteriaBuilder criteriaBuilder, R criteriaQuery, Root<T> from);
 
     <T> void and(Querier querier, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates);

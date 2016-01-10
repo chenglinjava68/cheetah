@@ -1,4 +1,4 @@
-package cheetah.domain.hibernate;
+package cheetah.domain.jpa;
 
 import cheetah.domain.*;
 
@@ -11,8 +11,8 @@ import java.util.List;
 /**
  * Created by Max on 2016/1/9.
  */
-public class ChunkHibernateRepository<I extends TrackingId, T extends AbstractEntity<I>> extends BasicHibernateRepository<I, T> implements ChunkRepository<I, T> {
-    private final HibernateQueryInjector queryInjector = new HibernateQueryInjectorImpl();
+public class ChunkJpaRepository<I extends TrackingId, T extends AbstractEntity<I>> extends BasicJpaRepository<I, T> implements ChunkRepository<I, T> {
+    private final JpaQueryInjector queryInjector = new JpaQueryInjectorImpl();
     @Override
     public List<T> list() {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

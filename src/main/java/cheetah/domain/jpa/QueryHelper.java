@@ -1,4 +1,4 @@
-package cheetah.domain.hibernate;
+package cheetah.domain.jpa;
 
 import cheetah.domain.EntityUtils;
 import cheetah.domain.NumberTrackingId;

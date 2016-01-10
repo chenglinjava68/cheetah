@@ -1,4 +1,4 @@
-package cheetah.domain.hibernate;
+package cheetah.domain.jpa;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
