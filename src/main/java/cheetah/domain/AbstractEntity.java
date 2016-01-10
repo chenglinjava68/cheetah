@@ -53,7 +53,7 @@ public abstract class AbstractEntity<ID extends TrackingId>
 
     @Override
     public void changed() {
-        this.timist = new Timist(this.timist.createTime(), System.currentTimeMillis());
+        this.timist = timist().modify();
     }
 
     @Override

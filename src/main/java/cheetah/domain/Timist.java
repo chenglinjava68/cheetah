@@ -32,6 +32,10 @@ public class Timist implements ValueObject<Timist> {
         return modifyTime;
     }
 
+    public Timist modify() {
+        return new Timist(this.createTime, System.currentTimeMillis());
+    }
+
     @Override
     public boolean sameAs(Timist other) {
         return new EqualsBuilder().append(this.createTime, other.createTime)
