@@ -28,7 +28,7 @@ public class EnquirerImpl implements AmpleEnquirer {
     private String groupby;
 
     @Override
-    public final OrderList orderList() {
+    public final OrderList getOrderList() {
         return orderby;
     }
 
@@ -45,7 +45,7 @@ public class EnquirerImpl implements AmpleEnquirer {
     }
 
     @Override
-    public final void getAnd(String name, Object value) {
+    public final void and(String name, Object value) {
         and.put(name, value);
     }
 
@@ -55,7 +55,7 @@ public class EnquirerImpl implements AmpleEnquirer {
     }
 
     @Override
-    public final void getLike(String name, String value) {
+    public final void like(String name, String value) {
         this.like.put(name, value);
     }
 
@@ -105,22 +105,22 @@ public class EnquirerImpl implements AmpleEnquirer {
     }
 
     @Override
-    public Map<String, List<Object>> in() {
+    public Map<String, List<Object>> getIn() {
         return new HashMap<String, List<Object>>(in);
     }
 
     @Override
-    public Map<String, List<Object>> notIn() {
+    public Map<String, List<Object>> getNotIn() {
         return new HashMap<String, List<Object>>(notIn);
     }
 
     @Override
-    public String isNull() {
+    public String getIsNull() {
         return isNull;
     }
 
     @Override
-    public String notNull() {
+    public String getNotNull() {
         return notNull;
     }
 

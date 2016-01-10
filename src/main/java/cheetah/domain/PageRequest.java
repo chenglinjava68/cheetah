@@ -14,8 +14,8 @@ public class PageRequest extends AbstractPageable  implements Enquirer {
     }
 
     @Override
-    public final OrderList orderList() {
-        return enquirer.orderList();
+    public final OrderList getOrderList() {
+        return enquirer.getOrderList();
     }
 
     @Override
@@ -29,8 +29,8 @@ public class PageRequest extends AbstractPageable  implements Enquirer {
     }
 
     @Override
-    public final void getAnd(String name, Object value) {
-        enquirer.getAnd(name, value);
+    public final void and(String name, Object value) {
+        enquirer.and(name, value);
     }
 
     @Override
@@ -39,8 +39,8 @@ public class PageRequest extends AbstractPageable  implements Enquirer {
     }
 
     @Override
-    public final void getLike(String name, String value) {
-        enquirer.getLike(name, value);
+    public final void like(String name, String value) {
+        enquirer.like(name, value);
     }
 
     @Override
@@ -89,23 +89,23 @@ public class PageRequest extends AbstractPageable  implements Enquirer {
     }
 
     @Override
-    public Map<String, List<Object>> in() {
-        return enquirer.in();
+    public Map<String, List<Object>> getIn() {
+        return enquirer.getIn();
     }
 
     @Override
-    public Map<String, List<Object>> notIn() {
-        return enquirer.notIn();
+    public Map<String, List<Object>> getNotIn() {
+        return enquirer.getNotIn();
     }
 
     @Override
-    public String isNull() {
-        return enquirer.isNull();
+    public String getIsNull() {
+        return enquirer.getIsNull();
     }
 
     @Override
-    public String notNull() {
-        return enquirer.notNull();
+    public String getNotNull() {
+        return enquirer.getNotNull();
     }
 
     @Override

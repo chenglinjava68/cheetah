@@ -56,8 +56,8 @@ public class JpaQueryAgreedImpl implements JpaQueryAgreed {
 
     @Override
     public <T> void in(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
-        if (CollectionUtils.isEmpty(enquirer.in())) return;
-        for (Map.Entry<String, List<Object>> entry : enquirer.in().entrySet()) {
+        if (CollectionUtils.isEmpty(enquirer.getIn())) return;
+        for (Map.Entry<String, List<Object>> entry : enquirer.getIn().entrySet()) {
             Expression expression = QueryHelper.fieldProcessing(from, entry.getKey());
             CriteriaBuilder.In in = criteriaBuilder.in(expression);
             Iterator<Object> iter = entry.getValue().iterator();
@@ -70,8 +70,8 @@ public class JpaQueryAgreedImpl implements JpaQueryAgreed {
 
     @Override
     public <T> void notIn(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
-        if (CollectionUtils.isEmpty(enquirer.notIn())) return;
-        for (Map.Entry<String, List<Object>> entry : enquirer.notIn().entrySet()) {
+        if (CollectionUtils.isEmpty(enquirer.getNotIn())) return;
+        for (Map.Entry<String, List<Object>> entry : enquirer.getNotIn().entrySet()) {
             Expression expression = QueryHelper.fieldProcessing(from, entry.getKey());
             CriteriaBuilder.In in = criteriaBuilder.in(expression);
             Iterator<Object> iter = entry.getValue().iterator();
@@ -161,10 +161,10 @@ public class JpaQueryAgreedImpl implements JpaQueryAgreed {
 
     @Override
     public <T> void orderby(Enquirer enquirer, CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<T> from) {
-        if (Objects.isNull(enquirer.orderList()) || enquirer.orderList().isEmpty())
+        if (Objects.isNull(enquirer.getOrderList()) || enquirer.getOrderList().isEmpty())
             return;
         List<Order> orders = new ArrayList<Order>();
-        for (cheetah.domain.Order order : enquirer.orderList().orders()) {
+        for (cheetah.domain.Order order : enquirer.getOrderList().orders()) {
             if (order.getDirection() == cheetah.domain.Order.Direction.DESC)
                 orders.add(criteriaBuilder.desc(from.get(order.getproperty())));
             else

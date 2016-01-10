@@ -52,5 +52,6 @@ http://www.springframework.org/schema/aop
     <bean id="beanFactory" class="cheetah.container.spring.SpringBeanFactory"/>
 
     <bean id="personQueryRepo" class="cheetah.repository.PersonQueryRepoImpl"/>
+    <bean id="chunkRepo" class="cheetah.repository.PersonChunkRepoImpl"/>
     <bean id="personRepo" class="cheetah.repository.PersonRepoImpl"/>
 </beans>

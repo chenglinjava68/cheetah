@@ -1,5 +1,7 @@
 package cheetah.domain;
 
+import cheetah.domain.jpa.JpaCallback;
+import cheetah.repository.PersonChunkRepoImpl;
 import cheetah.repository.PersonQueryRepoImpl;
 import cheetah.repository.PersonRepoImpl;
 import com.google.common.collect.Lists;
@@ -10,6 +12,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +31,8 @@ public class PersonTest {
     private PersonRepoImpl personRepoImpl;
     @Autowired
     private PersonQueryRepoImpl personQueryRepo;
+    @Autowired
+    private PersonChunkRepoImpl chunkRepo;
     @Test
     public void save() {
         Person p = Person.newBuilder()
@@ -50,6 +57,23 @@ public class PersonTest {
         request.le("age", 11);
         request.ge("age", 12);
         Page<Person> list = personQueryRepo.find(request);
+    }
+
+    @Test
+    public void listCallback() {
+        final EnquirerImpl enquier = new EnquirerImpl();
+
+        enquier.and("age", 11);
+
+        List<Person> list = chunkRepo.list(enquier, new JpaCallback<List<Person>>() {
+            @Override
+            public List<Person> doCallback(EntityManager entityManager, Enquirer enquirer) {
+                TypedQuery<Person> query = entityManager.createQuery("select p from Person p where age = :age", Person.class);
+                for(String name : enquier.getAnd().keySet())
+                    query.setParameter(name, enquier.getAnd().get(name));
+                return query.getResultList();
+            }
+        });
     }
 
 }

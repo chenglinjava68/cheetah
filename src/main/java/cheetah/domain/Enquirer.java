@@ -13,11 +13,11 @@ public interface Enquirer {
 
     void orderby(String property, Order.Direction order);
 
-    void getAnd(String name, Object value);
+    void and(String name, Object value);
 
     void or(String name, Object value);
 
-    void getLike(String name, String value);
+    void like(String name, String value);
 
     void in(String property, List<Object> params);
 
@@ -37,13 +37,13 @@ public interface Enquirer {
 
     void le(String property, Number value);
 
-    Map<String, List<Object>> in();
+    Map<String, List<Object>> getIn();
 
-    Map<String, List<Object>> notIn();
+    Map<String, List<Object>> getNotIn();
 
-    String isNull();
+    String getIsNull();
 
-    String notNull();
+    String getNotNull();
 
     Map<String, Number> getGt();
 
@@ -61,7 +61,7 @@ public interface Enquirer {
 
     EnquirerImpl.Between getBetween();
 
-    OrderList orderList();
+    OrderList getOrderList();
 
     void clearAll();
 }
