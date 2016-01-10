@@ -1,9 +1,5 @@
 package cheetah.domain.jpa;
 
-import cheetah.domain.EntityUtils;
-import cheetah.domain.NumberTrackingId;
-import cheetah.domain.UUIDTrackingId;
-
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 
@@ -11,14 +7,6 @@ import javax.persistence.criteria.Root;
  * Created by Max on 2015/12/31.
  */
 public final class QueryHelper {
-    public static UUIDTrackingId createQueryTrackingId(String trackingId) {
-        return EntityUtils.createTrackingId(trackingId);
-    }
-
-    public static NumberTrackingId createTrackingId(Long trackingId) {
-        return EntityUtils.createTrackingId(trackingId);
-    }
-
     static <T> Expression fieldProcessing(Root<T> from, String property) {
         if (property.contains(".")) {
             String[] keys = property.split("\\.");
