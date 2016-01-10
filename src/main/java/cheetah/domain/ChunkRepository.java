@@ -1,5 +1,7 @@
 package cheetah.domain;
 
+import cheetah.domain.jpa.JpaCallback;
+
 import java.util.List;
 
 /**
@@ -9,6 +11,8 @@ public interface ChunkRepository<I extends TrackingId, T extends AbstractEntity<
     List<T> list();
 
     List<T> list(AmpleQuerier querier);
+
+    List<T> list(AmpleQuerier querier, JpaCallback<List<T>> callback);
 
     long count(AmpleQuerier ampleQuerier);
 

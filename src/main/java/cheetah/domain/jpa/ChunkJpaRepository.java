@@ -34,6 +34,11 @@ public class ChunkJpaRepository<I extends TrackingId, T extends AbstractEntity<I
     }
 
     @Override
+    public List<T> list(AmpleQuerier querier, JpaCallback<List<T>> callback) {
+        return callback.doCallback(entityManager, querier);
+    }
+
+    @Override
     public long count(AmpleQuerier querier) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> ccQuery = criteriaBuilder.createQuery(Long.class);

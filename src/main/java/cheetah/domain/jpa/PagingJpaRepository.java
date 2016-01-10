@@ -36,4 +36,10 @@ public class PagingJpaRepository<I extends TrackingId, T extends AbstractEntity<
         List<T> result = tTypedQuery.getResultList();
         return Page.create(countTotal, result, request.getPageSize(), request.getNextPage());
     }
+
+    @Override
+    public Page<T> find(PageRequest request, JpaCallback<Page<T>> callback) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        return callback.doCallback(entityManager, request);
+    }
 }
