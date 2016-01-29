@@ -8,7 +8,10 @@ import java.util.Map;
  * Created by Max on 2016/1/9.
  */
 public interface Enquirer {
-
+    public static enum CompositeType {
+        AND,
+        OR
+    }
     boolean hasWhere();
 
     void orderby(String property, Order.Direction order);
@@ -28,6 +31,8 @@ public interface Enquirer {
     void notNull(String property);
 
     void between(String property, Number start, Number end);
+
+    void eq(String property, Object value);
 
     void gt(String property, Number value);
 

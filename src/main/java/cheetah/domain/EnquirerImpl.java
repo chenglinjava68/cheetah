@@ -85,6 +85,11 @@ public class EnquirerImpl implements AmpleEnquirer {
     }
 
     @Override
+    public void eq(String property, Object value) {
+
+    }
+
+    @Override
     public void gt(String property, Number value) {
         gt.put(property, value);
     }

@@ -1,4 +1,4 @@
-package cheetah.hippodrome.pooled;
+package cheetah.distributor.pooled;
 
 /**
  * Created by Max on 2015/12/23.

@@ -26,6 +26,7 @@ public class ChunkJpaRepository<I extends TrackingId, T extends AbstractEntity<I
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(getEntityClass());
         Root<T> bfrom = criteriaQuery.from(this.getEntityClass());
+
         queryInjector.where(enquirer, criteriaBuilder, criteriaQuery, bfrom);
         queryInjector.groupby(enquirer, criteriaQuery, bfrom);
         queryInjector.orderby(enquirer, criteriaBuilder, criteriaQuery, bfrom);

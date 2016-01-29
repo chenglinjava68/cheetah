@@ -7,7 +7,7 @@ import javax.persistence.criteria.Root;
  * Created by Max on 2015/12/31.
  */
 public final class QueryHelper {
-    static <T> Expression fieldProcessing(Root<T> from, String property) {
+    public static <T> Expression fieldProcessing(Root<T> from, String property) {
         if (property.contains(".")) {
             String[] keys = property.split("\\.");
             return doFieldProcessing(keys, from);

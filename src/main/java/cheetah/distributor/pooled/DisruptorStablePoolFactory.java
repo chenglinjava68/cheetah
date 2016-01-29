@@ -1,9 +1,4 @@
-package cheetah.hippodrome.pooled;
-
-import cheetah.hippodrome.DisruptorStableFactory;
-import cheetah.hippodrome.StableFactory;
-import cheetah.hippodrome.StablePool;
-import cheetah.hippodrome.StablePoolFactory;
+package cheetah.distributor.pooled;
 
 /**
  * Created by Max on 2015/12/28.

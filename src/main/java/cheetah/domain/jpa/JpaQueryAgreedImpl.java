@@ -13,7 +13,7 @@ import java.util.*;
 /**
  * Created by Max on 2016/1/10.
  */
-public class JpaQueryAgreedImpl implements JpaQueryAgreed {
+public final class JpaQueryAgreedImpl {
 
     @Override
     public <R extends CriteriaQuery, T> void where(Enquirer enquirer, CriteriaBuilder criteriaBuilder, R criteriaQuery, Root<T> from) {
@@ -33,21 +33,21 @@ public class JpaQueryAgreedImpl implements JpaQueryAgreed {
     }
 
     @Override
-    public <T> void and(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
-        if (CollectionUtils.isEmpty(enquirer.getAnd())) return;
-        final List<Predicate> predicateList = new ArrayList<Predicate>();
-        for (Map.Entry<String, Object> entry : enquirer.getAnd().entrySet()) {
-            Expression expression = QueryHelper.fieldProcessing(from, entry.getKey());
-            predicateList.add(criteriaBuilder.equal(expression, entry.getValue()));
+        public <T> void and(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
+            if (CollectionUtils.isEmpty(enquirer.getAnd())) return;
+            final List<Predicate> predicateList = new ArrayList<Predicate>();
+            for (Map.Entry<String, Object> entry : enquirer.getAnd().entrySet()) {
+                Expression expression = QueryHelper.fieldProcessing(from, entry.getKey());
+                predicateList.add(criteriaBuilder.equal(expression, entry.getValue()));
+            }
+            predicates.add(criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()])));
         }
-        predicates.add(criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()])));
-    }
 
-    @Override
-    public <T> void or(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
-        if (CollectionUtils.isEmpty(enquirer.getOr())) return;
-        final List<Predicate> predicateList = new ArrayList<Predicate>();
-        for (Map.Entry<String, Object> entry : enquirer.getOr().entrySet()) {
+        @Override
+        public <T> void or(Enquirer enquirer, CriteriaBuilder criteriaBuilder, Root<T> from, List<Predicate> predicates) {
+            if (CollectionUtils.isEmpty(enquirer.getOr())) return;
+            final List<Predicate> predicateList = new ArrayList<Predicate>();
+            for (Map.Entry<String, Object> entry : enquirer.getOr().entrySet()) {
             Expression expression = QueryHelper.fieldProcessing(from, entry.getKey());
             predicateList.add(criteriaBuilder.equal(expression, entry.getValue()));
         }

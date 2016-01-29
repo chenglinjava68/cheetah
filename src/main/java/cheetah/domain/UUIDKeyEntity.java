@@ -1,6 +1,6 @@
 package cheetah.domain;
 
-import cheetah.utils.StringUtil;
+import cheetah.utils.UUIDGenerator;
 
 /**
  * 提供UUID主键生成规则的的实体基类
@@ -9,7 +9,7 @@ import cheetah.utils.StringUtil;
 public class UUIDKeyEntity extends AbstractEntity<UUIDTrackingId> {
 
     public UUIDKeyEntity() {
-        super(new UUIDTrackingId(StringUtil.uuid()));
+        super(new UUIDTrackingId(UUIDGenerator.uuid()));
     }
 
     public UUIDKeyEntity(UUIDTrackingId trackingId) {
