@@ -5,4 +5,6 @@ package cheetah.event;
 */
 public interface SmartApplicationListener<E extends ApplicationEvent> extends ApplicationListener<E> {
     boolean supportsEventType(Class<? extends ApplicationEvent> eventType);
+
+    boolean supportsSourceType(Class<?> sourceType);
 }

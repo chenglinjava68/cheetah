@@ -11,6 +11,8 @@ public abstract class DomainEvent<E extends Entity> implements Event<E> {
     private E source;
 
     public DomainEvent(E source) {
+        if (source == null)
+            throw new IllegalArgumentException("null source");
         this.source = source;
     }
 
@@ -19,4 +21,8 @@ public abstract class DomainEvent<E extends Entity> implements Event<E> {
         return occurredTime;
     }
 
+    @Override
+    public E getSource() {
+        return source;
+    }
 }
