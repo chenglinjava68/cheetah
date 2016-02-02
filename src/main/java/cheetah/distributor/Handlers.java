@@ -1,8 +1,6 @@
 package cheetah.distributor;
 
 import cheetah.event.Event;
-import cheetah.logger.Debug;
-import cheetah.plugin.InterceptorChain;
 
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -12,25 +10,15 @@ import java.util.concurrent.ExecutionException;
  */
 public final class Handlers {
     private final Handler handler;
-    private final InterceptorChain interceptorChain;
 
-    public Handlers(Handler handler, InterceptorChain interceptorChain) {
+    public Handlers(Handler handler) {
         this.handler = handler;
-        this.interceptorChain = interceptorChain;
     }
 
-    public final Object handle(Event<?> event) {
+    public final Object handle(Event<?> event) throws ExecutionException, InterruptedException {
         Objects.requireNonNull(event, "event must be null");
-        try {
-            return handler.handle(event).getResult().get();
-        } catch (InterruptedException e) {
-            Debug.log(this.getClass(), "");
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-            interceptorChain.pluginAll(event);
-        }
-        return null;
+        return handler.handle(event).getResult().get();
+
 //            switch (HandlerTyped.Manager.convertFrom(listener.getClass())) {
 //                case APP:
 //                case GENERIC:
