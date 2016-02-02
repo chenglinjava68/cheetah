@@ -1,6 +1,6 @@
 package cheetah.domain;
 
-import cheetah.utils.UUIDGenerator;
+import cheetah.util.UUIDGenerator;
 
 /**
  * 提供UUID主键生成规则的的实体基类

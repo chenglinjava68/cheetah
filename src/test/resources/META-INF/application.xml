@@ -49,7 +49,6 @@ http://www.springframework.org/schema/aop
     </bean>
 
     <bean id="beanFactoryProvider" class="cheetah.container.spring.SpringBeanFactoryProvider"/>
-    <bean id="beanFactory" class="cheetah.container.spring.SpringBeanFactory"/>
 
     <bean id="personQueryRepo" class="cheetah.repository.PersonQueryRepoImpl"/>
     <bean id="chunkRepo" class="cheetah.repository.PersonChunkRepoImpl"/>

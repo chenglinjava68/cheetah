@@ -7,4 +7,6 @@ public interface SmartApplicationListener<E extends ApplicationEvent> extends Ap
     boolean supportsEventType(Class<? extends ApplicationEvent> eventType);
 
     boolean supportsSourceType(Class<?> sourceType);
+
+    int getOrder();
 }

@@ -69,6 +69,11 @@ public class PageRequest extends AbstractPageable  implements Enquirer {
     }
 
     @Override
+    public void eq(String property, Object value) {
+
+    }
+
+    @Override
     public void gt(String property, Number value) {
         enquirer.gt(property, value);
     }

@@ -9,4 +9,6 @@ public interface SmartDomainEventListener<E extends DomainEvent> extends DomainE
     boolean supportsEventType(Class<? extends DomainEvent> eventType);
 
     boolean supportsSourceType(Class<? extends Entity> sourceType);
+
+    int getOrder();
 }

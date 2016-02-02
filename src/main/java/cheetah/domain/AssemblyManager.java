@@ -14,6 +14,6 @@ public class AssemblyManager {
     }
 
     public static Assembly getJpaAssembly() {
-
+        return null;
     }
 }
