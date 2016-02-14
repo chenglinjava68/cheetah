@@ -1,5 +1,7 @@
 package cheetah.distributor;
 
+import cheetah.distributor.handler.HandlerTyped;
+import cheetah.event.DomainEventListener;
 import cheetah.logger.Debug;
 import org.junit.Test;
 
@@ -10,5 +12,11 @@ public class HandlerTest {
     @Test
     public void log() {
         Debug.log(Distributor.class, "a");
+    }
+
+    @Test
+    public void handlers() {
+        HandlerTyped typed = HandlerTyped.Manager.convertFrom(DomainEventListener.class);
+        System.out.println(typed);
     }
 }

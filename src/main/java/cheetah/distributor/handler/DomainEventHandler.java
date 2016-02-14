@@ -1,6 +1,5 @@
-package cheetah.distributor;
+package cheetah.distributor.handler;
 
-import cheetah.domain.AbstractEntity;
 import cheetah.event.DomainEvent;
 import cheetah.event.DomainEventListener;
 import cheetah.event.Event;
@@ -12,21 +11,21 @@ import java.util.concurrent.ExecutorService;
 /**
  * Created by Max on 2016/2/1.
  */
-public class DomainEventHandler extends AbstractHandler {
+public class DomainEventHandler extends AbstractExpectabilityHandler {
 
     public DomainEventHandler(EventListener eventListener, ExecutorService executorService) {
         super(eventListener, executorService);
     }
 
     @Override
-    public Handler handle(Event event) {
-        CompletableFuture<EventResult> future = CompletableFuture.supplyAsync(() -> {
+    public void handle(Event event) {
+        CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
             DomainEventListener listener = (DomainEventListener) this.getEventListener();
-            DomainEvent<AbstractEntity> domainEvent = (DomainEvent<AbstractEntity>) event;
+            DomainEvent domainEvent = (DomainEvent) event;
             listener.onDomainEvent(domainEvent);
-            return new EventResult<>(domainEvent.getSource());
+            return Boolean.TRUE;
         }, getExecutorService());
         this.setFuture(future);
-        return this;
     }
+
 }

@@ -3,26 +3,15 @@ package cheetah.event;
 /**
  * Created by Max on 2016/1/29.
  */
-public abstract class ApplicationEvent implements Event<Object> {
-    private Long occurredTime;
-    private Object source;
+public abstract class ApplicationEvent extends Event {
 
+    /**
+     * Constructs a prototypical Event.
+     *
+     * @param source The object on which the Event initially occurred.
+     * @throws IllegalArgumentException if source is null.
+     */
     public ApplicationEvent(Object source) {
-        if (source == null)
-            throw new IllegalArgumentException("null source");
-        this.occurredTime = System.currentTimeMillis();
-        this.source = source;
+        super(source);
     }
-
-    @Override
-    public Long occurredTime() {
-        return this.occurredTime;
-    }
-
-    @Override
-    public Object getSource() {
-        return this.source;
-    }
-
-
 }

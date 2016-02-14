@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Created by Max on 2016/2/2.
  */
-public class CollectionUtils {
+public abstract class CollectionUtils {
 
     /**
      * Return {@code true} if the supplied Collection is {@code null} or empty.
@@ -36,12 +36,12 @@ public class CollectionUtils {
      * <p>A {@code null} source value will be converted to an empty List.
      * @param source the (potentially primitive) array
      * @return the converted List result
-     * @see org.springframework.util.ObjectUtils#toObjectArray(Object)
+     * @see ObjectUtils#toObjectArray(Object)
      * @see Arrays#asList(Object[])
      */
     @SuppressWarnings("rawtypes")
     public static List arrayToList(Object source) {
-        return Arrays.asList(org.springframework.util.ObjectUtils.toObjectArray(source));
+        return Arrays.asList(ObjectUtils.toObjectArray(source));
     }
 
     /**
@@ -54,7 +54,7 @@ public class CollectionUtils {
         if (collection == null) {
             throw new IllegalArgumentException("Collection must not be null");
         }
-        Object[] arr = org.springframework.util.ObjectUtils.toObjectArray(array);
+        Object[] arr = ObjectUtils.toObjectArray(array);
         for (Object elem : arr) {
             collection.add((E) elem);
         }
@@ -97,7 +97,7 @@ public class CollectionUtils {
         if (iterator != null) {
             while (iterator.hasNext()) {
                 Object candidate = iterator.next();
-                if (org.springframework.util.ObjectUtils.nullSafeEquals(candidate, element)) {
+                if (ObjectUtils.nullSafeEquals(candidate, element)) {
                     return true;
                 }
             }
@@ -115,7 +115,7 @@ public class CollectionUtils {
         if (enumeration != null) {
             while (enumeration.hasMoreElements()) {
                 Object candidate = enumeration.nextElement();
-                if (org.springframework.util.ObjectUtils.nullSafeEquals(candidate, element)) {
+                if (ObjectUtils.nullSafeEquals(candidate, element)) {
                     return true;
                 }
             }
@@ -218,7 +218,7 @@ public class CollectionUtils {
      * or {@code null} if none or more than one such value found
      */
     public static Object findValueOfType(Collection<?> collection, Class<?>[] types) {
-        if (isEmpty(collection) || org.springframework.util.ObjectUtils.isEmpty(types)) {
+        if (isEmpty(collection) || ObjectUtils.isEmpty(types)) {
             return null;
         }
         for (Class<?> type : types) {
