@@ -51,7 +51,29 @@ public class Handlers {
     }
 
     private void stateful(EventMessage eventMessage, EventListener listener) throws ExecutionException, InterruptedException {
-        HandlerConglomeration handler = doHandle(eventMessage, listener);
+        HandlerTyped type = HandlerTyped.Manager.convertFrom(listener.getClass());
+        HandlerConglomeration handler;
+        Event event = eventMessage.getEvent();
+        switch (type) {
+            case GENERIC:
+                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService));
+                break;
+            case APP:
+                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService));
+                break;
+            case DOMAIN:
+                handler = new HandlerAdapter(HandlerFactory.createDomainEventHandler(listener, executorService));
+                break;
+            case SMART_APP:
+                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService));
+                break;
+            case SMART_DOMAIN:
+                handler = new HandlerAdapter(HandlerFactory.createDomainEventHandler(listener, executorService));
+                break;
+            default:
+                throw new HandlerTypedNotFoundException();
+        }
+        handler.handle(event);
         handler.getFuture().get();
     }
 

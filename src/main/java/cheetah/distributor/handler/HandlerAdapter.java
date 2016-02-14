@@ -21,12 +21,11 @@ public class HandlerAdapter implements HandlerConglomeration {
     }
 
     @Override
-    public CompletableFuture getFuture() {
+    public CompletableFuture<Boolean> getFuture() {
         if(!ExpectabilityHandler.class.isAssignableFrom(adaptee.getClass()))
             throw new UnsupportedOperationException();
         return ((ExpectabilityHandler) adaptee).getFuture();
     }
-
 
     @Override
     public boolean equals(Object o) {
