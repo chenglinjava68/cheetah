@@ -3,7 +3,7 @@ package cheetah.domain;
 import java.io.Serializable;
 
 /**
- * 实体的唯一标识符基类
+ * 妯″瀷id鍩虹被
  * Created by Max on 2015/12/25.
  */
 public abstract class TrackingId<ID extends Serializable> implements ValueObject<TrackingId> {

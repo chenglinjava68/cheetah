@@ -10,15 +10,15 @@ public abstract class HandlerFactory {
     private HandlerFactory() {
     }
 
-    public static Handler createDomainEventHandler(EventListener eventListener, ExecutorService executorService, boolean needResult) {
-        return new DomainEventHandler(eventListener, executorService,needResult);
+    public static Handler createDomainEventHandler(EventListener eventListener, ExecutorService executorService) {
+        return new DomainEventHandler(eventListener, executorService);
     }
 
-    public static Handler createApplicationEventHandler(EventListener eventListener, ExecutorService executorService, boolean needResult) {
-        return new ApplicationEventHandler(eventListener, executorService,needResult);
+    public static Handler createApplicationEventHandler(EventListener eventListener, ExecutorService executorService) {
+        return new ApplicationEventHandler(eventListener, executorService);
     }
 
-    public static Handler createGenericEventHandler(EventListener eventListener, ExecutorService executorService, boolean needResult) {
-        return new GenericEventHandler(eventListener, executorService,needResult);
+    public static Handler createGenericEventHandler(EventListener eventListener, ExecutorService executorService) {
+        return new GenericEventHandler(eventListener, executorService);
     }
 }

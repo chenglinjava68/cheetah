@@ -3,7 +3,7 @@ package cheetah.distributor.handler;
 import cheetah.event.Event;
 
 /**
- * ÊÂ¼ş´¦ÀíÆ÷
+ * äº‹ä»¶å¤„ç†å™¨
  * Created by Max on 2016/2/1.
  */
 public interface Handler {

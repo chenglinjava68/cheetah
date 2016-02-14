@@ -6,7 +6,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
 /**
- * »ù±¾ÊµÌåµÄ³éÏóÀà
+ * å®ä½“æ¨¡å‹æŠ½è±¡ç±»
  * Created by Max on 2015/12/25.
  */
 @MappedSuperclass

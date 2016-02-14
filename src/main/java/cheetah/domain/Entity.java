@@ -3,7 +3,7 @@ package cheetah.domain;
 import java.io.Serializable;
 
 /**
- * 实体接口
+ * 瀹炰綋鏈�椤跺眰鎺ュ彛
  * Created by Max on 2015/12/22.
  */
 public interface Entity<T, ID extends Serializable> extends Serializable {

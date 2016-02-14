@@ -4,7 +4,7 @@ package cheetah.domain;
 import javax.persistence.Column;
 
 /**
- * 实现自动增长主键规则
+ * 鏁板瓧鍨媔d
  * Created by Max on 2015/12/25.
  */
 public class NumberTrackingId extends TrackingId<Long> {

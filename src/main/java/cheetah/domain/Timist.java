@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
- * Öµ¶ÔÏó-¼ÇÊ±Æ÷
+ * æ¨¡åž‹-å…³å¿ƒæ—¶é—´å€¼å¯¹è±¡
  * Created by Max on 2015/12/25.
  */
 @Embeddable

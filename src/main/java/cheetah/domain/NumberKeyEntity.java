@@ -1,10 +1,10 @@
 package cheetah.domain;
 
 /**
- * Ìá¹©×Ô¶¯Ôö³¤Ö÷¼ü¹æÔòµÄÊµÌå»ùÀà
+ * åŸºäºæ•°å­—ç±»å‹idçš„æ¨¡å‹åŸºç±»
  * Created by Max on 2015/12/25.
  */
-public class NumberKeyEntity extends AbstractEntity<NumberTrackingId> {
+public abstract class NumberKeyEntity extends AbstractEntity<NumberTrackingId> {
     public NumberKeyEntity() {
         super(new NumberTrackingId());
     }

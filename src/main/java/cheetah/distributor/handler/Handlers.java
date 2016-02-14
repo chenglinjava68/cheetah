@@ -65,19 +65,19 @@ public class Handlers {
         Event event = eventMessage.getEvent();
         switch (type) {
             case GENERIC:
-                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService, eventMessage.isNeedResult()));
+                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService));
                 break;
             case APP:
-                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService, eventMessage.isNeedResult()));
+                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService));
                 break;
             case DOMAIN:
-                handler = new HandlerAdapter(HandlerFactory.createDomainEventHandler(listener, executorService, eventMessage.isNeedResult()));
+                handler = new HandlerAdapter(HandlerFactory.createDomainEventHandler(listener, executorService));
                 break;
             case SMART_APP:
-                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService, eventMessage.isNeedResult()));
+                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService));
                 break;
             case SMART_DOMAIN:
-                handler = new HandlerAdapter(HandlerFactory.createDomainEventHandler(listener, executorService, eventMessage.isNeedResult()));
+                handler = new HandlerAdapter(HandlerFactory.createDomainEventHandler(listener, executorService));
                 break;
             default:
                 throw new HandlerTypedNotFoundException();

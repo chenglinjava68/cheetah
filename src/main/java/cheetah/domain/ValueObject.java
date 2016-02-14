@@ -3,7 +3,7 @@ package cheetah.domain;
 import java.io.Serializable;
 
 /**
- * Öµ¶ÔÏó½Ó¿Ú
+ * å€¼å¯¹è±¡æ¥å£
  * Created by Max on 2015/12/22.
  */
 public interface ValueObject<T> extends Serializable {

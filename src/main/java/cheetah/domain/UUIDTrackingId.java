@@ -3,7 +3,7 @@ package cheetah.domain;
 import javax.persistence.Column;
 
 /**
- * 实现UUID的主键生成规则
+ * UUID绫诲瀷鐨処D鍩虹被
  * Created by Max on 2015/12/25.
  */
 public class UUIDTrackingId extends TrackingId<String> {
