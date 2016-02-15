@@ -35,12 +35,12 @@ public class Handlers {
                     e.printStackTrace();
                     hasException = false;
                     exceptionListners.add(listener.getClass());
-                    interceptorChain.pluginAll(eventMessage.getEvent());
+                    interceptorChain.pluginAll(eventMessage);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     hasException = false;
                     exceptionListners.add(listener.getClass());
-                    interceptorChain.pluginAll(eventMessage.getEvent());
+                    interceptorChain.pluginAll(eventMessage);
                 }
             else
                 stateless(eventMessage, listener);
