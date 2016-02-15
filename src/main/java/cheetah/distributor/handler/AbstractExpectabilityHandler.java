@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutorService;
 /**
  * Created by Max on 2016/2/14.
  */
-public abstract class AbstractExpectabilityHandler extends AbstractHandler implements ExpectabilityHandler {
+public abstract class AbstractExpectabilityHandler extends BaseHandlerSupply implements ExpectabilityHandler {
     private CompletableFuture<Boolean> future;
 
     public AbstractExpectabilityHandler(EventListener eventListener, ExecutorService executorService) {
@@ -19,7 +19,7 @@ public abstract class AbstractExpectabilityHandler extends AbstractHandler imple
         return future;
     }
 
-    protected final void setFuture(CompletableFuture future) {
+    protected final void setFuture(CompletableFuture<Boolean> future) {
         this.future = future;
     }
 
