@@ -10,15 +10,15 @@ import java.util.concurrent.ExecutorService;
 /**
  * Created by Max on 2016/2/1.
  */
-public class GenericEventHandler extends AbstractExpectabilityHandler {
+public class GenericEventHandler extends AbstractHandler {
 
     public GenericEventHandler(EventListener eventListener, ExecutorService executorService) {
         super(eventListener, executorService);
     }
 
     @Override
-    public void handle(Event event) {
-        CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
+    protected CompletableFuture<Boolean> statefulHandle(Event event) {
+        return CompletableFuture.supplyAsync(() -> {
             if (this.getEventListener().getClass().isAssignableFrom(ApplicationListener.class)) {
                 ApplicationListener applicationListener = (ApplicationListener) this.getEventListener();
                 ApplicationEvent $event = (ApplicationEvent) event;
@@ -32,7 +32,10 @@ public class GenericEventHandler extends AbstractExpectabilityHandler {
             } else
                 throw new EventHandlerException("[cheetah-distributor] : Generic event handler handle type error");
         }, getExecutorService());
-        this.setFuture(future);
     }
 
+    @Override
+    protected CompletableFuture<Boolean> statelessHandle(Event event) {
+        return null;
+    }
 }

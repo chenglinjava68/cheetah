@@ -11,22 +11,25 @@ import java.util.concurrent.ExecutorService;
 /**
  * Created by Max on 2016/2/1.
  */
-public class ApplicationEventHandler extends AbstractExpectabilityHandler {
-
+public class ApplicationEventHandler extends AbstractHandler {
 
     public ApplicationEventHandler(EventListener eventListener, ExecutorService executorService) {
         super(eventListener, executorService);
     }
 
     @Override
-    public void handle(Event event) {
-        CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
+    protected CompletableFuture<Boolean> statefulHandle(Event event) {
+        return CompletableFuture.supplyAsync(() -> {
             ApplicationEvent applicationEvent = (ApplicationEvent) event;
             ApplicationListener<ApplicationEvent> listener = (ApplicationListener<ApplicationEvent>) this.getEventListener();
             listener.onApplicationEvent(applicationEvent);
             return Boolean.TRUE;
         }, getExecutorService());
-        this.setFuture(future);
+    }
+
+    @Override
+    protected CompletableFuture<Boolean> statelessHandle(Event event) {
+        return null;
     }
 
 }

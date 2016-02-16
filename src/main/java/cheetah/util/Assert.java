@@ -1,7 +1,5 @@
 package cheetah.util;
 
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 import java.util.Map;
@@ -197,7 +195,7 @@ public abstract class Assert {
      * @throws IllegalArgumentException if the object array is {@code null} or has no elements
      */
     public static void notEmpty(Object[] array, String message) {
-        if (org.springframework.util.ObjectUtils.isEmpty(array)) {
+        if (ObjectUtils.isEmpty(array)) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -251,7 +249,7 @@ public abstract class Assert {
      * @throws IllegalArgumentException if the collection is {@code null} or has no elements
      */
     public static void notEmpty(Collection<?> collection, String message) {
-        if (org.springframework.util.CollectionUtils.isEmpty(collection)) {
+        if (CollectionUtils.isEmpty(collection)) {
             throw new IllegalArgumentException(message);
         }
     }

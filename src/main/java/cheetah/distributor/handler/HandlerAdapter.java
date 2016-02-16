@@ -1,5 +1,6 @@
 package cheetah.distributor.handler;
 
+import cheetah.distributor.EventMessage;
 import cheetah.event.Event;
 import cheetah.util.ObjectUtils;
 
@@ -8,7 +9,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Created by Max on 2016/2/7.
  */
-public class HandlerAdapter implements HandlerConglomeration {
+public class HandlerAdapter implements Handler {
     private Handler adaptee;
 
     public HandlerAdapter(Handler adaptee) {
@@ -16,15 +17,23 @@ public class HandlerAdapter implements HandlerConglomeration {
     }
 
     @Override
-    public void handle(Event event) {
-        adaptee.handle(event);
+    public void handle(EventMessage event, HandleCallback callback) {
+        adaptee.handle(event, callback);
+    }
+
+    @Override
+    public void handle(Event event, boolean state) {
+        adaptee.handle(event, state);
     }
 
     @Override
     public CompletableFuture<Boolean> getFuture() {
-        if(!ExpectabilityHandler.class.isAssignableFrom(adaptee.getClass()))
-            throw new UnsupportedOperationException();
-        return ((ExpectabilityHandler) adaptee).getFuture();
+        return adaptee.getFuture();
+    }
+
+    @Override
+    public void removeFuture() {
+        adaptee.removeFuture();
     }
 
     @Override
