@@ -1,7 +1,6 @@
 package cheetah.distributor.handler;
 
 import cheetah.distributor.EventMessage;
-import cheetah.event.Event;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -12,13 +11,31 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface Handler {
 
-    void handle(Event event);
+    void handle(EventMessage event);
 
-    void handle(Event event, boolean nativeAsync);
+    void handle(EventMessage event, boolean nativeAsync);
 
     void handle(EventMessage event, HandleExceptionCallback callback);
 
     CompletableFuture<Boolean> getFuture();
 
     void removeFuture();
+
+    enum ProcessMode {
+         NOSTATE(0), STATE(1);
+
+        private Integer code;
+
+        ProcessMode(Integer code) {
+            this.code = code;
+        }
+
+        public ProcessMode formatFrom(Integer code) {
+            for(ProcessMode mode : ProcessMode.values()) {
+                if(mode.code == code)
+                    return mode;
+            }
+            return NOSTATE;
+        }
+    }
 }

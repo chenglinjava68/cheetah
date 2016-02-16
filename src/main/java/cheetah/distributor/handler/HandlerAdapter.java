@@ -1,7 +1,6 @@
 package cheetah.distributor.handler;
 
 import cheetah.distributor.EventMessage;
-import cheetah.event.Event;
 import cheetah.util.ObjectUtils;
 
 import java.util.concurrent.CompletableFuture;
@@ -22,13 +21,13 @@ public class HandlerAdapter implements Handler {
     }
 
     @Override
-    public void handle(Event event) {
-        adaptee.handle(event);
+    public void handle(EventMessage eventMessage) {
+        adaptee.handle(eventMessage);
     }
 
     @Override
-    public void handle(Event event, boolean nativeAsync) {
-        adaptee.handle(event, nativeAsync);
+    public void handle(EventMessage eventMessage, boolean nativeAsync) {
+        adaptee.handle(eventMessage, nativeAsync);
     }
 
     @Override

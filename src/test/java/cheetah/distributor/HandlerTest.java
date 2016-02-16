@@ -47,15 +47,14 @@ public class HandlerTest {
             System.out.println(atomicLong.incrementAndGet());
 //            throw new RuntimeException();
         }, executorService);
-        Long start = System.currentTimeMillis();
         while (true) {
             if (atomicLong.get() == 1000000) break;
-            while (Thread.activeCount() < 800) {
+            while (Thread.activeCount() < 1000) {
                 if (atomicLong.get() == 1000000) break;
                 new Thread(() -> {
                     while (true) {
                         if (atomicLong.get() == 1000000) break;
-                        handler.handle(new ApplicationEventTest("test"), true);
+//                        handler.handle(new ApplicationEventTest("test"), true);
                         try {
                             handler.handle(new EventMessage(new ApplicationEventTest("test"), true), (eventMessage, exceptionObject, exceptionMessage) -> {
                                 System.out.println(atomicLong.incrementAndGet());
@@ -67,7 +66,6 @@ public class HandlerTest {
                 }).start();
             }
         }
-        System.out.println("time: " + (System.currentTimeMillis() - start));
         latch.await();
     }
 

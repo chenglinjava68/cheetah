@@ -92,6 +92,7 @@ public class Handlers {
         handler.handle(eventMessage.getEvent(), false);
         return handler;
     }
+
     /**
      * 无状态的事件处理，采用原生jdk的并发库处理事件，不处理事件处理器内部发生的任何异常
      * @param eventMessage

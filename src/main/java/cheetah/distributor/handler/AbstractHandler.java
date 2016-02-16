@@ -25,14 +25,16 @@ public abstract class AbstractHandler implements Handler {
     }
 
     @Override
-    public void handle(Event event) {
+    public void handle(EventMessage eventMessage) {
+        Event event = eventMessage.getEvent();
         Assert.notNull(event);
         CompletableFuture<Boolean> future = statefulHandle(event);
         AbstractHandler.futures.set(future);
     }
 
     @Override
-    public void handle(Event event, boolean nativeAsync) {
+    public void handle(EventMessage eventMessage, boolean nativeAsync) {
+        Event event = eventMessage.getEvent();
         Assert.notNull(event);
         if (nativeAsync)
             statelessNativeAsyncHandle(event);
