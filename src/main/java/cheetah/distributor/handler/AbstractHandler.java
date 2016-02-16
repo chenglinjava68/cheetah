@@ -25,25 +25,32 @@ public abstract class AbstractHandler implements Handler {
     }
 
     @Override
+    public void handle(Event event) {
+        Assert.notNull(event);
+        CompletableFuture<Boolean> future = statefulHandle(event);
+        AbstractHandler.futures.set(future);
+    }
+
+    @Override
+    public void handle(Event event, boolean nativeAsync) {
+        Assert.notNull(event);
+        if (nativeAsync)
+            statelessNativeAsyncHandle(event);
+        else
+            statelessHandle(event);
+    }
+
+    @Override
     public void handle(EventMessage eventMessage, HandleExceptionCallback callback) {
         handleAssert(eventMessage, callback);
         CompletableFuture<Boolean> future = statefulHandle(eventMessage.getEvent());
         try {
             future.get();
         } catch (InterruptedException e) {
-            callback.doInHandler(Boolean.TRUE, eventMessage, e.getClass(), e.getMessage());
+            callback.doInHandler(eventMessage, e.getClass(), e.getMessage());
         } catch (ExecutionException e) {
-            callback.doInHandler(Boolean.TRUE, eventMessage, e.getClass(), e.getMessage());
+            callback.doInHandler(eventMessage, e.getClass(), e.getMessage());
         }
-    }
-
-    @Override
-    public void handle(Event event, boolean state) {
-        Assert.notNull(event);
-        if (state) {
-            CompletableFuture<Boolean> future = statelessHandle(event);
-            AbstractHandler.futures.set(future);
-        } else statefulHandle(event);
     }
 
     @Override
@@ -70,8 +77,10 @@ public abstract class AbstractHandler implements Handler {
         return executorService;
     }
 
-    protected abstract CompletableFuture<Boolean> statelessHandle(Event event);
+    protected abstract void statelessHandle(Event event);
 
     protected abstract CompletableFuture<Boolean> statefulHandle(Event event);
+
+    protected abstract void statelessNativeAsyncHandle(Event event);
 
 }

@@ -35,7 +35,22 @@ public class GenericEventHandler extends AbstractHandler {
     }
 
     @Override
-    protected CompletableFuture<Boolean> statelessHandle(Event event) {
-        return null;
+    protected void statelessNativeAsyncHandle(Event event) {
+        if (this.getEventListener().getClass().isAssignableFrom(ApplicationListener.class))
+            getExecutorService().execute(() ->
+                    ((ApplicationListener<ApplicationEvent>) this.getEventListener())
+                            .onApplicationEvent((ApplicationEvent) event));
+        else if (this.getEventListener().getClass().isAssignableFrom(DomainEventListener.class)) {
+            getExecutorService().execute(() ->
+                    ((DomainEventListener<DomainEvent>) this.getEventListener())
+                            .onDomainEvent((DomainEvent) event));
+        } else
+            throw new EventHandlerException("[cheetah-distributor] : Generic event handler handle type error");
+
+    }
+
+    @Override
+    protected void statelessHandle(Event event) {
+
     }
 }

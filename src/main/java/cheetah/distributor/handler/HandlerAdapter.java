@@ -22,8 +22,13 @@ public class HandlerAdapter implements Handler {
     }
 
     @Override
-    public void handle(Event event, boolean state) {
-        adaptee.handle(event, state);
+    public void handle(Event event) {
+        adaptee.handle(event);
+    }
+
+    @Override
+    public void handle(Event event, boolean nativeAsync) {
+        adaptee.handle(event, nativeAsync);
     }
 
     @Override

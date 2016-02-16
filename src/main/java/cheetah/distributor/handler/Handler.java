@@ -11,9 +11,12 @@ import java.util.concurrent.CompletableFuture;
  * Created by Max on 2016/2/1.
  */
 public interface Handler {
-    void handle(EventMessage event, HandleExceptionCallback callback);
 
-    void handle(Event event, boolean state);
+    void handle(Event event);
+
+    void handle(Event event, boolean nativeAsync);
+
+    void handle(EventMessage event, HandleExceptionCallback callback);
 
     CompletableFuture<Boolean> getFuture();
 

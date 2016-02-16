@@ -1,8 +1,6 @@
 package cheetah.distributor.handler;
 
-import cheetah.event.DomainEvent;
-import cheetah.event.DomainEventListener;
-import cheetah.event.Event;
+import cheetah.event.*;
 
 import java.util.EventListener;
 import java.util.concurrent.CompletableFuture;
@@ -18,8 +16,8 @@ public class DomainEventHandler extends AbstractHandler {
     }
 
     @Override
-    protected CompletableFuture<Boolean> statelessHandle(Event event) {
-        return null;
+    protected void statelessHandle(Event event) {
+
     }
 
     @Override
@@ -30,6 +28,13 @@ public class DomainEventHandler extends AbstractHandler {
             listener.onDomainEvent(domainEvent);
             return Boolean.TRUE;
         }, getExecutorService());
+    }
+
+    @Override
+    protected void statelessNativeAsyncHandle(Event event) {
+        getExecutorService().execute(() ->
+                ((DomainEventListener<DomainEvent>)getEventListener())
+                        .onDomainEvent((DomainEvent) event));
     }
 
 }

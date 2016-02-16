@@ -28,8 +28,16 @@ public class ApplicationEventHandler extends AbstractHandler {
     }
 
     @Override
-    protected CompletableFuture<Boolean> statelessHandle(Event event) {
-        return null;
+    protected void statelessNativeAsyncHandle(Event event) {
+        getExecutorService().execute(() ->
+            ((ApplicationListener<ApplicationEvent>) getEventListener())
+                    .onApplicationEvent((ApplicationEvent) event)
+        );
+    }
+
+    @Override
+    protected void statelessHandle(Event event) {
+
     }
 
 }
