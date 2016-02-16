@@ -17,7 +17,7 @@ public class HandlerAdapter implements Handler {
     }
 
     @Override
-    public void handle(EventMessage event, HandleCallback callback) {
+    public void handle(EventMessage event, HandleExceptionCallback callback) {
         adaptee.handle(event, callback);
     }
 

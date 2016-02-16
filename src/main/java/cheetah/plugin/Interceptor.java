@@ -22,6 +22,8 @@ public interface Interceptor {
 
   Object intercept(Invocation invocation) throws Throwable;
 
+  Object intercept(Object object) throws Throwable;
+
   Object plugin(Object target);
 
 }

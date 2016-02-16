@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutorService;
 public abstract class AbstractHandler implements Handler {
     private final EventListener eventListener;
     private final ExecutorService executorService;
-    private final ThreadLocal<CompletableFuture<Boolean>> futures = new ThreadLocal<>();
+    private static final ThreadLocal<CompletableFuture<Boolean>> futures = new ThreadLocal<>();
 
     public AbstractHandler(EventListener eventListener, ExecutorService executorService) {
         Assert.notNull(eventListener, "eventListener must not be null");
@@ -25,9 +25,9 @@ public abstract class AbstractHandler implements Handler {
     }
 
     @Override
-    public void handle(EventMessage eventMessage, HandleCallback callback) {
+    public void handle(EventMessage eventMessage, HandleExceptionCallback callback) {
         handleAssert(eventMessage, callback);
-        CompletableFuture<Boolean> future = statelessHandle(eventMessage.getEvent());
+        CompletableFuture<Boolean> future = statefulHandle(eventMessage.getEvent());
         try {
             future.get();
         } catch (InterruptedException e) {
@@ -42,16 +42,16 @@ public abstract class AbstractHandler implements Handler {
         Assert.notNull(event);
         if (state) {
             CompletableFuture<Boolean> future = statelessHandle(event);
-            this.futures.set(future);
+            AbstractHandler.futures.set(future);
         } else statefulHandle(event);
     }
 
     @Override
     public void removeFuture() {
-        this.futures.remove();
+        AbstractHandler.futures.remove();
     }
 
-    private void handleAssert(EventMessage event, HandleCallback callback) {
+    private void handleAssert(EventMessage event, HandleExceptionCallback callback) {
         Assert.notNull(event, "eventMessage must not be null");
         Assert.notNull(event.getEvent(), "event must not be null");
         Assert.notNull(callback, "callback must not be null");

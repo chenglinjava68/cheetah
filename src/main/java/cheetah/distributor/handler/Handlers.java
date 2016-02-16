@@ -26,40 +26,51 @@ public class Handlers {
     public EventResult handle(EventMessage eventMessage, List<EventListener> eventListeners) {
         boolean hasException = true;
         List<Class<? extends EventListener>> exceptionListners = new ArrayList<>();
-        for (EventListener listener : eventListeners) {
-            if (eventMessage.isNeedResult())
-                stateful(eventMessage, listener, (exception, $eventMessage, exceptionObject, exceptionMessage) -> {
-                    interceptorChain.pluginAll(new HandleCallbackWrap(exception, $eventMessage, exceptionObject, exceptionMessage));
-                });
-            else
-                stateless(eventMessage, listener);
-        }
+        eventListeners.forEach(listener -> {
+            Handler handler = null;
+            try {
+                if (eventMessage.isNeedResult()) {
+                    handler = stateful(eventMessage, listener, (exception, $eventMessage, exceptionObject, exceptionMessage) -> {
+                        if (exception)
+                            interceptorChain.pluginAll(
+                                    new ExceptionCallbackWrap(exception, $eventMessage, exceptionObject, exceptionMessage));
+                    });
+                } else
+                    handler = stateless(eventMessage, listener);
+            } finally {
+                if (handler != null)
+                    handler.removeFuture();
+            }
+        });
         if (eventMessage.isNeedResult())
             return new EventResult(eventMessage.getEvent(), hasException, exceptionListners);
         return new EventResult(eventMessage.getEvent());
     }
 
-    private void stateful(EventMessage eventMessage, EventListener listener) throws ExecutionException, InterruptedException {
+    private Handler stateful(EventMessage eventMessage, EventListener listener) throws ExecutionException, InterruptedException {
         HandlerTyped type = HandlerTyped.Manager.convertFrom(listener.getClass());
         Handler handler = selector(listener, type);
         handler.handle(eventMessage.getEvent(), true);
         handler.getFuture().get();
+        return handler;
     }
 
-    private void stateful(EventMessage eventMessage, EventListener listener, HandleCallback callback) {
+    private Handler stateful(EventMessage eventMessage, EventListener listener, HandleExceptionCallback callback) {
         HandlerTyped type = HandlerTyped.Manager.convertFrom(listener.getClass());
         Handler handler = selector(listener, type);
         handler.handle(eventMessage, callback);
+        return handler;
     }
 
-    private void stateless(EventMessage eventMessage, EventListener listener) {
+    private Handler stateless(EventMessage eventMessage, EventListener listener) {
         HandlerTyped type = HandlerTyped.Manager.convertFrom(listener.getClass());
         Handler handler = selector(listener, type);
         handler.handle(eventMessage.getEvent(), false);
+        return handler;
     }
 
     private Handler selector(EventListener listener, HandlerTyped type) {
-        HandlerCacheKey cacheKey = HandlerCacheKey.createKey(type.getDeclaringClass());
+        HandlerCacheKey cacheKey = HandlerCacheKey.createKey(type.getClass());
         if (this.handlerCacheKeyMap.containsKey(cacheKey))
             return this.handlerCacheKeyMap.get(cacheKey);
         Handler handler;
@@ -121,4 +132,5 @@ public class Handlers {
             return ObjectUtils.nullSafeHashCode(this.aClass) * 29;
         }
     }
+
 }

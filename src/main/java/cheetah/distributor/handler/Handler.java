@@ -7,11 +7,11 @@ import java.util.concurrent.CompletableFuture;
 
 
 /**
- * 事件处理器
+ * 事件处理器接口
  * Created by Max on 2016/2/1.
  */
 public interface Handler {
-    void handle(EventMessage event, HandleCallback callback);
+    void handle(EventMessage event, HandleExceptionCallback callback);
 
     void handle(Event event, boolean state);
 

@@ -5,13 +5,13 @@ import cheetah.distributor.EventMessage;
 /**
  * Created by Max on 2016/2/16.
  */
-public class HandleCallbackWrap {
+public class ExceptionCallbackWrap {
     private boolean exception;
     private EventMessage eventMessage;
     private Class<?> exceptionObject;
     private String exceptionMessage;
 
-    public HandleCallbackWrap(boolean exception, EventMessage eventMessage, Class<?> exceptionObject, String exceptionMessage) {
+    public ExceptionCallbackWrap(boolean exception, EventMessage eventMessage, Class<?> exceptionObject, String exceptionMessage) {
         this.exception = exception;
         this.eventMessage = eventMessage;
         this.exceptionObject = exceptionObject;

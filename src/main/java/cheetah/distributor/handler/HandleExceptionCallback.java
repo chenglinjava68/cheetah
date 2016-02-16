@@ -5,6 +5,6 @@ import cheetah.distributor.EventMessage;
 /**
  * Created by Max on 2016/2/16.
  */
-public interface HandleCallback {
+public interface HandleExceptionCallback {
     void doInHandler(boolean exception, EventMessage eventMessage, Class<?> exceptionObject, String exceptionMessage);
 }
