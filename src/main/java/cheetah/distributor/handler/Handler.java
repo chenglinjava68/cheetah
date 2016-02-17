@@ -28,7 +28,7 @@ public interface Handler {
      * @param eventMessage
      * @param callback
      */
-    void handle(EventMessage eventMessage, HandleExceptionCallback callback);
+    void handle(EventMessage eventMessage, HandleCallback callback);
 
     /**
      *

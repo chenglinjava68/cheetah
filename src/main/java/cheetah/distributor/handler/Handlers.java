@@ -2,9 +2,8 @@ package cheetah.distributor.handler;
 
 import cheetah.distributor.EventMessage;
 import cheetah.distributor.EventResult;
+import cheetah.exceptions.CheetahException;
 import cheetah.exceptions.HandlerTypedNotFoundException;
-import cheetah.logger.Debug;
-import cheetah.logger.Error;
 import cheetah.plugin.InterceptorChain;
 import cheetah.util.ObjectUtils;
 
@@ -28,6 +27,7 @@ public class Handlers {
 
     /**
      * 事件处理函数-安排相应的监听器
+     *
      * @param eventMessage
      * @param eventListeners
      * @return
@@ -37,43 +37,48 @@ public class Handlers {
         List<Class<? extends EventListener>> exceptionListners = new ArrayList<>();
         eventListeners.forEach(listener -> {
             Handler handler = null;
-            try {
-                switch (eventMessage.getMode()) {
-                    case UNIMPEDED:
-                        handler = locklessStateless(eventMessage, listener);
-                        break;
-                    case JDK_UNIMPEDED:
-                        handler = nativeLocklessStateless(eventMessage, listener);
-                        break;
-                    case STATE:
-                        try {
-                            handler = stateful(eventMessage, listener);
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case STATE_CALL_BACK:
-                        handler = stateful(eventMessage, listener, ($eventMessage, exceptionObject, exceptionMessage) -> {
+
+            switch (eventMessage.getMode()) {
+                case UNIMPEDED:
+                    handler = locklessStateless(eventMessage, listener);
+                    break;
+                case JDK_UNIMPEDED:
+                    handler = nativeStateless(eventMessage, listener);
+                    break;
+                case STATE:
+                    try {
+                        handler = stateful(eventMessage, listener);
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (handler != null)
+                            handler.removeFuture();
+                    }
+                    break;
+                case STATE_CALL_BACK:
+                    try {
+                        handler = stateful(eventMessage, listener, ($exception, $eventMessage, exceptionObject, exceptionMessage) -> {
                             interceptorChain.pluginAll(
-                                    new ExceptionCallbackWrap($eventMessage, exceptionObject, exceptionMessage));
+                                    new CallbackWrapper($exception, $eventMessage, exceptionObject, exceptionMessage));
                         });
-                        break;
-                    default:
-                        Debug.log(this.getClass(), "Process.Mode error, into the default mode");
-                        Error.log(this.getClass(), "Process.Mode error, into the default mode");
-                }
-            } finally {
-                if (handler != null)
-                    handler.removeFuture();
+                    } finally {
+                        if (handler != null)
+                            handler.removeFuture();
+                    }
+                    break;
+                default:
+                    throw new CheetahException("Process.Mode error, into the default mode");
             }
+
         });
         return new EventResult(eventMessage.getEvent(), hasException, exceptionListners);
     }
 
     /**
      * 有状态的事件处理，不处理异常，需要自己手动处理
+     *
      * @param eventMessage
      * @param listener
      * @return
@@ -88,13 +93,14 @@ public class Handlers {
     }
 
     /**
-     * 有状态的事件处理，自动处理异常，你可以实现回调函数来对异常后的处理
+     * 有状态的事件处理，自动处理异常，你可以实现回调函数来对产生的异常进行处理
+     *
      * @param eventMessage
      * @param listener
      * @param callback
      * @return
      */
-    private Handler stateful(EventMessage eventMessage, EventListener listener, HandleExceptionCallback callback) {
+    private Handler stateful(EventMessage eventMessage, EventListener listener, HandleCallback callback) {
         Handler handler = getHandler(listener);
         handler.handle(eventMessage, callback);
         return handler;
@@ -102,6 +108,7 @@ public class Handlers {
 
     /**
      * 无状态的事件处理，采用无锁的并发处理事件，但不处理事件处理器内部发生的任何异常
+     *
      * @param eventMessage
      * @param listener
      * @return
@@ -114,11 +121,12 @@ public class Handlers {
 
     /**
      * 无状态的事件处理，采用原生jdk的并发库处理事件，不处理事件处理器内部发生的任何异常
+     *
      * @param eventMessage
      * @param listener
      * @return
      */
-    private Handler nativeLocklessStateless(EventMessage eventMessage, EventListener listener) {
+    private Handler nativeStateless(EventMessage eventMessage, EventListener listener) {
         Handler handler = getHandler(listener);
         handler.handle(eventMessage, true);
         return handler;

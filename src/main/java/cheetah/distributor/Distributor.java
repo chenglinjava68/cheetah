@@ -85,7 +85,9 @@ public class Distributor implements Startable, Governor {
                             boolean supportsEventType = listener.supportsEventType(eventMessage.getEvent().getClass());
                             boolean supportsSourceType = listener.supportsSourceType(eventMessage.getEvent().getSource().getClass());
                             return supportsEventType && supportsSourceType;
-                        }).collect(Collectors.toList());
+                        }).map(listener -> (SmartDomainEventListener) listener).sorted((o1, o2) ->
+                                        o1.getOrder() - o2.getOrder()
+                        ).collect(Collectors.toList());
                 if (!smartDomainEventListeners.isEmpty()) {
                     this.listenerCache.put(ListenerCacheKey.generator(event.getClass(), event.getSource().getClass()), smartDomainEventListeners);
                     return this.handlers.handle(eventMessage, smartDomainEventListeners);
@@ -106,7 +108,9 @@ public class Distributor implements Startable, Governor {
                             boolean supportsEventType = listener.supportsEventType(eventMessage.getEvent().getClass());
                             boolean supportsSourceType = listener.supportsSourceType(eventMessage.getEvent().getSource().getClass());
                             return supportsEventType && supportsSourceType;
-                        }).collect(Collectors.toList());
+                        }).map(listener -> (SmartApplicationListener) listener).sorted((o1, o2) ->
+                                        o1.getOrder() - o2.getOrder()
+                        ).collect(Collectors.toList());
                 this.listenerCache.put(ListenerCacheKey.generator(event.getClass(), event.getSource().getClass()), smartAppEventListeners);
                 if (!smartAppEventListeners.isEmpty())
                     return this.handlers.handle(eventMessage, smartAppEventListeners);

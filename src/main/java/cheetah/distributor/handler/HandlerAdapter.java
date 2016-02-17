@@ -15,15 +15,15 @@ public class HandlerAdapter implements Handler {
 
     public HandlerAdapter(Handler adaptee, InterceptorChain interceptorChain) {
         this.interceptorChain = interceptorChain;
-        interceptors(adaptee, interceptorChain);
+        adapteeExtended(adaptee);
     }
 
-    private void interceptors(Handler adaptee, InterceptorChain interceptorChain) {
-        this.adaptee = (Handler) interceptorChain.pluginAll(adaptee);
+    private void adapteeExtended(Handler $adaptee) {
+        this.adaptee = (Handler) this.interceptorChain.pluginAll($adaptee);
     }
 
     @Override
-    public void handle(EventMessage event, HandleExceptionCallback callback) {
+    public void handle(EventMessage event, HandleCallback callback) {
         adaptee.handle(event, callback);
     }
 

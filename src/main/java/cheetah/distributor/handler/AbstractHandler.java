@@ -43,15 +43,14 @@ public abstract class AbstractHandler implements Handler {
     }
 
     @Override
-    public void handle(EventMessage eventMessage, HandleExceptionCallback callback) {
+    public void handle(EventMessage eventMessage, HandleCallback callback) {
         handleAssert(eventMessage, callback);
         CompletableFuture<Boolean> future = statefulHandle(eventMessage.getEvent());
         try {
             future.get();
-        } catch (InterruptedException e) {
-            callback.doInHandler(eventMessage, e.getClass(), e.getMessage());
-        } catch (ExecutionException e) {
-            callback.doInHandler(eventMessage, e.getClass(), e.getMessage());
+            callback.doInHandler(Boolean.FALSE, eventMessage, null, null);
+        } catch (InterruptedException | ExecutionException e) {
+            callback.doInHandler(Boolean.TRUE, eventMessage, e.getClass(), e.getMessage());
         }
     }
 
@@ -60,7 +59,7 @@ public abstract class AbstractHandler implements Handler {
         AbstractHandler.futures.remove();
     }
 
-    private void handleAssert(EventMessage event, HandleExceptionCallback callback) {
+    private void handleAssert(EventMessage event, HandleCallback callback) {
         Assert.notNull(event, "eventMessage must not be null");
         Assert.notNull(event.getEvent(), "event must not be null");
         Assert.notNull(callback, "callback must not be null");
