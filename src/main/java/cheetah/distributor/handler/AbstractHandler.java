@@ -13,8 +13,8 @@ import java.util.concurrent.ExecutorService;
  * Created by Max on 2016/2/14.
  */
 public abstract class AbstractHandler implements Handler {
-    private final EventListener eventListener;
-    private final ExecutorService executorService;
+    private EventListener eventListener;
+    private volatile ExecutorService executorService;
     private static final ThreadLocal<CompletableFuture<Boolean>> futures = new ThreadLocal<>();
 
     public AbstractHandler(EventListener eventListener, ExecutorService executorService) {
@@ -79,10 +79,10 @@ public abstract class AbstractHandler implements Handler {
         return executorService;
     }
 
-    protected abstract void statelessHandle(Event event);
+    public abstract void statelessHandle(Event event);
 
-    protected abstract CompletableFuture<Boolean> statefulHandle(Event event);
+    public abstract CompletableFuture<Boolean> statefulHandle(Event event);
 
-    protected abstract void statelessNativeAsyncHandle(Event event);
+    public abstract void statelessNativeAsyncHandle(Event event);
 
 }

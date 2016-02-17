@@ -1,14 +1,17 @@
 package cheetah.distributor;
 
 import cheetah.distributor.handler.ApplicationEventHandler;
+import cheetah.distributor.handler.Handler;
 import cheetah.distributor.handler.HandlerTyped;
 import cheetah.event.ApplicationEvent;
 import cheetah.event.ApplicationListener;
 import cheetah.event.DomainEventListener;
+import cheetah.event.SmartApplicationListener;
 import cheetah.logger.Debug;
 import cheetah.util.ArithUtil;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -27,6 +30,22 @@ public class HandlerTest {
     public void handlers() {
         HandlerTyped typed = HandlerTyped.Manager.convertFrom(DomainEventListener.class);
         System.out.println(typed);
+    }
+
+    @Test
+    public void allot() {
+        Distributor distributor = new Distributor();
+        Configuration configuration = new Configuration();
+        ArrayList listeners = new ArrayList();
+        listeners.add(new SmartApplicationListenerTest());
+        listeners.add(new ApplicationListenerTest());
+
+        configuration.setEventListeners(listeners);
+        distributor.setConfiguration(configuration);
+        distributor.start();
+
+        for (int i = 0; i < 3; i++)
+            distributor.allot(new EventMessage(new ApplicationEventTest("213"), Handler.ProcessMode.STATE_CALL_BACK));
     }
 
     @Test
@@ -50,13 +69,11 @@ public class HandlerTest {
         while (true) {
             if (atomicLong.get() == 1000000) break;
             while (Thread.activeCount() < 1000) {
-                if (atomicLong.get() == 1000000) break;
                 new Thread(() -> {
                     while (true) {
-                        if (atomicLong.get() == 1000000) break;
 //                        handler.handle(new ApplicationEventTest("test"), true);
                         try {
-                            handler.handle(new EventMessage(new ApplicationEventTest("test"), true), (eventMessage, exceptionObject, exceptionMessage) -> {
+                            handler.handle(new EventMessage(new ApplicationEventTest("test"), Handler.ProcessMode.JDK_UNIMPEDED), (eventMessage, exceptionObject, exceptionMessage) -> {
                                 System.out.println(atomicLong.incrementAndGet());
                             });
                         } finally {
@@ -82,4 +99,32 @@ public class HandlerTest {
         }
     }
 
+    public static class ApplicationListenerTest implements ApplicationListener<ApplicationEventTest> {
+        @Override
+        public void onApplicationEvent(ApplicationEventTest event) {
+            System.out.println("123");
+        }
+    }
+
+    public static class SmartApplicationListenerTest implements SmartApplicationListener<ApplicationEventTest> {
+        @Override
+        public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
+            return false;
+        }
+
+        @Override
+        public boolean supportsSourceType(Class<?> sourceType) {
+            return false;
+        }
+
+        @Override
+        public int getOrder() {
+            return 0;
+        }
+
+        @Override
+        public void onApplicationEvent(ApplicationEventTest event) {
+            System.out.println("smart");
+        }
+    }
 }

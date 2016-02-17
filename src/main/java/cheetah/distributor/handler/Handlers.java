@@ -3,6 +3,8 @@ package cheetah.distributor.handler;
 import cheetah.distributor.EventMessage;
 import cheetah.distributor.EventResult;
 import cheetah.exceptions.HandlerTypedNotFoundException;
+import cheetah.logger.Debug;
+import cheetah.logger.Error;
 import cheetah.plugin.InterceptorChain;
 import cheetah.util.ObjectUtils;
 
@@ -15,8 +17,8 @@ import java.util.concurrent.ExecutorService;
  * Created by Max on 2016/2/1.
  */
 public class Handlers {
-    private ExecutorService executorService;
-    private InterceptorChain interceptorChain;
+    private final ExecutorService executorService;
+    private final InterceptorChain interceptorChain;
     private final Map<HandlerCacheKey, Handler> handlerCacheKeyMap = new HashMap<>();
 
     public Handlers(ExecutorService executorService, InterceptorChain interceptorChain) {
@@ -31,26 +33,43 @@ public class Handlers {
      * @return
      */
     public EventResult handle(EventMessage eventMessage, List<EventListener> eventListeners) {
-        boolean hasException = true;
+        boolean hasException = false;
         List<Class<? extends EventListener>> exceptionListners = new ArrayList<>();
         eventListeners.forEach(listener -> {
             Handler handler = null;
             try {
-                if (eventMessage.isNeedResult()) {
-                    handler = stateful(eventMessage, listener, ($eventMessage, exceptionObject, exceptionMessage) -> {
+                switch (eventMessage.getMode()) {
+                    case UNIMPEDED:
+                        handler = locklessStateless(eventMessage, listener);
+                        break;
+                    case JDK_UNIMPEDED:
+                        handler = nativeLocklessStateless(eventMessage, listener);
+                        break;
+                    case STATE:
+                        try {
+                            handler = stateful(eventMessage, listener);
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case STATE_CALL_BACK:
+                        handler = stateful(eventMessage, listener, ($eventMessage, exceptionObject, exceptionMessage) -> {
                             interceptorChain.pluginAll(
                                     new ExceptionCallbackWrap($eventMessage, exceptionObject, exceptionMessage));
-                    });
-                } else
-                    handler = locklessStateless(eventMessage, listener);
+                        });
+                        break;
+                    default:
+                        Debug.log(this.getClass(), "Process.Mode error, into the default mode");
+                        Error.log(this.getClass(), "Process.Mode error, into the default mode");
+                }
             } finally {
                 if (handler != null)
                     handler.removeFuture();
             }
         });
-        if (eventMessage.isNeedResult())
-            return new EventResult(eventMessage.getEvent(), hasException, exceptionListners);
-        return new EventResult(eventMessage.getEvent());
+        return new EventResult(eventMessage.getEvent(), hasException, exceptionListners);
     }
 
     /**
@@ -63,7 +82,7 @@ public class Handlers {
      */
     private Handler stateful(EventMessage eventMessage, EventListener listener) throws ExecutionException, InterruptedException {
         Handler handler = getHandler(listener);
-        handler.handle(eventMessage.getEvent());
+        handler.handle(eventMessage);
         handler.getFuture().get();
         return handler;
     }
@@ -89,7 +108,7 @@ public class Handlers {
      */
     private Handler locklessStateless(EventMessage eventMessage, EventListener listener) {
         Handler handler = getHandler(listener);
-        handler.handle(eventMessage.getEvent(), false);
+        handler.handle(eventMessage, false);
         return handler;
     }
 
@@ -101,14 +120,13 @@ public class Handlers {
      */
     private Handler nativeLocklessStateless(EventMessage eventMessage, EventListener listener) {
         Handler handler = getHandler(listener);
-        handler.handle(eventMessage.getEvent(), true);
+        handler.handle(eventMessage, true);
         return handler;
     }
 
     private Handler getHandler(EventListener listener) {
         HandlerTyped type = HandlerTyped.Manager.convertFrom(listener.getClass());
         Handler handler = selector(listener, type);
-        interceptorChain.pluginAll(handler);
         return handler;
     }
 
@@ -119,33 +137,25 @@ public class Handlers {
         Handler handler;
         switch (type) {
             case GENERIC:
-                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService));
+                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService), interceptorChain);
                 break;
             case APP:
-                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService));
+                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService), interceptorChain);
                 break;
             case DOMAIN:
-                handler = new HandlerAdapter(HandlerFactory.createDomainEventHandler(listener, executorService));
+                handler = new HandlerAdapter(HandlerFactory.createDomainEventHandler(listener, executorService), interceptorChain);
                 break;
             case SMART_APP:
-                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService));
+                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService), interceptorChain);
                 break;
             case SMART_DOMAIN:
-                handler = new HandlerAdapter(HandlerFactory.createDomainEventHandler(listener, executorService));
+                handler = new HandlerAdapter(HandlerFactory.createDomainEventHandler(listener, executorService), interceptorChain);
                 break;
             default:
                 throw new HandlerTypedNotFoundException();
         }
         this.handlerCacheKeyMap.put(cacheKey, handler);
         return handler;
-    }
-
-    public void setExecutorService(ExecutorService executorService) {
-        this.executorService = executorService;
-    }
-
-    public void setInterceptorChain(InterceptorChain interceptorChain) {
-        this.interceptorChain = interceptorChain;
     }
 
     private static class HandlerCacheKey {

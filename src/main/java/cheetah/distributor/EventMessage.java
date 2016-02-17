@@ -1,5 +1,6 @@
 package cheetah.distributor;
 
+import cheetah.distributor.handler.Handler;
 import cheetah.event.Event;
 import cheetah.util.IDGenerator;
 
@@ -9,16 +10,15 @@ import cheetah.util.IDGenerator;
 public class EventMessage {
     private String id;
     private Event event;
-    private boolean needResult;
+    private Handler.ProcessMode mode;
 
     public EventMessage() {
         this.id = IDGenerator.generateId();
     }
 
-    public EventMessage(Event event, boolean needResult) {
-        this.id = IDGenerator.generateId();
+    public EventMessage(Event event, Handler.ProcessMode mode) {
         this.event = event;
-        this.needResult = needResult;
+        this.mode = mode;
     }
 
     public String getId() {
@@ -29,8 +29,15 @@ public class EventMessage {
         return event;
     }
 
-    public boolean isNeedResult() {
-        return needResult;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
+    public void setMode(Handler.ProcessMode mode) {
+        this.mode = mode;
+    }
+
+    public Handler.ProcessMode getMode() {
+        return mode;
+    }
 }

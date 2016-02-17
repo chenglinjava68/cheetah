@@ -1,16 +1,14 @@
 package cheetah.distributor;
 
 import cheetah.distributor.handler.Handlers;
-import cheetah.event.Event;
-import cheetah.event.SmartDomainEventListener;
+import cheetah.event.*;
+import cheetah.exceptions.ErrorEventTypeException;
 import cheetah.plugin.Interceptor;
 import cheetah.plugin.InterceptorChain;
+import cheetah.util.CollectionUtils;
 import cheetah.util.ObjectUtils;
 
-import java.util.EventListener;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,15 +17,20 @@ import java.util.stream.Collectors;
 /**
  * Created by Max on 2016/1/29.
  */
-public class Distributor implements Startable, Worker {
+public class Distributor implements Startable, Governor {
+    public enum STATE {
+        NEW, RUNNING, STOP
+    }
 
     private ExecutorService executorService;
     private Configuration configuration;
     private final InterceptorChain interceptorChain = new InterceptorChain();
     private final Map<ListenerCacheKey, List<EventListener>> listenerCache = new ConcurrentHashMap<>();
     private Handlers handlers;
+    private volatile STATE state;
 
     public Distributor() {
+        this.state = STATE.NEW;
         this.executorService = Executors.newCachedThreadPool();
     }
 
@@ -36,17 +39,20 @@ public class Distributor implements Startable, Worker {
         if (Objects.nonNull(configuration)) {
             if (configuration.hasPlugin())
                 initializesInterceptor(interceptorChain);
-        }
+        } else
+            configuration = new Configuration();
 
         if (Objects.isNull(executorService)) {
             this.executorService = Executors.newCachedThreadPool();
         }
 
         handlers = new Handlers(this.executorService, this.interceptorChain);
+        this.state = STATE.RUNNING;
     }
 
     @Override
     public void stop() {
+        checkup();
         while (!executorService.isShutdown()) {
             try {
                 executorService.shutdownNow();
@@ -55,29 +61,73 @@ public class Distributor implements Startable, Worker {
             }
         }
         executorService = null;
+        this.state = STATE.STOP;
+    }
+
+    public void checkup() {
+        if (!this.state.equals(STATE.RUNNING))
+            throw new DistributorStateException();
     }
 
     @Override
     public EventResult allot(EventMessage eventMessage) {
+        checkup();
         Event event = eventMessage.getEvent();
-        List<EventListener> smel = getSmartEventListener(event);
-        boolean hasCache = !smel.isEmpty();
-        if (!hasCache) {
-            List<EventListener> eventListeners = this.configuration.getEventListeners().
-                    stream().filter(eventListener ->
-                    SmartDomainEventListener.class.isAssignableFrom(eventListener.getClass()))
-                    .collect(Collectors.toList());
-            this.listenerCache.put(ListenerCacheKey.generator(event.getClass(), event.getSource().getClass()), eventListeners);
-        }
-        smel = getSmartEventListener(event);
-        return this.handlers.handle(eventMessage, smel);
+        List<EventListener> cacheListner = getSmartEventListenerCache(event);
+        boolean noCache = cacheListner.isEmpty();
+        if (noCache) {
+            if (DomainEvent.class.isAssignableFrom(eventMessage.getEvent().getClass())) {
+                List<EventListener> smartDomainEventListeners = this.configuration.getEventListeners().
+                        stream().filter(eventListener ->
+                        SmartDomainEventListener.class.isAssignableFrom(eventListener.getClass()))
+                        .filter(eventListener -> {
+                            SmartDomainEventListener listener = (SmartDomainEventListener) eventListener;
+                            boolean supportsEventType = listener.supportsEventType(eventMessage.getEvent().getClass());
+                            boolean supportsSourceType = listener.supportsSourceType(eventMessage.getEvent().getSource().getClass());
+                            return supportsEventType && supportsSourceType;
+                        }).collect(Collectors.toList());
+                if (!smartDomainEventListeners.isEmpty()) {
+                    this.listenerCache.put(ListenerCacheKey.generator(event.getClass(), event.getSource().getClass()), smartDomainEventListeners);
+                    return this.handlers.handle(eventMessage, smartDomainEventListeners);
+                } else {
+                    List<EventListener> listeners = this.configuration.getEventListeners().
+                            stream().filter(eventListener ->
+                            CollectionUtils.arrayToList(eventListener.getClass().getInterfaces())
+                                    .contains(DomainEventListener.class)).collect(Collectors.toList());
+                    this.listenerCache.put(ListenerCacheKey.generator(event.getClass(), event.getSource().getClass()), listeners);
+                    return this.handlers.handle(eventMessage, listeners);
+                }
+            } else if (ApplicationEvent.class.isAssignableFrom(eventMessage.getEvent().getClass())) {
+                List<EventListener> smartAppEventListeners = this.configuration.getEventListeners().
+                        stream().filter(eventListener ->
+                        SmartApplicationListener.class.isAssignableFrom(eventListener.getClass()))
+                        .filter(eventListener -> {
+                            SmartApplicationListener listener = (SmartApplicationListener) eventListener;
+                            boolean supportsEventType = listener.supportsEventType(eventMessage.getEvent().getClass());
+                            boolean supportsSourceType = listener.supportsSourceType(eventMessage.getEvent().getSource().getClass());
+                            return supportsEventType && supportsSourceType;
+                        }).collect(Collectors.toList());
+                this.listenerCache.put(ListenerCacheKey.generator(event.getClass(), event.getSource().getClass()), smartAppEventListeners);
+                if (!smartAppEventListeners.isEmpty())
+                    return this.handlers.handle(eventMessage, smartAppEventListeners);
+                else {
+                    List<EventListener> listeners = this.configuration.getEventListeners().
+                            stream().filter(eventListener ->
+                            CollectionUtils.arrayToList(eventListener.getClass().getInterfaces())
+                                    .contains(ApplicationListener.class)).collect(Collectors.toList());
+                    this.listenerCache.put(ListenerCacheKey.generator(event.getClass(), event.getSource().getClass()), listeners);
+                    return this.handlers.handle(eventMessage, listeners);
+                }
+            } else throw new ErrorEventTypeException();
+        } else
+            return this.handlers.handle(eventMessage, cacheListner);
     }
 
-    public List<EventListener> getSmartEventListener(Event event) {
+    public List<EventListener> getSmartEventListenerCache(Event event) {
         ListenerCacheKey key = ListenerCacheKey.generator(event.getClass(), event.getSource().getClass());
-        return this.listenerCache.get(key);
+        List<EventListener> listeners = this.listenerCache.get(key);
+        return listeners == null ? Collections.EMPTY_LIST : listeners;
     }
-
 
     public InterceptorChain initializesInterceptor(InterceptorChain chain) {
         Objects.requireNonNull(chain, "chain must not be null");

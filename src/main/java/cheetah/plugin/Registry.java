@@ -25,7 +25,10 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Intercepts {
-  Signature[] value();
-}
+public @interface Registry {
+  Class<?> type();
 
+  String method();
+
+  Class<?>[] args();
+}

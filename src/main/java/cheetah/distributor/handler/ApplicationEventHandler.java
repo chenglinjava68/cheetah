@@ -18,7 +18,7 @@ public class ApplicationEventHandler extends AbstractHandler {
     }
 
     @Override
-    protected CompletableFuture<Boolean> statefulHandle(Event event) {
+    public CompletableFuture<Boolean> statefulHandle(Event event) {
         return CompletableFuture.supplyAsync(() -> {
             ApplicationEvent applicationEvent = (ApplicationEvent) event;
             ApplicationListener<ApplicationEvent> listener = (ApplicationListener<ApplicationEvent>) this.getEventListener();
@@ -28,7 +28,7 @@ public class ApplicationEventHandler extends AbstractHandler {
     }
 
     @Override
-    protected void statelessNativeAsyncHandle(Event event) {
+    public void statelessNativeAsyncHandle(Event event) {
         getExecutorService().execute(() ->
             ((ApplicationListener<ApplicationEvent>) getEventListener())
                     .onApplicationEvent((ApplicationEvent) event)
@@ -36,7 +36,7 @@ public class ApplicationEventHandler extends AbstractHandler {
     }
 
     @Override
-    protected void statelessHandle(Event event) {
+    public void statelessHandle(Event event) {
 
     }
 

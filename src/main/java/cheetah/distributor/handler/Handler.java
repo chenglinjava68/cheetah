@@ -6,23 +6,50 @@ import java.util.concurrent.CompletableFuture;
 
 
 /**
- * 事件处理器接口
+ * 事件处理器
  * Created by Max on 2016/2/1.
  */
 public interface Handler {
+    /**
+     *
+     * @param eventMessage
+     */
+    void handle(EventMessage eventMessage);
 
-    void handle(EventMessage event);
+    /**
+     *
+     * @param eventMessage
+     * @param nativeAsync
+     */
+    void handle(EventMessage eventMessage, boolean nativeAsync);
 
-    void handle(EventMessage event, boolean nativeAsync);
+    /**
+     *
+     * @param eventMessage
+     * @param callback
+     */
+    void handle(EventMessage eventMessage, HandleExceptionCallback callback);
 
-    void handle(EventMessage event, HandleExceptionCallback callback);
-
+    /**
+     *
+     * @return
+     */
     CompletableFuture<Boolean> getFuture();
 
+    /**
+     *
+     */
     void removeFuture();
 
+    /**
+     * handler处理类型
+     * UNIMPEDED：无状态无锁
+     * JDK_UNIMPEDED：原生jdk并发线程池
+     * STATE：有状态需要手动处理
+     * STATE_CALL_BACK：有状态通过回调函数做出处理
+     */
     enum ProcessMode {
-         NOSTATE(0), STATE(1);
+        UNIMPEDED(0), JDK_UNIMPEDED(1), STATE(2), STATE_CALL_BACK(3);
 
         private Integer code;
 
@@ -35,7 +62,7 @@ public interface Handler {
                 if(mode.code == code)
                     return mode;
             }
-            return NOSTATE;
+            return UNIMPEDED;
         }
     }
 }

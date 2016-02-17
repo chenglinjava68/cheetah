@@ -21,14 +21,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author Clinton Begin
+ * @author Max
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Signature {
-  Class<?> type();
-
-  String method();
-
-  Class<?>[] args();
+public @interface Plugins {
+  Registry[] value();
 }
+

@@ -10,18 +10,18 @@ import java.util.concurrent.ExecutorService;
  * Created by Max on 2016/2/1.
  */
 public class DomainEventHandler extends AbstractHandler {
-
     public DomainEventHandler(EventListener eventListener, ExecutorService executorService) {
         super(eventListener, executorService);
     }
 
+
     @Override
-    protected void statelessHandle(Event event) {
+    public void statelessHandle(Event event) {
 
     }
 
     @Override
-    protected CompletableFuture<Boolean> statefulHandle(Event event) {
+    public CompletableFuture<Boolean> statefulHandle(Event event) {
         return CompletableFuture.supplyAsync(() -> {
             DomainEventListener<DomainEvent> listener = (DomainEventListener<DomainEvent>) this.getEventListener();
             DomainEvent domainEvent = (DomainEvent) event;
@@ -31,7 +31,7 @@ public class DomainEventHandler extends AbstractHandler {
     }
 
     @Override
-    protected void statelessNativeAsyncHandle(Event event) {
+    public void statelessNativeAsyncHandle(Event event) {
         getExecutorService().execute(() ->
                 ((DomainEventListener<DomainEvent>)getEventListener())
                         .onDomainEvent((DomainEvent) event));

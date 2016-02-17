@@ -15,6 +15,11 @@ public class Configuration {
     private List<Interceptor> plugins;
     private List<EventListener> eventListeners;
 
+    public Configuration() {
+        this.plugins = Collections.EMPTY_LIST;
+        this.eventListeners = Collections.EMPTY_LIST;
+    }
+
     public List<Interceptor> getPlugins() {
         return Collections.unmodifiableList(plugins);
     }

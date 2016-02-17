@@ -1,6 +1,7 @@
 package cheetah.distributor.handler;
 
 import cheetah.distributor.EventMessage;
+import cheetah.plugin.InterceptorChain;
 import cheetah.util.ObjectUtils;
 
 import java.util.concurrent.CompletableFuture;
@@ -10,9 +11,15 @@ import java.util.concurrent.CompletableFuture;
  */
 public class HandlerAdapter implements Handler {
     private Handler adaptee;
+    private InterceptorChain interceptorChain;
 
-    public HandlerAdapter(Handler adaptee) {
-        this.adaptee = adaptee;
+    public HandlerAdapter(Handler adaptee, InterceptorChain interceptorChain) {
+        this.interceptorChain = interceptorChain;
+        interceptors(adaptee, interceptorChain);
+    }
+
+    private void interceptors(Handler adaptee, InterceptorChain interceptorChain) {
+        this.adaptee = (Handler) interceptorChain.pluginAll(adaptee);
     }
 
     @Override

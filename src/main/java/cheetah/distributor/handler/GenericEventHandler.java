@@ -11,13 +11,12 @@ import java.util.concurrent.ExecutorService;
  * Created by Max on 2016/2/1.
  */
 public class GenericEventHandler extends AbstractHandler {
-
     public GenericEventHandler(EventListener eventListener, ExecutorService executorService) {
         super(eventListener, executorService);
     }
 
     @Override
-    protected CompletableFuture<Boolean> statefulHandle(Event event) {
+    public CompletableFuture<Boolean> statefulHandle(Event event) {
         return CompletableFuture.supplyAsync(() -> {
             if (this.getEventListener().getClass().isAssignableFrom(ApplicationListener.class)) {
                 ApplicationListener applicationListener = (ApplicationListener) this.getEventListener();
@@ -35,7 +34,7 @@ public class GenericEventHandler extends AbstractHandler {
     }
 
     @Override
-    protected void statelessNativeAsyncHandle(Event event) {
+    public void statelessNativeAsyncHandle(Event event) {
         if (this.getEventListener().getClass().isAssignableFrom(ApplicationListener.class))
             getExecutorService().execute(() ->
                     ((ApplicationListener<ApplicationEvent>) this.getEventListener())
@@ -50,7 +49,7 @@ public class GenericEventHandler extends AbstractHandler {
     }
 
     @Override
-    protected void statelessHandle(Event event) {
+    public void statelessHandle(Event event) {
 
     }
 }
