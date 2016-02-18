@@ -48,7 +48,7 @@ public class Distributor implements Startable, Governor {
             this.executorService = Executors.newCachedThreadPool();
         }
 
-        handlers = new Handlers(this.executorService, this.interceptorChain);
+        registrationHandlers();
         this.state = STATE.RUNNING;
     }
 
@@ -135,6 +135,10 @@ public class Distributor implements Startable, Governor {
         Assert.notNull(key, "key must not be null");
         Assert.notNull(collector, "collector must not be null");
         collectors.put(key, collector);
+    }
+
+    public void registrationHandlers() {
+        new Handlers(executorService, interceptorChain);
     }
 
     @Override

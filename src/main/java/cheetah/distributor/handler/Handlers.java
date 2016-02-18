@@ -16,13 +16,13 @@ import java.util.concurrent.ExecutorService;
  * Created by Max on 2016/2/1.
  */
 public class Handlers {
-    private final ExecutorService executorService;
     private final InterceptorChain interceptorChain;
     private final Map<HandlerCacheKey, Handler> handlerCacheKeyMap = new HashMap<>();
+    private final HandlerFactory handlerFactory;
 
     public Handlers(ExecutorService executorService, InterceptorChain interceptorChain) {
-        this.executorService = executorService;
         this.interceptorChain = interceptorChain;
+        this.handlerFactory = new HandlerFactory(executorService);
     }
 
     /**
@@ -34,46 +34,53 @@ public class Handlers {
      */
     public EventResult handle(EventMessage eventMessage, List<EventListener> eventListeners) {
         boolean hasException = false;
-        List<Class<? extends EventListener>> exceptionListners = new ArrayList<>();
-        eventListeners.forEach(listener -> {
-            Handler handler = null;
-
-            switch (Handler.ProcessMode.formatFrom(eventMessage.getProcessMode())) {
-                case UNIMPEDED:
-                    handler = locklessStateless(eventMessage, listener);
-                    break;
-                case JDK_UNIMPEDED:
-                    handler = nativeStateless(eventMessage, listener);
-                    break;
-                case STATE:
-                    try {
-                        handler = stateful(eventMessage, listener);
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } finally {
-                        if (handler != null)
-                            handler.removeFuture();
-                    }
-                    break;
-                case STATE_CALL_BACK:
-                    try {
-                        handler = stateful(eventMessage, listener, ($exception, $eventMessage, exceptionObject, exceptionMessage) -> {
-                            interceptorChain.pluginAll(
-                                    new CallbackWrapper($exception, $eventMessage, exceptionObject, exceptionMessage));
-                        });
-                    } finally {
-                        if (handler != null)
-                            handler.removeFuture();
-                    }
-                    break;
-                default:
-                    throw new CheetahException("Process.Mode error, into the default mode");
-            }
-
-        });
+        List<Class<? extends EventListener>> exceptionListners = forEachHandle(eventMessage, eventListeners);
         return new EventResult(eventMessage.getEvent(), hasException, exceptionListners);
+    }
+
+    private List<Class<? extends EventListener>> forEachHandle(EventMessage eventMessage, List<EventListener> eventListeners) {
+        List<Class<? extends EventListener>> exceptionListners = new ArrayList<>();
+        eventListeners.forEach(listener ->
+                        doHandle(eventMessage, listener)
+        );
+        return exceptionListners;
+    }
+
+    private void doHandle(EventMessage eventMessage, EventListener listener) {
+        Handler handler = null;
+        switch (Handler.ProcessMode.formatFrom(eventMessage.getProcessMode())) {
+            case UNIMPEDED:
+                locklessStateless(eventMessage, listener);
+                break;
+            case JDK_UNIMPEDED:
+                nativeStateless(eventMessage, listener);
+                break;
+            case STATE:
+                try {
+                    handler = stateful(eventMessage, listener);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (handler != null)
+                        handler.removeFuture();
+                }
+                break;
+            case STATE_CALL_BACK:
+                try {
+                    handler = stateful(eventMessage, listener, ($exception, $eventMessage, exceptionObject, exceptionMessage) -> {
+                        interceptorChain.pluginAll(
+                                new CallbackWrapper($exception, $eventMessage, exceptionObject, exceptionMessage));
+                    });
+                } finally {
+                    if (handler != null)
+                        handler.removeFuture();
+                }
+                break;
+            default:
+                throw new CheetahException("Process.Mode error, into the default mode");
+        }
     }
 
     /**
@@ -145,19 +152,19 @@ public class Handlers {
         Handler handler;
         switch (type) {
             case GENERIC:
-                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService), interceptorChain);
+                handler = new HandlerAdapter(handlerFactory.createApplicationEventHandler(listener), interceptorChain);
                 break;
             case APP:
-                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService), interceptorChain);
+                handler = new HandlerAdapter(handlerFactory.createApplicationEventHandler(listener), interceptorChain);
                 break;
             case DOMAIN:
-                handler = new HandlerAdapter(HandlerFactory.createDomainEventHandler(listener, executorService), interceptorChain);
+                handler = new HandlerAdapter(handlerFactory.createDomainEventHandler(listener), interceptorChain);
                 break;
             case SMART_APP:
-                handler = new HandlerAdapter(HandlerFactory.createApplicationEventHandler(listener, executorService), interceptorChain);
+                handler = new HandlerAdapter(handlerFactory.createApplicationEventHandler(listener), interceptorChain);
                 break;
             case SMART_DOMAIN:
-                handler = new HandlerAdapter(HandlerFactory.createDomainEventHandler(listener, executorService), interceptorChain);
+                handler = new HandlerAdapter(handlerFactory.createDomainEventHandler(listener), interceptorChain);
                 break;
             default:
                 throw new HandlerTypedNotFoundException();

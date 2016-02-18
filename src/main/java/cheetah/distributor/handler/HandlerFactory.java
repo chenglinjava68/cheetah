@@ -6,19 +6,22 @@ import java.util.concurrent.ExecutorService;
 /**
  * Created by Max on 2016/2/2.
  */
-public abstract class HandlerFactory {
-    private HandlerFactory() {
+public class HandlerFactory {
+    private ExecutorService executor;
+
+    public HandlerFactory(ExecutorService executor) {
+        this.executor = executor;
     }
 
-    public static Handler createDomainEventHandler(EventListener eventListener, ExecutorService executorService) {
-        return new DomainEventHandler(eventListener, executorService);
+    public Handler createDomainEventHandler(EventListener eventListener) {
+        return new DomainEventHandler(eventListener, executor);
     }
 
-    public static Handler createApplicationEventHandler(EventListener eventListener, ExecutorService executorService) {
-        return new ApplicationEventHandler(eventListener, executorService);
+    public Handler createApplicationEventHandler(EventListener eventListener) {
+        return new ApplicationEventHandler(eventListener, executor);
     }
 
-    public static Handler createGenericEventHandler(EventListener eventListener, ExecutorService executorService) {
-        return new GenericEventHandler(eventListener, executorService);
+    public Handler createGenericEventHandler(EventListener eventListener) {
+        return new GenericEventHandler(eventListener, executor);
     }
 }
