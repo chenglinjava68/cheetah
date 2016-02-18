@@ -137,10 +137,6 @@ public class Distributor implements Startable, Governor {
         collectors.put(key, collector);
     }
 
-    public void registrationHandlers() {
-        new Handlers(executorService, interceptorChain);
-    }
-
     @Override
     public Collector arrangeCollector(Class<? extends Event> collectorType) {
         Assert.notNull(collectorType, "collectorType must not be null");
@@ -168,6 +164,9 @@ public class Distributor implements Startable, Governor {
         return chain;
     }
 
+    private void registrationHandlers() {
+        this.handlers = new Handlers(executorService, interceptorChain);
+    }
 
     /**
      * getter and setter
