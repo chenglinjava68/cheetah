@@ -1,6 +1,5 @@
 package cheetah.distributor;
 
-import cheetah.distributor.handler.Handler;
 import cheetah.event.Event;
 import cheetah.util.IDGenerator;
 
@@ -10,15 +9,24 @@ import cheetah.util.IDGenerator;
 public class EventMessage {
     private String id;
     private Event event;
-    private Handler.ProcessMode mode;
+    private int processMode;
+    private boolean fisrtWin;
 
-    public EventMessage() {
+    EventMessage() {
         this.id = IDGenerator.generateId();
     }
 
-    public EventMessage(Event event, Handler.ProcessMode mode) {
+    public EventMessage(Builder builder) {
+        this.id = IDGenerator.generateId();
+        this.event = builder.event;
+        this.processMode = builder.processMode;
+        this.fisrtWin = builder.fisrtWin;
+    }
+
+    public EventMessage(Event event, int processMode) {
+        this.id = IDGenerator.generateId();
         this.event = event;
-        this.mode = mode;
+        this.processMode = processMode;
     }
 
     public String getId() {
@@ -33,11 +41,48 @@ public class EventMessage {
         this.event = event;
     }
 
-    public void setMode(Handler.ProcessMode mode) {
-        this.mode = mode;
+    public int getProcessMode() {
+        return processMode;
     }
 
-    public Handler.ProcessMode getMode() {
-        return mode;
+    public void setProcessMode(int processMode) {
+        this.processMode = processMode;
+    }
+
+    public boolean isFisrtWin() {
+        return fisrtWin;
+    }
+
+    public void setFisrtWin(boolean fisrtWin) {
+        this.fisrtWin = fisrtWin;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        Event event;
+        int processMode;
+        boolean fisrtWin;
+
+        public Builder setEvent(Event event) {
+            this.event = event;
+            return this;
+        }
+
+        public Builder setProcessMode(int processMode) {
+            this.processMode = processMode;
+            return this;
+        }
+
+        public Builder setFisrtWin(boolean fisrtWin) {
+            this.fisrtWin = fisrtWin;
+            return this;
+        }
+
+        public EventMessage build() {
+            return new EventMessage(this);
+        }
     }
 }

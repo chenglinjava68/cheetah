@@ -49,7 +49,7 @@ public interface Handler {
      * STATE_CALL_BACK：有状态通过回调函数做出处理
      */
     enum ProcessMode {
-        UNIMPEDED(0), JDK_UNIMPEDED(1), STATE(2), STATE_CALL_BACK(3);
+        UNIMPEDED(0), @Deprecated JDK_UNIMPEDED(1), STATE(2), STATE_CALL_BACK(3);
 
         private Integer code;
 
@@ -57,7 +57,7 @@ public interface Handler {
             this.code = code;
         }
 
-        public ProcessMode formatFrom(Integer code) {
+        public static ProcessMode formatFrom(Integer code) {
             for(ProcessMode mode : ProcessMode.values()) {
                 if(mode.code == code)
                     return mode;

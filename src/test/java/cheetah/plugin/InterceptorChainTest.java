@@ -1,8 +1,8 @@
 package cheetah.plugin;
 
+import cheetah.distributor.Collector;
 import cheetah.distributor.EventMessage;
 import cheetah.distributor.handler.ApplicationEventHandler;
-import cheetah.distributor.handler.Handler;
 import cheetah.event.ApplicationEvent;
 import cheetah.event.ApplicationListener;
 import cheetah.event.Event;
@@ -23,7 +23,7 @@ public class InterceptorChainTest {
                         System.out.println("a")
                 , Executors.newCachedThreadPool()));
         handler.handle(new EventMessage(new ApplicationEvent("abc") {
-        }, Handler.ProcessMode.STATE_CALL_BACK), true);
+        }, Collector.STATE_CALL_BACK), true);
     }
 
     @Plugins({@Registry(type = ApplicationEventHandler.class, method = "statelessNativeAsyncHandle",

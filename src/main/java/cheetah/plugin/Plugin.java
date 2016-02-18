@@ -37,13 +37,11 @@ public class Plugin implements MethodInterceptor {
 
     private Plugin(Interceptor interceptor) {
         this.interceptor = interceptor;
-        this.registryMap = getSignatureMap(interceptor);
+        this.registryMap = getRegistryMap(interceptor);
     }
 
-
-
     public static Object wrapHandler(Object target, Interceptor interceptor) {
-        Enhancer enhancer = cglibProxy(target, interceptor);
+        Enhancer enhancer = createEnhancer(target, interceptor);
         // 创建代理对象
         if (target instanceof AbstractHandler)
             return enhancer.create(new Class<?>[]{EventListener.class, ExecutorService.class}, new Object[]{((AbstractHandler) target).getEventListener(), ((AbstractHandler) target).getExecutorService()});
@@ -52,19 +50,19 @@ public class Plugin implements MethodInterceptor {
 
     public static Object wrap(Object target, Interceptor interceptor, Structure structure) {
         Assert.notNull(structure);
-        Enhancer enhancer = cglibProxy(target, interceptor);
+        Enhancer enhancer = createEnhancer(target, interceptor);
         // 创建代理对象
         return enhancer.create(structure.argumentTypes, structure.arguments);
     }
 
     public static Object wrap(Object target, Interceptor interceptor) {
-        Enhancer enhancer = cglibProxy(target, interceptor);
+        Enhancer enhancer = createEnhancer(target, interceptor);
         // 创建代理对象
         return enhancer.create();
     }
 
 
-    private static Enhancer cglibProxy(Object target, Interceptor interceptor) {
+    private static Enhancer createEnhancer(Object target, Interceptor interceptor) {
         Assert.notNull(target);
         Assert.notNull(interceptor);
         Class<?> type = target.getClass();
@@ -91,7 +89,7 @@ public class Plugin implements MethodInterceptor {
         }
     }
 
-    private Map<Class<?>, Set<Method>> getSignatureMap(Interceptor interceptor) {
+    private Map<Class<?>, Set<Method>> getRegistryMap(Interceptor interceptor) {
         Plugins interceptsAnnotation = interceptor.getClass().getAnnotation(Plugins.class);
         // issue #251
         if (interceptsAnnotation == null) {

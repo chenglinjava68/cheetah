@@ -15,11 +15,12 @@ http://www.springframework.org/schema/aop
     <context:annotation-config/>
     <context:property-placeholder location="classpath*:*.properties" ignore-unresolvable="true"/>
 
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
     <aop:aspectj-autoproxy/>
 
     <!--<jpa:repositories base-package="cheetah.repository"  repository-impl-postfix="Impl" entity-manager-factory-ref="em"-->
                       <!--transaction-manager-ref="transactionManager"/>-->
+<!--
 
     <bean id="em" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
@@ -47,10 +48,33 @@ http://www.springframework.org/schema/aop
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
     </bean>
+-->
 
     <bean id="beanFactoryProvider" class="cheetah.container.spring.SpringBeanFactoryProvider"/>
 
-    <bean id="personQueryRepo" class="cheetah.repository.PersonQueryRepoImpl"/>
-    <bean id="chunkRepo" class="cheetah.repository.PersonChunkRepoImpl"/>
-    <bean id="personRepo" class="cheetah.repository.PersonRepoImpl"/>
+    <bean id="distributor" class="cheetah.distributor.Distributor" init-method="start" destroy-method="stop">
+        <property name="configuration" ref="configuration"/>
+    </bean>
+
+    <bean id="domainEventCollctor" class="cheetah.distributor.ApplicationEventCollector">
+        <constructor-arg index="0" ref="regulator"/>
+    </bean>
+
+    <bean id="appEventCollctor" class="cheetah.distributor.DomainEventCollector">
+        <constructor-arg index="0" ref="regulator"/>
+    </bean>
+
+    <bean id="regulator" class="cheetah.distributor.Regulator">
+        <constructor-arg index="0" ref="distributor"/>
+    </bean>
+
+    <bean id="configuration" class="cheetah.distributor.Configuration">
+        <property name="eventListeners">
+            <list>
+                <bean class="cheetah.distributor.HandlerTest.SmartApplicationListenerTest"/>
+                <bean class="cheetah.distributor.HandlerTest.ApplicationListenerTest"/>
+            </list>
+        </property>
+    </bean>
+
 </beans>

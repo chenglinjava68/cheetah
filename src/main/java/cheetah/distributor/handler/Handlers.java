@@ -38,7 +38,7 @@ public class Handlers {
         eventListeners.forEach(listener -> {
             Handler handler = null;
 
-            switch (eventMessage.getMode()) {
+            switch (Handler.ProcessMode.formatFrom(eventMessage.getProcessMode())) {
                 case UNIMPEDED:
                     handler = locklessStateless(eventMessage, listener);
                     break;

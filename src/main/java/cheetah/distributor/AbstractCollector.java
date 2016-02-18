@@ -5,14 +5,13 @@ package cheetah.distributor;
  * Created by Max on 2016/2/3.
  */
 public abstract class AbstractCollector implements Collector {
-    private final Conveyor conveyor;
+    private final Regulator regulator;
 
-    public AbstractCollector(Conveyor conveyor) {
-        this.conveyor = conveyor;
+    public AbstractCollector(Regulator regulator) {
+        this.regulator = regulator;
     }
 
-    protected Conveyor getConveyor() {
-        return conveyor;
+    public Regulator getRegulator() {
+        return regulator;
     }
-
 }

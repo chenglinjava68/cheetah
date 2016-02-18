@@ -1,14 +1,13 @@
 package cheetah.distributor;
 
-import cheetah.distributor.handler.Handler;
 import cheetah.distributor.handler.HandlerTyped;
-import cheetah.event.ApplicationEvent;
-import cheetah.event.ApplicationListener;
-import cheetah.event.DomainEventListener;
-import cheetah.event.SmartApplicationListener;
+import cheetah.event.*;
 import cheetah.logger.Debug;
 import cheetah.util.ArithUtil;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicLong;
@@ -16,7 +15,10 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Created by Max on 2016/2/2.
  */
+@ContextConfiguration("classpath:META-INF/application.xml")
+@RunWith(SpringJUnit4ClassRunner.class)
 public class HandlerTest {
+
     @Test
     public void log() {
         Debug.log(Distributor.class, "a");
@@ -40,7 +42,7 @@ public class HandlerTest {
         distributor.setConfiguration(configuration);
         distributor.start();
 
-        distributor.allot(new EventMessage(new ApplicationEventTest("213"), Handler.ProcessMode.STATE_CALL_BACK));
+        distributor.allot(new EventMessage(new ApplicationEventTest("213"), Collector.STATE_CALL_BACK));
     }
 
     static final AtomicLong atomicLong = new AtomicLong();
@@ -49,6 +51,10 @@ public class HandlerTest {
     public void allot2() throws InterruptedException {
         Distributor distributor = new Distributor();
         Configuration configuration = new Configuration();
+        Regulator regulator = new Regulator(distributor);
+        ApplicationEventCollector collector = new ApplicationEventCollector(regulator);
+        distributor.registrationCollector(ApplicationEvent.class, collector);
+
         ArrayList listeners = new ArrayList();
         listeners.add(new SmartApplicationListenerTest());
         listeners.add(new ApplicationListenerTest());
@@ -56,13 +62,27 @@ public class HandlerTest {
         configuration.setEventListeners(listeners);
         distributor.setConfiguration(configuration);
         distributor.start();
+
         while (true) {
             while (Thread.activeCount() < 1200) {
                 new Thread(() -> {
                     while (true) {
-                        distributor.allot(new EventMessage(
-                                new ApplicationEventTest("213"), Handler.ProcessMode.STATE
-                        ));
+                        ApplicationEventEmitter.launch(
+                                new ApplicationEventTest("213")
+                        );
+                    }
+                }).start();
+            }
+        }
+    }
+
+    @Test
+    public void launch() throws InterruptedException {
+        while (true) {
+            while (Thread.activeCount() < 1200) {
+                new Thread(() -> {
+                    while (true) {
+                        ApplicationEventEmitter.launch(new ApplicationEventTest("213"), Collector.STATE);
                     }
                 }).start();
             }
@@ -115,7 +135,7 @@ public class HandlerTest {
 
         @Override
         public void onApplicationEvent(ApplicationEventTest event) {
-            System.out.println("smart-> "+atomicLong.incrementAndGet());
+            System.out.println("smart-> " + atomicLong.incrementAndGet());
         }
     }
 }

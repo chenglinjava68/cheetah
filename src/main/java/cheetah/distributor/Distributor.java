@@ -5,6 +5,7 @@ import cheetah.event.*;
 import cheetah.exceptions.ErrorEventTypeException;
 import cheetah.plugin.Interceptor;
 import cheetah.plugin.InterceptorChain;
+import cheetah.util.Assert;
 import cheetah.util.CollectionUtils;
 import cheetah.util.ObjectUtils;
 
@@ -28,6 +29,7 @@ public class Distributor implements Startable, Governor {
     private final Map<ListenerCacheKey, List<EventListener>> listenerCache = new ConcurrentHashMap<>();
     private Handlers handlers;
     private volatile STATE state;
+    private final Map<Class<? extends Event>, Collector> collectors = new ConcurrentHashMap<>();
 
     public Distributor() {
         this.state = STATE.NEW;
@@ -73,7 +75,8 @@ public class Distributor implements Startable, Governor {
     public EventResult allot(EventMessage eventMessage) {
         checkup();
         Event event = eventMessage.getEvent();
-        List<EventListener> cacheListner = getSmartEventListenerCache(event);
+        ListenerCacheKey cacheKey = ListenerCacheKey.generator(event.getClass(), event.getSource().getClass());
+        List<EventListener> cacheListner = getSmartEventListenerFromCache(cacheKey);
         boolean noCache = cacheListner.isEmpty();
         if (noCache) {
             if (DomainEvent.class.isAssignableFrom(eventMessage.getEvent().getClass())) {
@@ -127,9 +130,30 @@ public class Distributor implements Startable, Governor {
             return this.handlers.handle(eventMessage, cacheListner);
     }
 
-    public List<EventListener> getSmartEventListenerCache(Event event) {
-        ListenerCacheKey key = ListenerCacheKey.generator(event.getClass(), event.getSource().getClass());
-        List<EventListener> listeners = this.listenerCache.get(key);
+    @Override
+    public void registrationCollector(Class<? extends Event> key, Collector collector) {
+        Assert.notNull(key, "key must not be null");
+        Assert.notNull(collector, "collector must not be null");
+        collectors.put(key, collector);
+    }
+
+    @Override
+    public Collector arrangeCollector(Class<? extends Event> collectorType) {
+        Assert.notNull(collectorType, "collectorType must not be null");
+        return collectors.get(collectorType);
+    }
+
+    @Override
+    public void addListenerCache(ListenerCacheKey cacheKey, List<EventListener> eventListeners) {
+        Assert.notNull(cacheKey, "cacheKey must not be null");
+        Assert.notEmpty(eventListeners, "eventListeners must not be null");
+        this.listenerCache.put(cacheKey, eventListeners);
+    }
+
+    @Override
+    public List<EventListener> getSmartEventListenerFromCache(ListenerCacheKey cacheKey) {
+        Assert.notNull(cacheKey, "cacheKey must not be null");
+        List<EventListener> listeners = this.listenerCache.get(cacheKey);
         return listeners == null ? Collections.EMPTY_LIST : listeners;
     }
 
@@ -139,6 +163,7 @@ public class Distributor implements Startable, Governor {
             chain.addInterceptor(plugin);
         return chain;
     }
+
 
     /**
      * getter and setter
@@ -151,7 +176,11 @@ public class Distributor implements Startable, Governor {
         this.configuration = configuration;
     }
 
-    private static class ListenerCacheKey {
+    Configuration getConfiguration() {
+        return configuration;
+    }
+
+    public static class ListenerCacheKey {
         private final Class<?> eventType;
         private final Class<?> sourceType;
 
