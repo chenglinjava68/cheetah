@@ -1,15 +1,17 @@
-package cheetah.distributor;
+package cheetah.distributor.core;
 
+import cheetah.distributor.EventMessage;
+import cheetah.distributor.Regulator;
 import cheetah.distributor.event.AbstractCollector;
 import cheetah.distributor.event.Collector;
 import cheetah.distributor.event.Event;
 
 /**
- * Created by Max on 2016/2/3.
+ * Created by Max on 2016/2/17.
  */
-public class ApplicationEventCollector extends AbstractCollector {
+public class DomainEventCollector extends AbstractCollector {
 
-    public ApplicationEventCollector(Regulator regulator) {
+    public DomainEventCollector(Regulator regulator) {
         super(regulator);
     }
 
@@ -32,5 +34,6 @@ public class ApplicationEventCollector extends AbstractCollector {
                 .build();
         getRegulator().delivery(message);
     }
+
 
 }

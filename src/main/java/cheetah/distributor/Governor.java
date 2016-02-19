@@ -1,5 +1,6 @@
 package cheetah.distributor;
 
+import cheetah.distributor.core.Distributor;
 import cheetah.distributor.event.Collector;
 import cheetah.distributor.event.Event;
 

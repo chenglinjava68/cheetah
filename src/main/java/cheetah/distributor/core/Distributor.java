@@ -1,5 +1,6 @@
-package cheetah.distributor;
+package cheetah.distributor.core;
 
+import cheetah.distributor.*;
 import cheetah.distributor.handler.Handlers;
 import cheetah.distributor.event.*;
 import cheetah.plugin.Interceptor;

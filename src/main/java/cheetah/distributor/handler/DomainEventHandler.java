@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
  */
 public class DomainEventHandler extends AbstractHandler {
     public DomainEventHandler(EventListener eventListener, ExecutorService executorService) {
-        super(eventListener, executorService);
+        super(eventListener, executorService, executor);
     }
 
 

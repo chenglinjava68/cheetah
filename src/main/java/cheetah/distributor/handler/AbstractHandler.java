@@ -2,6 +2,7 @@ package cheetah.distributor.handler;
 
 import cheetah.distributor.EventMessage;
 import cheetah.distributor.event.Event;
+import cheetah.distributor.executor.Executor;
 import cheetah.util.Assert;
 
 import java.util.EventListener;
@@ -15,11 +16,14 @@ import java.util.concurrent.ExecutorService;
 public abstract class AbstractHandler implements Handler {
     private EventListener eventListener;
     private volatile ExecutorService executorService;
+    private final Executor executor;
     private static final ThreadLocal<CompletableFuture<Boolean>> futures = new ThreadLocal<>();
 
-    public AbstractHandler(EventListener eventListener, ExecutorService executorService) {
+    public AbstractHandler(EventListener eventListener, ExecutorService executorService, Executor executor) {
+        Assert.notNull(executor, "executor must not be null");
         Assert.notNull(eventListener, "eventListener must not be null");
         Assert.notNull(executorService, "executorService must not be null");
+        this.executor = executor;
         this.eventListener = eventListener;
         this.executorService = executorService;
     }

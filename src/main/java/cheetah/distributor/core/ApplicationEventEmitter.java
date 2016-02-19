@@ -1,4 +1,4 @@
-package cheetah.distributor;
+package cheetah.distributor.core;
 
 import cheetah.container.spring.SpringBeanFactory;
 import cheetah.distributor.event.ApplicationEvent;

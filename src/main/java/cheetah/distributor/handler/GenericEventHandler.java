@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
  */
 public class GenericEventHandler extends AbstractHandler {
     public GenericEventHandler(EventListener eventListener, ExecutorService executorService) {
-        super(eventListener, executorService);
+        super(eventListener, executorService, executor);
     }
 
     @Override

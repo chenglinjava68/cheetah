@@ -1,5 +1,7 @@
 package cheetah.distributor;
 
+import cheetah.distributor.core.Distributor;
+
 /**
  * Created by Max on 2016/2/17.
  */
