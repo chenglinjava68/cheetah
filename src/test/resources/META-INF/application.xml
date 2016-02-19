@@ -53,7 +53,16 @@ http://www.springframework.org/schema/aop
     <bean id="beanFactoryProvider" class="cheetah.container.spring.SpringBeanFactoryProvider"/>
 
     <bean id="distributor" class="cheetah.distributor.Distributor" init-method="start" destroy-method="stop">
-        <property name="configuration" ref="configuration"/>
+        <property name="configuration">
+            <bean class="cheetah.distributor.Configuration">
+                <property name="eventListeners">
+                    <list>
+                        <bean class="cheetah.distributor.HandlerTest.SmartApplicationListenerTest"/>
+                        <bean class="cheetah.distributor.HandlerTest.ApplicationListenerTest"/>
+                    </list>
+                </property>
+            </bean>
+        </property>
     </bean>
 
     <bean id="domainEventCollctor" class="cheetah.distributor.ApplicationEventCollector">
@@ -66,15 +75,6 @@ http://www.springframework.org/schema/aop
 
     <bean id="regulator" class="cheetah.distributor.Regulator">
         <constructor-arg index="0" ref="distributor"/>
-    </bean>
-
-    <bean id="configuration" class="cheetah.distributor.Configuration">
-        <property name="eventListeners">
-            <list>
-                <bean class="cheetah.distributor.HandlerTest.SmartApplicationListenerTest"/>
-                <bean class="cheetah.distributor.HandlerTest.ApplicationListenerTest"/>
-            </list>
-        </property>
     </bean>
 
 </beans>
