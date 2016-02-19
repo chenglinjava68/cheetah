@@ -1,4 +1,4 @@
-package cheetah.exceptions;
+package cheetah.distributor.handler;
 
 import cheetah.exceptions.CheetahException;
 

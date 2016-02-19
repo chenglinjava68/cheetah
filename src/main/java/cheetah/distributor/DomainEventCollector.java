@@ -1,8 +1,8 @@
 package cheetah.distributor;
 
-import cheetah.event.AbstractCollector;
-import cheetah.event.Collector;
-import cheetah.event.Event;
+import cheetah.distributor.event.AbstractCollector;
+import cheetah.distributor.event.Collector;
+import cheetah.distributor.event.Event;
 
 /**
  * Created by Max on 2016/2/17.

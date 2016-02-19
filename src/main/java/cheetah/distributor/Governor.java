@@ -1,7 +1,7 @@
 package cheetah.distributor;
 
-import cheetah.event.Collector;
-import cheetah.event.Event;
+import cheetah.distributor.event.Collector;
+import cheetah.distributor.event.Event;
 
 import java.util.EventListener;
 import java.util.List;

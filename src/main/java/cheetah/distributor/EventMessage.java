@@ -1,6 +1,6 @@
 package cheetah.distributor;
 
-import cheetah.event.Event;
+import cheetah.distributor.event.Event;
 import cheetah.util.IDGenerator;
 
 /**

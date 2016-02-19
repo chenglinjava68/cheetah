@@ -1,6 +1,4 @@
-package cheetah.event;
-
-import cheetah.event.Event;
+package cheetah.distributor.event;
 
 /**
  * Created by Max on 2016/2/1.

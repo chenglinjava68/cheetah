@@ -1,7 +1,7 @@
 package cheetah.distributor.handler;
 
 import cheetah.distributor.EventMessage;
-import cheetah.event.Event;
+import cheetah.distributor.event.Event;
 import cheetah.util.Assert;
 
 import java.util.EventListener;

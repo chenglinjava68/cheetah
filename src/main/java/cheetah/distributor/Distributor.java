@@ -1,8 +1,7 @@
 package cheetah.distributor;
 
 import cheetah.distributor.handler.Handlers;
-import cheetah.event.*;
-import cheetah.exceptions.ErrorEventTypeException;
+import cheetah.distributor.event.*;
 import cheetah.plugin.Interceptor;
 import cheetah.plugin.InterceptorChain;
 import cheetah.util.Assert;

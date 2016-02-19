@@ -3,7 +3,6 @@ package cheetah.distributor.handler;
 import cheetah.distributor.EventMessage;
 import cheetah.distributor.EventResult;
 import cheetah.exceptions.CheetahException;
-import cheetah.exceptions.HandlerTypedNotFoundException;
 import cheetah.plugin.InterceptorChain;
 import cheetah.util.ObjectUtils;
 

@@ -1,4 +1,4 @@
-package cheetah.event;
+package cheetah.distributor.event;
 
 import java.util.EventListener;
 

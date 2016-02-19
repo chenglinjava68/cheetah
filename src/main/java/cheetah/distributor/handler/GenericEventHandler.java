@@ -1,7 +1,6 @@
 package cheetah.distributor.handler;
 
-import cheetah.event.*;
-import cheetah.exceptions.EventHandlerException;
+import cheetah.distributor.event.*;
 
 import java.util.EventListener;
 import java.util.concurrent.CompletableFuture;

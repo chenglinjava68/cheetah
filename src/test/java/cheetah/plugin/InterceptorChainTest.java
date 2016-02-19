@@ -1,11 +1,11 @@
 package cheetah.plugin;
 
-import cheetah.event.Collector;
+import cheetah.distributor.event.Collector;
 import cheetah.distributor.EventMessage;
 import cheetah.distributor.handler.ApplicationEventHandler;
-import cheetah.event.ApplicationEvent;
-import cheetah.event.ApplicationListener;
-import cheetah.event.Event;
+import cheetah.distributor.event.ApplicationEvent;
+import cheetah.distributor.event.ApplicationListener;
+import cheetah.distributor.event.Event;
 import org.junit.Test;
 
 import java.util.concurrent.Executors;

@@ -1,4 +1,6 @@
-package cheetah.exceptions;
+package cheetah.distributor;
+
+import cheetah.exceptions.CheetahException;
 
 /**
  * Created by Max on 2016/2/17.

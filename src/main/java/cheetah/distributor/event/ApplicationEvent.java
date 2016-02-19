@@ -1,4 +1,4 @@
-package cheetah.event;
+package cheetah.distributor.event;
 
 /**
  * Created by Max on 2016/1/29.

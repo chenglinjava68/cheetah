@@ -1,7 +1,7 @@
 package cheetah.distributor;
 
 import cheetah.distributor.handler.HandlerTyped;
-import cheetah.event.*;
+import cheetah.distributor.event.*;
 import cheetah.logger.Debug;
 import cheetah.util.ArithUtil;
 import org.junit.Test;
