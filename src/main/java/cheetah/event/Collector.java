@@ -1,4 +1,4 @@
-package cheetah.distributor;
+package cheetah.event;
 
 import cheetah.event.Event;
 

@@ -1,7 +1,8 @@
-package cheetah.event;
+package cheetah.distributor;
 
 import cheetah.container.spring.SpringBeanFactory;
 import cheetah.distributor.DomainEventCollector;
+import cheetah.event.DomainEvent;
 
 /**
  * Created by Max on 2016/1/10.

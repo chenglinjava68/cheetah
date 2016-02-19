@@ -1,5 +1,6 @@
 package cheetah.distributor;
 
+import cheetah.event.Collector;
 import cheetah.event.Event;
 
 import java.util.EventListener;

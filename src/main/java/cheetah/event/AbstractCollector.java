@@ -1,5 +1,7 @@
-package cheetah.distributor;
+package cheetah.event;
 
+
+import cheetah.distributor.Regulator;
 
 /**
  * Created by Max on 2016/2/3.

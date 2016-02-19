@@ -1,6 +1,6 @@
 package cheetah.plugin;
 
-import cheetah.distributor.Collector;
+import cheetah.event.Collector;
 import cheetah.distributor.EventMessage;
 import cheetah.distributor.handler.ApplicationEventHandler;
 import cheetah.event.ApplicationEvent;
