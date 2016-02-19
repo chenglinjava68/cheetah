@@ -1,6 +1,8 @@
 package cheetah.distributor;
 
 import cheetah.distributor.core.Distributor;
+import cheetah.distributor.handler.EventMessage;
+import cheetah.distributor.handler.EventResult;
 
 /**
  * Created by Max on 2016/2/17.

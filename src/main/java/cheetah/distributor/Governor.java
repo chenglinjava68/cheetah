@@ -3,6 +3,8 @@ package cheetah.distributor;
 import cheetah.distributor.core.Distributor;
 import cheetah.distributor.event.Collector;
 import cheetah.distributor.event.Event;
+import cheetah.distributor.handler.EventMessage;
+import cheetah.distributor.handler.EventResult;
 
 import java.util.EventListener;
 import java.util.List;

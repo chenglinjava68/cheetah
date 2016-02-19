@@ -1,6 +1,8 @@
 package cheetah.distributor.core;
 
 import cheetah.distributor.*;
+import cheetah.distributor.handler.EventMessage;
+import cheetah.distributor.handler.EventResult;
 import cheetah.distributor.handler.Handlers;
 import cheetah.distributor.event.*;
 import cheetah.plugin.Interceptor;
@@ -19,15 +21,12 @@ import java.util.stream.Collectors;
  * Created by Max on 2016/1/29.
  */
 public class Distributor implements Startable, Governor {
-    public enum STATE {
-        NEW, RUNNING, STOP
-    }
 
     private ExecutorService executorService;
     private Configuration configuration;
     private final InterceptorChain interceptorChain = new InterceptorChain();
     private final Map<ListenerCacheKey, List<EventListener>> listenerCache = new ConcurrentHashMap<>();
-    private Handlers handlers;
+    private Engine engine;
     private volatile STATE state;
     private final Map<Class<? extends Event>, Collector> collectors = new ConcurrentHashMap<>();
 
@@ -93,14 +92,14 @@ public class Distributor implements Startable, Governor {
                         ).collect(Collectors.toList());
                 if (!smartDomainEventListeners.isEmpty()) {
                     this.listenerCache.put(ListenerCacheKey.generator(event.getClass(), event.getSource().getClass()), smartDomainEventListeners);
-                    return this.handlers.handle(eventMessage, smartDomainEventListeners);
+                    return this.engine.handle(eventMessage, smartDomainEventListeners);
                 } else {
                     List<EventListener> listeners = this.configuration.getEventListeners().
                             stream().filter(eventListener ->
                             CollectionUtils.arrayToList(eventListener.getClass().getInterfaces())
                                     .contains(DomainEventListener.class)).collect(Collectors.toList());
                     this.listenerCache.put(ListenerCacheKey.generator(event.getClass(), event.getSource().getClass()), listeners);
-                    return this.handlers.handle(eventMessage, listeners);
+                    return this.engine.handle(eventMessage, listeners);
                 }
             } else if (ApplicationEvent.class.isAssignableFrom(eventMessage.getEvent().getClass())) {
                 List<EventListener> smartAppEventListeners = this.configuration.getEventListeners().
@@ -116,18 +115,18 @@ public class Distributor implements Startable, Governor {
                         ).collect(Collectors.toList());
                 this.listenerCache.put(ListenerCacheKey.generator(event.getClass(), event.getSource().getClass()), smartAppEventListeners);
                 if (!smartAppEventListeners.isEmpty())
-                    return this.handlers.handle(eventMessage, smartAppEventListeners);
+                    return this.engine.handle(eventMessage, smartAppEventListeners);
                 else {
                     List<EventListener> listeners = this.configuration.getEventListeners().
                             stream().filter(eventListener ->
                             CollectionUtils.arrayToList(eventListener.getClass().getInterfaces())
                                     .contains(ApplicationListener.class)).collect(Collectors.toList());
                     this.listenerCache.put(ListenerCacheKey.generator(event.getClass(), event.getSource().getClass()), listeners);
-                    return this.handlers.handle(eventMessage, listeners);
+                    return this.engine.handle(eventMessage, listeners);
                 }
             } else throw new ErrorEventTypeException();
         } else
-            return this.handlers.handle(eventMessage, cacheListner);
+            return this.engine.handle(eventMessage, cacheListner);
     }
 
     @Override
@@ -165,7 +164,7 @@ public class Distributor implements Startable, Governor {
     }
 
     private void registrationHandlers() {
-        this.handlers = new Handlers(executorService, interceptorChain);
+        this.engine = new Handlers(executorService, interceptorChain);
     }
 
     /**
@@ -177,6 +176,10 @@ public class Distributor implements Startable, Governor {
 
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
+    }
+
+    public void setEngine(Engine engine) {
+        this.engine = engine;
     }
 
     Configuration getConfiguration() {
@@ -211,4 +214,9 @@ public class Distributor implements Startable, Governor {
             return ObjectUtils.nullSafeHashCode(this.eventType) * 29 + ObjectUtils.nullSafeHashCode(this.sourceType);
         }
     }
+
+    public enum STATE {
+        NEW, RUNNING, STOP
+    }
+
 }

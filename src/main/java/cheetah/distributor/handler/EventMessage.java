@@ -1,4 +1,4 @@
-package cheetah.distributor;
+package cheetah.distributor.handler;
 
 import cheetah.distributor.event.Event;
 import cheetah.util.IDGenerator;

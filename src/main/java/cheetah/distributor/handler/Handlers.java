@@ -1,7 +1,6 @@
 package cheetah.distributor.handler;
 
-import cheetah.distributor.EventMessage;
-import cheetah.distributor.EventResult;
+import cheetah.distributor.Engine;
 import cheetah.exceptions.CheetahException;
 import cheetah.plugin.InterceptorChain;
 import cheetah.util.ObjectUtils;
@@ -14,7 +13,7 @@ import java.util.concurrent.ExecutorService;
  * 事件处理中心-根据不同的事件安排相应的处理器
  * Created by Max on 2016/2/1.
  */
-public class Handlers {
+public class Handlers implements Engine {
     private final InterceptorChain interceptorChain;
     private final Map<HandlerCacheKey, Handler> handlerCacheKeyMap = new HashMap<>();
     private final HandlerFactory handlerFactory;
@@ -31,6 +30,7 @@ public class Handlers {
      * @param eventListeners
      * @return
      */
+    @Override
     public EventResult handle(EventMessage eventMessage, List<EventListener> eventListeners) {
         boolean hasException = false;
         List<Class<? extends EventListener>> exceptionListners = forEachHandle(eventMessage, eventListeners);

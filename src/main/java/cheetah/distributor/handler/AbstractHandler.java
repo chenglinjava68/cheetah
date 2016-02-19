@@ -1,6 +1,5 @@
 package cheetah.distributor.handler;
 
-import cheetah.distributor.EventMessage;
 import cheetah.distributor.event.Event;
 import cheetah.distributor.executor.Executor;
 import cheetah.util.Assert;

@@ -1,4 +1,4 @@
-package cheetah.distributor;
+package cheetah.distributor.handler;
 
 import java.util.EventListener;
 import java.util.List;

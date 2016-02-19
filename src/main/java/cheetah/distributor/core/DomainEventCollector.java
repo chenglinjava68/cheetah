@@ -1,6 +1,6 @@
 package cheetah.distributor.core;
 
-import cheetah.distributor.EventMessage;
+import cheetah.distributor.handler.EventMessage;
 import cheetah.distributor.Regulator;
 import cheetah.distributor.event.AbstractCollector;
 import cheetah.distributor.event.Collector;

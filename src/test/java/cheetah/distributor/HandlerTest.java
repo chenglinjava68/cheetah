@@ -4,6 +4,7 @@ import cheetah.distributor.core.ApplicationEventCollector;
 import cheetah.distributor.core.ApplicationEventEmitter;
 import cheetah.distributor.core.Configuration;
 import cheetah.distributor.core.Distributor;
+import cheetah.distributor.handler.EventMessage;
 import cheetah.distributor.handler.HandlerTyped;
 import cheetah.distributor.event.*;
 import cheetah.logger.Debug;

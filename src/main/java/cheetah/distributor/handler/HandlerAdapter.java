@@ -1,6 +1,5 @@
 package cheetah.distributor.handler;
 
-import cheetah.distributor.EventMessage;
 import cheetah.plugin.InterceptorChain;
 import cheetah.util.ObjectUtils;
 
