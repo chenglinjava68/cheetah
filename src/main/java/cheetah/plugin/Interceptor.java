@@ -28,7 +28,7 @@ public interface Interceptor {
 
     default Object plugin(Object target) {
         if (supportType(target))
-            return Plugin.wrapHandler(target, this);
+            return Plugin.wrap(target, this);
         else return target;
     }
 

@@ -1,19 +1,22 @@
 package cheetah.distributor.event;
 
 
-import cheetah.distributor.Regulator;
+import cheetah.distributor.core.DispatcherWorker;
 
 /**
  * Created by Max on 2016/2/3.
  */
 public abstract class AbstractCollector implements Collector {
-    private final Regulator regulator;
+    private DispatcherWorker dispatcher;
 
-    public AbstractCollector(Regulator regulator) {
-        this.regulator = regulator;
+    public AbstractCollector() {
     }
 
-    public Regulator getRegulator() {
-        return regulator;
+    protected AbstractCollector(DispatcherWorker dispatcher) {
+        this.dispatcher = dispatcher;
+    }
+
+    public DispatcherWorker getDispatcher() {
+        return dispatcher;
     }
 }

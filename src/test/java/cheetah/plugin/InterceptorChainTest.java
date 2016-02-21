@@ -1,32 +1,15 @@
 package cheetah.plugin;
 
-import cheetah.distributor.event.Collector;
-import cheetah.distributor.handler.EventMessage;
-import cheetah.distributor.handler.ApplicationEventHandler;
-import cheetah.distributor.event.ApplicationEvent;
-import cheetah.distributor.event.ApplicationListener;
 import cheetah.distributor.event.Event;
-import org.junit.Test;
-
-import java.util.concurrent.Executors;
+import cheetah.distributor.worker.Worker;
 
 /**
  * Created by Max on 2016/2/17.
  */
 public class InterceptorChainTest {
-    @Test
-    public void chain() {
-        InterceptorChain chain = new InterceptorChain();
-        chain.addInterceptor(new InterceptorTest());
-        ApplicationEventHandler handler = (ApplicationEventHandler) chain.pluginAll(new ApplicationEventHandler(
-                (ApplicationListener) event ->
-                        System.out.println("a")
-                , Executors.newCachedThreadPool()));
-        handler.handle(new EventMessage(new ApplicationEvent("abc") {
-        }, Collector.STATE_CALL_BACK), true);
-    }
 
-    @Plugins({@Registry(type = ApplicationEventHandler.class, method = "statelessNativeAsyncHandle",
+
+    @Plugins({@Registry(type = Worker.class, method = "statelessNativeAsyncHandle",
             args = {Event.class})})
     public static class InterceptorTest implements Interceptor {
         @Override
@@ -46,7 +29,7 @@ public class InterceptorChainTest {
 
         @Override
         public boolean supportType(Object target) {
-            return target instanceof ApplicationEventHandler;
+            return target instanceof Worker;
         }
     }
 

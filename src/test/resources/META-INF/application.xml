@@ -52,7 +52,7 @@ http://www.springframework.org/schema/aop
 
     <bean id="beanFactoryProvider" class="cheetah.container.spring.SpringBeanFactoryProvider"/>
 
-    <bean id="distributor" class="cheetah.distributor.core.Distributor" init-method="start" destroy-method="stop">
+    <bean id="distributor" class="cheetah.distributor.core.DispatcherWorker" init-method="start" destroy-method="stop">
         <property name="configuration">
             <bean class="cheetah.distributor.core.Configuration">
                 <property name="eventListeners">
@@ -73,7 +73,7 @@ http://www.springframework.org/schema/aop
         <constructor-arg index="0" ref="regulator"/>
     </bean>
 
-    <bean id="regulator" class="cheetah.distributor.Regulator">
+    <bean id="regulator" class="cheetah.distributor.core.Regulator">
         <constructor-arg index="0" ref="distributor"/>
     </bean>
 

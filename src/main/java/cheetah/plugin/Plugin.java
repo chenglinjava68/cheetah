@@ -15,7 +15,8 @@
  */
 package cheetah.plugin;
 
-import cheetah.distributor.handler.AbstractHandler;
+import cheetah.distributor.machinery.Machinery;
+import cheetah.distributor.worker.AbstractWorker;
 import cheetah.util.Assert;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
@@ -25,7 +26,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
 
 /**
  * @author Max
@@ -38,14 +38,6 @@ public class Plugin implements MethodInterceptor {
     private Plugin(Interceptor interceptor) {
         this.interceptor = interceptor;
         this.registryMap = getRegistryMap(interceptor);
-    }
-
-    public static Object wrapHandler(Object target, Interceptor interceptor) {
-        Enhancer enhancer = createEnhancer(target, interceptor);
-        // 创建代理对象
-        if (target instanceof AbstractHandler)
-            return enhancer.create(new Class<?>[]{EventListener.class, ExecutorService.class}, new Object[]{((AbstractHandler) target).getEventListener(), ((AbstractHandler) target).getExecutorService()});
-        return enhancer.create();
     }
 
     public static Object wrap(Object target, Interceptor interceptor, Structure structure) {

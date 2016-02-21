@@ -1,9 +1,6 @@
 package cheetah.distributor.core;
 
-import cheetah.distributor.handler.EventMessage;
-import cheetah.distributor.Regulator;
 import cheetah.distributor.event.AbstractCollector;
-import cheetah.distributor.event.Collector;
 import cheetah.distributor.event.Event;
 
 /**
@@ -11,28 +8,24 @@ import cheetah.distributor.event.Event;
  */
 public class DomainEventCollector extends AbstractCollector {
 
-    public DomainEventCollector(Regulator regulator) {
-        super(regulator);
+
+    public DomainEventCollector() {
+    }
+
+    public DomainEventCollector(DispatcherWorker dispatcher) {
+        super(dispatcher);
     }
 
     @Override
     public void collect(Event event) {
-        getRegulator().delivery(new EventMessage(event, Collector.STATE_CALL_BACK));
     }
 
     @Override
     public void collect(Event event, int mode) {
-        getRegulator().delivery(new EventMessage(event, mode));
     }
 
     @Override
     public void collect(Event event, int mode, boolean fisrtWin) {
-        EventMessage message = EventMessage.newBuilder()
-                .setEvent(event)
-                .setFisrtWin(fisrtWin)
-                .setProcessMode(mode)
-                .build();
-        getRegulator().delivery(message);
     }
 
 
