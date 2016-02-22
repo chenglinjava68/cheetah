@@ -15,8 +15,6 @@
  */
 package cheetah.plugin;
 
-import cheetah.distributor.machinery.Machinery;
-import cheetah.distributor.worker.AbstractWorker;
 import cheetah.util.Assert;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;

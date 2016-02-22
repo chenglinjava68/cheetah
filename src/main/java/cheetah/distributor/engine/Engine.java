@@ -4,10 +4,10 @@ import cheetah.distributor.Startable;
 import cheetah.distributor.core.DispatcherWorker;
 import cheetah.distributor.governor.Governor;
 import cheetah.distributor.governor.GovernorFactory;
-import cheetah.distributor.machinery.Machinery;
-import cheetah.distributor.machinery.MachineryFactory;
 import cheetah.distributor.worker.Worker;
 import cheetah.distributor.worker.WorkerFactory;
+import cheetah.distributor.machine.Machine;
+import cheetah.distributor.machine.MachineFactory;
 import cheetah.util.ObjectUtils;
 
 import java.util.List;
@@ -17,17 +17,17 @@ import java.util.List;
  */
 public interface Engine extends Startable {
 
-    void registerWorkers(WorkerCacheKey cacheKey, List<Worker> workers);
+    void registerMachine(MachineCacheKey cacheKey, List<Machine> machines);
 
-    List<Worker> assignWorkers(WorkerCacheKey cacheKey);
+    List<Machine> assignMachineSquad(MachineCacheKey cacheKey);
 
-    Worker assignApplicationEventWorker();
+    Machine assignApplicationEventMachine();
 
-    Worker assignDomainEventWorker();
+    Machine assignDomainEventMachine();
 
     Governor assignGovernor();
 
-    Machinery assignMachinery();
+    Worker assignWorker();
 
     STATE getState();
 
@@ -37,9 +37,9 @@ public interface Engine extends Startable {
 
     void removeCurrentGovernor();
 
-    void setMachineryFactory(MachineryFactory machineryFactory);
+    void setMachineFactory(WorkerFactory machineryFactory);
 
-    void setWorkerFactory(WorkerFactory workerFactory);
+    void setMachineFactory(MachineFactory workerFactory);
 
     void setGovernorFactory(GovernorFactory governorFactory);
 
@@ -47,15 +47,15 @@ public interface Engine extends Startable {
         NEW, RUNNING, STOP
     }
 
-    class WorkerCacheKey {
+    class MachineCacheKey {
         private DispatcherWorker.ListenerCacheKey listenerCacheKey;
 
-        WorkerCacheKey(DispatcherWorker.ListenerCacheKey listenerCacheKey) {
+        MachineCacheKey(DispatcherWorker.ListenerCacheKey listenerCacheKey) {
             this.listenerCacheKey = listenerCacheKey;
         }
 
-        public static WorkerCacheKey generate(DispatcherWorker.ListenerCacheKey listenerCacheKey) {
-            return new WorkerCacheKey(listenerCacheKey);
+        public static MachineCacheKey generate(DispatcherWorker.ListenerCacheKey listenerCacheKey) {
+            return new MachineCacheKey(listenerCacheKey);
         }
 
         @Override
@@ -63,7 +63,7 @@ public interface Engine extends Startable {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            WorkerCacheKey that = (WorkerCacheKey) o;
+            MachineCacheKey that = (MachineCacheKey) o;
 
             return ObjectUtils.nullSafeEquals(this.listenerCacheKey, that.listenerCacheKey);
 

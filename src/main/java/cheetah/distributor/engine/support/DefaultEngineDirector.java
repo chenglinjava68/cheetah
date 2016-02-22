@@ -17,8 +17,8 @@ public class DefaultEngineDirector implements EngineDirector {
     @Override
     public Engine directEngine() {
         Engine engine = new DefaultEngine();
-        engine.setMachineryFactory(builder.buildMachineryFactory());
-        engine.setWorkerFactory(builder.buildWorkerFactory());
+        engine.setMachineFactory(builder.buildWorkerFactory());
+        engine.setMachineFactory(builder.buildMachineFactory());
         engine.setGovernorFactory(builder.buildGovernorFactory());
         return engine;
     }

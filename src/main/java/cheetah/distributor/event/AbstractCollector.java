@@ -12,11 +12,15 @@ public abstract class AbstractCollector implements Collector {
     public AbstractCollector() {
     }
 
-    protected AbstractCollector(DispatcherWorker dispatcher) {
+    public AbstractCollector(DispatcherWorker dispatcher) {
         this.dispatcher = dispatcher;
     }
 
     public DispatcherWorker getDispatcher() {
         return dispatcher;
+    }
+
+    public void setDispatcher(DispatcherWorker dispatcher) {
+        this.dispatcher = dispatcher;
     }
 }

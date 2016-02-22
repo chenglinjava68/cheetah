@@ -1,5 +1,6 @@
 package cheetah.distributor.worker.support;
 
+import cheetah.distributor.worker.AkkaWorker;
 import cheetah.distributor.worker.Worker;
 import cheetah.distributor.worker.WorkerFactory;
 
@@ -9,13 +10,8 @@ import cheetah.distributor.worker.WorkerFactory;
 public class AkkaWorkerFactory implements WorkerFactory {
 
     @Override
-    public Worker createApplicationEventWorker() {
-        return new ApplicationEventWorker();
-    }
-
-    @Override
-    public Worker createDomainEventWorker() {
-        return new DomainEventWorker();
+    public Worker createWorker() {
+        return new AkkaWorker();
     }
 
 }

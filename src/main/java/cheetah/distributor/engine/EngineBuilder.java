@@ -1,16 +1,16 @@
 package cheetah.distributor.engine;
 
 import cheetah.distributor.governor.GovernorFactory;
-import cheetah.distributor.machinery.MachineryFactory;
 import cheetah.distributor.worker.WorkerFactory;
+import cheetah.distributor.machine.MachineFactory;
 
 /**
  * Created by Max on 2016/2/19.
  */
 public interface EngineBuilder {
-    WorkerFactory buildWorkerFactory();
+    MachineFactory buildMachineFactory();
 
     GovernorFactory buildGovernorFactory();
 
-    MachineryFactory buildMachineryFactory();
+    WorkerFactory buildWorkerFactory();
 }

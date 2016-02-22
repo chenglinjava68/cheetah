@@ -1,4 +1,4 @@
-package cheetah.distributor.worker;
+package cheetah.distributor.machine;
 
 import cheetah.exceptions.CheetahException;
 

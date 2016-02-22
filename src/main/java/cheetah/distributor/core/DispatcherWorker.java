@@ -1,12 +1,15 @@
 package cheetah.distributor.core;
 
 import cheetah.distributor.Startable;
-import cheetah.distributor.engine.support.DefaultEngineDirector;
-import cheetah.distributor.engine.support.DefualtEngineBuilder;
 import cheetah.distributor.engine.Engine;
 import cheetah.distributor.engine.EngineDirector;
+import cheetah.distributor.engine.support.DefaultEngineDirector;
+import cheetah.distributor.engine.support.DefualtEngineBuilder;
 import cheetah.distributor.event.*;
-import cheetah.distributor.worker.Worker;
+import cheetah.distributor.governor.Governor;
+import cheetah.distributor.machine.Report;
+import cheetah.distributor.machine.Machine;
+import cheetah.logger.Debug;
 import cheetah.plugin.Interceptor;
 import cheetah.plugin.InterceptorChain;
 import cheetah.util.Assert;
@@ -27,7 +30,6 @@ public class DispatcherWorker implements Startable {
     private final Map<ListenerCacheKey, List<EventListener>> listenerCache = new ConcurrentHashMap<>();
     private Engine engine;
     private EngineDirector engineDirector;
-    private final Map<Class<? extends Event>, Collector> collectors = new ConcurrentHashMap<>();
 
     public DispatcherWorker() {
         this.engineDirector = new DefaultEngineDirector(new DefualtEngineBuilder());
@@ -49,72 +51,82 @@ public class DispatcherWorker implements Startable {
         engine.stop();
         listenerCache.clear();
         engine = null;
-        engineDirector = null;
-        collectors.clear();
     }
 
-    public EventResult receive(Event event) {
+    public EventResult receive(EventMessage eventMessage) {
+        Governor governor = null;
         try {
+            Event event = eventMessage.getEvent();
             ListenerCacheKey cacheKey = ListenerCacheKey.generate(event.getClass(), event.getSource().getClass());
             List<EventListener> cacheListner = getEventListenerFromCache(cacheKey);
             ListenerCacheKey key = ListenerCacheKey.generate(event.getClass(), event.getSource().getClass());
-            Engine.WorkerCacheKey workerCacheKey = Engine.WorkerCacheKey.generate(key);
+            Engine.MachineCacheKey machineCacheKey = Engine.MachineCacheKey.generate(key);
+            List<Machine> machines = this.engine.assignMachineSquad(machineCacheKey);
             boolean noCache = cacheListner.isEmpty();
-            if (noCache)
-                setCache(event, key, workerCacheKey);
-            List<Worker> workers = this.engine.assignWorkers(workerCacheKey);
-            if (!workers.isEmpty()) {
-                engine.assignGovernor()
-                        .initialize()
+            if (noCache && machines.isEmpty())
+                setCache(event, key, machineCacheKey);
+            machines = this.engine.assignMachineSquad(machineCacheKey);
+            if (!machines.isEmpty()) {
+                governor = engine.assignGovernor();
+                Report report = governor.initialize()
                         .setEvent(event)
-                        .registerWorker(workers)
+                        .registerMachineSquad(new ArrayList<>(machines))
+                        .setFisrtSucceed(eventMessage.isFisrtWin())
+                        .setNeedResult(eventMessage.isNeedResult())
+                        .on()
                         .command();
-                return new EventResult(event.getSource());
+                return new EventResult(event.getSource(), report.isFail());
             } else
-                return new EventResult(event.getSource());
+                return new EventResult(event.getSource(), Boolean.TRUE);
         } finally {
             engine.removeCurrentGovernor();
+            if (governor != null)
+                governor.off();
         }
     }
 
-    private void setCache(Event event, ListenerCacheKey key, Engine.WorkerCacheKey workerCacheKey) {
+    private void setCache(Event event, ListenerCacheKey key, Engine.MachineCacheKey machineCacheKey) {
         if (DomainEvent.class.isAssignableFrom(event.getClass())) {
+            Debug.log(this.getClass(), "event is DomainEvent");
             List<EventListener> smartDomainEventListeners = getSmartDomainEventListenerCache(event);
             if (!smartDomainEventListeners.isEmpty()) {
-                setDomainEventListenerCache(key, workerCacheKey, smartDomainEventListeners);
+                setDomainEventListenerCache(key, machineCacheKey, smartDomainEventListeners);
+                Debug.log(this.getClass(), "has " + smartDomainEventListeners.size() + " event");
             } else {
                 List<EventListener> listeners = this.configuration.getEventListeners().
                         stream().filter(eventListener ->
                         CollectionUtils.arrayToList(eventListener.getClass().getInterfaces())
                                 .contains(DomainEventListener.class)).collect(Collectors.toList());
-                setDomainEventListenerCache(key, workerCacheKey, listeners);
+                setDomainEventListenerCache(key, machineCacheKey, listeners);
+                Debug.log(this.getClass(), "has " + smartDomainEventListeners.size() + " event");
             }
         } else if (ApplicationEvent.class.isAssignableFrom(event.getClass())) {
+            Debug.log(this.getClass(), "event is ApplicationEvent");
             List<EventListener> smartAppEventListeners = getSmartApplicationEventListenerCache(event);
             if (!smartAppEventListeners.isEmpty()) {
-                setAppEventListenerCache(key, workerCacheKey, smartAppEventListeners);
+                setAppEventListenerCache(key, machineCacheKey, smartAppEventListeners);
+                Debug.log(this.getClass(), "has " + smartAppEventListeners.size() + " event");
             } else {
                 List<EventListener> listeners = this.configuration.getEventListeners().
                         stream().filter(eventListener ->
                         CollectionUtils.arrayToList(eventListener.getClass().getInterfaces())
                                 .contains(ApplicationListener.class)).collect(Collectors.toList());
-                setAppEventListenerCache(key, workerCacheKey, listeners);
-
+                setAppEventListenerCache(key, machineCacheKey, listeners);
+                Debug.log(this.getClass(), "has " + smartAppEventListeners.size() + " event");
             }
         } else throw new ErrorEventTypeException();
     }
 
-    private void setAppEventListenerCache(ListenerCacheKey key, Engine.WorkerCacheKey workerCacheKey, List<EventListener> listeners) {
+    private void setAppEventListenerCache(ListenerCacheKey key, Engine.MachineCacheKey machineCacheKey, List<EventListener> listeners) {
         this.listenerCache.put(key, listeners);
-        List<Worker> workers = listeners.stream().
+        List<Machine> machines = listeners.stream().
                 map(o -> {
-                    Worker worker = engine.assignApplicationEventWorker();
-                    worker.setEventListener(o);
-                    worker.setMachinery(engine.assignMachinery());
-                    return worker;
+                    Machine machine = engine.assignApplicationEventMachine();
+                    machine.setEventListener(o);
+                    return machine;
                 })
                 .collect(Collectors.toList());
-        this.engine.registerWorkers(workerCacheKey, workers);
+        this.engine.registerMachine(machineCacheKey, machines);
     }
 
     private List<EventListener> getSmartApplicationEventListenerCache(Event event) {
@@ -131,17 +143,16 @@ public class DispatcherWorker implements Startable {
                 ).collect(Collectors.toList());
     }
 
-    private void setDomainEventListenerCache(ListenerCacheKey key, Engine.WorkerCacheKey workerCacheKey, List<EventListener> listeners) {
+    private void setDomainEventListenerCache(ListenerCacheKey key, Engine.MachineCacheKey machineCacheKey, List<EventListener> listeners) {
         this.listenerCache.put(key, listeners);
-        List<Worker> workers = listeners.stream().
+        List<Machine> machines = listeners.stream().
                 map(o -> {
-                    Worker worker = engine.assignDomainEventWorker();
-                    worker.setEventListener(o);
-                    worker.setMachinery(engine.assignMachinery());
-                    return worker;
+                    Machine machine = engine.assignDomainEventMachine();
+                    machine.setEventListener(o);
+                    return machine;
                 })
                 .collect(Collectors.toList());
-        this.engine.registerWorkers(workerCacheKey, workers);
+        this.engine.registerMachine(machineCacheKey, machines);
     }
 
     private List<EventListener> getSmartDomainEventListenerCache(Event event) {
@@ -156,12 +167,6 @@ public class DispatcherWorker implements Startable {
                 }).map(listener -> (SmartDomainEventListener) listener).sorted((o1, o2) ->
                                 o1.getOrder() - o2.getOrder()
                 ).collect(Collectors.toList());
-    }
-
-    public void addListenerCache(ListenerCacheKey cacheKey, List<EventListener> eventListeners) {
-        Assert.notNull(cacheKey, "cacheKey must not be null");
-        Assert.notEmpty(eventListeners, "eventListeners must not be null");
-        this.listenerCache.put(cacheKey, eventListeners);
     }
 
     public List<EventListener> getEventListenerFromCache(ListenerCacheKey cacheKey) {
@@ -186,10 +191,6 @@ public class DispatcherWorker implements Startable {
 
     public void setEngineDirector(EngineDirector engineDirector) {
         this.engineDirector = engineDirector;
-    }
-
-    Configuration getConfiguration() {
-        return configuration;
     }
 
     public static class ListenerCacheKey {

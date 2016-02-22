@@ -1,8 +1,8 @@
 package cheetah.distributor.governor;
 
-import cheetah.distributor.worker.Report;
+import cheetah.distributor.machine.Report;
 import cheetah.distributor.event.Event;
-import cheetah.distributor.worker.Worker;
+import cheetah.distributor.machine.Machine;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
 public interface Governor {
     Governor initialize();
 
-    void on();
+    Governor on();
 
     void off();
 
@@ -26,10 +26,12 @@ public interface Governor {
 
     Governor setFisrtSucceed(Boolean fisrtSucceed);
 
-    Governor registerWorker(Worker worker);
+    Governor registerMachine(Machine worker);
 
-    Governor registerWorker(List<Worker> workers);
+    Governor registerMachineSquad(List<Machine> workers);
 
-    void removeWorker(Worker worker);
+    Governor setNeedResult(boolean needResult);
+
+    void removeWorker(Machine worker);
 
 }

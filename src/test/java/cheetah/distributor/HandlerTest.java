@@ -1,29 +1,28 @@
 package cheetah.distributor;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
-import akka.actor.Props;
-import cheetah.distributor.core.*;
-import cheetah.distributor.event.*;
-import cheetah.distributor.machinery.actor.ActorWatcher;
-import cheetah.distributor.machinery.Instruction;
-import cheetah.distributor.worker.Order;
-import cheetah.distributor.worker.HandlerTyped;
+import cheetah.distributor.core.Configuration;
+import cheetah.distributor.core.DispatcherWorker;
+import cheetah.distributor.core.support.ApplicationEventEmitter;
+import cheetah.distributor.event.ApplicationEvent;
+import cheetah.distributor.event.ApplicationListener;
+import cheetah.distributor.event.DomainEventListener;
+import cheetah.distributor.event.SmartApplicationListener;
+import cheetah.distributor.machine.HandlerTyped;
 import cheetah.logger.Debug;
 import cheetah.util.ArithUtil;
-import com.typesafe.config.ConfigFactory;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by Max on 2016/2/2.
  */
-//@ContextConfiguration("classpath:META-INF/application.xml")
-//@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:META-INF/application.xml")
+@RunWith(SpringJUnit4ClassRunner.class)
 public class HandlerTest {
 
     @Test
@@ -57,7 +56,6 @@ public class HandlerTest {
     public void allot2() throws InterruptedException {
         DispatcherWorker distributor = new DispatcherWorker();
         Configuration configuration = new Configuration();
-        Regulator regulator = new Regulator(distributor);
 
         ArrayList listeners = new ArrayList();
         listeners.add(new SmartApplicationListenerTest());
@@ -81,24 +79,30 @@ public class HandlerTest {
     }
 
 
-
     @Test
     public void launch() throws InterruptedException {
-        CountDownLatch count = new CountDownLatch(1);
-        ActorSystem system = ActorSystem.create("system", ConfigFactory.load("actor.conf"));
-        ActorRef actor = system.actorOf(Props.create(ActorWatcher.class), "governor");
-
-        Event event = new ApplicationEventTest("123") {
-        };
-        Order message = new Order(event);
-        List<ApplicationListener> listenerList = new ArrayList<>();
-        listenerList.add(new SmartApplicationListenerTest());
-        listenerList.add(new ApplicationListenerTest());
-
-        Instruction task = new Instruction(event, listenerList);
-
-        actor.tell(task, ActorRef.noSender());
-        count.await();
+//        CountDownLatch count = new CountDownLatch(1);
+//        int i = 0;
+//        while (true) {
+//            i++;
+//            if(i > 200000000)
+//                break;
+//            while (Thread.activeCount() < 100) {
+//                new Thread(() -> {
+//                    while (true) {
+//                        ApplicationEventEmitter.launch(
+//                                new ApplicationEventTest("213")
+//                        );
+//                    }
+//                }).start();
+//            }
+//        }
+        while (true) {
+            ApplicationEventEmitter.launch(
+                    new ApplicationEventTest("213")
+            );
+        }
+//        count.await();
     }
 
     public static class ApplicationEventTest extends ApplicationEvent {
@@ -147,7 +151,7 @@ public class HandlerTest {
 
         @Override
         public void onApplicationEvent(ApplicationEventTest event) {
-            System.out.println("smart-> " + atomicLong.incrementAndGet());
+            System.out.println("SmartApplicationListenerTest -- "+atomicLong.incrementAndGet());
         }
     }
 }

@@ -1,22 +1,32 @@
 package cheetah.container.spring;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import cheetah.container.BeanFactoryProvider;
+
+import java.lang.annotation.Annotation;
+import java.util.Map;
 
 /**
- * Created by Max on 2015/12/31.
+ * Created by Max on 2015/12/28.
  */
-public class SpringBeanFactoryProvider implements ApplicationContextAware {
-    private static ApplicationContext applicationContext;
+public class SpringBeanFactoryProvider implements BeanFactoryProvider {
 
-    public static ApplicationContext getBeanFactory() {
-        return applicationContext;
+    @Override
+    public <T> T getBean(Class<T> bean) {
+        return SpringAplicationContextProvider.getApplicationContext().getBean(bean);
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        SpringBeanFactoryProvider.applicationContext = applicationContext;
+    public <T> T getBean(Class<T> beanType, String bean) {
+        return SpringAplicationContextProvider.getApplicationContext().getBean(beanType, bean);
     }
 
+    @Override
+    public <T> Map<String, T> getBeansOfType(Class<T> beanType) {
+        return SpringAplicationContextProvider.getApplicationContext().getBeansOfType(beanType);
+    }
+
+    @Override
+    public Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annoClass) {
+        return SpringAplicationContextProvider.getApplicationContext().getBeansWithAnnotation(annoClass);
+    }
 }

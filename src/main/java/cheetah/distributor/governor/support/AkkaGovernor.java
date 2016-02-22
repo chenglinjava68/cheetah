@@ -1,10 +1,12 @@
 package cheetah.distributor.governor.support;
 
-import cheetah.distributor.worker.Report;
+import akka.actor.ActorRef;
 import cheetah.distributor.event.Event;
+import cheetah.distributor.governor.Command;
+import cheetah.distributor.governor.CommandFactory;
 import cheetah.distributor.governor.Governor;
-import cheetah.distributor.worker.Order;
-import cheetah.distributor.worker.Worker;
+import cheetah.distributor.machine.Report;
+import cheetah.distributor.machine.Machine;
 import cheetah.util.Assert;
 import cheetah.util.IDGenerator;
 import org.apache.commons.lang3.StringUtils;
@@ -19,8 +21,10 @@ import java.util.Objects;
 public class AkkaGovernor implements Governor {
     private String id;
     private Boolean fisrtSucceed;
+    private Boolean needResult;
     private Event event;
-    private List<Worker> workers = new ArrayList<>();
+    private List<Machine> workers = new ArrayList<>();
+    private ActorRef watcher;
 
     @Override
     public Governor initialize() {
@@ -32,20 +36,19 @@ public class AkkaGovernor implements Governor {
     }
 
     @Override
-    public void on() {
-
+    public Governor on() {
+        return this;
     }
 
     @Override
     public void off() {
-
+        watcher.tell(Command.CLOSE, watcher);
     }
 
     @Override
     public Report command() {
         Assert.notNull(event, "event must not be null");
-        Order message = new Order(id, event, fisrtSucceed);
-        return notifyAllWorker(message);
+        return notifyAllWorker();
     }
 
     @Override
@@ -72,28 +75,44 @@ public class AkkaGovernor implements Governor {
     }
 
     @Override
-    public Governor registerWorker(Worker worker) {
-        Assert.notNull(worker, "observer must not be null");
-        workers.add(worker);
+    public Governor registerMachine(Machine worker) {
+        this.workers.add(worker);
         return this;
     }
 
     @Override
-    public Governor registerWorker(List<Worker> workers) {
-        workers.addAll(workers);
+    public Governor registerMachineSquad(List<Machine> workers) {
+        this.workers.addAll(workers);
         return this;
     }
 
     @Override
-    public void removeWorker(Worker worker) {
+    public Governor setNeedResult(boolean needResult) {
+        this.needResult = needResult;
+        return this;
+    }
+
+    @Override
+    public void removeWorker(Machine worker) {
         Assert.notNull(worker, "observer must not be null");
         workers.add(worker);
     }
 
-    private Report notifyAllWorker(Order message) {
-        for (Worker worker : workers) {
-            worker.tell(message);
-        }
+    public void setWatcher(ActorRef watcher) {
+        this.watcher = watcher;
+    }
+
+    private Report notifyAllWorker() {
+        if (workers.isEmpty())
+            return Report.EMPTY;
+        Command command = CommandFactory.getFactory()
+                .setEvent(this.event)
+                .setFisrtWin(this.fisrtSucceed)
+                .setNeedReport(this.needResult)
+                .setWorkers(workers)
+                .build();
+        if (!this.needResult)
+            this.watcher.tell(command, ActorRef.noSender());
         return new Report();
     }
 }

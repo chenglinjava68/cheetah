@@ -1,9 +1,9 @@
 package cheetah.distributor.core;
 
-import cheetah.distributor.machinery.Machinery;
-import cheetah.distributor.worker.Order;
-import cheetah.distributor.worker.Report;
+import cheetah.distributor.event.Event;
 import cheetah.distributor.worker.Worker;
+import cheetah.distributor.machine.Report;
+import cheetah.distributor.machine.Machine;
 import cheetah.plugin.InterceptorChain;
 
 import java.util.EventListener;
@@ -11,22 +11,27 @@ import java.util.EventListener;
 /**
  * Created by Max on 2016/2/7.
  */
-public class HandlerAdapter implements Worker {
-    private Worker adaptee;
+public class HandlerAdapter implements Machine {
+    private Machine adaptee;
     private InterceptorChain interceptorChain;
 
-    public HandlerAdapter(Worker adaptee, InterceptorChain interceptorChain) {
+    public HandlerAdapter(Machine adaptee, InterceptorChain interceptorChain) {
         this.interceptorChain = interceptorChain;
         adapteeExtended(adaptee);
     }
 
-    private void adapteeExtended(Worker $adaptee) {
-        this.adaptee = (Worker) this.interceptorChain.pluginAll($adaptee);
+    private void adapteeExtended(Machine $adaptee) {
+        this.adaptee = (Machine) this.interceptorChain.pluginAll($adaptee);
     }
 
     @Override
-    public Report work(Order eventMessage) {
-        return adaptee.work(eventMessage);
+    public void work(Event event) {
+        adaptee.work(event);
+    }
+
+    @Override
+    public Report completeWork(Event event) {
+        return adaptee.completeWork(event);
     }
 
     @Override
@@ -35,22 +40,22 @@ public class HandlerAdapter implements Worker {
     }
 
     @Override
-    public void setMachinery(Machinery machinery) {
-        adaptee.setMachinery(machinery);
+    public void setWorker(Worker machinery) {
+        adaptee.setWorker(machinery);
     }
 
     @Override
-    public Machinery getMachinery() {
-        return adaptee.getMachinery();
+    public Worker getWorker() {
+        return adaptee.getWorker();
     }
 
     @Override
-    public Worker kagebunsin() throws CloneNotSupportedException {
+    public Machine kagebunsin() throws CloneNotSupportedException {
         return adaptee.kagebunsin();
     }
 
     @Override
-    public Worker kagebunsin(EventListener listener) throws CloneNotSupportedException {
+    public Machine kagebunsin(EventListener listener) throws CloneNotSupportedException {
         return adaptee.kagebunsin(listener);
     }
 
