@@ -1,6 +1,6 @@
 package cheetah.distributor.core.support;
 
-import cheetah.distributor.core.DispatcherWorker;
+import cheetah.distributor.core.DispatcherMachine;
 import cheetah.distributor.core.EventMessage;
 import cheetah.distributor.core.EventResult;
 import cheetah.distributor.event.AbstractCollector;
@@ -13,7 +13,7 @@ public class GenericEventCollector extends AbstractCollector {
     public GenericEventCollector() {
     }
 
-    public GenericEventCollector(DispatcherWorker dispatcher) {
+    public GenericEventCollector(DispatcherMachine dispatcher) {
         super(dispatcher);
     }
 

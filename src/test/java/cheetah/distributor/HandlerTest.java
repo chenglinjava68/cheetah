@@ -1,7 +1,7 @@
 package cheetah.distributor;
 
 import cheetah.distributor.core.Configuration;
-import cheetah.distributor.core.DispatcherWorker;
+import cheetah.distributor.core.DispatcherMachine;
 import cheetah.distributor.core.support.ApplicationEventEmitter;
 import cheetah.distributor.event.ApplicationEvent;
 import cheetah.distributor.event.ApplicationListener;
@@ -27,7 +27,7 @@ public class HandlerTest {
 
     @Test
     public void log() {
-        Debug.log(DispatcherWorker.class, "a");
+        Debug.log(DispatcherMachine.class, "a");
     }
 
     @Test
@@ -38,7 +38,7 @@ public class HandlerTest {
 
     @Test
     public void allot() {
-        DispatcherWorker distributor = new DispatcherWorker();
+        DispatcherMachine distributor = new DispatcherMachine();
         Configuration configuration = new Configuration();
         ArrayList listeners = new ArrayList();
         listeners.add(new SmartApplicationListenerTest());
@@ -54,7 +54,7 @@ public class HandlerTest {
 
     @Test
     public void allot2() throws InterruptedException {
-        DispatcherWorker distributor = new DispatcherWorker();
+        DispatcherMachine distributor = new DispatcherMachine();
         Configuration configuration = new Configuration();
 
         ArrayList listeners = new ArrayList();
@@ -82,26 +82,29 @@ public class HandlerTest {
     @Test
     public void launch() throws InterruptedException {
 //        CountDownLatch count = new CountDownLatch(1);
+        int i = 0;
+        while (true) {
+            i++;
+            if(i > 200000000)
+                break;
+            while (Thread.activeCount() < 100) {
+                new Thread(() -> {
+                    while (true) {
+                        ApplicationEventEmitter.launch(
+                                new ApplicationEventTest("213")
+                        );
+                    }
+                }).start();
+            }
+        }
 //        int i = 0;
 //        while (true) {
+//            System.out.println(i);
+//            ApplicationEventEmitter.launch(
+//                    new ApplicationEventTest("213")
+//            );
 //            i++;
-//            if(i > 200000000)
-//                break;
-//            while (Thread.activeCount() < 100) {
-//                new Thread(() -> {
-//                    while (true) {
-//                        ApplicationEventEmitter.launch(
-//                                new ApplicationEventTest("213")
-//                        );
-//                    }
-//                }).start();
-//            }
 //        }
-        while (true) {
-            ApplicationEventEmitter.launch(
-                    new ApplicationEventTest("213")
-            );
-        }
 //        count.await();
     }
 

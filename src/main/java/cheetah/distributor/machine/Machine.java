@@ -3,7 +3,6 @@ package cheetah.distributor.machine;
 import cheetah.distributor.event.Event;
 import cheetah.logger.Debug;
 import cheetah.logger.Info;
-import cheetah.logger.Warn;
 
 import java.util.EventListener;
 
@@ -13,12 +12,12 @@ import java.util.EventListener;
  */
 public interface Machine extends Cloneable {
 
-    default Report tell(Event event, boolean needResult) {
-        Report report = Report.NULL;
+    default Feedback send(Event event, boolean needResult) {
+        Feedback report = Feedback.NULL;
         if (needResult)
             report = completeWork(event);
-        else work(event);
-        if (!Report.isNull(report) && report.isFail())
+        else execute(event);
+        if (!Feedback.isNull(report) && report.isFail())
             onFailure(event);
         else
             onSuccess(event);
@@ -26,20 +25,19 @@ public interface Machine extends Cloneable {
     }
 
     default void onFailure(Event event) {
-        Debug.log(this.getClass(), "worker work failure event is [" + event + "]");
-        Warn.log(this.getClass(), "worker work failure event is [" + event + "]");
+        Debug.log(this.getClass(), "Machine execute failure event is [" + event + "]");
     }
 
     default void onSuccess(Event event) {
-        Info.log(this.getClass(), "worker work success event is [" + event + "]");
+        Info.log(this.getClass(), "Machine execute success event is [" + event + "]");
     }
 
     /**
      * @param event
      */
-    void work(Event event);
+    void execute(Event event);
 
-    Report completeWork(Event event);
+    Feedback completeWork(Event event);
 
     void setEventListener(EventListener eventListener);
 

@@ -3,11 +3,10 @@ package cheetah.distributor.core;
 import cheetah.distributor.Startable;
 import cheetah.distributor.engine.Engine;
 import cheetah.distributor.engine.EngineDirector;
-import cheetah.distributor.engine.support.DefaultEngineDirector;
-import cheetah.distributor.engine.support.DefualtEngineBuilder;
+import cheetah.distributor.engine.support.EnginePolicy;
 import cheetah.distributor.event.*;
 import cheetah.distributor.governor.Governor;
-import cheetah.distributor.machine.Report;
+import cheetah.distributor.machine.Feedback;
 import cheetah.distributor.machine.Machine;
 import cheetah.logger.Debug;
 import cheetah.plugin.Interceptor;
@@ -23,16 +22,17 @@ import java.util.stream.Collectors;
 /**
  * Created by Max on 2016/1/29.
  */
-public class DispatcherWorker implements Startable {
+public class DispatcherMachine implements Startable {
 
     private Configuration configuration;
     private final InterceptorChain interceptorChain = new InterceptorChain();
     private final Map<ListenerCacheKey, List<EventListener>> listenerCache = new ConcurrentHashMap<>();
     private Engine engine;
+    private EnginePolicy policy;
     private EngineDirector engineDirector;
 
-    public DispatcherWorker() {
-        this.engineDirector = new DefaultEngineDirector(new DefualtEngineBuilder());
+    public DispatcherMachine() {
+        this.policy = EnginePolicy.DEFAULT;
     }
 
     @Override
@@ -42,6 +42,7 @@ public class DispatcherWorker implements Startable {
                 initializesInterceptor(interceptorChain);
         } else
             configuration = new Configuration();
+        this.engineDirector = policy.getEngineDirector();
         this.engine = engineDirector.directEngine();
         engine.start();
     }
@@ -54,35 +55,29 @@ public class DispatcherWorker implements Startable {
     }
 
     public EventResult receive(EventMessage eventMessage) {
-        Governor governor = null;
-        try {
-            Event event = eventMessage.getEvent();
-            ListenerCacheKey cacheKey = ListenerCacheKey.generate(event.getClass(), event.getSource().getClass());
-            List<EventListener> cacheListner = getEventListenerFromCache(cacheKey);
-            ListenerCacheKey key = ListenerCacheKey.generate(event.getClass(), event.getSource().getClass());
-            Engine.MachineCacheKey machineCacheKey = Engine.MachineCacheKey.generate(key);
-            List<Machine> machines = this.engine.assignMachineSquad(machineCacheKey);
-            boolean noCache = cacheListner.isEmpty();
-            if (noCache && machines.isEmpty())
-                setCache(event, key, machineCacheKey);
-            machines = this.engine.assignMachineSquad(machineCacheKey);
-            if (!machines.isEmpty()) {
-                governor = engine.assignGovernor();
-                Report report = governor.initialize()
-                        .setEvent(event)
-                        .registerMachineSquad(new ArrayList<>(machines))
-                        .setFisrtSucceed(eventMessage.isFisrtWin())
-                        .setNeedResult(eventMessage.isNeedResult())
-                        .on()
-                        .command();
-                return new EventResult(event.getSource(), report.isFail());
-            } else
-                return new EventResult(event.getSource(), Boolean.TRUE);
-        } finally {
-            engine.removeCurrentGovernor();
-            if (governor != null)
-                governor.off();
-        }
+        long start = System.currentTimeMillis();
+        Event event = eventMessage.getEvent();
+        ListenerCacheKey key = ListenerCacheKey.generate(event.getClass(), event.getSource().getClass());
+        Engine.MachineCacheKey machineCacheKey = Engine.MachineCacheKey.generate(key);
+        List<Machine> machines = this.engine.assignMachineSquad(machineCacheKey);
+        List<EventListener> cacheListner = getEventListenerFromCache(key);
+        boolean noCache = cacheListner.isEmpty();
+        if (noCache && machines.isEmpty())
+            setCache(event, key, machineCacheKey);
+        machines = this.engine.assignMachineSquad(machineCacheKey);
+        if (!machines.isEmpty()) {
+            Governor governor = engine.assignGovernor();
+            Feedback report = governor.initialize()
+                    .setEvent(event)
+                    .registerMachineSquad(new ArrayList<>(machines))
+                    .setFisrtSucceed(eventMessage.isFisrtWin())
+                    .setNeedResult(eventMessage.isNeedResult())
+                    .on()
+                    .command();
+            Debug.log(this.getClass(), "调度花费的毫秒数 : " + (System.currentTimeMillis() - start));
+            return new EventResult(event.getSource(), report.isFail());
+        } else
+            return new EventResult(event.getSource(), Boolean.TRUE);
     }
 
     private void setCache(Event event, ListenerCacheKey key, Engine.MachineCacheKey machineCacheKey) {
@@ -126,7 +121,7 @@ public class DispatcherWorker implements Startable {
                     return machine;
                 })
                 .collect(Collectors.toList());
-        this.engine.registerMachine(machineCacheKey, machines);
+        this.engine.registerMachineSquad(machineCacheKey, machines);
     }
 
     private List<EventListener> getSmartApplicationEventListenerCache(Event event) {
@@ -152,7 +147,7 @@ public class DispatcherWorker implements Startable {
                     return machine;
                 })
                 .collect(Collectors.toList());
-        this.engine.registerMachine(machineCacheKey, machines);
+        this.engine.registerMachineSquad(machineCacheKey, machines);
     }
 
     private List<EventListener> getSmartDomainEventListenerCache(Event event) {
@@ -189,8 +184,8 @@ public class DispatcherWorker implements Startable {
         this.configuration = configuration;
     }
 
-    public void setEngineDirector(EngineDirector engineDirector) {
-        this.engineDirector = engineDirector;
+    public void setPolicy(String policy) {
+        this.policy = EnginePolicy.formatFrom(policy);
     }
 
     public static class ListenerCacheKey {

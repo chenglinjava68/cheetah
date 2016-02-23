@@ -1,6 +1,5 @@
 package cheetah.distributor.machine;
 
-import cheetah.distributor.worker.Worker;
 import cheetah.util.ObjectUtils;
 
 import java.util.EventListener;
@@ -10,14 +9,12 @@ import java.util.EventListener;
  */
 public abstract class AbstractMachine implements Machine {
     private EventListener eventListener;
-    private Worker worker;
 
     public AbstractMachine() {
     }
 
-    public AbstractMachine(EventListener eventListener, Worker worker) {
+    public AbstractMachine(EventListener eventListener) {
         this.eventListener = eventListener;
-        this.worker = worker;
     }
 
     @Override
@@ -48,14 +45,12 @@ public abstract class AbstractMachine implements Machine {
 
         AbstractMachine that = (AbstractMachine) o;
 
-        return ObjectUtils.nullSafeEquals(this.eventListener, that.eventListener) &&
-                ObjectUtils.nullSafeEquals(this.worker, that.worker);
-
+        return ObjectUtils.nullSafeEquals(this.eventListener, that.eventListener);
     }
 
     @Override
     public int hashCode() {
-        return ObjectUtils.nullSafeHashCode(this.eventListener) * 29 + ObjectUtils.nullSafeHashCode(this.worker);
+        return ObjectUtils.nullSafeHashCode(this.eventListener) * 29;
     }
 
 }

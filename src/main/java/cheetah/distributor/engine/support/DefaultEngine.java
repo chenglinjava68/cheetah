@@ -3,12 +3,12 @@ package cheetah.distributor.engine.support;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import cheetah.distributor.core.DispatcherWorker;
+import cheetah.distributor.core.DispatcherMachine;
 import cheetah.distributor.engine.Engine;
 import cheetah.distributor.governor.Governor;
 import cheetah.distributor.governor.GovernorFactory;
 import cheetah.distributor.governor.support.AkkaGovernor;
-import cheetah.distributor.governor.support.WorkerWatcher;
+import cheetah.distributor.governor.support.WorkerMaster;
 import cheetah.distributor.worker.Worker;
 import cheetah.distributor.worker.WorkerFactory;
 import cheetah.distributor.worker.support.AkkaWorkerFactory;
@@ -21,20 +21,20 @@ import cheetah.util.Assert;
 import com.typesafe.config.ConfigFactory;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Max on 2016/2/1.
  */
 public class DefaultEngine implements Engine {
-    private final Map<MachineCacheKey, List<Machine>> machineCache = new HashMap<>();
-    private final ThreadLocal<Governor> governors = new ThreadLocal<>();
+    private final Map<MachineCacheKey, List<Machine>> machineCache = new ConcurrentHashMap<>();
     private WorkerFactory workerFactory;
     private MachineFactory machineFactory;
     private GovernorFactory governorFactory;
     private InterceptorChain interceptorChain;
     private volatile ActorSystem actorSystem;
     private ActorRef workerGovernor;
-    private String actorGovernorName = WorkerWatcher.class.getName();
+    private String actorGovernorName = WorkerMaster.class.getName();
     private volatile STATE state;
 
     public DefaultEngine() {
@@ -46,7 +46,7 @@ public class DefaultEngine implements Engine {
         if (!isRunning()) {
             Debug.log(this.getClass(), "DefaultEngine start ...");
             actorSystem = ActorSystem.create("system", ConfigFactory.load("akka.conf"));
-            workerGovernor = actorSystem.actorOf(Props.create(WorkerWatcher.class), actorGovernorName);
+            workerGovernor = actorSystem.actorOf(Props.create(WorkerMaster.class), actorGovernorName);
             if (Objects.isNull(workerFactory))
                 workerFactory = new AkkaWorkerFactory();
             if (Objects.isNull(machineFactory))
@@ -60,7 +60,6 @@ public class DefaultEngine implements Engine {
         while (!actorSystem.isTerminated())
             actorSystem.shutdown();
         machineCache.clear();
-        governors.remove();
         workerFactory = null;
         machineFactory = null;
         governorFactory = null;
@@ -71,7 +70,7 @@ public class DefaultEngine implements Engine {
     }
 
     @Override
-    public void registerMachine(MachineCacheKey cacheKey, List<Machine> machines) {
+    public void registerMachineSquad(MachineCacheKey cacheKey, List<Machine> machines) {
         Assert.notNull(cacheKey, "listener must not be null");
         Assert.notNull(machines, "machines must not be null");
         this.machineCache.put(cacheKey, machines);
@@ -101,18 +100,17 @@ public class DefaultEngine implements Engine {
     @Override
     public Governor assignGovernor() {
         Governor governor = governorFactory.createGovernor();
-        governors.set(governor);
-        ((AkkaGovernor) governor).setWatcher(this.workerGovernor);
+        ((AkkaGovernor) governor).setWorkerWatcher(this.workerGovernor);
         return governor;
     }
 
     @Override
-    public boolean isExists(DispatcherWorker.ListenerCacheKey cacheKey) {
+    public boolean isExists(DispatcherMachine.ListenerCacheKey cacheKey) {
         return this.machineCache.containsKey(cacheKey);
     }
 
     @Override
-    public void setMachineFactory(WorkerFactory workerFactory) {
+    public void setWorkerFactory(WorkerFactory workerFactory) {
         this.workerFactory = workerFactory;
     }
 
@@ -124,16 +122,6 @@ public class DefaultEngine implements Engine {
     @Override
     public void setGovernorFactory(GovernorFactory governorFactory) {
         this.governorFactory = governorFactory;
-    }
-
-    @Override
-    public Governor getCurrentGovernor() {
-        return governors.get();
-    }
-
-    @Override
-    public void removeCurrentGovernor() {
-        governors.remove();
     }
 
     @Override

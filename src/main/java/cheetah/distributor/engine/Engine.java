@@ -1,7 +1,7 @@
 package cheetah.distributor.engine;
 
 import cheetah.distributor.Startable;
-import cheetah.distributor.core.DispatcherWorker;
+import cheetah.distributor.core.DispatcherMachine;
 import cheetah.distributor.governor.Governor;
 import cheetah.distributor.governor.GovernorFactory;
 import cheetah.distributor.worker.Worker;
@@ -17,7 +17,7 @@ import java.util.List;
  */
 public interface Engine extends Startable {
 
-    void registerMachine(MachineCacheKey cacheKey, List<Machine> machines);
+    void registerMachineSquad(MachineCacheKey cacheKey, List<Machine> machines);
 
     List<Machine> assignMachineSquad(MachineCacheKey cacheKey);
 
@@ -31,13 +31,9 @@ public interface Engine extends Startable {
 
     STATE getState();
 
-    boolean isExists(DispatcherWorker.ListenerCacheKey cacheKey);
+    boolean isExists(DispatcherMachine.ListenerCacheKey cacheKey);
 
-    Governor getCurrentGovernor();
-
-    void removeCurrentGovernor();
-
-    void setMachineFactory(WorkerFactory machineryFactory);
+    void setWorkerFactory(WorkerFactory machineryFactory);
 
     void setMachineFactory(MachineFactory workerFactory);
 
@@ -48,13 +44,13 @@ public interface Engine extends Startable {
     }
 
     class MachineCacheKey {
-        private DispatcherWorker.ListenerCacheKey listenerCacheKey;
+        private DispatcherMachine.ListenerCacheKey listenerCacheKey;
 
-        MachineCacheKey(DispatcherWorker.ListenerCacheKey listenerCacheKey) {
+        MachineCacheKey(DispatcherMachine.ListenerCacheKey listenerCacheKey) {
             this.listenerCacheKey = listenerCacheKey;
         }
 
-        public static MachineCacheKey generate(DispatcherWorker.ListenerCacheKey listenerCacheKey) {
+        public static MachineCacheKey generate(DispatcherMachine.ListenerCacheKey listenerCacheKey) {
             return new MachineCacheKey(listenerCacheKey);
         }
 

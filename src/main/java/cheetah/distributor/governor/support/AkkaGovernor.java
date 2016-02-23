@@ -5,7 +5,7 @@ import cheetah.distributor.event.Event;
 import cheetah.distributor.governor.Command;
 import cheetah.distributor.governor.CommandFactory;
 import cheetah.distributor.governor.Governor;
-import cheetah.distributor.machine.Report;
+import cheetah.distributor.machine.Feedback;
 import cheetah.distributor.machine.Machine;
 import cheetah.util.Assert;
 import cheetah.util.IDGenerator;
@@ -46,7 +46,7 @@ public class AkkaGovernor implements Governor {
     }
 
     @Override
-    public Report command() {
+    public Feedback command() {
         Assert.notNull(event, "event must not be null");
         return notifyAllWorker();
     }
@@ -98,21 +98,21 @@ public class AkkaGovernor implements Governor {
         workers.add(worker);
     }
 
-    public void setWatcher(ActorRef watcher) {
+    public void setWorkerWatcher(ActorRef watcher) {
         this.watcher = watcher;
     }
 
-    private Report notifyAllWorker() {
+    private Feedback notifyAllWorker() {
         if (workers.isEmpty())
-            return Report.EMPTY;
+            return Feedback.EMPTY;
         Command command = CommandFactory.getFactory()
                 .setEvent(this.event)
                 .setFisrtWin(this.fisrtSucceed)
                 .setNeedReport(this.needResult)
-                .setWorkers(workers)
+                .setMachines(workers)
                 .build();
         if (!this.needResult)
             this.watcher.tell(command, ActorRef.noSender());
-        return new Report();
+        return new Feedback();
     }
 }

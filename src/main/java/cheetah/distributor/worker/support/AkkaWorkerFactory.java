@@ -1,6 +1,5 @@
 package cheetah.distributor.worker.support;
 
-import cheetah.distributor.worker.AkkaWorker;
 import cheetah.distributor.worker.Worker;
 import cheetah.distributor.worker.WorkerFactory;
 

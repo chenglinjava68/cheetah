@@ -1,6 +1,6 @@
 package cheetah.distributor.governor;
 
-import cheetah.distributor.machine.Report;
+import cheetah.distributor.machine.Feedback;
 import cheetah.distributor.event.Event;
 import cheetah.distributor.machine.Machine;
 
@@ -16,7 +16,7 @@ public interface Governor {
 
     void off();
 
-    Report command();
+    Feedback command();
 
     Governor setEvent(Event event);
 

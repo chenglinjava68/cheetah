@@ -14,7 +14,7 @@ public class Command {
     private Event event;
     private boolean fisrtWin;
     private boolean needReport;
-    private List<Machine> workers;
+    private List<Machine> machines;
 
     Command() {
     }
@@ -23,7 +23,7 @@ public class Command {
         this.event = commandFactory.event;
         this.fisrtWin = commandFactory.fisrtWin;
         this.needReport = commandFactory.needReport;
-        this.workers = commandFactory.workers;
+        this.machines = commandFactory.machines;
     }
 
     public static boolean isClose(Command command) {
@@ -54,12 +54,12 @@ public class Command {
         return needReport;
     }
 
-    public List<Machine> getWorkers() {
-        return workers;
+    public List<Machine> getMachines() {
+        return machines;
     }
 
-    public void setWorkers(List<Machine> workers) {
-        this.workers = workers;
+    public void setWorkers(List<Machine> machines) {
+        this.machines = machines;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class Command {
 
         return ObjectUtils.nullSafeEquals(this.event, that.event) &&
                 ObjectUtils.nullSafeEquals(this.fisrtWin, that.fisrtWin) &&
-                ObjectUtils.nullSafeEquals(this.workers, that.workers) &&
+                ObjectUtils.nullSafeEquals(this.machines, that.machines) &&
                 ObjectUtils.nullSafeEquals(this.needReport, that.needReport);
     }
 
@@ -79,6 +79,6 @@ public class Command {
     public int hashCode() {
         return ObjectUtils.nullSafeHashCode(this.event) * 29 +
                 ObjectUtils.nullSafeHashCode(this.fisrtWin) + ObjectUtils.nullSafeHashCode(this.needReport)
-                + ObjectUtils.nullSafeHashCode(this.workers);
+                + ObjectUtils.nullSafeHashCode(this.machines);
     }
 }

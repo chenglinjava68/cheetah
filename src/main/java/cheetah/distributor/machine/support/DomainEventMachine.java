@@ -1,9 +1,8 @@
 package cheetah.distributor.machine.support;
 
 import cheetah.distributor.event.Event;
-import cheetah.distributor.worker.Worker;
 import cheetah.distributor.machine.AbstractMachine;
-import cheetah.distributor.machine.Report;
+import cheetah.distributor.machine.Feedback;
 import cheetah.logger.Debug;
 
 import java.util.EventListener;
@@ -16,19 +15,19 @@ public class DomainEventMachine extends AbstractMachine {
     public DomainEventMachine() {
     }
 
-    public DomainEventMachine(EventListener eventListener, Worker machinery) {
-        super(eventListener, machinery);
+    public DomainEventMachine(EventListener eventListener) {
+        super(eventListener);
     }
 
 
     @Override
-    public void work(Event event) {
+    public void execute(Event event) {
         Debug.log(this.getClass(), "DomainEventWorker...");
 
     }
 
     @Override
-    public Report completeWork(Event event) {
+    public Feedback completeWork(Event event) {
         return null;
     }
 }

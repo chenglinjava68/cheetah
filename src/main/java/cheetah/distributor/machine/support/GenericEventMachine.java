@@ -4,7 +4,7 @@ import cheetah.distributor.event.*;
 import cheetah.distributor.worker.Worker;
 import cheetah.distributor.machine.AbstractMachine;
 import cheetah.distributor.machine.EventHandlerException;
-import cheetah.distributor.machine.Report;
+import cheetah.distributor.machine.Feedback;
 import cheetah.logger.Debug;
 
 import java.util.EventListener;
@@ -15,11 +15,11 @@ import java.util.EventListener;
 public class GenericEventMachine extends AbstractMachine {
 
     public GenericEventMachine(EventListener eventListener, Worker machinery) {
-        super(eventListener, machinery);
+        super(eventListener);
     }
 
     @Override
-    public void work(Event event) {
+    public void execute(Event event) {
         Debug.log(this.getClass(), "GenericEventWorker ...");
         try {
             doWork(event);
@@ -43,13 +43,13 @@ public class GenericEventMachine extends AbstractMachine {
     }
 
     @Override
-    public Report completeWork(Event event) {
+    public Feedback completeWork(Event event) {
         try {
             doWork(event);
         } catch (Exception e) {
             e.printStackTrace();
-            return Report.FAILURE;
+            return Feedback.FAILURE;
         }
-        return Report.SUCCESS;
+        return Feedback.SUCCESS;
     }
 }
