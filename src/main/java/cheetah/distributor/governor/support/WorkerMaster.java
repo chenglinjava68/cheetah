@@ -1,5 +1,7 @@
 package cheetah.distributor.governor.support;
 
+import akka.actor.OneForOneStrategy;
+import akka.actor.SupervisorStrategy;
 import akka.actor.UntypedActor;
 import cheetah.distributor.governor.Command;
 import cheetah.distributor.worker.support.AkkaWorker;
@@ -7,6 +9,9 @@ import cheetah.logger.Debug;
 import cheetah.logger.Warn;
 import cheetah.util.IDGenerator;
 import scala.Option;
+import scala.concurrent.duration.Duration;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Max on 2016/2/19.
@@ -18,12 +23,13 @@ public class WorkerMaster extends UntypedActor {
 
         } else {
 //            ActorRef actor = this.getContext().getChildren().iterator().next();
-            System.out.println(command.getMachines());
+            System.out.println(System.currentTimeMillis());
             command.getMachines().forEach(machine -> {
                 String name = AkkaWorker.class.getSimpleName() + "-" + IDGenerator.generateId();
 //                actor.tell(new Order(machine, command.getEvent(), false), getSender());
                 machine.execute(command.getEvent());
             });
+            System.out.println("master: "+System.currentTimeMillis());
 //            getContext().stop(getSelf());
 //            String name = WorkUnit.class.getSimpleName() + "-" + IDGenerator.generateId();
 //            Iterator<ActorRef> childs = getContext().getChildren().iterator();
@@ -78,16 +84,16 @@ public class WorkerMaster extends UntypedActor {
         Debug.log(getClass(), "actor =>" + getSelf().path() + "-----> postStop");
     }
 
-//    @Override
-//    public SupervisorStrategy supervisorStrategy() {
-//        return new OneForOneStrategy(3, Duration.create(1, SECONDS), param -> {
-//            if (param instanceof ArithmeticException) {
-//                return SupervisorStrategy.resume();
-//            } else if (param instanceof NullPointerException) {
-//                return SupervisorStrategy.restart();
-//            } else if (param instanceof IllegalArgumentException) {
-//                return SupervisorStrategy.restart();
-//            } else return SupervisorStrategy.escalate();
-//        });
-//    }
+    @Override
+    public SupervisorStrategy supervisorStrategy() {
+        return new OneForOneStrategy(3, Duration.create(1, TimeUnit.SECONDS), param -> {
+            if (param instanceof ArithmeticException) {
+                return SupervisorStrategy.resume();
+            } else if (param instanceof NullPointerException) {
+                return SupervisorStrategy.restart();
+            } else if (param instanceof IllegalArgumentException) {
+                return SupervisorStrategy.restart();
+            } else return SupervisorStrategy.escalate();
+        });
+    }
 }

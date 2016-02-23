@@ -82,30 +82,28 @@ public class HandlerTest {
     @Test
     public void launch() throws InterruptedException {
 //        CountDownLatch count = new CountDownLatch(1);
-        int i = 0;
-        while (true) {
-            i++;
-            if(i > 200000000)
-                break;
-            while (Thread.activeCount() < 100) {
-                new Thread(() -> {
-                    while (true) {
-                        ApplicationEventEmitter.launch(
-                                new ApplicationEventTest("213")
-                        );
-                    }
-                }).start();
-            }
-        }
 //        int i = 0;
 //        while (true) {
-//            System.out.println(i);
-//            ApplicationEventEmitter.launch(
-//                    new ApplicationEventTest("213")
-//            );
 //            i++;
+//            if(i > 200000000)
+//                break;
+//            while (Thread.activeCount() < 100) {
+//                new Thread(() -> {
+//                    while (true) {
+//                        ApplicationEventEmitter.launch(
+//                                new ApplicationEventTest("213")
+//                        );
+//                    }
+//                }).start();
+//            }
 //        }
+//            System.out.println(i);
+        System.out.println(System.currentTimeMillis());
+            ApplicationEventEmitter.launch(
+                    new ApplicationEventTest("213")
+            );
 //        count.await();
+        System.out.println(1456192389336L - 1456192389019L);
     }
 
     public static class ApplicationEventTest extends ApplicationEvent {

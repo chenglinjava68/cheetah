@@ -63,6 +63,7 @@ http://www.springframework.org/schema/aop
                 </property>
             </bean>
         </property>
+        <property name="policy" value="default"/>
     </bean>
 
     <bean id="collector" class="cheetah.distributor.core.support.GenericEventCollector">

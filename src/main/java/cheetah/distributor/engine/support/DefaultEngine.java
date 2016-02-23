@@ -3,31 +3,27 @@ package cheetah.distributor.engine.support;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import cheetah.distributor.core.DispatcherMachine;
 import cheetah.distributor.engine.Engine;
 import cheetah.distributor.governor.Governor;
 import cheetah.distributor.governor.GovernorFactory;
 import cheetah.distributor.governor.support.AkkaGovernor;
 import cheetah.distributor.governor.support.WorkerMaster;
-import cheetah.distributor.worker.Worker;
-import cheetah.distributor.worker.WorkerFactory;
-import cheetah.distributor.worker.support.AkkaWorkerFactory;
 import cheetah.distributor.machine.Machine;
 import cheetah.distributor.machine.MachineFactory;
 import cheetah.distributor.machine.support.AkkaMachineFactory;
+import cheetah.distributor.worker.Worker;
+import cheetah.distributor.worker.WorkerFactory;
+import cheetah.distributor.worker.support.AkkaWorkerFactory;
 import cheetah.logger.Debug;
 import cheetah.plugin.InterceptorChain;
-import cheetah.util.Assert;
 import com.typesafe.config.ConfigFactory;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Objects;
 
 /**
  * Created by Max on 2016/2/1.
  */
 public class DefaultEngine implements Engine {
-    private final Map<MachineCacheKey, List<Machine>> machineCache = new ConcurrentHashMap<>();
     private WorkerFactory workerFactory;
     private MachineFactory machineFactory;
     private GovernorFactory governorFactory;
@@ -59,7 +55,6 @@ public class DefaultEngine implements Engine {
     public void stop() {
         while (!actorSystem.isTerminated())
             actorSystem.shutdown();
-        machineCache.clear();
         workerFactory = null;
         machineFactory = null;
         governorFactory = null;
@@ -67,19 +62,6 @@ public class DefaultEngine implements Engine {
         actorSystem = null;
         state = STATE.STOP;
         Debug.log(this.getClass(), "DefualtEngine has been shut down.");
-    }
-
-    @Override
-    public void registerMachineSquad(MachineCacheKey cacheKey, List<Machine> machines) {
-        Assert.notNull(cacheKey, "listener must not be null");
-        Assert.notNull(machines, "machines must not be null");
-        this.machineCache.put(cacheKey, machines);
-    }
-
-    @Override
-    public List<Machine> assignMachineSquad(MachineCacheKey cacheKey) {
-        List<Machine> result = this.machineCache.get(cacheKey);
-        return result == null ? Collections.<Machine>emptyList() : Collections.unmodifiableList(result);
     }
 
     @Override
@@ -102,11 +84,6 @@ public class DefaultEngine implements Engine {
         Governor governor = governorFactory.createGovernor();
         ((AkkaGovernor) governor).setWorkerWatcher(this.workerGovernor);
         return governor;
-    }
-
-    @Override
-    public boolean isExists(DispatcherMachine.ListenerCacheKey cacheKey) {
-        return this.machineCache.containsKey(cacheKey);
     }
 
     @Override
