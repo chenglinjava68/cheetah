@@ -1,7 +1,7 @@
 package cheetah.distributor.event;
 
 
-import cheetah.distributor.core.DispatcherMachine;
+import cheetah.distributor.core.support.DispatcherMachine;
 
 /**
  * Created by Max on 2016/2/3.

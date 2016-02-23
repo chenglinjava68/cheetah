@@ -1,6 +1,5 @@
 package cheetah.distributor.core.support;
 
-import cheetah.distributor.core.DispatcherMachine;
 import cheetah.distributor.core.EventMessage;
 import cheetah.distributor.core.EventResult;
 import cheetah.distributor.event.AbstractCollector;

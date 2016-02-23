@@ -1,5 +1,9 @@
-package cheetah.distributor.core;
+package cheetah.distributor.core.support;
 
+import cheetah.distributor.core.AbstractDispatcher;
+import cheetah.distributor.core.EventMessage;
+import cheetah.distributor.core.EventResult;
+import cheetah.distributor.core.NoMapperException;
 import cheetah.distributor.event.Event;
 import cheetah.distributor.governor.Governor;
 import cheetah.distributor.machine.Feedback;

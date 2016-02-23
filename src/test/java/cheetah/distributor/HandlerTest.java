@@ -1,7 +1,7 @@
 package cheetah.distributor;
 
 import cheetah.distributor.core.Configuration;
-import cheetah.distributor.core.DispatcherMachine;
+import cheetah.distributor.core.support.DispatcherMachine;
 import cheetah.distributor.core.support.ApplicationEventEmitter;
 import cheetah.distributor.event.ApplicationEvent;
 import cheetah.distributor.event.ApplicationListener;

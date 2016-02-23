@@ -41,12 +41,11 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         Mapper.MachineMapperKey key = Mapper.MachineMapperKey.generate(event.getClass(), event.getSource().getClass());
 
         boolean exists = mapper.isExists(key);
-        if(exists)
+        if (exists)
             return dispatch(eventMessage);
         convertMapper(event, key);
         return dispatch(eventMessage);
     }
-
 
     @Override
     public void start() {
@@ -115,6 +114,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
 
     /**
      * Mapper helper
+     *
      * @param event
      */
     private void convertMapper(Event event, Mapper.MachineMapperKey mapperKey) {
@@ -163,7 +163,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
     private List<EventListener> getSmartApplicationEventListener(Event event) {
         return this.configuration.getEventListeners().
                 stream().filter(eventListener ->
-                SmartApplicationListener.class.isAssignableFrom(eventListener.getClass()))
+                    SmartApplicationListener.class.isAssignableFrom(eventListener.getClass()))
                 .filter(eventListener -> {
                     SmartApplicationListener listener = (SmartApplicationListener) eventListener;
                     boolean supportsEventType = listener.supportsEventType(event.getClass());
@@ -189,7 +189,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
     private List<EventListener> getSmartDomainEventListener(Event event) {
         return this.configuration.getEventListeners().
                 stream().filter(eventListener ->
-                SmartDomainEventListener.class.isAssignableFrom(eventListener.getClass()))
+                    SmartDomainEventListener.class.isAssignableFrom(eventListener.getClass()))
                 .filter(eventListener -> {
                     SmartDomainEventListener listener = (SmartDomainEventListener) eventListener;
                     boolean supportsEventType = listener.supportsEventType(event.getClass());
