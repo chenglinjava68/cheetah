@@ -52,13 +52,13 @@ http://www.springframework.org/schema/aop
 
     <bean id="beanFactoryProvider" class="cheetah.container.spring.SpringAplicationContextProvider"/>
 
-    <bean id="dispatcher" class="cheetah.distributor.core.support.DispatcherMachine" init-method="start" destroy-method="stop">
+    <bean id="dispatcher" class="cheetah.dispatcher.core.support.DispatcherMachine" init-method="start" destroy-method="stop">
         <property name="configuration">
-            <bean class="cheetah.distributor.core.Configuration">
+            <bean class="cheetah.dispatcher.core.Configuration">
                 <property name="eventListeners">
                     <list>
-                        <bean class="cheetah.distributor.HandlerTest.SmartApplicationListenerTest"/>
-                        <bean class="cheetah.distributor.HandlerTest.ApplicationListenerTest"/>
+                        <bean class="cheetah.dispatcher.HandlerTest.SmartApplicationListenerTest"/>
+                        <bean class="cheetah.dispatcher.HandlerTest.ApplicationListenerTest"/>
                     </list>
                 </property>
             </bean>
@@ -66,7 +66,7 @@ http://www.springframework.org/schema/aop
         <property name="policy" value="default"/>
     </bean>
 
-    <bean id="collector" class="cheetah.distributor.core.support.GenericEventCollector">
+    <bean id="collector" class="cheetah.dispatcher.core.support.GenericEventCollector">
         <constructor-arg index="0" ref="dispatcher"/>
     </bean>
 

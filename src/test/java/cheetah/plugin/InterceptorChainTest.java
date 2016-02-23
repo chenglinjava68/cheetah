@@ -1,7 +1,7 @@
 package cheetah.plugin;
 
-import cheetah.distributor.event.Event;
-import cheetah.distributor.machine.Machine;
+import cheetah.dispatcher.event.Event;
+import cheetah.dispatcher.machine.Machine;
 
 /**
  * Created by Max on 2016/2/17.
