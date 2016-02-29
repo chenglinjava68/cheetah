@@ -29,8 +29,10 @@ public class ActorPoolFactory implements AsynchronousPoolFactory<ActorRef> {
         this.actorFactory = actorFactory;
     }
 
-    public ActorRef createActor(Event event) {
+    public synchronized ActorRef createActor(Event event) {
         String name = event.getClass().getName();
+        if (actorPool.containsKey(name))
+            return this.actorPool.get(name);
         Map<Class<? extends EventListener>, Machine> machines = getMapperFrom(event);
         return this.actorFactory.createAsynchronous(name, machines);
     }
@@ -38,9 +40,9 @@ public class ActorPoolFactory implements AsynchronousPoolFactory<ActorRef> {
     @Override
     public ActorRef getAsynchronous(Event event) {
         String name = event.getClass().getName();
-        if(!this.mapper.isExists(Mapper.MachineMapperKey.generate(event)))
+        if (!this.mapper.isExists(Mapper.MachineMapperKey.generate(event)))
             throw new NoMapperException();
-        if(actorPool.containsKey(name))
+        if (actorPool.containsKey(name))
             return this.actorPool.get(name);
         else {
             ActorRef actor = createActor(event);

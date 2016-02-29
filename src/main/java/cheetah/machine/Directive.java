@@ -8,18 +8,18 @@ import cheetah.event.Event;
  */
 public class Directive {
     private Event event;
-    private boolean needResult;
+    private boolean feedback;
 
-    public Directive(Event event, boolean needResult) {
+    public Directive(Event event, boolean feedback) {
         this.event = event;
-        this.needResult = needResult;
+        this.feedback = feedback;
     }
 
     public Event event() {
         return event;
     }
 
-    public boolean needResult() {
-        return needResult;
+    public boolean feedback() {
+        return feedback;
     }
 }

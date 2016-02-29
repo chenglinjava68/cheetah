@@ -1,7 +1,8 @@
-package cheetah.core.support;
+package cheetah.client;
 
 import cheetah.core.EventMessage;
 import cheetah.core.EventResult;
+import cheetah.core.support.DispatcherMachine;
 import cheetah.event.AbstractCollector;
 import cheetah.event.Event;
 

@@ -1,4 +1,4 @@
-package cheetah.core.support;
+package cheetah.client;
 
 import cheetah.container.BeanFactory;
 import cheetah.event.ApplicationEvent;

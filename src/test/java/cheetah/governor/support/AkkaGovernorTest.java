@@ -1,9 +1,10 @@
 package cheetah.governor.support;
 
-import cheetah.core.support.ApplicationEventEmitter;
-import cheetah.event.ApplicationEvent;
-import cheetah.event.ApplicationListener;
-import cheetah.event.SmartApplicationListener;
+import cheetah.client.ApplicationEventEmitter;
+import cheetah.client.DomainEventEmitter;
+import cheetah.domain.Entity;
+import cheetah.domain.UUIDKeyEntity;
+import cheetah.event.*;
 import cheetah.util.ArithUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +47,15 @@ public class AkkaGovernorTest {
                 }
             }).start();
         }
+        for (int i = 0; i < 100; i++) {
+            new Thread(() -> {
+                while (true) {
+                    DomainEventEmitter.launch(
+                            new DomainEventTest(new User("huahng"))
+                    );
+                }
+            }).start();
+        }
         latch.await();
     }
 
@@ -58,6 +68,19 @@ public class AkkaGovernorTest {
          * @throws IllegalArgumentException if source is null.
          */
         public ApplicationEventTest(Object source) {
+            super(source);
+        }
+    }
+
+    public static class DomainEventTest extends DomainEvent {
+
+        /**
+         * Constructs a prototypical Event.
+         *
+         * @param source The object on which the Event initially occurred.
+         * @throws IllegalArgumentException if source is null.
+         */
+        public DomainEventTest(Object source) {
             super(source);
         }
     }
@@ -94,7 +117,61 @@ public class AkkaGovernorTest {
 
         @Override
         public void onApplicationEvent(ApplicationEventTest event) {
+            double v = ArithUtil.round(Math.random() * 100, 0);
+            long i = ArithUtil.convertsToLong(v);
+            try {
+                Thread.sleep(i);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             System.out.println("SmartApplicationListenerTest -- " + atomicLong.incrementAndGet());
+        }
+    }
+
+    public static class SmartDomainListenerTest implements SmartDomainEventListener<DomainEventTest> {
+
+        @Override
+        public boolean supportsEventType(Class<? extends DomainEvent> eventType) {
+            return eventType == DomainEventTest.class;
+        }
+
+        @Override
+        public boolean supportsSourceType(Class<? extends Entity> sourceType) {
+            return User.class == sourceType;
+        }
+
+        @Override
+        public int getOrder() {
+            return 0;
+        }
+
+        @Override
+        public void onDomainEvent(DomainEventTest event) {
+            double v = ArithUtil.round(Math.random() * 100, 0);
+            long i = ArithUtil.convertsToLong(v);
+            try {
+                Thread.sleep(i);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("DomainEventTest -- " + atomicLong.incrementAndGet());
+        }
+    }
+
+    public static class User extends UUIDKeyEntity {
+
+        private static final long serialVersionUID = -2269393138381549806L;
+        private String name;
+
+        public User(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return "User{" +
+                    "name='" + name + '\'' +
+                    "} " + super.toString();
         }
     }
 }

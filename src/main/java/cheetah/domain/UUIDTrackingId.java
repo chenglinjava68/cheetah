@@ -24,7 +24,7 @@ public class UUIDTrackingId extends TrackingId<String> {
 
     @Override
     public String id() {
-        return id();
+        return id;
     }
 
 }

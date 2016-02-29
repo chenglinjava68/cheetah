@@ -22,6 +22,9 @@ public class MachineMapper implements Mapper {
 
     @Override
     public void put(MachineMapperKey mapperKey, Map<Class<? extends EventListener>, Machine> machines) {
+        if (machines.isEmpty()) {
+            return;
+        }
         machineMap.put(mapperKey, machines);
     }
 

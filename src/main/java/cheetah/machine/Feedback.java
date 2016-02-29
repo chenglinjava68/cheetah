@@ -7,8 +7,8 @@ package cheetah.machine;
  */
 public class Feedback<T> {
     public static Feedback EMPTY = new Feedback("empty", false);
-    public static Feedback FAILURE = new Feedback(null, false); //
-    public static Feedback SUCCESS = new Feedback(null, true); //
+    public static Feedback FAILURE = new Feedback(null, true); //
+    public static Feedback SUCCESS = new Feedback(null, false); //
     private T data;
     private boolean fail;
 

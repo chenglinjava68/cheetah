@@ -19,7 +19,7 @@ public interface Machine extends Cloneable {
      */
     default Feedback send(Directive directive) {
         Feedback feedback = Feedback.FAILURE;
-        if (directive.needResult()) {
+        if (directive.feedback()) {
             feedback = completeExecute(directive.event());
             if (feedback.isFail())
                 onFailure(directive.event());
