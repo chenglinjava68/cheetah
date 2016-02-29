@@ -1,8 +1,8 @@
 package cheetah.machine;
 
-import cheetah.event.Event;
 import cheetah.common.logger.Debug;
 import cheetah.common.logger.Info;
+import cheetah.event.Event;
 
 import java.util.EventListener;
 
@@ -12,32 +12,51 @@ import java.util.EventListener;
  */
 public interface Machine extends Cloneable {
 
-    default Feedback send(Event event, boolean needResult) {
+    /**
+     * 给机器发送一个指令，让其工作
+     * @param directive
+     * @return
+     */
+    default Feedback send(Directive directive) {
         Feedback feedback = Feedback.FAILURE;
-        if (needResult) {
-            feedback = completeExecute(event);
+        if (directive.needResult()) {
+            feedback = completeExecute(directive.event());
             if (feedback.isFail())
-                onFailure(event);
+                onFailure(directive.event());
             else
-                onSuccess(event);
-        } else execute(event);
+                onSuccess(directive.event());
+        } else execute(directive.event());
 
         return feedback;
     }
 
+    /**
+     * 机器工作故障后的回调函数
+     * @param event
+     */
     default void onFailure(Event event) {
         Debug.log(this.getClass(), "Machine execute failure event is [" + event + "]");
     }
 
+    /**
+     * 机器工作故障后的回调函数
+     * @param event
+     */
     default void onSuccess(Event event) {
         Info.log(this.getClass(), "Machine execute success event is [" + event + "]");
     }
 
     /**
+     * 无工作反馈的执行方式
      * @param event
      */
     void execute(Event event);
 
+    /**
+     * 有反馈的执行方式
+     * @param event
+     * @return
+     */
     Feedback completeExecute(Event event);
 
     void setEventListener(EventListener eventListener);
@@ -48,26 +67,4 @@ public interface Machine extends Cloneable {
 
     Machine kagebunsin(EventListener listener) throws CloneNotSupportedException;
 
-    /**
-     * handler处理类型
-     * UNIMPEDED：无状态无锁
-     * STATE：有状态
-     */
-    enum ProcessMode {
-        UNIMPEDED(0), STATE(1);
-
-        private Integer code;
-
-        ProcessMode(Integer code) {
-            this.code = code;
-        }
-
-        public static ProcessMode formatFrom(Integer code) {
-            for (ProcessMode mode : ProcessMode.values()) {
-                if (mode.code == code)
-                    return mode;
-            }
-            return UNIMPEDED;
-        }
-    }
 }

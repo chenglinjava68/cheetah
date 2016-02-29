@@ -2,6 +2,7 @@ package cheetah.machine;
 
 
 /**
+ * 机器的反馈
  * Created by Max on 2016/2/21.
  */
 public class Feedback<T> {

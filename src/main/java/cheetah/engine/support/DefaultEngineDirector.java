@@ -1,5 +1,6 @@
 package cheetah.engine.support;
 
+import cheetah.core.Configuration;
 import cheetah.engine.Engine;
 import cheetah.engine.EngineBuilder;
 import cheetah.engine.EngineDirector;
@@ -9,6 +10,7 @@ import cheetah.engine.EngineDirector;
  */
 public class DefaultEngineDirector implements EngineDirector {
     private EngineBuilder builder;
+    private Configuration configuration;
 
     public DefaultEngineDirector(EngineBuilder builder) {
         this.builder = builder;
@@ -21,6 +23,13 @@ public class DefaultEngineDirector implements EngineDirector {
         engine.setMachineFactory(builder.buildMachineFactory());
         engine.setGovernorFactory(builder.buildGovernorFactory());
         engine.setMapper(builder.buildMapper());
+        engine.setAsynchronousPoolFactory(builder.buildAsynchronousPoolFactory(configuration));
         return engine;
     }
+
+    @Override
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
 }

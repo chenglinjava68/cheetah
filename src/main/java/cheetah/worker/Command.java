@@ -12,10 +12,6 @@ public class Command implements Serializable {
 
     private static final long serialVersionUID = 2193959876727951577L;
 
-    public enum RESULT {
-        SUCCESS, FAILURE;
-    }
-
     private Event event;
     private boolean needResult;
     private Class<? extends EventListener> eventListener;

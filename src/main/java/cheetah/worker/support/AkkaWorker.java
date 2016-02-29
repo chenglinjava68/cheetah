@@ -3,15 +3,14 @@ package cheetah.worker.support;
 import akka.actor.OneForOneStrategy;
 import akka.actor.SupervisorStrategy;
 import akka.actor.UntypedActor;
-import cheetah.engine.support.DefaultEngine;
+import cheetah.async.akka.ActorFactory;
+import cheetah.common.logger.Debug;
+import cheetah.machine.Directive;
 import cheetah.machine.Feedback;
 import cheetah.machine.Machine;
-import cheetah.mapper.Mapper;
+import cheetah.util.Assert;
 import cheetah.worker.Command;
 import cheetah.worker.Worker;
-import cheetah.common.logger.Debug;
-import cheetah.util.Assert;
-import cheetah.util.CountUtils;
 import scala.Option;
 import scala.concurrent.duration.Duration;
 
@@ -23,21 +22,19 @@ import java.util.concurrent.TimeUnit;
  * Created by Max on 2016/2/21.
  */
 public class AkkaWorker extends UntypedActor implements Worker {
-    private Mapper mapper;
+    private Map<Class<? extends EventListener>, Machine> eventlistenerMapper;
 
-    public AkkaWorker(Mapper mapper) {
-        this.mapper = mapper;
+    public AkkaWorker(Map<Class<? extends EventListener>, Machine> eventlistenerMapper) {
+        this.eventlistenerMapper = eventlistenerMapper;
     }
 
     @Override
     public void work(Command command) {
         try {
             Assert.notNull(command, "order must not be null");
-            Map<Class<? extends EventListener>, Machine> machineMap = mapper.getMachine(Mapper.MachineMapperKey.generate(command.event()));
-            Machine machine = machineMap.get(command.eventListener());
-            Feedback feedback = machine.completeExecute(command.event());
+            Machine machine = eventlistenerMapper.get(command.eventListener());
+            Feedback feedback = machine.send(new Directive(command.event(), command.needResult()));
             getSender().tell(feedback, getSelf());
-            getSender().tell(Feedback.FAILURE, getSelf());
         } catch (Exception e) {
             Debug.log(this.getClass(), "machine execute fail.", e);
             getSender().tell(Feedback.FAILURE, getSelf());
@@ -46,11 +43,9 @@ public class AkkaWorker extends UntypedActor implements Worker {
 
     @Override
     public void onReceive(Object message) throws Exception {
-        if (message.equals(DefaultEngine.STATUS_CHECK_MSG)) {
-        System.out.println(CountUtils.atomicLong.incrementAndGet());
-            getSender().tell(DefaultEngine.STATUS_OK, getSelf());
+        if (message.equals(ActorFactory.STATUS_CHECK_MSG)) {
+            getSender().tell(ActorFactory.STATUS_OK, getSelf());
         } else if (message instanceof Command) {
-            getSender().tell(DefaultEngine.STATUS_OK, getSelf());
             work((Command) message);
         } else unhandled(message);
     }

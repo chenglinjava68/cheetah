@@ -8,7 +8,7 @@ import java.util.EventListener;
 import java.util.Map;
 import java.util.Set;
 
-/**
+/** 工作机器映射器
  * Created by Max on 2016/2/23.
  */
 public interface Mapper extends Cloneable {

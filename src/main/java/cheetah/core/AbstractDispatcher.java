@@ -19,12 +19,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
+ *
  * Created by Max on 2016/2/23.
  */
 public abstract class AbstractDispatcher implements Dispatcher, Startable {
 
-    private Configuration configuration;
-    private final InterceptorChain interceptorChain = new InterceptorChain();
+    private Configuration configuration; //框架配置
+    private final InterceptorChain interceptorChain = new InterceptorChain(); //拦截器链
     private Engine engine;
     private EnginePolicy policy;
     private EngineDirector engineDirector;
@@ -35,8 +36,6 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
 
     @Override
     public EventResult receive(EventMessage eventMessage) {
-        if(!getEngine().isRunning())
-            return null;
         Event event = eventMessage.event();
         Mapper.MachineMapperKey key = Mapper.MachineMapperKey.generate(event.getClass(), event.getSource().getClass());
 
@@ -56,6 +55,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         } else
             configuration = new Configuration();
         this.engineDirector = policy.getEngineDirector();
+        this.engineDirector.setConfiguration(this.configuration);
         this.engine = engineDirector.directEngine();
         engine.start();
     }

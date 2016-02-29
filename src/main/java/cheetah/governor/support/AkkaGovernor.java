@@ -2,15 +2,14 @@ package cheetah.governor.support;
 
 import akka.actor.ActorRef;
 import akka.pattern.Patterns;
-import cheetah.engine.support.DefaultEngine;
 import cheetah.event.Event;
 import cheetah.governor.Governor;
 import cheetah.machine.Feedback;
 import cheetah.machine.Machine;
-import cheetah.worker.Command;
 import cheetah.plugin.InterceptorChain;
 import cheetah.util.Assert;
 import cheetah.util.IDGenerator;
+import cheetah.worker.Command;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
@@ -92,7 +91,7 @@ public class AkkaGovernor implements Governor {
     }
 
     @Override
-    public void removeWorker(Machine $worker) {
+    public void expelMachine(Machine $worker) {
         Assert.notNull($worker, "$observer must not be null");
         machines.remove($worker.getEventListener().getClass());
     }
@@ -117,7 +116,7 @@ public class AkkaGovernor implements Governor {
         for (Class<? extends EventListener> clz : this.machines.keySet()) {
             try {
                 Command command = Command.of(event, clz);
-                Future<Object> future = Patterns.ask(this.worker, DefaultEngine.STATUS_CHECK_MSG, 1000);
+                Future<Object> future = Patterns.ask(this.worker, command, 3000);
                 Object result = Await.result(future, Duration.create(3000, TimeUnit.MILLISECONDS));
 //                System.out.println(result);
             } catch (Exception e) {

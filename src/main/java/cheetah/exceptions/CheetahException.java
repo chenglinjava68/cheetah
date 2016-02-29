@@ -1,6 +1,7 @@
 package cheetah.exceptions;
 
 /**
+ * cheetah顶级Exception类
  * Created by Max on 2016/2/1.
  */
 public class CheetahException extends RuntimeException {

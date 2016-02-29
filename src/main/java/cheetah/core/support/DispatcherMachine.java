@@ -20,7 +20,7 @@ public class DispatcherMachine extends AbstractDispatcher {
     public EventResult dispatch(EventMessage eventMessage, Map<Class<? extends EventListener>, Machine> machines) {
         Event event = eventMessage.event();
         if (!machines.isEmpty()) {
-            Governor governor = getEngine().assignGovernor();
+            Governor governor = getEngine().assignGovernor(event);
             Feedback report = governor.initialize()
                     .setEvent(event)
                     .registerMachineSquad(new HashMap<>(machines))

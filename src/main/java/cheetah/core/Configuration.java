@@ -14,7 +14,7 @@ import java.util.List;
 public class Configuration {
     private List<Interceptor> plugins;
     private List<EventListener> eventListeners;
-
+    private int eventPerformerSize;
     public Configuration() {
         this.plugins = Collections.EMPTY_LIST;
         this.eventListeners = Collections.EMPTY_LIST;
@@ -34,6 +34,14 @@ public class Configuration {
 
     public void setEventListeners(List<EventListener> eventListeners) {
         this.eventListeners = eventListeners;
+    }
+
+    public int eventPerformerSize() {
+        return eventPerformerSize;
+    }
+
+    public void setEventPerformerSize(int eventPerformerSize) {
+        this.eventPerformerSize = eventPerformerSize;
     }
 
     public boolean hasPlugin() {
