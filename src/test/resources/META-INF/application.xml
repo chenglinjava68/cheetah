@@ -18,6 +18,28 @@ http://www.springframework.org/schema/aop
     <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
     <aop:aspectj-autoproxy/>
 
+
+    <bean id="beanFactoryProvider" class="cheetah.container.spring.SpringAplicationContextProvider"/>
+
+    <bean id="dispatcher" class="cheetah.core.support.DispatcherMachine" init-method="start" destroy-method="stop">
+        <property name="configuration">
+            <bean class="cheetah.core.Configuration">
+                <property name="eventListeners">
+                    <list>
+                        <bean class="cheetah.governor.support.AkkaGovernorTest.ApplicationListenerTest"/>
+                        <bean class="cheetah.governor.support.AkkaGovernorTest.SmartApplicationListenerTest"/>
+                    </list>
+                </property>
+            </bean>
+        </property>
+        <property name="policy" value="default"/>
+    </bean>
+
+    <bean id="collector" class="cheetah.core.support.GenericEventCollector">
+        <constructor-arg index="0" ref="dispatcher"/>
+    </bean>
+
+
     <!--<jpa:repositories base-package="cheetah.repository"  repository-impl-postfix="Impl" entity-manager-factory-ref="em"-->
                       <!--transaction-manager-ref="transactionManager"/>-->
 <!--
@@ -49,26 +71,6 @@ http://www.springframework.org/schema/aop
         <property name="password" value="${jdbc.password}"/>
     </bean>
 -->
-
-    <bean id="beanFactoryProvider" class="cheetah.container.spring.SpringAplicationContextProvider"/>
-
-    <bean id="dispatcher" class="cheetah.dispatcher.core.support.DispatcherMachine" init-method="start" destroy-method="stop">
-        <property name="configuration">
-            <bean class="cheetah.dispatcher.core.Configuration">
-                <property name="eventListeners">
-                    <list>
-                        <bean class="cheetah.dispatcher.HandlerTest.SmartApplicationListenerTest"/>
-                        <bean class="cheetah.dispatcher.HandlerTest.ApplicationListenerTest"/>
-                    </list>
-                </property>
-            </bean>
-        </property>
-        <property name="policy" value="default"/>
-    </bean>
-
-    <bean id="collector" class="cheetah.dispatcher.core.support.GenericEventCollector">
-        <constructor-arg index="0" ref="dispatcher"/>
-    </bean>
 
 
 </beans>
