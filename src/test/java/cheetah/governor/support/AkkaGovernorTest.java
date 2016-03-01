@@ -1,7 +1,6 @@
 package cheetah.governor.support;
 
 import cheetah.client.ApplicationEventEmitter;
-import cheetah.client.DomainEventEmitter;
 import cheetah.domain.Entity;
 import cheetah.domain.UUIDKeyEntity;
 import cheetah.event.*;
@@ -23,17 +22,6 @@ public class AkkaGovernorTest {
 
     public static final AtomicLong atomicLong = new AtomicLong();
 
-    @Test
-    public void launch2() throws InterruptedException {
-
-        while (true) {
-            ApplicationEventEmitter.launch(
-                    new ApplicationEventTest("213")
-            );
-        }
-
-    }
-
 
     @Test
     public void launch() throws InterruptedException {
@@ -47,16 +35,40 @@ public class AkkaGovernorTest {
                 }
             }).start();
         }
-        for (int i = 0; i < 100; i++) {
-            new Thread(() -> {
-                while (true) {
-                    DomainEventEmitter.launch(
-                            new DomainEventTest(new User("huahng"))
-                    );
-                }
-            }).start();
-        }
+//        for (int i = 0; i < 100; i++) {
+//            new Thread(() -> {
+//                while (true) {
+//                    DomainEventEmitter.launch(
+//                            new DomainEventTest(new User("huahng"))
+//                    );
+//                }
+//            }).start();
+//        }
         latch.await();
+    }
+
+
+    @Test
+    public void launch2() throws InterruptedException {
+
+        while (true) {
+            ApplicationEventEmitter.launch(
+                    new ApplicationEventTest("213")
+            );
+        }
+
+    }
+
+
+    @Test
+    public void launch3() throws InterruptedException {
+        for (int i = 0; i < 5; i++) {
+            System.out.println(System.currentTimeMillis());
+            ApplicationEventEmitter.launch(
+                    new ApplicationEventTest("213")
+            );
+        }
+
     }
 
     public static class ApplicationEventTest extends ApplicationEvent {

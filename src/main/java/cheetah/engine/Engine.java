@@ -12,7 +12,7 @@ import cheetah.worker.Worker;
 import cheetah.worker.WorkerFactory;
 
 /**
- * 事件工作引擎
+ * 事件处理引擎
  * Created by Max on 2016/2/19.
  */
 public interface Engine extends Startable {
@@ -67,5 +67,15 @@ public interface Engine extends Startable {
      */
     Mapper getMapper();
 
+    State state();
+
+    default boolean isRunning() {
+        return state().equals(State.RUNNING);
+    }
+
+
+    enum State {
+        NEW, RUNNING, STOP
+    }
 
 }

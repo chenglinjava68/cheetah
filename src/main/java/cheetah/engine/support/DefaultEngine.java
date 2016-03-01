@@ -30,6 +30,12 @@ public class DefaultEngine implements Engine {
     private InterceptorChain interceptorChain;
     private AsynchronousPoolFactory<ActorRef> asynchronousPoolFactory;
     private volatile Mapper mapper;
+    private volatile Governor governor;
+    private State state;
+
+    public DefaultEngine() {
+        this.state = State.NEW;
+    }
 
     @Override
     public void start() {
@@ -40,6 +46,7 @@ public class DefaultEngine implements Engine {
             workerFactory = new AkkaWorkerFactory();
         if (Objects.isNull(machineFactory))
             machineFactory = new DefaultMachineFactory();
+        this.state = State.RUNNING;
     }
 
     @Override
@@ -51,6 +58,7 @@ public class DefaultEngine implements Engine {
         interceptorChain = null;
         asynchronousPoolFactory = null;
         Debug.log(this.getClass(), "DefualtEngine has been shut down.");
+        this.state = State.STOP;
     }
 
     private void initializeActorSystem() {
@@ -74,15 +82,41 @@ public class DefaultEngine implements Engine {
 
     @Override
     public Governor assignGovernor() {
-        Governor governor = governorFactory.createGovernor();
-        return governor;
+        if(Objects.isNull(this.governor)) {
+            governor = governorFactory.createGovernor();
+            return governor;
+        } else {
+            try {
+                Governor clone = governor.kagebunsin();
+                clone.reset();
+                return clone;
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 
     @Override
     public Governor assignGovernor(Event event) {
-        Governor governor = governorFactory.createGovernor();
-        ((AkkaGovernor) governor).setWorker(asynchronousPoolFactory.getAsynchronous(event));
-        return governor;
+        if(Objects.isNull(this.governor)) {
+            governor = governorFactory.createGovernor();
+            ((AkkaGovernor) governor).setWorker(asynchronousPoolFactory.getAsynchronous(event));
+            return governor;
+        } else {
+            try {
+                Governor clone = governor.kagebunsin();
+                clone.reset();
+                ActorRef actor = asynchronousPoolFactory.getAsynchronous(event);
+                ((AkkaGovernor) clone).setWorker(actor);
+                return clone;
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+                governor = governorFactory.createGovernor();
+                ((AkkaGovernor) governor).setWorker(asynchronousPoolFactory.getAsynchronous(event));
+                return governor;
+            }
+        }
     }
 
     @Override
@@ -113,6 +147,11 @@ public class DefaultEngine implements Engine {
     @Override
     public Mapper getMapper() {
         return this.mapper;
+    }
+
+    @Override
+    public State state() {
+        return state;
     }
 
     public void setInterceptorChain(InterceptorChain interceptorChain) {

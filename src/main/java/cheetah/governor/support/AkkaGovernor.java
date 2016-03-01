@@ -27,13 +27,13 @@ public class AkkaGovernor implements Governor {
     private Boolean fisrtSucceed;
     private Boolean needResult;
     private Event event;
-    private Map<Class<? extends EventListener>, Machine> machines = new HashMap<>();
+    private Map<Class<? extends EventListener>, Machine> machines;
     private ActorRef worker;
     private InterceptorChain interceptorChain;
 
     @Override
     public Governor reset() {
-        this.machines.clear();
+        this.machines = null;
         this.worker = null;
         this.fisrtSucceed = false;
         this.needResult = false;
@@ -79,8 +79,8 @@ public class AkkaGovernor implements Governor {
     }
 
     @Override
-    public Governor registerMachineSquad(Map<Class<? extends EventListener>, Machine> $workers) {
-        this.machines.putAll($workers);
+    public Governor registerMachineSquad(Map<Class<? extends EventListener>, Machine> machineMap) {
+        this.machines = machineMap;
         return this;
     }
 
@@ -113,16 +113,26 @@ public class AkkaGovernor implements Governor {
     private Feedback notifyAllWorker() {
         if (machines.isEmpty())
             return Feedback.EMPTY;
+        Map<Class<? extends EventListener>, Feedback> feedbackMap = new HashMap<>();
+        System.out.println(System.currentTimeMillis());
         for (Class<? extends EventListener> clz : this.machines.keySet()) {
             try {
                 Command command = Command.of(event, clz);
                 Future<Object> future = Patterns.ask(this.worker, command, 3000);
                 Object result = Await.result(future, Duration.create(3000, TimeUnit.MILLISECONDS));
-//                System.out.println(result);
+                if (result instanceof Feedback) {
+                    Feedback feedback = (Feedback) result;
+                    feedbackMap.put(clz, feedback);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
+                feedbackMap.put(clz, Feedback.FAILURE);
             }
         }
+
+//        if (!feedbackMap.isEmpty()) {
+//            interceptorChain.pluginAll(feedbackMap);
+//        }
         return Feedback.SUCCESS;
     }
 }

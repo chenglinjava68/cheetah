@@ -49,7 +49,7 @@ public class DisruptorGovernor implements Governor {
     }
 
     @Override
-    public Governor registerMachineSquad(Map<Class<? extends EventListener>, Machine> $workers) {
+    public Governor registerMachineSquad(Map<Class<? extends EventListener>, Machine> machineMap) {
         return null;
     }
 
@@ -69,7 +69,7 @@ public class DisruptorGovernor implements Governor {
     }
 
     @Override
-    public Object kagebunsin() throws CloneNotSupportedException {
+    public Governor kagebunsin() throws CloneNotSupportedException {
         return null;
     }
 }

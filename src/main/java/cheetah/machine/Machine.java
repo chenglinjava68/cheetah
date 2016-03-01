@@ -1,7 +1,6 @@
 package cheetah.machine;
 
 import cheetah.common.logger.Debug;
-import cheetah.common.logger.Info;
 import cheetah.event.Event;
 
 import java.util.EventListener;
@@ -35,7 +34,7 @@ public interface Machine extends Cloneable {
      * @param event
      */
     default void onFailure(Event event) {
-        Debug.log(this.getClass(), "Machine execute failure event is [" + event + "]");
+        cheetah.common.logger.Error.log(this.getClass(), "Machine execute failure event is [" + event + "]");
     }
 
     /**
@@ -43,7 +42,7 @@ public interface Machine extends Cloneable {
      * @param event
      */
     default void onSuccess(Event event) {
-        Info.log(this.getClass(), "Machine execute success event is [" + event + "]");
+        Debug.log(this.getClass(), "Machine execute success event is [" + event + "]");
     }
 
     /**

@@ -21,4 +21,6 @@ public interface AsynchronousPoolFactory<T> extends Startable {
      * @param mapper
      */
     void setMapper(Mapper mapper);
+
+    void setAsynchronousFactory(AsynchronousFactory asynchronousFactory);
 }

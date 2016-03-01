@@ -57,10 +57,10 @@ public interface Governor extends Cloneable {
 
     /**
      * 注册一组工作机器
-     * @param $workers
+     * @param machineMap
      * @return
      */
-    Governor registerMachineSquad(Map<Class<? extends EventListener>, Machine> $workers);
+    Governor registerMachineSquad(Map<Class<? extends EventListener>, Machine> machineMap);
 
     /**
      * 是否要返回结果
@@ -86,6 +86,6 @@ public interface Governor extends Cloneable {
      * @return
      * @throws CloneNotSupportedException
      */
-    Object kagebunsin() throws CloneNotSupportedException;
+    Governor kagebunsin() throws CloneNotSupportedException;
 
 }

@@ -72,6 +72,11 @@ public class DisruptorEngine implements Engine {
     }
 
     @Override
+    public State state() {
+        return null;
+    }
+
+    @Override
     public void start() {
 
     }

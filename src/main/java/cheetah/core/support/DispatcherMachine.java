@@ -17,13 +17,13 @@ import java.util.*;
 public class DispatcherMachine extends AbstractDispatcher {
 
     @Override
-    public EventResult dispatch(EventMessage eventMessage, Map<Class<? extends EventListener>, Machine> machines) {
+    public EventResult dispatch(final EventMessage eventMessage, final Map<Class<? extends EventListener>, Machine> machines) {
         Event event = eventMessage.event();
         if (!machines.isEmpty()) {
             Governor governor = getEngine().assignGovernor(event);
             Feedback report = governor.initialize()
                     .setEvent(event)
-                    .registerMachineSquad(new HashMap<>(machines))
+                    .registerMachineSquad(machines)
                     .setFisrtSucceed(eventMessage.fisrtWin())
                     .setNeedResult(eventMessage.needResult())
                     .command();

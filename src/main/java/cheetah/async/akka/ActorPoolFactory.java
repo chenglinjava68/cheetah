@@ -1,6 +1,7 @@
 package cheetah.async.akka;
 
 import akka.actor.ActorRef;
+import cheetah.async.AsynchronousFactory;
 import cheetah.async.AsynchronousPoolFactory;
 import cheetah.core.NoMapperException;
 import cheetah.event.Event;
@@ -17,9 +18,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ActorPoolFactory implements AsynchronousPoolFactory<ActorRef> {
 
-    private ActorFactory actorFactory;
-    private Mapper mapper; //事件映射的工作机器
-    private ConcurrentHashMap<String, ActorRef> actorPool = new ConcurrentHashMap<>();
+    private AsynchronousFactory<ActorRef> actorFactory;
+    private Mapper mapper; //事件映射器
+    private ConcurrentHashMap<Mapper.MachineMapperKey, ActorRef> actorPool = new ConcurrentHashMap<>();
 
     public ActorPoolFactory() {
         this.actorFactory = new ActorFactory();
@@ -29,31 +30,39 @@ public class ActorPoolFactory implements AsynchronousPoolFactory<ActorRef> {
         this.actorFactory = actorFactory;
     }
 
-    public synchronized ActorRef createActor(Event event) {
+    public ActorRef createActor(Event event) {
         String name = event.getClass().getName();
-        if (actorPool.containsKey(name))
-            return this.actorPool.get(name);
+        Mapper.MachineMapperKey mapperKey = Mapper.MachineMapperKey.generate(event);
+        if (actorPool.containsKey(mapperKey))
+            return this.actorPool.get(mapperKey);
         Map<Class<? extends EventListener>, Machine> machines = getMapperFrom(event);
         return this.actorFactory.createAsynchronous(name, machines);
     }
 
     @Override
     public ActorRef getAsynchronous(Event event) {
-        String name = event.getClass().getName();
-        if (!this.mapper.isExists(Mapper.MachineMapperKey.generate(event)))
-            throw new NoMapperException();
-        if (actorPool.containsKey(name))
-            return this.actorPool.get(name);
+        Mapper.MachineMapperKey mapperKey = Mapper.MachineMapperKey.generate(event);
+        if (actorPool.containsKey(mapperKey))
+            return this.actorPool.get(mapperKey);
         else {
-            ActorRef actor = createActor(event);
-            this.actorPool.put(name, actor);
-            return actor;
+            synchronized (this) {
+                if (!this.mapper.isExists(mapperKey))
+                    throw new NoMapperException();
+                ActorRef actor = createActor(event);
+                this.actorPool.put(mapperKey, actor);
+                return actor;
+            }
         }
     }
 
     @Override
     public void setMapper(Mapper mapper) {
         this.mapper = mapper;
+    }
+
+    @Override
+    public void setAsynchronousFactory(AsynchronousFactory asynchronousFactory) {
+        this.actorFactory = asynchronousFactory;
     }
 
     private Map<Class<? extends EventListener>, Machine> getMapperFrom(Event event) {
@@ -71,7 +80,7 @@ public class ActorPoolFactory implements AsynchronousPoolFactory<ActorRef> {
     @Override
     public void stop() {
         for (ActorRef actor : this.actorPool.values()) {
-            actorFactory.actorSystem().stop(actor);
+            ((ActorFactory)actorFactory).actorSystem().stop(actor);
         }
         actorFactory.stop();
     }
