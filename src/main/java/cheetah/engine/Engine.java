@@ -2,11 +2,11 @@ package cheetah.engine;
 
 import cheetah.async.AsynchronousPoolFactory;
 import cheetah.common.Startable;
-import cheetah.event.Event;
+import cheetah.core.EventContext;
 import cheetah.governor.Governor;
 import cheetah.governor.GovernorFactory;
-import cheetah.machine.Machine;
-import cheetah.machine.MachineFactory;
+import cheetah.handler.Handler;
+import cheetah.handler.HandlerFactory;
 import cheetah.mapper.Mapper;
 import cheetah.worker.Worker;
 import cheetah.worker.WorkerFactory;
@@ -21,13 +21,13 @@ public interface Engine extends Startable {
      * 分配应用事件的工作机器
      * @return
      */
-    Machine assignApplicationEventMachine();
+    Handler assignApplicationEventHandler();
 
     /**
      * 分配领域事件的工作机器
      * @return
      */
-    Machine assignDomainEventMachine();
+    Handler assignDomainEventHandler();
 
     /**
      * 为每个事件分配一个管理者
@@ -36,24 +36,20 @@ public interface Engine extends Startable {
     Governor assignGovernor();
 
     /**
-     * 为每个事件分配一个管理者
-     * @return
-     */
-    Governor assignGovernor(Event event);
-
-    /**
      * 分配应用事件的工作者
      * @return
      */
     Worker assignWorker();
 
-    void setWorkerFactory(WorkerFactory machineryFactory);
+    void setWorkerFactory(WorkerFactory workerFactory);
 
-    void setMachineFactory(MachineFactory workerFactory);
+    void setHandlerFactory(HandlerFactory handlerFactory);
 
     void setGovernorFactory(GovernorFactory governorFactory);
 
     void setMapper(Mapper mapper);
+
+    void setContext(EventContext context);
 
     /**
      * 设置异步者池子的工厂

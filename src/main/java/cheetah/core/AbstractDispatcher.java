@@ -6,7 +6,7 @@ import cheetah.engine.Engine;
 import cheetah.engine.EngineDirector;
 import cheetah.engine.support.EnginePolicy;
 import cheetah.event.*;
-import cheetah.machine.Machine;
+import cheetah.handler.Handler;
 import cheetah.mapper.Mapper;
 import cheetah.plugin.Interceptor;
 import cheetah.plugin.InterceptorChain;
@@ -30,24 +30,34 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
     private EnginePolicy policy;
     private EngineDirector engineDirector;
     private final ReentrantLock lock = new ReentrantLock();
+    private final EventContext context = EventContext.getContext();
 
     public AbstractDispatcher() {
-        this.policy = EnginePolicy.DEFAULT;
+        this.policy = EnginePolicy.AKKA;
     }
 
     @Override
     public EventResult receive(final EventMessage eventMessage) {
-        if(!engine.isRunning())
+        if (!engine.isRunning())
             return null;
-        Event event = eventMessage.event();
-        Mapper.MachineMapperKey key = Mapper.MachineMapperKey.generate(event.getClass(), event.getSource().getClass());
+        try {
+            Event event = eventMessage.event();
+            context.setEventMessage(eventMessage);
+            Mapper.HandlerMapperKey key = Mapper.HandlerMapperKey.generate(event.getClass(), event.getSource().getClass());
 
-        boolean exists = engine.getMapper().isExists(key);
-        if (exists) {
-            return dispatch(eventMessage, engine.getMapper().getMachine(key));
+            boolean exists = engine.getMapper().isExists(key);
+            if (exists) {
+                Map<Class<? extends EventListener>, Handler> handlerMap = engine.getMapper().getMachine(key);
+                context.setHandlers(handlerMap);
+                return dispatch();
+            }
+            Map<Class<? extends EventListener>, Handler> handlerMap = convertMapper(event, key);
+            context.setHandlers(handlerMap);
+            return dispatch();
+        } finally {
+            context.removeEventMessage();
+            context.removeHandlers();
         }
-        Map<Class<? extends EventListener>, Machine> machines = convertMapper(event, key);
-        return dispatch(eventMessage, machines);
     }
 
     @Override
@@ -60,6 +70,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         this.engineDirector = policy.getEngineDirector();
         this.engineDirector.setConfiguration(this.configuration);
         this.engine = engineDirector.directEngine();
+        this.engine.setContext(context);
         engine.start();
     }
 
@@ -105,6 +116,10 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         return policy;
     }
 
+    public EventContext context() {
+        return context;
+    }
+
     protected EngineDirector getEngineDirector() {
         return engineDirector;
     }
@@ -114,7 +129,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
      *
      * @param event
      */
-    private Map<Class<? extends EventListener>, Machine> convertMapper(Event event, Mapper.MachineMapperKey mapperKey) {
+    private Map<Class<? extends EventListener>, Handler> convertMapper(Event event, Mapper.HandlerMapperKey mapperKey) {
         lock.lock();
         try {
             if (DomainEvent.class.isAssignableFrom(event.getClass())) {
@@ -147,10 +162,10 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         }
     }
 
-    private Map<Class<? extends EventListener>, Machine> setAppEventListenerMapper(Mapper.MachineMapperKey mapperKey, List<EventListener> listeners) {
-        Map<Class<? extends EventListener>, Machine> machines = listeners.stream().
+    private Map<Class<? extends EventListener>, Handler> setAppEventListenerMapper(Mapper.HandlerMapperKey mapperKey, List<EventListener> listeners) {
+        Map<Class<? extends EventListener>, Handler> machines = listeners.stream().
                 map(o -> {
-                    Machine machine = engine.assignApplicationEventMachine();
+                    Handler machine = engine.assignApplicationEventHandler();
                     machine.setEventListener(o);
                     return machine;
                 })
@@ -173,11 +188,11 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
                 ).collect(Collectors.toList());
     }
 
-    private Map<Class<? extends EventListener>, Machine> setDomainEventListenerMapper(Mapper.MachineMapperKey mapperKey,
+    private Map<Class<? extends EventListener>, Handler> setDomainEventListenerMapper(Mapper.HandlerMapperKey mapperKey,
                                                                                       List<EventListener> listeners) {
-        Map<Class<? extends EventListener>, Machine> machines = listeners.stream().
+        Map<Class<? extends EventListener>, Handler> machines = listeners.stream().
                 map(o -> {
-                    Machine machine = engine.assignDomainEventMachine();
+                    Handler machine = engine.assignDomainEventHandler();
                     machine.setEventListener(o);
                     return machine;
                 })

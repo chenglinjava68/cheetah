@@ -1,6 +1,7 @@
 package cheetah.governor.support;
 
 import cheetah.client.ApplicationEventEmitter;
+import cheetah.client.DomainEventEmitter;
 import cheetah.domain.Entity;
 import cheetah.domain.UUIDKeyEntity;
 import cheetah.event.*;
@@ -22,28 +23,40 @@ public class AkkaGovernorTest {
 
     public static final AtomicLong atomicLong = new AtomicLong();
 
+    @Test
+    public void test() {
+        int k = 1000000;
+        while (k > 0) {
+            k--;
+            System.out.println(k);
+        }
+    }
 
     @Test
     public void launch() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
+        ApplicationListenerTest listenerTest = new ApplicationListenerTest();
+        ApplicationEventTest event = new ApplicationEventTest("aaa");
         for (int i = 0; i < 100; i++) {
             new Thread(() -> {
                 while (true) {
                     ApplicationEventEmitter.launch(
                             new ApplicationEventTest("213")
                     );
+//                    listenerTest.onApplicationEvent(event);
                 }
             }).start();
         }
-//        for (int i = 0; i < 100; i++) {
-//            new Thread(() -> {
-//                while (true) {
-//                    DomainEventEmitter.launch(
-//                            new DomainEventTest(new User("huahng"))
-//                    );
-//                }
-//            }).start();
-//        }
+        for (int i = 0; i < 100; i++) {
+            new Thread(() -> {
+                while (true) {
+                    DomainEventEmitter.launch(
+                            new DomainEventTest(new User("huahng"))
+                    );
+//                    listenerTest.onApplicationEvent(event);
+                }
+            }).start();
+        }
         latch.await();
     }
 
@@ -51,10 +64,13 @@ public class AkkaGovernorTest {
     @Test
     public void launch2() throws InterruptedException {
 
+        ApplicationListenerTest listenerTest = new ApplicationListenerTest();
+        ApplicationEventTest event = new ApplicationEventTest("aaa");
         while (true) {
             ApplicationEventEmitter.launch(
                     new ApplicationEventTest("213")
             );
+//            listenerTest.onApplicationEvent(event);
         }
 
     }
@@ -107,7 +123,8 @@ public class AkkaGovernorTest {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println(atomicLong.incrementAndGet());
+//            System.out.println(atomicLong.incrementAndGet());
+            System.out.println(System.currentTimeMillis());
         }
     }
 
@@ -131,10 +148,14 @@ public class AkkaGovernorTest {
         public void onApplicationEvent(ApplicationEventTest event) {
             double v = ArithUtil.round(Math.random() * 100, 0);
             long i = ArithUtil.convertsToLong(v);
-            try {
-                Thread.sleep(i);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+//            try {
+//                Thread.sleep(i);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+            int k = 1000000;
+            while (k > 0) {
+                k--;
             }
             System.out.println("SmartApplicationListenerTest -- " + atomicLong.incrementAndGet());
         }
@@ -161,10 +182,14 @@ public class AkkaGovernorTest {
         public void onDomainEvent(DomainEventTest event) {
             double v = ArithUtil.round(Math.random() * 100, 0);
             long i = ArithUtil.convertsToLong(v);
-            try {
-                Thread.sleep(i);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+//            try {
+//                Thread.sleep(i);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+            int k = 1000000;
+            while (k > 0) {
+                k--;
             }
             System.out.println("DomainEventTest -- " + atomicLong.incrementAndGet());
         }
@@ -186,4 +211,5 @@ public class AkkaGovernorTest {
                     "} " + super.toString();
         }
     }
+
 }

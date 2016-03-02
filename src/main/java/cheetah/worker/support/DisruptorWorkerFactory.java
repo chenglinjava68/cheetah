@@ -4,13 +4,11 @@ import cheetah.worker.Worker;
 import cheetah.worker.WorkerFactory;
 
 /**
- * Created by Max on 2016/2/21.
+ * Created by Max on 2016/3/2.
  */
-public class AkkaWorkerFactory implements WorkerFactory {
-
+public class DisruptorWorkerFactory implements WorkerFactory {
     @Override
     public Worker createWorker() {
-        return new AkkaWorker();
+        return new DisruptorWorker();
     }
-
 }

@@ -8,21 +8,21 @@ import cheetah.core.Configuration;
 import cheetah.engine.EngineBuilder;
 import cheetah.governor.GovernorFactory;
 import cheetah.governor.support.AkkaGovernorFactory;
-import cheetah.machine.MachineFactory;
-import cheetah.machine.support.DefaultMachineFactory;
+import cheetah.handler.HandlerFactory;
+import cheetah.handler.support.GenericHandlerFactory;
 import cheetah.mapper.Mapper;
-import cheetah.mapper.support.MachineMapper;
+import cheetah.mapper.support.HandlerMapper;
 import cheetah.worker.WorkerFactory;
 import cheetah.worker.support.AkkaWorkerFactory;
 
 /**
  * Created by Max on 2016/2/19.
  */
-public class DefualtEngineBuilder implements EngineBuilder {
+public class AkkaEngineBuilder implements EngineBuilder {
 
     @Override
-    public MachineFactory buildMachineFactory() {
-        return new DefaultMachineFactory();
+    public HandlerFactory buildHandlerFactory() {
+        return GenericHandlerFactory.getGenericHandlerFactory();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class DefualtEngineBuilder implements EngineBuilder {
 
     @Override
     public Mapper buildMapper() {
-        return new MachineMapper();
+        return HandlerMapper.getGenericMapper();
     }
 
     @Override
@@ -45,7 +45,8 @@ public class DefualtEngineBuilder implements EngineBuilder {
         ActorFactory actorFactory = new ActorFactory();
         if(configuration.eventPerformerSize() > 0)
             actorFactory.setActorSize(configuration.eventPerformerSize());
-        AsynchronousPoolFactory<ActorRef> factory = new ActorPoolFactory(actorFactory);
+        AsynchronousPoolFactory<ActorRef> factory = new ActorPoolFactory();
+        factory.setAsynchronousFactory(actorFactory);
         return factory;
     }
 

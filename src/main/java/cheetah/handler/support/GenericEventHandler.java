@@ -1,8 +1,8 @@
-package cheetah.machine.support;
+package cheetah.handler.support;
 
 import cheetah.event.*;
-import cheetah.machine.AbstractMachine;
-import cheetah.machine.EventHandlerException;
+import cheetah.handler.AbstractHandler;
+import cheetah.handler.EventHandlerException;
 import cheetah.worker.Worker;
 
 import java.util.EventListener;
@@ -10,9 +10,9 @@ import java.util.EventListener;
 /**
  * Created by Max on 2016/2/1.
  */
-public class GenericEventMachine extends AbstractMachine {
+public class GenericEventHandler extends AbstractHandler {
 
-    public GenericEventMachine(EventListener eventListener, Worker machinery) {
+    public GenericEventHandler(EventListener eventListener, Worker machinery) {
         super(eventListener);
     }
 

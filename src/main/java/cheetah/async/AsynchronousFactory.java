@@ -1,7 +1,7 @@
 package cheetah.async;
 
 import cheetah.common.Startable;
-import cheetah.machine.Machine;
+import cheetah.handler.Handler;
 
 import java.util.EventListener;
 import java.util.Map;
@@ -14,8 +14,8 @@ public interface AsynchronousFactory<T> extends Startable {
     /**
      * 创建一个异步工作者
      * @param name
-     * @param machineMap
+     * @param handlerMap
      * @return
      */
-    T createAsynchronous(String name, Map<Class<? extends EventListener>, Machine> machineMap);
+    T createAsynchronous(String name, Map<Class<? extends EventListener>, Handler> handlerMap);
 }

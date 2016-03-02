@@ -1,41 +1,41 @@
 package cheetah.mapper;
 
 import cheetah.event.Event;
-import cheetah.machine.Machine;
+import cheetah.handler.Handler;
 import cheetah.util.ObjectUtils;
 
 import java.util.EventListener;
 import java.util.Map;
 import java.util.Set;
 
-/** 工作机器映射器
+/** 处理器映射器
  * Created by Max on 2016/2/23.
  */
 public interface Mapper extends Cloneable {
 
-    Map<Class<? extends EventListener>, Machine> getMachine(MachineMapperKey mapperKey);
+    Map<Class<? extends EventListener>, Handler> getMachine(HandlerMapperKey mapperKey);
 
-    void put(MachineMapperKey mapperKey, Map<Class<? extends EventListener>, Machine> machines);
+    void put(HandlerMapperKey mapperKey, Map<Class<? extends EventListener>, Handler> machines);
 
-    Set<MachineMapperKey> mapperKeys();
+    Set<HandlerMapperKey> mapperKeys();
 
-    boolean isExists(MachineMapperKey mapperKey);
+    boolean isExists(HandlerMapperKey mapperKey);
 
-    class MachineMapperKey {
+    class HandlerMapperKey {
         private final Class<?> eventType;
         private final Class<?> sourceType;
 
-        public MachineMapperKey(Class<?> eventType, Class<?> sourceType) {
+        public HandlerMapperKey(Class<?> eventType, Class<?> sourceType) {
             this.eventType = eventType;
             this.sourceType = sourceType;
         }
 
-        public static MachineMapperKey generate(Class<?> eventType, Class<?> sourceType) {
-            return new MachineMapperKey(eventType, sourceType);
+        public static HandlerMapperKey generate(Class<?> eventType, Class<?> sourceType) {
+            return new HandlerMapperKey(eventType, sourceType);
         }
 
-        public static MachineMapperKey generate(Event event) {
-            return new MachineMapperKey(event.getClass(), event.getSource().getClass());
+        public static HandlerMapperKey generate(Event event) {
+            return new HandlerMapperKey(event.getClass(), event.getSource().getClass());
         }
 
         @Override
@@ -43,7 +43,7 @@ public interface Mapper extends Cloneable {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            MachineMapperKey that = (MachineMapperKey) o;
+            HandlerMapperKey that = (HandlerMapperKey) o;
 
             return ObjectUtils.nullSafeEquals(this.eventType, that.eventType) && ObjectUtils.nullSafeEquals(this.sourceType, that.sourceType);
         }

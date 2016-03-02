@@ -1,24 +1,24 @@
 package cheetah.async.disruptor;
 
-import cheetah.event.Event;
+import cheetah.async.AsynchronousFactory;
+import cheetah.handler.Handler;
+import cheetah.worker.support.DisruptorWorker;
 import com.lmax.disruptor.BlockingWaitStrategy;
-import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 
-import java.util.TreeSet;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.EventListener;
+import java.util.Map;
 import java.util.concurrent.Executors;
 
 /**
  * Created by Max on 2016/2/29.
  */
-public class DisruptorFactory {
-    private int ringbufferSize = 8;
-    protected final ConcurrentHashMap<String, TreeSet<DisruptorEventHandler>> handlesMap = new ConcurrentHashMap<>();
+public class DisruptorFactory implements AsynchronousFactory<Disruptor<DisruptorEvent>> {
+    private int ringbufferSize = 1024;
 
-    public Disruptor<DisruptorEvent> createDisruptor() {
+    public Disruptor<DisruptorEvent> createMultiDisruptor() {
         return new Disruptor<>(new DisruptorEventFactory(), ringbufferSize, Executors.newCachedThreadPool());
     }
 
@@ -31,10 +31,27 @@ public class DisruptorFactory {
         this.ringbufferSize = ringbufferSize;
     }
 
-    static class Translator implements EventTranslatorOneArg<DisruptorEvent, Event> {
-        @Override
-        public void translateTo(DisruptorEvent event, long sequence, Event data) {
-            event.set(data);
-        }
+    @Override
+    public Disruptor<DisruptorEvent> createAsynchronous(String name, Map<Class<? extends EventListener>, Handler> handlerMap) {
+        Disruptor<DisruptorEvent> disruptor;
+        if (name.equals(ProducerType.SINGLE.name()))
+            disruptor = createSingleDisruptor();
+        else disruptor = createMultiDisruptor();
+        DisruptorWorker worker = new DisruptorWorker();
+        worker.setHandlerMap(handlerMap);
+        disruptor.handleEventsWith(worker);
+        disruptor.start();
+        return disruptor;
     }
+
+    @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void stop() {
+
+    }
+
 }

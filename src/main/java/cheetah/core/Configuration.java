@@ -15,6 +15,7 @@ public class Configuration {
     private List<Interceptor> plugins;
     private List<EventListener> eventListeners;
     private int eventPerformerSize;
+    private int ringBufferSize;
     public Configuration() {
         this.plugins = Collections.EMPTY_LIST;
         this.eventListeners = Collections.EMPTY_LIST;
@@ -52,5 +53,11 @@ public class Configuration {
         return !CollectionUtils.isEmpty(this.eventListeners);
     }
 
+    public int ringBufferSize() {
+        return ringBufferSize;
+    }
 
+    public void setRingBufferSize(int ringBufferSize) {
+        this.ringBufferSize = ringBufferSize;
+    }
 }

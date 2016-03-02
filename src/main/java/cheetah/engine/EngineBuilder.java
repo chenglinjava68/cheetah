@@ -3,7 +3,7 @@ package cheetah.engine;
 import cheetah.async.AsynchronousPoolFactory;
 import cheetah.core.Configuration;
 import cheetah.governor.GovernorFactory;
-import cheetah.machine.MachineFactory;
+import cheetah.handler.HandlerFactory;
 import cheetah.mapper.Mapper;
 import cheetah.worker.WorkerFactory;
 
@@ -14,10 +14,10 @@ import cheetah.worker.WorkerFactory;
 public interface EngineBuilder {
 
     /**
-     * 构建引擎所需的机器工厂
+     * 构建引擎所需的处理器工厂
      * @return
      */
-    MachineFactory buildMachineFactory();
+    HandlerFactory buildHandlerFactory();
 
     /**
      * 构建引擎所需的事件管理者工厂

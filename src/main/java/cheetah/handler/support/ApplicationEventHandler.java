@@ -1,21 +1,21 @@
-package cheetah.machine.support;
+package cheetah.handler.support;
 
 import cheetah.event.ApplicationEvent;
 import cheetah.event.ApplicationListener;
 import cheetah.event.Event;
-import cheetah.machine.AbstractMachine;
+import cheetah.handler.AbstractHandler;
 
 import java.util.EventListener;
 
 /**
  * Created by Max on 2016/2/1.
  */
-public class ApplicationEventMachine extends AbstractMachine {
+public class ApplicationEventHandler extends AbstractHandler {
 
-    public ApplicationEventMachine() {
+    public ApplicationEventHandler() {
     }
 
-    public ApplicationEventMachine(EventListener eventListener) {
+    public ApplicationEventHandler(EventListener eventListener) {
         super(eventListener);
     }
 

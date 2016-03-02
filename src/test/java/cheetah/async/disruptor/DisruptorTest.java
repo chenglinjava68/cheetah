@@ -1,7 +1,8 @@
 package cheetah.async.disruptor;
 
-import cheetah.event.Event;
 import cheetah.governor.support.AkkaGovernorTest;
+import cheetah.worker.Command;
+import cheetah.worker.support.DisruptorWorker;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.RingBuffer;
@@ -28,7 +29,7 @@ public class DisruptorTest {
         Disruptor<DisruptorEvent> disruptor = new Disruptor<>(factory, ringBufferSize
                 , executorService, ProducerType.SINGLE, new YieldingWaitStrategy());
 
-        EventHandler<DisruptorEvent> eventHandler = new DisruptorEventHandler();
+        EventHandler<DisruptorEvent> eventHandler = new DisruptorWorker();
         disruptor.handleEventsWith(eventHandler);
 
         disruptor.start();
@@ -52,7 +53,7 @@ public class DisruptorTest {
 
         Translator translator = new Translator();
         while (true) {
-            Event data = getEventData();//获取要通过事件传递的业务数据；
+            Command data = getEventData();//获取要通过事件传递的业务数据；
             ringBuffer.publishEvent(translator, data);
         }
 //        try {
@@ -62,13 +63,13 @@ public class DisruptorTest {
 //        }
     }
 
-    public Event getEventData() {
-        return new AkkaGovernorTest.ApplicationEventTest("aaa");
+    public Command getEventData() {
+        return new Command(new AkkaGovernorTest.ApplicationEventTest("aaa"), true, null);
     }
 
-    static class Translator implements EventTranslatorOneArg<DisruptorEvent, Event> {
+    static class Translator implements EventTranslatorOneArg<DisruptorEvent, Command> {
         @Override
-        public void translateTo(DisruptorEvent event, long sequence, Event data) {
+        public void translateTo(DisruptorEvent event, long sequence, Command data) {
             event.set(data);
         }
     }

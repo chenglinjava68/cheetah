@@ -1,8 +1,8 @@
 package cheetah.governor;
 
 import cheetah.event.Event;
-import cheetah.machine.Feedback;
-import cheetah.machine.Machine;
+import cheetah.handler.Feedback;
+import cheetah.handler.Handler;
 import cheetah.plugin.InterceptorChain;
 
 import java.util.EventListener;
@@ -36,12 +36,6 @@ public interface Governor extends Cloneable {
     Governor setEvent(Event $event);
 
     /**
-     * 获取管理的事件
-     * @return
-     */
-    Event getEven();
-
-    /**
      * 获取管理者唯一的标示符
      * @return
      */
@@ -53,14 +47,14 @@ public interface Governor extends Cloneable {
      * @param $fisrtSucceed
      * @return
      */
-    Governor setFisrtSucceed(Boolean $fisrtSucceed);
+    Governor setFisrtSucceed(boolean $fisrtSucceed);
 
     /**
      * 注册一组工作机器
-     * @param machineMap
+     * @param handlerMap
      * @return
      */
-    Governor registerMachineSquad(Map<Class<? extends EventListener>, Machine> machineMap);
+    Governor registerMachineSquad(Map<Class<? extends EventListener>, Handler> handlerMap);
 
     /**
      * 是否要返回结果
@@ -71,9 +65,9 @@ public interface Governor extends Cloneable {
 
     /**
      * 开除一个工作机器
-     * @param machine
+     * @param handler
      */
-    void expelMachine(Machine machine);
+    void expelMachine(Handler handler);
 
     /**
      * 设置拦截器链

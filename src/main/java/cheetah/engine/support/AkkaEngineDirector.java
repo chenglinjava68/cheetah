@@ -8,19 +8,19 @@ import cheetah.engine.EngineDirector;
 /**
  * Created by Max on 2016/2/19.
  */
-public class DefaultEngineDirector implements EngineDirector {
+public class AkkaEngineDirector implements EngineDirector {
     private EngineBuilder builder;
     private Configuration configuration;
 
-    public DefaultEngineDirector(EngineBuilder builder) {
+    public AkkaEngineDirector(EngineBuilder builder) {
         this.builder = builder;
     }
 
     @Override
     public Engine directEngine() {
-        Engine engine = new DefaultEngine();
+        Engine engine = new AkkaEngine();
         engine.setWorkerFactory(builder.buildWorkerFactory());
-        engine.setMachineFactory(builder.buildMachineFactory());
+        engine.setHandlerFactory(builder.buildHandlerFactory());
         engine.setGovernorFactory(builder.buildGovernorFactory());
         engine.setMapper(builder.buildMapper());
         engine.setAsynchronousPoolFactory(builder.buildAsynchronousPoolFactory(configuration));

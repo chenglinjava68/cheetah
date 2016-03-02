@@ -1,4 +1,4 @@
-package cheetah.machine;
+package cheetah.handler;
 
 import cheetah.event.Event;
 import cheetah.util.ObjectUtils;
@@ -8,24 +8,24 @@ import java.util.EventListener;
 /**
  * Created by Max on 2016/2/14.
  */
-public abstract class AbstractMachine implements Machine {
+public abstract class AbstractHandler implements Handler {
     private EventListener eventListener;
 
-    public AbstractMachine() {
+    public AbstractHandler() {
     }
 
-    public AbstractMachine(EventListener eventListener) {
+    public AbstractHandler(EventListener eventListener) {
         this.eventListener = eventListener;
     }
 
     @Override
-    public Machine kagebunsin() throws CloneNotSupportedException {
-        return (Machine) super.clone();
+    public Handler kagebunsin() throws CloneNotSupportedException {
+        return (Handler) super.clone();
     }
 
     @Override
-    public Machine kagebunsin(EventListener listener) throws CloneNotSupportedException {
-        Machine handler = (Machine) super.clone();
+    public Handler kagebunsin(EventListener listener) throws CloneNotSupportedException {
+        Handler handler = (Handler) super.clone();
         handler.setEventListener(this.eventListener);
         return handler;
     }
@@ -63,7 +63,7 @@ public abstract class AbstractMachine implements Machine {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AbstractMachine that = (AbstractMachine) o;
+        AbstractHandler that = (AbstractHandler) o;
 
         return ObjectUtils.nullSafeEquals(this.eventListener, that.eventListener);
     }

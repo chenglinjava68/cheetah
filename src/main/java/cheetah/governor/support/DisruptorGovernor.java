@@ -1,75 +1,45 @@
 package cheetah.governor.support;
 
-import cheetah.event.Event;
-import cheetah.governor.Governor;
-import cheetah.machine.Feedback;
-import cheetah.machine.Machine;
-import cheetah.plugin.InterceptorChain;
+import cheetah.async.disruptor.DisruptorEvent;
+import cheetah.governor.AbstractGovernor;
+import cheetah.handler.Feedback;
+import cheetah.worker.Command;
+import com.lmax.disruptor.EventTranslatorOneArg;
+import com.lmax.disruptor.RingBuffer;
 
 import java.util.EventListener;
-import java.util.Map;
 
 /**
  * Created by Max on 2016/2/29.
  */
-public class DisruptorGovernor implements Governor {
+public class DisruptorGovernor extends AbstractGovernor {
+    private RingBuffer<DisruptorEvent> ringBuffer;
+
     @Override
-    public Governor reset() {
-        return null;
+    protected Feedback notifyAllWorker() {
+        if (handlerMap().isEmpty())
+            return Feedback.EMPTY;
+        Translator translator = new Translator();
+        for (Class<? extends EventListener> clz : this.handlerMap().keySet()) {
+            Command command = Command.of(event(), clz);
+            ringBuffer.publishEvent(translator, command);
+        }
+
+//        if (!feedbackMap.isEmpty()) {
+//            interceptorChain.pluginAll(feedbackMap);
+//        }
+        return Feedback.SUCCESS;
     }
 
-    @Override
-    public Governor initialize() {
-        return null;
+    public DisruptorGovernor setRingBuffer(RingBuffer<DisruptorEvent> ringBuffer) {
+        this.ringBuffer = ringBuffer;
+        return this;
     }
 
-    @Override
-    public Feedback command() {
-        return null;
-    }
-
-    @Override
-    public Governor setEvent(Event $event) {
-        return null;
-    }
-
-    @Override
-    public Event getEven() {
-        return null;
-    }
-
-    @Override
-    public String getId() {
-        return null;
-    }
-
-    @Override
-    public Governor setFisrtSucceed(Boolean $fisrtSucceed) {
-        return null;
-    }
-
-    @Override
-    public Governor registerMachineSquad(Map<Class<? extends EventListener>, Machine> machineMap) {
-        return null;
-    }
-
-    @Override
-    public Governor setNeedResult(boolean $needResult) {
-        return null;
-    }
-
-    @Override
-    public void expelMachine(Machine machine) {
-
-    }
-
-    @Override
-    public void setInterceptorChain(InterceptorChain $interceptorChain) {
-
-    }
-
-    @Override
-    public Governor kagebunsin() throws CloneNotSupportedException {
-        return null;
+    static class Translator implements EventTranslatorOneArg<DisruptorEvent, Command> {
+        @Override
+        public void translateTo(DisruptorEvent event, long sequence, Command data) {
+            event.set(data);
+        }
     }
 }

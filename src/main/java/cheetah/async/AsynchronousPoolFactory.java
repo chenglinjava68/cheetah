@@ -1,8 +1,7 @@
 package cheetah.async;
 
 import cheetah.common.Startable;
-import cheetah.event.Event;
-import cheetah.mapper.Mapper;
+import cheetah.core.EventContext;
 
 /**
  * 异步工作者池子的工厂
@@ -11,16 +10,15 @@ import cheetah.mapper.Mapper;
 public interface AsynchronousPoolFactory<T> extends Startable {
     /**
      * 获取一个异步工作者
-     * @param event
      * @return
      */
-    T getAsynchronous(Event event);
+    T getAsynchronous();
 
     /**
      * 设置事件的映射器
-     * @param mapper
+     * @param context
      */
-    void setMapper(Mapper mapper);
+    void setEventContext(EventContext context);
 
     void setAsynchronousFactory(AsynchronousFactory asynchronousFactory);
 }

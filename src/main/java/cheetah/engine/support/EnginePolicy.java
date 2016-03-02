@@ -3,20 +3,20 @@ package cheetah.engine.support;
 import cheetah.engine.EngineDirector;
 
 /**
- * 引擎的策略  默认使用akka的引擎策略
+ * 引擎的策略
  * Created by Max on 2016/2/23.
  */
 public enum EnginePolicy {
-    DEFAULT {
+    AKKA {
         @Override
         public EngineDirector getEngineDirector() {
-            return new DefaultEngineDirector(new DefualtEngineBuilder());
+            return new AkkaEngineDirector(new AkkaEngineBuilder());
         }
     },
     DISRUPTOR {
         @Override
         public EngineDirector getEngineDirector() {
-            return null;
+            return new DisruptorEngineDirector(new DisruptorEngineBuilder());
         }
     };
 
@@ -28,6 +28,6 @@ public enum EnginePolicy {
                 return policy;
             }
         }
-        return DEFAULT;
+        throw new EnginePolicyNotFoundException();
     }
 }

@@ -1,7 +1,7 @@
 package cheetah.plugin;
 
 import cheetah.event.Event;
-import cheetah.machine.Machine;
+import cheetah.handler.Handler;
 
 /**
  * Created by Max on 2016/2/17.
@@ -9,7 +9,7 @@ import cheetah.machine.Machine;
 public class InterceptorChainTest {
 
 
-    @Plugins({@Registry(type = Machine.class, method = "statelessNativeAsyncHandle",
+    @Plugins({@Registry(type = Handler.class, method = "statelessNativeAsyncHandle",
             args = {Event.class})})
     public static class InterceptorTest implements Interceptor {
         @Override
@@ -29,7 +29,7 @@ public class InterceptorChainTest {
 
         @Override
         public boolean supportType(Object target) {
-            return target instanceof Machine;
+            return target instanceof Handler;
         }
     }
 
