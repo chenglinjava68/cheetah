@@ -1,24 +1,26 @@
 package cheetah.engine.support;
 
-import cheetah.async.disruptor.DisruptorEvent;
 import cheetah.engine.AbstractEngine;
 import cheetah.governor.Governor;
-import cheetah.governor.support.DisruptorGovernor;
-import com.lmax.disruptor.dsl.Disruptor;
+import cheetah.governor.support.OrdinaryGovernor;
+import cheetah.worker.Worker;
 
 import java.util.Objects;
 
 /**
- * Created by Max on 2016/2/29.
+ * Created by Max on 2016/2/1.
  */
-public class DisruptorEngine extends AbstractEngine {
+public class OrdinaryEngine extends AbstractEngine {
+
+    public OrdinaryEngine() {
+        this.state = State.NEW;
+    }
 
     @Override
     public Governor assignGovernor() {
         if (Objects.isNull(governor())) {
             Governor governor = governorFactory().createGovernor();
-            ((DisruptorGovernor) governor)
-                    .setRingBuffer(((Disruptor<DisruptorEvent>) asynchronousPoolFactory().getAsynchronous()).getRingBuffer());
+            ((OrdinaryGovernor) governor).setWorker((Worker) asynchronousPoolFactory().getAsynchronous());
             governor.registerMachineSquad(context().getHandlers());
             setGovernor(governor);
             return governor;
@@ -26,16 +28,16 @@ public class DisruptorEngine extends AbstractEngine {
             try {
                 Governor clone = governor().kagebunsin();
                 clone.reset();
-                ((DisruptorGovernor) clone)
-                        .setRingBuffer(((Disruptor<DisruptorEvent>) asynchronousPoolFactory().getAsynchronous()).getRingBuffer());
+                Worker worker = (Worker) asynchronousPoolFactory().getAsynchronous();
+                ((OrdinaryGovernor) clone).setWorker(worker);
                 return clone;
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
                 Governor governor = governorFactory().createGovernor();
-                ((DisruptorGovernor) governor)
-                        .setRingBuffer(((Disruptor<DisruptorEvent>) asynchronousPoolFactory().getAsynchronous()).getRingBuffer());
+                ((OrdinaryGovernor) governor).setWorker((Worker) asynchronousPoolFactory().getAsynchronous());
                 return governor;
             }
         }
     }
+
 }

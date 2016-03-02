@@ -1,6 +1,5 @@
 package cheetah.engine;
 
-import akka.actor.ActorRef;
 import cheetah.async.AsynchronousPoolFactory;
 import cheetah.common.logger.Debug;
 import cheetah.core.EventContext;
@@ -25,9 +24,9 @@ public abstract class AbstractEngine implements Engine {
     private HandlerFactory handlerFactory;
     private GovernorFactory governorFactory;
     private InterceptorChain interceptorChain;
-    private AsynchronousPoolFactory<ActorRef> asynchronousPoolFactory;
+    private AsynchronousPoolFactory asynchronousPoolFactory;
     private volatile Mapper mapper;
-    private volatile Governor governor;
+    private Governor governor;
     private EventContext context;
     protected State state;
 
@@ -43,7 +42,10 @@ public abstract class AbstractEngine implements Engine {
         this.state = State.RUNNING;
     }
 
-    protected abstract void initialize();
+    public void initialize() {
+        this.asynchronousPoolFactory.setEventContext(this.context);
+        asynchronousPoolFactory().start();
+    }
 
     @Override
     public void stop() {

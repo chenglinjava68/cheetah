@@ -33,7 +33,6 @@ http://www.springframework.org/schema/aop
                 </property>
             </bean>
         </property>
-        <property name="policy" value="disruptor"/>
     </bean>
 
     <bean id="collector" class="cheetah.client.GenericEventCollector">

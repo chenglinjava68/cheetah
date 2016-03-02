@@ -17,10 +17,6 @@ public class AkkaEngine extends AbstractEngine {
         this.state = Engine.State.NEW;
     }
 
-    protected void initialize() {
-        asynchronousPoolFactory().start();
-    }
-
     @Override
     public Governor assignGovernor() {
         if(Objects.isNull(governor())) {

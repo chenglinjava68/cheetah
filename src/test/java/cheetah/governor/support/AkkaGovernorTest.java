@@ -2,6 +2,7 @@ package cheetah.governor.support;
 
 import cheetah.client.ApplicationEventEmitter;
 import cheetah.client.DomainEventEmitter;
+import cheetah.client.ProcessType;
 import cheetah.domain.Entity;
 import cheetah.domain.UUIDKeyEntity;
 import cheetah.event.*;
@@ -41,7 +42,7 @@ public class AkkaGovernorTest {
             new Thread(() -> {
                 while (true) {
                     ApplicationEventEmitter.launch(
-                            new ApplicationEventTest("213")
+                            new ApplicationEventTest("213"), ProcessType.ORDINARY
                     );
 //                    listenerTest.onApplicationEvent(event);
                 }
@@ -51,7 +52,7 @@ public class AkkaGovernorTest {
             new Thread(() -> {
                 while (true) {
                     DomainEventEmitter.launch(
-                            new DomainEventTest(new User("huahng"))
+                            new DomainEventTest(new User("huahng")), ProcessType.ORDINARY
                     );
 //                    listenerTest.onApplicationEvent(event);
                 }
@@ -68,7 +69,7 @@ public class AkkaGovernorTest {
         ApplicationEventTest event = new ApplicationEventTest("aaa");
         while (true) {
             ApplicationEventEmitter.launch(
-                    new ApplicationEventTest("213")
+                    new ApplicationEventTest("213"), ProcessType.ORDINARY
             );
 //            listenerTest.onApplicationEvent(event);
         }

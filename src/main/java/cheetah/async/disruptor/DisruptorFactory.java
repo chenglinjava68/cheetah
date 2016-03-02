@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
  * Created by Max on 2016/2/29.
  */
 public class DisruptorFactory implements AsynchronousFactory<Disruptor<DisruptorEvent>> {
-    private int ringbufferSize = 1024;
+    private int ringbufferSize = 1024 * 1024;
 
     public Disruptor<DisruptorEvent> createMultiDisruptor() {
         return new Disruptor<>(new DisruptorEventFactory(), ringbufferSize, Executors.newCachedThreadPool());

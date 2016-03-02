@@ -1,5 +1,6 @@
 package cheetah.event;
 
+import cheetah.client.ProcessType;
 import cheetah.core.EventResult;
 
 /**
@@ -9,10 +10,14 @@ import cheetah.core.EventResult;
 public interface Collector {
 
     void collect(Event event);
+    void collect(Event event, ProcessType processType);
 
     void collect(Event event, boolean fisrtWin);
+    void collect(Event event, boolean fisrtWin, ProcessType processType);
 
     EventResult collect(boolean needResult, Event event);
+    EventResult collect(boolean needResult, Event event, ProcessType processType);
 
     EventResult collect(boolean needResult, boolean fisrtWin, Event event);
+    EventResult collect(boolean needResult, boolean fisrtWin, Event event, ProcessType processType);
 }

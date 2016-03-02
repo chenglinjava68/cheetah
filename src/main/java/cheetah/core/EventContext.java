@@ -1,5 +1,6 @@
 package cheetah.core;
 
+import cheetah.engine.Engine;
 import cheetah.handler.Handler;
 
 import java.util.EventListener;

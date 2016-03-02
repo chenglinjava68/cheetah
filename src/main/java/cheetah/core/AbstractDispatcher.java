@@ -1,5 +1,6 @@
 package cheetah.core;
 
+import cheetah.client.ProcessType;
 import cheetah.common.Startable;
 import cheetah.common.logger.Debug;
 import cheetah.engine.Engine;
@@ -12,10 +13,8 @@ import cheetah.plugin.Interceptor;
 import cheetah.plugin.InterceptorChain;
 import cheetah.util.CollectionUtils;
 
-import java.util.EventListener;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
@@ -26,23 +25,22 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
 
     private Configuration configuration; //框架配置
     private final InterceptorChain interceptorChain = new InterceptorChain(); //拦截器链
-    private Engine engine;
-    private EnginePolicy policy;
-    private EngineDirector engineDirector;
+    private final ThreadLocal<Engine> currentEngine = new ThreadLocal<>();
+    private Map<String, Engine> engineMap = new ConcurrentHashMap<>();
     private final ReentrantLock lock = new ReentrantLock();
     private final EventContext context = EventContext.getContext();
 
-    public AbstractDispatcher() {
-        this.policy = EnginePolicy.AKKA;
-    }
-
+    /**
+     * 接收事件消息，安排相应的engine对其进行处理
+     * @param eventMessage
+     * @param processType
+     * @return
+     */
     @Override
-    public EventResult receive(final EventMessage eventMessage) {
-        if (!engine.isRunning())
-            return null;
+    public EventResult receive(final EventMessage eventMessage, final ProcessType processType) {
         try {
+            Engine engine = engineSelect(processType, eventMessage);
             Event event = eventMessage.event();
-            context.setEventMessage(eventMessage);
             Mapper.HandlerMapperKey key = Mapper.HandlerMapperKey.generate(event.getClass(), event.getSource().getClass());
 
             boolean exists = engine.getMapper().isExists(key);
@@ -60,6 +58,50 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         }
     }
 
+    /**
+     * 根据策略选择一个引擎
+     * @param processType
+     * @param eventMessage
+     * @return
+     */
+    private Engine engineSelect(ProcessType processType, EventMessage eventMessage) {
+        Engine engine = buildEngine(processType.policy());
+        context.setEventMessage(eventMessage);
+        currentEngine.set(engine);
+        return engine;
+    }
+
+    /**
+     * 通过policy构建一个引擎，如果map中有，就从map中取，不重复重建
+     * @param policy
+     * @return
+     */
+    private Engine buildEngine(String policy) {
+        Engine engine = engineMap.get(policy);
+        if (Objects.nonNull(engine)) {
+            return engine;
+        }
+        synchronized (this) {
+            return createEngine(policy);
+        }
+    }
+
+    /**
+     * 根据policy创建一个引擎
+     * @param policy
+     * @return
+     */
+    private Engine createEngine(String policy) {
+        EnginePolicy enginePolicy = EnginePolicy.formatFrom(policy);
+        EngineDirector engineDirector = enginePolicy.getEngineDirector();
+        engineDirector.setConfiguration(this.configuration);
+        Engine engine = engineDirector.directEngine();
+        this.engineMap.put(policy, engine);
+        engine.setContext(context);
+        engine.start();
+        return engine;
+    }
+
     @Override
     public void start() {
         if (Objects.nonNull(configuration)) {
@@ -67,20 +109,15 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
                 initializesInterceptor(interceptorChain);
         } else
             configuration = new Configuration();
-        this.engineDirector = policy.getEngineDirector();
-        this.engineDirector.setConfiguration(this.configuration);
-        this.engine = engineDirector.directEngine();
-        this.engine.setContext(context);
-        engine.start();
     }
 
     @Override
     public void stop() {
-        if (Objects.nonNull(engine))
-            engine.stop();
-        engine = null;
+        Iterator<Engine> engineIterator = engineMap.values().iterator();
+        while (engineIterator.hasNext()) {
+            engineIterator.next().stop();
+        }
     }
-
 
     public InterceptorChain initializesInterceptor(InterceptorChain chain) {
         Objects.requireNonNull(chain, "chain must not be null");
@@ -96,10 +133,6 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         this.configuration = configuration;
     }
 
-    public void setPolicy(String policy) {
-        this.policy = EnginePolicy.formatFrom(policy);
-    }
-
     protected Configuration getConfiguration() {
         return configuration;
     }
@@ -109,19 +142,15 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
     }
 
     protected Engine getEngine() {
-        return engine;
-    }
-
-    protected EnginePolicy getPolicy() {
-        return policy;
+        return currentEngine.get();
     }
 
     public EventContext context() {
         return context;
     }
 
-    protected EngineDirector getEngineDirector() {
-        return engineDirector;
+    public Engine getCurrentengine() {
+        return currentEngine.get();
     }
 
     /**
@@ -165,12 +194,12 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
     private Map<Class<? extends EventListener>, Handler> setAppEventListenerMapper(Mapper.HandlerMapperKey mapperKey, List<EventListener> listeners) {
         Map<Class<? extends EventListener>, Handler> machines = listeners.stream().
                 map(o -> {
-                    Handler machine = engine.assignApplicationEventHandler();
+                    Handler machine = currentEngine.get().assignApplicationEventHandler();
                     machine.setEventListener(o);
                     return machine;
                 })
                 .collect(Collectors.toMap(o -> o.getEventListener().getClass(), o -> o));
-        this.engine.getMapper().put(mapperKey, machines);
+        this.currentEngine.get().getMapper().put(mapperKey, machines);
         return machines;
     }
 
@@ -192,13 +221,13 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
                                                                                       List<EventListener> listeners) {
         Map<Class<? extends EventListener>, Handler> machines = listeners.stream().
                 map(o -> {
-                    Handler machine = engine.assignDomainEventHandler();
+                    Handler machine = currentEngine.get().assignDomainEventHandler();
                     machine.setEventListener(o);
                     return machine;
                 })
                 .collect(Collectors.toMap(o -> o.getEventListener().getClass(), o -> o));
 
-        this.engine.getMapper().put(mapperKey, machines);
+        this.currentEngine.get().getMapper().put(mapperKey, machines);
         return machines;
     }
 
