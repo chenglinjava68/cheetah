@@ -1,18 +1,20 @@
-package cheetah.core;
+package cheetah.handler;
 
 import cheetah.common.Startable;
 import cheetah.common.logger.Debug;
+import cheetah.core.*;
 import cheetah.engine.Engine;
 import cheetah.engine.EngineDirector;
 import cheetah.engine.support.EnginePolicy;
 import cheetah.event.*;
-import cheetah.handler.Handler;
 import cheetah.mapper.Mapper;
 import cheetah.plugin.Interceptor;
 import cheetah.plugin.InterceptorChain;
 import cheetah.util.CollectionUtils;
 import cheetah.util.StringUtils;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.EventListener;
 import java.util.List;
 import java.util.Map;
@@ -136,26 +138,38 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         try {
             if (DomainEvent.class.isAssignableFrom(event.getClass())) {
                 Debug.log(this.getClass(), "event is DomainEvent");
-                List<EventListener> smartDomainEventListeners = getSmartDomainEventListener(event);
+                List<EventListener> smartDomainEventListeners = getSmartDomainEventListener((DomainEvent) event);
                 if (!smartDomainEventListeners.isEmpty()) {
                     return setDomainEventListenerMapper(mapperKey, smartDomainEventListeners);
                 } else {
                     List<EventListener> listeners = this.configuration.getEventListeners().
                             stream().filter(eventListener ->
                             CollectionUtils.arrayToList(eventListener.getClass().getInterfaces())
-                                    .contains(DomainEventListener.class)).collect(Collectors.toList());
+                                    .contains(DomainEventListener.class))
+                            .filter(o -> {
+                                Type[] parameterizedType = ((ParameterizedType)o.getClass().getGenericInterfaces()[0])
+                                        .getActualTypeArguments();
+                                Class<? extends DomainEvent> type = (Class<? extends DomainEvent>) parameterizedType[0];
+                                return event.getClass().equals(type);
+                            }).collect(Collectors.toList());
                     return setDomainEventListenerMapper(mapperKey, listeners);
                 }
             } else if (ApplicationEvent.class.isAssignableFrom(event.getClass())) {
                 Debug.log(this.getClass(), "event is ApplicationEvent");
-                List<EventListener> smartAppEventListeners = getSmartApplicationEventListener(event);
+                List<EventListener> smartAppEventListeners = getSmartApplicationEventListener((ApplicationEvent) event);
                 if (!smartAppEventListeners.isEmpty()) {
                     return setAppEventListenerMapper(mapperKey, smartAppEventListeners);
                 } else {
                     List<EventListener> listeners = this.configuration.getEventListeners().
                             stream().filter(eventListener ->
                             CollectionUtils.arrayToList(eventListener.getClass().getInterfaces())
-                                    .contains(ApplicationListener.class)).collect(Collectors.toList());
+                                    .contains(ApplicationListener.class))
+                            .filter(o -> {
+                                Type[] parameterizedType = ((ParameterizedType) o.getClass().getGenericInterfaces()[0])
+                                        .getActualTypeArguments();
+                                Class<? extends ApplicationEvent> type = (Class<? extends ApplicationEvent>) parameterizedType[0];
+                                return event.getClass().equals(type);
+                            }).collect(Collectors.toList());
                     return setAppEventListenerMapper(mapperKey, listeners);
                 }
             } else throw new ErrorEventTypeException();
@@ -176,7 +190,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         return machines;
     }
 
-    private List<EventListener> getSmartApplicationEventListener(Event event) {
+    private List<EventListener> getSmartApplicationEventListener(ApplicationEvent event) {
         return this.configuration.getEventListeners().
                 stream().filter(eventListener ->
                 SmartApplicationListener.class.isAssignableFrom(eventListener.getClass()))
@@ -204,7 +218,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         return machines;
     }
 
-    private List<EventListener> getSmartDomainEventListener(Event event) {
+    private List<EventListener> getSmartDomainEventListener(DomainEvent event) {
         return this.configuration.getEventListeners().
                 stream().filter(eventListener ->
                 SmartDomainEventListener.class.isAssignableFrom(eventListener.getClass()))

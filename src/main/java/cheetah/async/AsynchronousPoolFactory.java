@@ -1,7 +1,7 @@
 package cheetah.async;
 
 import cheetah.common.Startable;
-import cheetah.core.EventContext;
+import cheetah.handler.EventContext;
 
 /**
  * 异步工作者池子的工厂

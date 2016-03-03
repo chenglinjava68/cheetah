@@ -7,7 +7,7 @@ package cheetah.event;
  * 会忽略掉普通的监听器（如：ApplicationEvent），使用者需要注意。
  * Created by Max on 2016/1/29.
 */
-public interface SmartApplicationListener<E extends ApplicationEvent> extends ApplicationListener<E> {
+public interface SmartApplicationListener extends ApplicationListener<ApplicationEvent> {
     boolean supportsEventType(Class<? extends ApplicationEvent> eventType);
 
     boolean supportsSourceType(Class<?> sourceType);

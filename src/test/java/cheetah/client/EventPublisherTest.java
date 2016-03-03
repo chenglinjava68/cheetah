@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @ContextConfiguration("classpath:META-INF/application.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-public class EventEmitterTest {
+public class EventPublisherTest {
 
     public static final AtomicLong atomicLong = new AtomicLong();
 
@@ -35,21 +35,31 @@ public class EventEmitterTest {
         CountDownLatch latch = new CountDownLatch(1);
         ApplicationListenerTest listenerTest = new ApplicationListenerTest();
         ApplicationEventTest event = new ApplicationEventTest("aaa");
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             new Thread(() -> {
                 while (true) {
-                    ApplicationEventEmitter.launch(
+                    ApplicationEventPublisher.launch(
                             new ApplicationEventTest("213")
                     );
 //                    listenerTest.onApplicationEvent(event);
                 }
             }).start();
         }
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             new Thread(() -> {
                 while (true) {
-                    DomainEventEmitter.launch(
+                    DomainEvenPublisher.launch(
                             new DomainEventTest(new User("huahng"))
+                    );
+//                    listenerTest.onApplicationEvent(event);
+                }
+            }).start();
+        }
+        for (int i = 0; i < 10; i++) {
+            new Thread(() -> {
+                while (true) {
+                    ApplicationEventPublisher.launch(
+                            new ApplicationEventTest2("123")
                     );
 //                    listenerTest.onApplicationEvent(event);
                 }
@@ -65,8 +75,8 @@ public class EventEmitterTest {
         ApplicationListenerTest listenerTest = new ApplicationListenerTest();
         ApplicationEventTest event = new ApplicationEventTest("aaa");
         while (true) {
-            ApplicationEventEmitter.launch(
-                    new ApplicationEventTest("213")
+            ApplicationEventPublisher.launch(
+                    new ApplicationEventTest2("213")
             );
 //            listenerTest.onApplicationEvent(event);
         }
@@ -78,7 +88,7 @@ public class EventEmitterTest {
     public void launch3() throws InterruptedException {
         for (int i = 0; i < 5; i++) {
             System.out.println(System.currentTimeMillis());
-            ApplicationEventEmitter.launch(
+            ApplicationEventPublisher.launch(
                     new ApplicationEventTest("213")
             );
         }
@@ -98,6 +108,19 @@ public class EventEmitterTest {
         }
     }
 
+    public static class ApplicationEventTest2 extends ApplicationEvent {
+
+        /**
+         * Constructs a prototypical Event.
+         *
+         * @param source The object on which the Event initially occurred.
+         * @throws IllegalArgumentException if source is null.
+         */
+        public ApplicationEventTest2(Object source) {
+            super(source);
+        }
+    }
+
     public static class DomainEventTest extends DomainEvent {
 
         /**
@@ -106,7 +129,7 @@ public class EventEmitterTest {
          * @param source The object on which the Event initially occurred.
          * @throws IllegalArgumentException if source is null.
          */
-        public DomainEventTest(Object source) {
+        public DomainEventTest(Entity source) {
             super(source);
         }
     }
@@ -126,10 +149,43 @@ public class EventEmitterTest {
         }
     }
 
-    public static class SmartApplicationListenerTest implements SmartApplicationListener<ApplicationEventTest> {
+//    public static class SmartApplicationListenerTest implements SmartApplicationListener {
+//        @Override
+//        public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
+//            return ApplicationEventTest.class == eventType;
+//        }
+//
+//        @Override
+//        public boolean supportsSourceType(Class<?> sourceType) {
+//            return String.class == sourceType;
+//        }
+//
+//        @Override
+//        public int getOrder() {
+//            return 0;
+//        }
+//
+//        @Override
+//        public void onApplicationEvent(ApplicationEvent event) {
+//            double v = ArithUtil.round(Math.random() * 100, 0);
+//            long i = ArithUtil.convertsToLong(v);
+////            try {
+////                Thread.sleep(i);
+////            } catch (InterruptedException e) {
+////                e.printStackTrace();
+////            }
+//            int k = 1000000;
+//            while (k > 0) {
+//                k--;
+//            }
+//            System.out.println("SmartApplicationListenerTest -- " + atomicLong.incrementAndGet());
+//        }
+//    }
+
+    public static class SmartApplicationListenerTest2 implements SmartApplicationListener {
         @Override
         public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
-            return ApplicationEventTest.class == eventType;
+            return ApplicationEventTest2.class == eventType;
         }
 
         @Override
@@ -143,7 +199,7 @@ public class EventEmitterTest {
         }
 
         @Override
-        public void onApplicationEvent(ApplicationEventTest event) {
+        public void onApplicationEvent(ApplicationEvent event) {
             double v = ArithUtil.round(Math.random() * 100, 0);
             long i = ArithUtil.convertsToLong(v);
 //            try {
@@ -155,11 +211,11 @@ public class EventEmitterTest {
             while (k > 0) {
                 k--;
             }
-            System.out.println("SmartApplicationListenerTest -- " + atomicLong.incrementAndGet());
+            System.out.println("SmartApplicationListenerTest2 -- " + atomicLong.incrementAndGet());
         }
     }
 
-    public static class SmartDomainListenerTest implements SmartDomainEventListener<DomainEventTest> {
+    public static class SmartDomainListenerTest implements SmartDomainEventListener {
 
         @Override
         public boolean supportsEventType(Class<? extends DomainEvent> eventType) {
@@ -177,7 +233,7 @@ public class EventEmitterTest {
         }
 
         @Override
-        public void onDomainEvent(DomainEventTest event) {
+        public void onDomainEvent(DomainEvent event) {
             double v = ArithUtil.round(Math.random() * 100, 0);
             long i = ArithUtil.convertsToLong(v);
 //            try {
@@ -191,6 +247,7 @@ public class EventEmitterTest {
             }
             System.out.println("DomainEventTest -- " + atomicLong.incrementAndGet());
         }
+
     }
 
     public static class User extends UUIDKeyEntity {

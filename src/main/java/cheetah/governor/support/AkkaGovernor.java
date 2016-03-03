@@ -1,4 +1,4 @@
-package cheetah.core;
+package cheetah.governor.support;
 
 import akka.actor.ActorRef;
 import cheetah.governor.AbstractGovernor;

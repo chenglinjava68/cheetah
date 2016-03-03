@@ -2,9 +2,9 @@ package cheetah.async.disruptor;
 
 import cheetah.async.AsynchronousFactory;
 import cheetah.async.AsynchronousPoolFactory;
-import cheetah.core.EventContext;
 import cheetah.core.NoMapperException;
 import cheetah.event.DomainEvent;
+import cheetah.handler.EventContext;
 import cheetah.mapper.Mapper;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;

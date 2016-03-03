@@ -3,7 +3,7 @@ package cheetah.event;
 /**
  * Created by Max on 2016/1/29.
  */
-public abstract class ApplicationEvent extends Event {
+public abstract class ApplicationEvent extends Event<Object> {
 
     /**
      * Constructs a prototypical Event.

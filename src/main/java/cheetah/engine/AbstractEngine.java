@@ -2,9 +2,9 @@ package cheetah.engine;
 
 import cheetah.async.AsynchronousPoolFactory;
 import cheetah.common.logger.Debug;
-import cheetah.core.EventContext;
 import cheetah.governor.Governor;
 import cheetah.governor.GovernorFactory;
+import cheetah.handler.EventContext;
 import cheetah.handler.Handler;
 import cheetah.handler.HandlerFactory;
 import cheetah.mapper.Mapper;

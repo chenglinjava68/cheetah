@@ -2,7 +2,7 @@ package cheetah.client;
 
 import cheetah.core.EventMessage;
 import cheetah.core.EventResult;
-import cheetah.core.support.DispatcherHandler;
+import cheetah.handler.support.DispatcherHandler;
 import cheetah.event.AbstractCollector;
 import cheetah.event.Event;
 

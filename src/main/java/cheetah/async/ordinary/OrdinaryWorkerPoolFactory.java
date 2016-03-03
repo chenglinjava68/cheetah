@@ -2,8 +2,8 @@ package cheetah.async.ordinary;
 
 import cheetah.async.AsynchronousFactory;
 import cheetah.async.AsynchronousPoolFactory;
-import cheetah.core.EventContext;
 import cheetah.core.NoMapperException;
+import cheetah.handler.EventContext;
 import cheetah.mapper.Mapper;
 import cheetah.worker.support.OrdinaryWorker;
 

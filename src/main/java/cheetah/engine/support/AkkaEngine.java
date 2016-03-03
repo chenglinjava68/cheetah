@@ -3,7 +3,7 @@ package cheetah.engine.support;
 import akka.actor.ActorRef;
 import cheetah.engine.AbstractEngine;
 import cheetah.governor.Governor;
-import cheetah.core.AkkaGovernor;
+import cheetah.governor.support.AkkaGovernor;
 
 import java.util.Objects;
 

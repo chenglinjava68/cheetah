@@ -7,10 +7,10 @@ import cheetah.event.Collector;
 /**
  * Created by Max on 2016/1/10.
  */
-public abstract class ApplicationEventEmitter {
+public abstract class ApplicationEventPublisher {
     private static Collector collector = BeanFactory.getBeanFactory().getBean(Collector.class);
 
-    private ApplicationEventEmitter() {
+    private ApplicationEventPublisher() {
     }
 
     public static <E extends ApplicationEvent> void launch(E event) {

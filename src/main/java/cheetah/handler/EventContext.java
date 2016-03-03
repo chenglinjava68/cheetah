@@ -1,12 +1,12 @@
-package cheetah.core;
+package cheetah.handler;
 
-import cheetah.handler.Handler;
+import cheetah.core.EventMessage;
 
 import java.util.EventListener;
 import java.util.Map;
 
 /**
- * Created by Max on 2016/2/21.
+ * Created by Max on 2016/3/3.
  */
 public final class EventContext {
     private static final ThreadLocal<Map<Class<? extends EventListener>, Handler>> handlers = new ThreadLocal<>();
@@ -42,5 +42,4 @@ public final class EventContext {
     public final void removeEventMessage() {
         EventContext.eventMessage.remove();
     }
-
 }

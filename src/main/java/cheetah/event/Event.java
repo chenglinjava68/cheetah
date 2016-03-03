@@ -5,13 +5,13 @@ import java.io.Serializable;
 /**
  * Created by Max on 2016/1/29.
  */
-public class Event implements Serializable {
+public class Event<T> implements Serializable {
     private static final long serialVersionUID = -7391802226495046190L;
     private Long occurredTime;
     /**
      * The object on which the Event initially occurred.
      */
-    protected Object source;
+    protected T source;
 
     Event() {
     }
@@ -22,7 +22,7 @@ public class Event implements Serializable {
      * @param source The object on which the Event initially occurred.
      * @throws IllegalArgumentException if source is null.
      */
-    public Event(Object source) {
+    public Event(T source) {
         if (source == null)
             throw new IllegalArgumentException("null source");
         this.occurredTime = System.currentTimeMillis();
@@ -38,7 +38,7 @@ public class Event implements Serializable {
      *
      * @return The object on which the Event initially occurred.
      */
-    public Object getSource() {
+    public T getSource() {
         return source;
     }
 

@@ -21,14 +21,14 @@ http://www.springframework.org/schema/aop
 
     <bean id="beanFactoryProvider" class="cheetah.container.spring.SpringAplicationContextProvider"/>
 
-    <bean id="dispatcher" class="cheetah.core.support.DispatcherHandler" init-method="start" destroy-method="stop">
+    <bean id="dispatcher" class="cheetah.handler.support.DispatcherHandler" init-method="start" destroy-method="stop">
         <property name="configuration">
             <bean class="cheetah.core.Configuration">
                 <property name="eventListeners">
                     <list>
-                        <bean class="cheetah.client.EventEmitterTest.ApplicationListenerTest"/>
-                        <bean class="cheetah.client.EventEmitterTest.SmartApplicationListenerTest"/>
-                        <bean class="cheetah.client.EventEmitterTest.SmartDomainListenerTest"/>
+                        <bean class="cheetah.client.EventPublisherTest.ApplicationListenerTest"/>
+                        <bean class="cheetah.client.EventPublisherTest.SmartApplicationListenerTest2"/>
+                        <bean class="cheetah.client.EventPublisherTest.SmartDomainListenerTest"/>
                     </list>
                 </property>
             </bean>

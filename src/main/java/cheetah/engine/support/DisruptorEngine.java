@@ -3,7 +3,7 @@ package cheetah.engine.support;
 import cheetah.async.disruptor.DisruptorEvent;
 import cheetah.engine.AbstractEngine;
 import cheetah.governor.Governor;
-import cheetah.core.DisruptorGovernor;
+import cheetah.governor.support.DisruptorGovernor;
 import com.lmax.disruptor.dsl.Disruptor;
 
 import java.util.Objects;

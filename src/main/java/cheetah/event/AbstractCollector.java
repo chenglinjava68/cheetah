@@ -1,7 +1,7 @@
 package cheetah.event;
 
 
-import cheetah.core.support.DispatcherHandler;
+import cheetah.handler.support.DispatcherHandler;
 
 /**
  * 事件收集器的抽象类

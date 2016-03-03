@@ -1,4 +1,7 @@
-package cheetah.core;
+package cheetah.handler;
+
+import cheetah.core.EventMessage;
+import cheetah.core.EventResult;
 
 /**
  * 调度接口

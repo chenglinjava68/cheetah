@@ -1,4 +1,4 @@
-package cheetah.core;
+package cheetah.governor.support;
 
 import cheetah.async.disruptor.DisruptorEvent;
 import cheetah.governor.AbstractGovernor;

@@ -1,6 +1,6 @@
-package cheetah.core.support;
+package cheetah.handler.support;
 
-import cheetah.core.AbstractDispatcher;
+import cheetah.handler.AbstractDispatcher;
 import cheetah.core.EventMessage;
 import cheetah.core.EventResult;
 import cheetah.core.NoMapperException;
