@@ -7,9 +7,9 @@ import cheetah.handler.EventContext;
 import cheetah.mapping.HandlerMapping;
 import cheetah.worker.support.OrdinaryWorker;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Max on 2016/2/29.
@@ -20,7 +20,7 @@ public class OrdinaryWorkerPoolFactory implements AsynchronousPoolFactory<Ordina
     private EventContext context;
 
     public OrdinaryWorkerPoolFactory() {
-        this.workerPool = new ConcurrentHashMap<>();
+        this.workerPool = new HashMap<>();
     }
 
     public OrdinaryWorker createWorker() {

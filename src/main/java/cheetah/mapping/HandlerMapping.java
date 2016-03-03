@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public interface HandlerMapping extends Cloneable {
 
-    Map<Class<? extends EventListener>, Handler> getMachine(HandlerMapperKey mapperKey);
+    Map<Class<? extends EventListener>, Handler> getHandlers(HandlerMapperKey mapperKey);
 
     void put(HandlerMapperKey mapperKey, Map<Class<? extends EventListener>, Handler> machines);
 

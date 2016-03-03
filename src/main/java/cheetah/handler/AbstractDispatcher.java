@@ -49,7 +49,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
             HandlerMapping.HandlerMapperKey key = HandlerMapping.HandlerMapperKey.generate(event.getClass(), event.getSource().getClass());
             boolean exists = engine.getMapping().isExists(key);
             if (exists) {
-                Map<Class<? extends EventListener>, Handler> handlerMap = engine.getMapping().getMachine(key);
+                Map<Class<? extends EventListener>, Handler> handlerMap = engine.getMapping().getHandlers(key);
                 context.setHandlers(handlerMap);
                 return dispatch();
             }

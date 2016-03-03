@@ -21,7 +21,7 @@ public class EventHandlerMapping implements HandlerMapping {
     }
 
     @Override
-    public Map<Class<? extends EventListener>, Handler> getMachine(HandlerMapperKey mapperKey) {
+    public Map<Class<? extends EventListener>, Handler> getHandlers(HandlerMapperKey mapperKey) {
         return isExists(mapperKey) ? new HashMap<>(handlerMapper.get(mapperKey)) : Collections.EMPTY_MAP;
     }
 
