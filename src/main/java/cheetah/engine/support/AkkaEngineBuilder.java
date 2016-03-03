@@ -7,7 +7,7 @@ import cheetah.async.akka.ActorPoolFactory;
 import cheetah.core.Configuration;
 import cheetah.engine.EngineBuilder;
 import cheetah.governor.GovernorFactory;
-import cheetah.governor.support.AkkaGovernorFactory;
+import cheetah.core.AkkaGovernorFactory;
 import cheetah.handler.HandlerFactory;
 import cheetah.handler.support.GenericHandlerFactory;
 import cheetah.mapper.Mapper;

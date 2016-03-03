@@ -6,7 +6,7 @@ import cheetah.async.disruptor.DisruptorPoolFactory;
 import cheetah.core.Configuration;
 import cheetah.engine.EngineBuilder;
 import cheetah.governor.GovernorFactory;
-import cheetah.governor.support.DisruptorGovernorFactory;
+import cheetah.core.DisruptorGovernorFactory;
 import cheetah.handler.HandlerFactory;
 import cheetah.handler.support.GenericHandlerFactory;
 import cheetah.mapper.Mapper;

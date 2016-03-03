@@ -7,7 +7,7 @@ import cheetah.async.ordinary.OrdinaryWorkerPoolFactory;
 import cheetah.core.Configuration;
 import cheetah.engine.EngineBuilder;
 import cheetah.governor.GovernorFactory;
-import cheetah.governor.support.OrdinaryGovernorFactory;
+import cheetah.core.OrdinaryGovernorFactory;
 import cheetah.handler.HandlerFactory;
 import cheetah.handler.support.GenericHandlerFactory;
 import cheetah.mapper.Mapper;

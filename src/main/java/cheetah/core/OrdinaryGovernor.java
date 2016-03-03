@@ -1,4 +1,4 @@
-package cheetah.governor.support;
+package cheetah.core;
 
 import cheetah.governor.AbstractGovernor;
 import cheetah.handler.Feedback;

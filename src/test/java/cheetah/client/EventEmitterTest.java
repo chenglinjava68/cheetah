@@ -1,8 +1,5 @@
-package cheetah.governor.support;
+package cheetah.client;
 
-import cheetah.client.ApplicationEventEmitter;
-import cheetah.client.DomainEventEmitter;
-import cheetah.client.ProcessType;
 import cheetah.domain.Entity;
 import cheetah.domain.UUIDKeyEntity;
 import cheetah.event.*;
@@ -20,7 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @ContextConfiguration("classpath:META-INF/application.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-public class AkkaGovernorTest {
+public class EventEmitterTest {
 
     public static final AtomicLong atomicLong = new AtomicLong();
 
@@ -42,7 +39,7 @@ public class AkkaGovernorTest {
             new Thread(() -> {
                 while (true) {
                     ApplicationEventEmitter.launch(
-                            new ApplicationEventTest("213"), ProcessType.ORDINARY
+                            new ApplicationEventTest("213")
                     );
 //                    listenerTest.onApplicationEvent(event);
                 }
@@ -52,7 +49,7 @@ public class AkkaGovernorTest {
             new Thread(() -> {
                 while (true) {
                     DomainEventEmitter.launch(
-                            new DomainEventTest(new User("huahng")), ProcessType.ORDINARY
+                            new DomainEventTest(new User("huahng"))
                     );
 //                    listenerTest.onApplicationEvent(event);
                 }
@@ -69,7 +66,7 @@ public class AkkaGovernorTest {
         ApplicationEventTest event = new ApplicationEventTest("aaa");
         while (true) {
             ApplicationEventEmitter.launch(
-                    new ApplicationEventTest("213"), ProcessType.ORDINARY
+                    new ApplicationEventTest("213")
             );
 //            listenerTest.onApplicationEvent(event);
         }

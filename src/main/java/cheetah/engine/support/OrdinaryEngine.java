@@ -2,7 +2,7 @@ package cheetah.engine.support;
 
 import cheetah.engine.AbstractEngine;
 import cheetah.governor.Governor;
-import cheetah.governor.support.OrdinaryGovernor;
+import cheetah.core.OrdinaryGovernor;
 import cheetah.worker.Worker;
 
 import java.util.Objects;
