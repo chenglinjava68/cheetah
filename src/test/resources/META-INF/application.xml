@@ -26,9 +26,9 @@ http://www.springframework.org/schema/aop
             <bean class="cheetah.core.Configuration">
                 <property name="eventListeners">
                     <list>
-                        <bean class="cheetah.core.DispatcherTest.ApplicationListenerTest"/>
-                        <bean class="cheetah.core.DispatcherTest.SmartApplicationListenerTest"/>
-                        <bean class="cheetah.core.DispatcherTest.SmartDomainListenerTest"/>
+                        <bean class="cheetah.client.EventEmitterTest.ApplicationListenerTest"/>
+                        <bean class="cheetah.client.EventEmitterTest.SmartApplicationListenerTest"/>
+                        <bean class="cheetah.client.EventEmitterTest.SmartDomainListenerTest"/>
                     </list>
                 </property>
             </bean>
