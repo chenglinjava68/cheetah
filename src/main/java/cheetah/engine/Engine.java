@@ -7,7 +7,7 @@ import cheetah.governor.Governor;
 import cheetah.governor.GovernorFactory;
 import cheetah.handler.Handler;
 import cheetah.handler.HandlerFactory;
-import cheetah.mapper.Mapper;
+import cheetah.mapping.HandlerMapping;
 import cheetah.worker.Worker;
 import cheetah.worker.WorkerFactory;
 
@@ -48,7 +48,7 @@ public interface Engine extends Startable {
 
     void setGovernorFactory(GovernorFactory governorFactory);
 
-    void setMapper(Mapper mapper);
+    void setMapping(HandlerMapping mapping);
 
     void setContext(EventContext context);
 
@@ -62,7 +62,7 @@ public interface Engine extends Startable {
      * 获取事件映射器
      * @return
      */
-    Mapper getMapper();
+    HandlerMapping getMapping();
 
     State state();
 

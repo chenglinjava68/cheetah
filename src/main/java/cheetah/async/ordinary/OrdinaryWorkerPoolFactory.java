@@ -4,7 +4,7 @@ import cheetah.async.AsynchronousFactory;
 import cheetah.async.AsynchronousPoolFactory;
 import cheetah.core.NoMapperException;
 import cheetah.handler.EventContext;
-import cheetah.mapper.Mapper;
+import cheetah.mapping.HandlerMapping;
 import cheetah.worker.support.OrdinaryWorker;
 
 import java.util.Map;
@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class OrdinaryWorkerPoolFactory implements AsynchronousPoolFactory<OrdinaryWorker> {
     private AsynchronousFactory<OrdinaryWorker> asynchronousFactory;
-    private final Map<Mapper.HandlerMapperKey, OrdinaryWorker> workerPool;
+    private final Map<HandlerMapping.HandlerMapperKey, OrdinaryWorker> workerPool;
     private EventContext context;
 
     public OrdinaryWorkerPoolFactory() {
@@ -24,7 +24,7 @@ public class OrdinaryWorkerPoolFactory implements AsynchronousPoolFactory<Ordina
     }
 
     public OrdinaryWorker createWorker() {
-        OrdinaryWorker worker = this.workerPool.get(Mapper.HandlerMapperKey.generate(context.getEventMessage().event()));
+        OrdinaryWorker worker = this.workerPool.get(HandlerMapping.HandlerMapperKey.generate(context.getEventMessage().event()));
         if(Objects.nonNull(worker))
             return worker;
         return  this.asynchronousFactory.createAsynchronous(context.getEventMessage().event().getClass().getName(), context.getHandlers());
@@ -32,7 +32,7 @@ public class OrdinaryWorkerPoolFactory implements AsynchronousPoolFactory<Ordina
 
     @Override
     public OrdinaryWorker getAsynchronous() {
-        OrdinaryWorker worker = this.workerPool.get(Mapper.HandlerMapperKey.generate(context.getEventMessage().event()));
+        OrdinaryWorker worker = this.workerPool.get(HandlerMapping.HandlerMapperKey.generate(context.getEventMessage().event()));
         if (Objects.nonNull(worker)) {
             return worker;
         } else {
@@ -40,7 +40,7 @@ public class OrdinaryWorkerPoolFactory implements AsynchronousPoolFactory<Ordina
                 if(context.getHandlers().isEmpty())
                     throw new NoMapperException();
                 worker = createWorker();
-                Mapper.HandlerMapperKey key = Mapper.HandlerMapperKey.generate(context.getEventMessage().event());
+                HandlerMapping.HandlerMapperKey key = HandlerMapping.HandlerMapperKey.generate(context.getEventMessage().event());
                 this.workerPool.putIfAbsent(key, worker);
                 return worker;
             }

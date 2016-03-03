@@ -1,7 +1,7 @@
-package cheetah.mapper.support;
+package cheetah.mapping.support;
 
 import cheetah.handler.Handler;
-import cheetah.mapper.Mapper;
+import cheetah.mapping.HandlerMapping;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,12 +12,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * 调度中每次都会检查映射器中有没有对应的工作机器，没有则创建，有则直接获取，不会每次都会创建
  * Created by Max on 2016/2/23.
  */
-public class HandlerMapper implements Mapper {
+public class EventHandlerMapping implements HandlerMapping {
     private volatile Map<HandlerMapperKey, Map<Class<? extends EventListener>, Handler>> handlerMapper = new ConcurrentHashMap<>();
-    private static final Mapper genericMapper = new HandlerMapper();
+    private static final HandlerMapping genericMapping = new EventHandlerMapping();
 
-    public static Mapper getGenericMapper() {
-        return genericMapper;
+    public static HandlerMapping getGenericMapping() {
+        return genericMapping;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package cheetah.mapper;
+package cheetah.mapping;
 
 import cheetah.event.Event;
 import cheetah.handler.Handler;
@@ -11,7 +11,7 @@ import java.util.Set;
 /** 处理器映射器
  * Created by Max on 2016/2/23.
  */
-public interface Mapper extends Cloneable {
+public interface HandlerMapping extends Cloneable {
 
     Map<Class<? extends EventListener>, Handler> getMachine(HandlerMapperKey mapperKey);
 

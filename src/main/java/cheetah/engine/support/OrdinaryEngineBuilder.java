@@ -10,8 +10,8 @@ import cheetah.governor.GovernorFactory;
 import cheetah.governor.support.OrdinaryGovernorFactory;
 import cheetah.handler.HandlerFactory;
 import cheetah.handler.support.GenericHandlerFactory;
-import cheetah.mapper.Mapper;
-import cheetah.mapper.support.HandlerMapper;
+import cheetah.mapping.HandlerMapping;
+import cheetah.mapping.support.EventHandlerMapping;
 import cheetah.worker.WorkerFactory;
 import cheetah.worker.support.OrdinaryWorkerFactory;
 
@@ -36,8 +36,8 @@ public class OrdinaryEngineBuilder implements EngineBuilder {
     }
 
     @Override
-    public Mapper buildMapper() {
-        return HandlerMapper.getGenericMapper();
+    public HandlerMapping buildMapping() {
+        return EventHandlerMapping.getGenericMapping();
     }
 
     @Override

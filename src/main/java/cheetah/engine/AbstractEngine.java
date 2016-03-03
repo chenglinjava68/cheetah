@@ -7,7 +7,7 @@ import cheetah.governor.GovernorFactory;
 import cheetah.handler.EventContext;
 import cheetah.handler.Handler;
 import cheetah.handler.HandlerFactory;
-import cheetah.mapper.Mapper;
+import cheetah.mapping.HandlerMapping;
 import cheetah.plugin.InterceptorChain;
 import cheetah.worker.Worker;
 import cheetah.worker.WorkerFactory;
@@ -21,7 +21,7 @@ public abstract class AbstractEngine implements Engine {
     private GovernorFactory governorFactory;
     private InterceptorChain interceptorChain;
     private AsynchronousPoolFactory asynchronousPoolFactory;
-    private volatile Mapper mapper;
+    private volatile HandlerMapping mapping;
     private Governor governor;
     private EventContext context;
     protected State state;
@@ -82,8 +82,8 @@ public abstract class AbstractEngine implements Engine {
     }
 
     @Override
-    public void setMapper(Mapper mapper) {
-        this.mapper = mapper;
+    public void setMapping(HandlerMapping mapping) {
+        this.mapping = mapping;
     }
 
     @Override
@@ -101,8 +101,8 @@ public abstract class AbstractEngine implements Engine {
     }
 
     @Override
-    public Mapper getMapper() {
-        return this.mapper;
+    public HandlerMapping getMapping() {
+        return this.mapping;
     }
 
     public void setInterceptorChain(InterceptorChain interceptorChain) {
@@ -127,10 +127,6 @@ public abstract class AbstractEngine implements Engine {
 
     protected AsynchronousPoolFactory asynchronousPoolFactory() {
         return asynchronousPoolFactory;
-    }
-
-    protected Mapper mapper() {
-        return mapper;
     }
 
     protected Governor governor() {

@@ -9,8 +9,8 @@ import cheetah.governor.GovernorFactory;
 import cheetah.governor.support.DisruptorGovernorFactory;
 import cheetah.handler.HandlerFactory;
 import cheetah.handler.support.GenericHandlerFactory;
-import cheetah.mapper.Mapper;
-import cheetah.mapper.support.HandlerMapper;
+import cheetah.mapping.HandlerMapping;
+import cheetah.mapping.support.EventHandlerMapping;
 import cheetah.worker.WorkerFactory;
 import cheetah.worker.support.DisruptorWorkerFactory;
 
@@ -34,8 +34,8 @@ public class DisruptorEngineBuilder implements EngineBuilder {
     }
 
     @Override
-    public Mapper buildMapper() {
-        return HandlerMapper.getGenericMapper();
+    public HandlerMapping buildMapping() {
+        return EventHandlerMapping.getGenericMapping();
     }
 
     @Override

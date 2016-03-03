@@ -7,7 +7,7 @@ import cheetah.core.NoMapperException;
 import cheetah.event.Event;
 import cheetah.handler.EventContext;
 import cheetah.handler.Handler;
-import cheetah.mapper.Mapper;
+import cheetah.mapping.HandlerMapping;
 
 import java.util.EventListener;
 import java.util.Map;
@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ActorPoolFactory implements AsynchronousPoolFactory<ActorRef> {
 
     private AsynchronousFactory<ActorRef> actorFactory;
-    private ConcurrentHashMap<Mapper.HandlerMapperKey, ActorRef> actorPool = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<HandlerMapping.HandlerMapperKey, ActorRef> actorPool = new ConcurrentHashMap<>();
     private EventContext context;
 
     public ActorPoolFactory() {
@@ -31,7 +31,7 @@ public class ActorPoolFactory implements AsynchronousPoolFactory<ActorRef> {
     public ActorRef createActor() {
         Event event = context.getEventMessage().event();
         String name = event.getClass().getName();
-        Mapper.HandlerMapperKey mapperKey = Mapper.HandlerMapperKey.generate(event);
+        HandlerMapping.HandlerMapperKey mapperKey = HandlerMapping.HandlerMapperKey.generate(event);
         if (actorPool.containsKey(mapperKey))
             return this.actorPool.get(mapperKey);
         Map<Class<? extends EventListener>, Handler> handlerMap = getMapperFrom();
@@ -40,7 +40,7 @@ public class ActorPoolFactory implements AsynchronousPoolFactory<ActorRef> {
 
     @Override
     public ActorRef getAsynchronous() {
-        ActorRef actor = actorPool.get(Mapper.HandlerMapperKey.generate(context.getEventMessage().event()));
+        ActorRef actor = actorPool.get(HandlerMapping.HandlerMapperKey.generate(context.getEventMessage().event()));
         if (Objects.nonNull(actor))
             return actor;
         else {
@@ -48,7 +48,7 @@ public class ActorPoolFactory implements AsynchronousPoolFactory<ActorRef> {
                 if (this.context.getHandlers().isEmpty())
                     throw new NoMapperException();
                 actor = createActor();
-                Mapper.HandlerMapperKey mapperKey = Mapper.HandlerMapperKey.generate(context.getEventMessage().event());
+                HandlerMapping.HandlerMapperKey mapperKey = HandlerMapping.HandlerMapperKey.generate(context.getEventMessage().event());
                 this.actorPool.putIfAbsent(mapperKey, actor);
                 return actor;
             }
