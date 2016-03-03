@@ -18,13 +18,13 @@ import cheetah.worker.WorkerFactory;
 public interface Engine extends Startable {
 
     /**
-     * 分配应用事件的工作机器
+     * 分配应用事件的工作处理器
      * @return
      */
     Handler assignApplicationEventHandler();
 
     /**
-     * 分配领域事件的工作机器
+     * 分配领域事件的工作处理器
      * @return
      */
     Handler assignDomainEventHandler();

@@ -6,7 +6,6 @@ import cheetah.worker.support.OrdinaryWorker;
 
 import java.util.EventListener;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -14,15 +13,13 @@ import java.util.concurrent.Executors;
  * Created by Max on 2016/3/2.
  */
 public class AsyncOrdinaryWorkerFactory implements AsynchronousFactory<OrdinaryWorker> {
-    private final Map<String, ExecutorService> executorMap = new ConcurrentHashMap<>();
+    private ExecutorService executor = Executors.newCachedThreadPool();
 
     @Override
     public OrdinaryWorker createAsynchronous(String name, Map<Class<? extends EventListener>, Handler> handlerMap) {
         OrdinaryWorker worker = new OrdinaryWorker();
-        ExecutorService executor = Executors.newCachedThreadPool();
         worker.setExecutor(executor);
         worker.setHandlerMap(handlerMap);
-        executorMap.put(name, executor);
         return worker;
     }
 
@@ -33,10 +30,13 @@ public class AsyncOrdinaryWorkerFactory implements AsynchronousFactory<OrdinaryW
 
     @Override
     public void stop() {
-        executorMap.forEach((k, v) -> {
-            while (v.isShutdown()) {
-                v.shutdownNow();
-            }
-        });
+        while (executor.isShutdown()) {
+            executor.shutdown();
+        }
+        executor = null;
+    }
+
+    public void setExecutor(ExecutorService executor) {
+        this.executor = executor;
     }
 }

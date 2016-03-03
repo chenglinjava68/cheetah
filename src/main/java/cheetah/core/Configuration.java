@@ -16,6 +16,7 @@ public class Configuration {
     private List<EventListener> eventListeners;
     private int eventPerformerSize;
     private int ringBufferSize;
+    private String policy;
     public Configuration() {
         this.plugins = Collections.EMPTY_LIST;
         this.eventListeners = Collections.EMPTY_LIST;
@@ -59,5 +60,13 @@ public class Configuration {
 
     public void setRingBufferSize(int ringBufferSize) {
         this.ringBufferSize = ringBufferSize;
+    }
+
+    public String getPolicy() {
+        return policy;
+    }
+
+    public void setPolicy(String policy) {
+        this.policy = policy;
     }
 }

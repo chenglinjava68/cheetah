@@ -171,7 +171,7 @@ public abstract class StringUtils {
      *
      * @param str the String to check
      * @return the trimmed String
-     * @see java.lang.Character#isWhitespace
+     * @see Character#isWhitespace
      */
     public static String trimWhitespace(String str) {
         if (!hasLength(str)) {
@@ -193,7 +193,7 @@ public abstract class StringUtils {
      *
      * @param str the String to check
      * @return the trimmed String
-     * @see java.lang.Character#isWhitespace
+     * @see Character#isWhitespace
      */
     public static String trimAllWhitespace(String str) {
         if (!hasLength(str)) {
@@ -215,7 +215,7 @@ public abstract class StringUtils {
      *
      * @param str the String to check
      * @return the trimmed String
-     * @see java.lang.Character#isWhitespace
+     * @see Character#isWhitespace
      */
     public static String trimLeadingWhitespace(String str) {
         if (!hasLength(str)) {
@@ -233,7 +233,7 @@ public abstract class StringUtils {
      *
      * @param str the String to check
      * @return the trimmed String
-     * @see java.lang.Character#isWhitespace
+     * @see Character#isWhitespace
      */
     public static String trimTrailingWhitespace(String str) {
         if (!hasLength(str)) {
@@ -289,7 +289,7 @@ public abstract class StringUtils {
      *
      * @param str    the String to check
      * @param prefix the prefix to look for
-     * @see java.lang.String#startsWith
+     * @see String#startsWith
      */
     public static boolean startsWithIgnoreCase(String str, String prefix) {
         if (str == null || prefix == null) {
@@ -312,7 +312,7 @@ public abstract class StringUtils {
      *
      * @param str    the String to check
      * @param suffix the suffix to look for
-     * @see java.lang.String#endsWith
+     * @see String#endsWith
      */
     public static boolean endsWithIgnoreCase(String str, String suffix) {
         if (str == null || suffix == null) {
@@ -983,7 +983,7 @@ public abstract class StringUtils {
      * @param delimiters the delimiter characters, assembled as String
      *                   (each of those characters is individually considered as delimiter).
      * @return an array of the tokens
-     * @see java.util.StringTokenizer
+     * @see StringTokenizer
      * @see String#trim()
      * @see #delimitedListToStringArray
      */
@@ -1007,7 +1007,7 @@ public abstract class StringUtils {
      *                          will not consider subsequent delimiters as token in the first place).
      * @return an array of the tokens ({@code null} if the input String
      * was {@code null})
-     * @see java.util.StringTokenizer
+     * @see StringTokenizer
      * @see String#trim()
      * @see #delimitedListToStringArray
      */

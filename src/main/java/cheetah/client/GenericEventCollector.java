@@ -19,41 +19,22 @@ public class GenericEventCollector extends AbstractCollector {
 
     @Override
     public void collect(Event event) {
-        getDispatcher().receive(new EventMessage(event), ProcessType.DISRUPTOR);
-    }
-
-    @Override
-    public void collect(Event event, ProcessType processType) {
-        getDispatcher().receive(new EventMessage(event), processType);
+        getDispatcher().receive(new EventMessage(event));
     }
 
     @Override
     public void collect(Event event, boolean fisrtWin) {
-        getDispatcher().receive(new EventMessage(event, fisrtWin), ProcessType.DISRUPTOR);
-    }
-
-    @Override
-    public void collect(Event event, boolean fisrtWin, ProcessType processType) {
-        getDispatcher().receive(new EventMessage(event, fisrtWin), processType);
+        getDispatcher().receive(new EventMessage(event, fisrtWin));
     }
 
     @Override
     public EventResult collect(boolean needResult, Event event) {
-        return getDispatcher().receive(new EventMessage(needResult, event), ProcessType.DISRUPTOR);
-    }
-
-    @Override
-    public EventResult collect(boolean needResult, Event event, ProcessType processType) {
-        return getDispatcher().receive(new EventMessage(needResult, event), processType);
+        return getDispatcher().receive(new EventMessage(needResult, event));
     }
 
     @Override
     public EventResult collect(boolean needResult, boolean fisrtWin, Event event) {
-        return getDispatcher().receive(new EventMessage(event, needResult, fisrtWin), ProcessType.DISRUPTOR);
+        return getDispatcher().receive(new EventMessage(event, needResult, fisrtWin));
     }
 
-    @Override
-    public EventResult collect(boolean needResult, boolean fisrtWin, Event event, ProcessType processType) {
-        return getDispatcher().receive(new EventMessage(event, needResult, fisrtWin), processType);
-    }
 }

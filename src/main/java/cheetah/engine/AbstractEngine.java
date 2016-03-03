@@ -7,14 +7,10 @@ import cheetah.governor.Governor;
 import cheetah.governor.GovernorFactory;
 import cheetah.handler.Handler;
 import cheetah.handler.HandlerFactory;
-import cheetah.handler.support.GenericHandlerFactory;
 import cheetah.mapper.Mapper;
 import cheetah.plugin.InterceptorChain;
 import cheetah.worker.Worker;
 import cheetah.worker.WorkerFactory;
-import cheetah.worker.support.AkkaWorkerFactory;
-
-import java.util.Objects;
 
 /**
  * Created by Max on 2016/3/2.
@@ -34,11 +30,6 @@ public abstract class AbstractEngine implements Engine {
     public void start() {
         Debug.log(this.getClass(), "DefaultEngine start ...");
         initialize();
-        asynchronousPoolFactory().setEventContext(context);
-        if (Objects.isNull(workerFactory()))
-            workerFactory = new AkkaWorkerFactory();
-        if (Objects.isNull(handlerFactory))
-            handlerFactory = new GenericHandlerFactory();
         this.state = State.RUNNING;
     }
 
@@ -49,7 +40,6 @@ public abstract class AbstractEngine implements Engine {
 
     @Override
     public void stop() {
-        asynchronousPoolFactory.stop();
         workerFactory = null;
         handlerFactory = null;
         governorFactory = null;

@@ -30,20 +30,4 @@ public abstract class DomainEventEmitter {
         collector.collect(needResult, fisrtWin, event);
     }
 
-    public static <E extends DomainEvent> void launch(E event, ProcessType processType) {
-        collector.collect(event, processType);
-    }
-
-    public static <E extends DomainEvent> void launch(E event, boolean fisrtWin, ProcessType processType) {
-        collector.collect(event, fisrtWin, processType);
-    }
-
-    public static <E extends DomainEvent> void launch(boolean needResult, E event, ProcessType processType) {
-        collector.collect(needResult, event, processType);
-    }
-
-    public static <E extends DomainEvent> void launch(boolean needResult, boolean fisrtWin, E event, ProcessType processType) {
-        collector.collect(needResult, fisrtWin, event, processType);
-    }
-
 }

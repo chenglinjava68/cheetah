@@ -14,7 +14,7 @@ import java.util.Objects;
 public class AkkaEngine extends AbstractEngine {
 
     public AkkaEngine() {
-        this.state = Engine.State.NEW;
+        this.state = State.NEW;
     }
 
     @Override

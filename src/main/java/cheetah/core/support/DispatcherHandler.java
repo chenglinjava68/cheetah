@@ -18,8 +18,8 @@ public class DispatcherHandler extends AbstractDispatcher {
 
     @Override
     public EventResult dispatch() {
-        EventMessage eventMessage = context().getEventMessage();
-        Map<Class<? extends EventListener>, Handler> handlerMap = context().getHandlers();
+        EventMessage eventMessage = getContext().getEventMessage();
+        Map<Class<? extends EventListener>, Handler> handlerMap = getContext().getHandlers();
         if (!handlerMap.isEmpty()) {
             Governor governor = getEngine().assignGovernor();
             Feedback report = governor.initialize()

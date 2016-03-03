@@ -4,10 +4,13 @@ import cheetah.async.AsynchronousFactory;
 import cheetah.async.AsynchronousPoolFactory;
 import cheetah.core.EventContext;
 import cheetah.core.NoMapperException;
+import cheetah.event.DomainEvent;
 import cheetah.mapper.Mapper;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,9 +29,12 @@ public class DisruptorPoolFactory implements AsynchronousPoolFactory<Disruptor<D
 
     public Disruptor<DisruptorEvent> createDisruptor() {
         Disruptor<DisruptorEvent> disruptor = this.disruptorPool.get(Mapper.HandlerMapperKey.generate(context.getEventMessage().event()));
-        if(Objects.nonNull(disruptor))
+        if (Objects.nonNull(disruptor))
             return disruptor;
-        return  this.disruptorFactory.createAsynchronous(ProducerType.MULTI.name(), context.getHandlers());
+        if (context.getEventMessage().event() instanceof DomainEvent)
+            return this.disruptorFactory.createAsynchronous(ProducerType.SINGLE.name(), context.getHandlers());
+        else
+            return this.disruptorFactory.createAsynchronous(ProducerType.MULTI.name(), context.getHandlers());
     }
 
     @Override
@@ -38,7 +44,7 @@ public class DisruptorPoolFactory implements AsynchronousPoolFactory<Disruptor<D
             return disruptor;
         } else {
             synchronized (this) {
-                if(context.getHandlers().isEmpty())
+                if (context.getHandlers().isEmpty())
                     throw new NoMapperException();
                 disruptor = createDisruptor();
                 Mapper.HandlerMapperKey key = Mapper.HandlerMapperKey.generate(context.getEventMessage().event());
@@ -65,7 +71,13 @@ public class DisruptorPoolFactory implements AsynchronousPoolFactory<Disruptor<D
 
     @Override
     public void stop() {
-
+        Map<Mapper.HandlerMapperKey, Disruptor<DisruptorEvent>> stopMap = new HashMap<>(this.disruptorPool);
+        this.disruptorPool.clear();
+        Iterator<Disruptor<DisruptorEvent>> iterator = stopMap.values().iterator();
+        while (iterator.hasNext()) {
+            Disruptor<DisruptorEvent> disruptor = iterator.next();
+            disruptor.halt();
+        }
     }
 
 }
