@@ -113,7 +113,9 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
 
     @Override
     public void stop() {
-        Iterator<Engine> engineIterator = engineMap.values().iterator();
+        Map<String, Engine> tempEngine = new HashMap<>(engineMap);
+        engineMap.clear();
+        Iterator<Engine> engineIterator = tempEngine.values().iterator();
         while (engineIterator.hasNext()) {
             engineIterator.next().stop();
         }
