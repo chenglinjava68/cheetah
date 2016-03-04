@@ -7,7 +7,7 @@ import cheetah.handler.support.DispatcherHandler;
  * 事件收集器的抽象类
  * Created by Max on 2016/2/3.
  */
-public abstract class AbstractCollector implements Collector {
+public abstract class AbstractCollector implements EventCollector {
     private DispatcherHandler dispatcher;
 
     public AbstractCollector() {

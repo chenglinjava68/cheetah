@@ -1,7 +1,7 @@
 package cheetah.common.logger;
 
 
-import cheetah.util.ObjectUtils;
+import cheetah.common.utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

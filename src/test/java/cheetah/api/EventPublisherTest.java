@@ -1,9 +1,9 @@
-package cheetah.client;
+package cheetah.api;
 
+import cheetah.common.utils.ArithUtils;
 import cheetah.domain.Entity;
 import cheetah.domain.UUIDKeyEntity;
 import cheetah.event.*;
-import cheetah.util.ArithUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -137,8 +137,8 @@ public class EventPublisherTest {
     public static class ApplicationListenerTest implements ApplicationListener<ApplicationEventTest> {
         @Override
         public void onApplicationEvent(ApplicationEventTest event) {
-            double v = ArithUtil.round(Math.random() * 100, 0);
-            long i = ArithUtil.convertsToLong(v);
+            double v = ArithUtils.round(Math.random() * 100, 0);
+            long i = ArithUtils.convertsToLong(v);
             try {
                 Thread.sleep(i);
             } catch (InterruptedException e) {
@@ -200,8 +200,8 @@ public class EventPublisherTest {
 
         @Override
         public void onApplicationEvent(ApplicationEvent event) {
-            double v = ArithUtil.round(Math.random() * 100, 0);
-            long i = ArithUtil.convertsToLong(v);
+            double v = ArithUtils.round(Math.random() * 100, 0);
+            long i = ArithUtils.convertsToLong(v);
 //            try {
 //                Thread.sleep(i);
 //            } catch (InterruptedException e) {
@@ -234,8 +234,8 @@ public class EventPublisherTest {
 
         @Override
         public void onDomainEvent(DomainEvent event) {
-            double v = ArithUtil.round(Math.random() * 100, 0);
-            long i = ArithUtil.convertsToLong(v);
+            double v = ArithUtils.round(Math.random() * 100, 0);
+            long i = ArithUtils.convertsToLong(v);
 //            try {
 //                Thread.sleep(i);
 //            } catch (InterruptedException e) {

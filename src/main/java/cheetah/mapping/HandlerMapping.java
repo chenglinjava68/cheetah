@@ -2,7 +2,7 @@ package cheetah.mapping;
 
 import cheetah.event.Event;
 import cheetah.handler.Handler;
-import cheetah.util.ObjectUtils;
+import cheetah.common.utils.ObjectUtils;
 
 import java.util.EventListener;
 import java.util.Map;

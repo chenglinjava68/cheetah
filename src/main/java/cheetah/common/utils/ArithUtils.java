@@ -1,4 +1,4 @@
-package cheetah.util;
+package cheetah.common.utils;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -8,12 +8,12 @@ import java.text.DecimalFormat;
  * Created by Max on 2016/2/2.
  */
 
-public class ArithUtil {
+public class ArithUtils {
 
 	// 默认除法运算精度
 	private static final int DEF_DIV_SCALE = 10;
 
-	private ArithUtil() {
+	private ArithUtils() {
 		
 	}
 

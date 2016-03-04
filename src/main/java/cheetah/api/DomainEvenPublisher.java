@@ -1,7 +1,7 @@
-package cheetah.client;
+package cheetah.api;
 
 import cheetah.container.BeanFactory;
-import cheetah.event.Collector;
+import cheetah.event.EventCollector;
 import cheetah.event.DomainEvent;
 
 /**
@@ -9,7 +9,7 @@ import cheetah.event.DomainEvent;
  */
 public abstract class DomainEvenPublisher {
 
-    private static Collector collector = BeanFactory.getBeanFactory().getBean(Collector.class);
+    private static EventCollector collector = BeanFactory.getBeanFactory().getBean(EventCollector.class);
 
     private DomainEvenPublisher() {
     }

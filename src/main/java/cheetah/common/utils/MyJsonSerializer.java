@@ -1,4 +1,4 @@
-package cheetah.util;
+package cheetah.common.utils;
 
 import akka.serialization.JSerializer;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;

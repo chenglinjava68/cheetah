@@ -4,8 +4,8 @@ import cheetah.event.Event;
 import cheetah.handler.Feedback;
 import cheetah.handler.Handler;
 import cheetah.plugin.InterceptorChain;
-import cheetah.util.Assert;
-import cheetah.util.IDGenerator;
+import cheetah.common.utils.Assert;
+import cheetah.common.utils.IDGenerator;
 
 import java.util.EventListener;
 import java.util.Map;

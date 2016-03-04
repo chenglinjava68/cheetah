@@ -18,7 +18,6 @@ http://www.springframework.org/schema/aop
     <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
     <aop:aspectj-autoproxy/>
 
-
     <bean id="beanFactoryProvider" class="cheetah.container.spring.SpringAplicationContextProvider"/>
 
     <bean id="dispatcher" class="cheetah.handler.support.DispatcherHandler" init-method="start" destroy-method="stop">
@@ -26,16 +25,17 @@ http://www.springframework.org/schema/aop
             <bean class="cheetah.core.Configuration">
                 <property name="eventListeners">
                     <list>
-                        <bean class="cheetah.client.EventPublisherTest.ApplicationListenerTest"/>
-                        <bean class="cheetah.client.EventPublisherTest.SmartApplicationListenerTest2"/>
-                        <bean class="cheetah.client.EventPublisherTest.SmartDomainListenerTest"/>
+                        <bean class="cheetah.api.EventPublisherTest.ApplicationListenerTest"/>
+                        <bean class="cheetah.api.EventPublisherTest.SmartApplicationListenerTest2"/>
+                        <bean class="cheetah.api.EventPublisherTest.SmartDomainListenerTest"/>
                     </list>
                 </property>
+                <property name="policy" value="ordinary"/>
             </bean>
         </property>
     </bean>
 
-    <bean id="collector" class="cheetah.client.GenericEventCollector">
+    <bean id="collector" class="cheetah.api.GenericEventCollector">
         <constructor-arg index="0" ref="dispatcher"/>
     </bean>
 

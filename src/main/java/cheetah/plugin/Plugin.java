@@ -15,7 +15,7 @@
  */
 package cheetah.plugin;
 
-import cheetah.util.Assert;
+import cheetah.common.utils.Assert;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;

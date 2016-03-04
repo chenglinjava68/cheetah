@@ -1,4 +1,4 @@
-package cheetah.client;
+package cheetah.api;
 
 /**
  * Created by Max on 2016/3/2.

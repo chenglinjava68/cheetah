@@ -1,4 +1,4 @@
-package cheetah.client;
+package cheetah.api;
 
 import cheetah.core.EventMessage;
 import cheetah.core.EventResult;

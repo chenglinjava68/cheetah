@@ -10,8 +10,8 @@ import cheetah.event.*;
 import cheetah.mapping.HandlerMapping;
 import cheetah.plugin.Interceptor;
 import cheetah.plugin.InterceptorChain;
-import cheetah.util.CollectionUtils;
-import cheetah.util.StringUtils;
+import cheetah.common.utils.CollectionUtils;
+import cheetah.common.utils.StringUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

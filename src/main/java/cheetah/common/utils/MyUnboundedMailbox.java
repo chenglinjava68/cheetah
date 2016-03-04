@@ -1,4 +1,4 @@
-package cheetah.util;
+package cheetah.common.utils;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;

@@ -2,7 +2,7 @@ package cheetah.core;
 
 
 import cheetah.plugin.Interceptor;
-import cheetah.util.CollectionUtils;
+import cheetah.common.utils.CollectionUtils;
 
 import java.util.Collections;
 import java.util.EventListener;

@@ -8,7 +8,7 @@ import cheetah.common.logger.Debug;
 import cheetah.handler.Directive;
 import cheetah.handler.Feedback;
 import cheetah.handler.Handler;
-import cheetah.util.Assert;
+import cheetah.common.utils.Assert;
 import cheetah.worker.Command;
 import cheetah.worker.Worker;
 import scala.Option;

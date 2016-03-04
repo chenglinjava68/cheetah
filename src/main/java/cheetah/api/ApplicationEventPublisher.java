@@ -1,14 +1,14 @@
-package cheetah.client;
+package cheetah.api;
 
 import cheetah.container.BeanFactory;
 import cheetah.event.ApplicationEvent;
-import cheetah.event.Collector;
+import cheetah.event.EventCollector;
 
 /**
  * Created by Max on 2016/1/10.
  */
 public abstract class ApplicationEventPublisher {
-    private static Collector collector = BeanFactory.getBeanFactory().getBean(Collector.class);
+    private static EventCollector collector = BeanFactory.getBeanFactory().getBean(EventCollector.class);
 
     private ApplicationEventPublisher() {
     }

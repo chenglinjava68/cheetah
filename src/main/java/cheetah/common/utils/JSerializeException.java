@@ -1,4 +1,4 @@
-package cheetah.util;
+package cheetah.common.utils;
 
 import cheetah.exceptions.CheetahException;
 
