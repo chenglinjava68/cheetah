@@ -63,7 +63,7 @@ public abstract class AbstractGovernor implements Governor {
     }
 
     @Override
-    public Governor registerMachineSquad(Map<Class<? extends EventListener>, Handler> handlerMap) {
+    public Governor registerHandlerSquad(Map<Class<? extends EventListener>, Handler> handlerMap) {
         this.handlerMap = handlerMap;
         return this;
     }
@@ -75,7 +75,7 @@ public abstract class AbstractGovernor implements Governor {
     }
 
     @Override
-    public void expelMachine(Handler handler) {
+    public void expelHandler(Handler handler) {
         Assert.notNull(handler, "handler must not be null");
         handlerMap.remove(handler.getEventListener().getClass());
     }

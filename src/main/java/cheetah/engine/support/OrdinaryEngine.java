@@ -21,7 +21,7 @@ public class OrdinaryEngine extends AbstractEngine {
         if (Objects.isNull(governor())) {
             Governor governor = governorFactory().createGovernor();
             ((OrdinaryGovernor) governor).setWorker((Worker) asynchronousPoolFactory().getAsynchronous());
-            governor.registerMachineSquad(context().getHandlers());
+            governor.registerHandlerSquad(context().getHandlers());
             setGovernor(governor);
             return governor;
         } else {

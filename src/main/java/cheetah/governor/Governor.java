@@ -54,7 +54,7 @@ public interface Governor extends Cloneable {
      * @param handlerMap
      * @return
      */
-    Governor registerMachineSquad(Map<Class<? extends EventListener>, Handler> handlerMap);
+    Governor registerHandlerSquad(Map<Class<? extends EventListener>, Handler> handlerMap);
 
     /**
      * 是否要返回结果
@@ -67,7 +67,7 @@ public interface Governor extends Cloneable {
      * 开除一个工作机器
      * @param handler
      */
-    void expelMachine(Handler handler);
+    void expelHandler(Handler handler);
 
     /**
      * 设置拦截器链

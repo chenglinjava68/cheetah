@@ -21,7 +21,7 @@ public class AkkaEngine extends AbstractEngine {
         if(Objects.isNull(governor())) {
             Governor governor = governorFactory().createGovernor();
             ((AkkaGovernor) governor).setWorker((ActorRef) asynchronousPoolFactory().getAsynchronous());
-            governor.registerMachineSquad(context().getHandlers());
+            governor.registerHandlerSquad(context().getHandlers());
             setGovernor(governor);
             return governor;
         } else {

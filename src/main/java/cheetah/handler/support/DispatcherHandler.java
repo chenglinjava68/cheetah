@@ -24,7 +24,7 @@ public class DispatcherHandler extends AbstractDispatcher {
             Governor governor = getEngine().assignGovernor();
             Feedback report = governor.initialize()
                     .setEvent(eventMessage.event())
-                    .registerMachineSquad(handlerMap)
+                    .registerHandlerSquad(handlerMap)
                     .setFisrtSucceed(eventMessage.fisrtWin())
                     .setNeedResult(eventMessage.needResult())
                     .command();
