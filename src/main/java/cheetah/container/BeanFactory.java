@@ -9,39 +9,29 @@ import java.util.Map;
  * Created by Max on 2016/2/21.
  */
 public class BeanFactory {
-    private BeanFactoryProvider provider;
+    private static BeanFactoryProvider beanFactoryProvider;
 
-    private static final BeanFactory BEAN_FACTORY = new BeanFactory();
-
-    public static BeanFactory getBeanFactory() {
-        return BEAN_FACTORY;
+    static {
+        beanFactoryProvider = new SpringBeanFactoryProvider();
     }
 
-    public BeanFactory() {
-        provider = new SpringBeanFactoryProvider();
+    public static <T> T getBean(Class<T> bean) {
+        return beanFactoryProvider.getBean(bean);
     }
 
-    public BeanFactory(BeanFactoryProvider provider) {
-        this.provider = provider;
+    public static <T> T getBean(Class<T> beanType, String bean) {
+        return beanFactoryProvider.getBean(beanType, bean);
     }
 
-    public <T> T getBean(Class<T> bean) {
-        return provider.getBean(bean);
+    public static <T> Map<String, T> getBeansOfType(Class<T> beanType) {
+        return beanFactoryProvider.getBeansOfType(beanType);
     }
 
-    public <T> T getBean(Class<T> beanType, String bean) {
-        return provider.getBean(beanType, bean);
+    public static Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annoClass) {
+        return beanFactoryProvider.getBeansWithAnnotation(annoClass);
     }
 
-    public <T> Map<String, T> getBeansOfType(Class<T> beanType) {
-        return provider.getBeansOfType(beanType);
-    }
-
-    public Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annoClass) {
-        return provider.getBeansWithAnnotation(annoClass);
-    }
-
-    public void setProvider(BeanFactoryProvider provider) {
-        this.provider = provider;
+    public void setBeanFactoryProvider(BeanFactoryProvider provider) {
+        beanFactoryProvider = provider;
     }
 }

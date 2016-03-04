@@ -8,7 +8,7 @@ import cheetah.event.EventCollector;
  * Created by Max on 2016/1/10.
  */
 public abstract class ApplicationEventPublisher {
-    private static EventCollector collector = BeanFactory.getBeanFactory().getBean(EventCollector.class);
+    private static EventCollector collector = BeanFactory.getBean(EventCollector.class);
 
     private ApplicationEventPublisher() {
     }
