@@ -7,9 +7,7 @@ import cheetah.worker.Worker;
 
 import java.util.EventListener;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.*;
 
 /**
  * Created by Max on 2016/3/2.
@@ -20,15 +18,22 @@ public class OrdinaryWorker implements Worker {
 
     @Override
     public void work(Command command) {
+        Handler handler = handlerMap.get(command.eventListener());
         CompletableFuture<Feedback> future = CompletableFuture.supplyAsync(() ->
-            handlerMap.get(command.eventListener()).completeExecute(command.event())
-        , executor);
+                handler.completeExecute(command.event())
+                , executor);
         try {
-            future.get();
+            future.get(3, TimeUnit.SECONDS);
+            handler.onSuccess(command.event());
         } catch (InterruptedException e) {
             e.printStackTrace();
+            handler.onFailure(command.event());
         } catch (ExecutionException e) {
             e.printStackTrace();
+            handler.onFailure(command.event());
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+            handler.onFailure(command.event());
         }
     }
 

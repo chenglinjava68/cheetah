@@ -18,7 +18,7 @@ public class DisruptorWorker implements Worker, EventHandler<DisruptorEvent> {
     @Override
     public void onEvent(DisruptorEvent disruptorEvent, long l, boolean b) throws Exception {
         Command command = disruptorEvent.get();
-        handlerMap.get(command.eventListener()).send(new Directive(command.event(), false));
+        handlerMap.get(command.eventListener()).send(new Directive(command.event(), true));
     }
 
     @Override
