@@ -15,7 +15,7 @@
  */
 package cheetah.plugin;
 
-import org.springframework.cglib.proxy.MethodProxy;
+import net.sf.cglib.proxy.MethodProxy;
 
 /**
  * @author Max
