@@ -20,6 +20,8 @@ import java.util.concurrent.atomic.AtomicLong;
 public class EventPublisherTest {
 
     public static final AtomicLong atomicLong = new AtomicLong();
+    public static final AtomicLong atomicLong2 = new AtomicLong();
+    public static final AtomicLong atomicLong3 = new AtomicLong();
 
     @Test
     public void test() {
@@ -137,15 +139,15 @@ public class EventPublisherTest {
     public static class ApplicationListenerTest implements ApplicationListener<ApplicationEventTest> {
         @Override
         public void onApplicationEvent(ApplicationEventTest event) {
-            double v = ArithUtils.round(Math.random() * 100, 0);
-            long i = ArithUtils.convertsToLong(v);
-            try {
-                Thread.sleep(i);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-//            System.out.println(atomicLong.incrementAndGet());
-            System.out.println(System.currentTimeMillis());
+//            double v = ArithUtils.round(Math.random() * 100, 0);
+//            long i = ArithUtils.convertsToLong(v);
+//            try {
+//                Thread.sleep(i);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+            System.out.println("ApplicationListenerTest----" + atomicLong.incrementAndGet());
+//            System.out.println(System.currentTimeMillis());
         }
     }
 
@@ -211,7 +213,7 @@ public class EventPublisherTest {
             while (k > 0) {
                 k--;
             }
-            System.out.println("SmartApplicationListenerTest2 -- " + atomicLong.incrementAndGet());
+            System.out.println("SmartApplicationListenerTest2 -- " + atomicLong2.incrementAndGet());
         }
     }
 
@@ -245,7 +247,7 @@ public class EventPublisherTest {
             while (k > 0) {
                 k--;
             }
-            System.out.println("DomainEventTest -- " + atomicLong.incrementAndGet());
+            System.out.println("DomainEventTest -- " + atomicLong3.incrementAndGet());
         }
 
     }

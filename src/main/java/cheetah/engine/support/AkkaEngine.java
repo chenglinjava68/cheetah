@@ -34,7 +34,6 @@ public class AkkaEngine extends AbstractEngine {
                 ((AkkaGovernorAdapter) clone).setWorker(actor);
                 return clone;
             } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
                 Governor governor = governorFactory().createGovernor();
                 ((AkkaGovernorAdapter) governor).setWorker((ActorRef) asynchronousPoolFactory().getAsynchronous());
                 return governor;
