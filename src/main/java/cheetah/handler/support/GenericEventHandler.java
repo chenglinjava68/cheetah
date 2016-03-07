@@ -1,6 +1,6 @@
 package cheetah.handler.support;
 
-import cheetah.core.event.*;
+import cheetah.event.*;
 import cheetah.handler.AbstractHandler;
 import cheetah.handler.EventHandlerException;
 import cheetah.worker.Worker;

@@ -1,4 +1,4 @@
-package cheetah.core.event;
+package cheetah.event;
 
 import java.io.Serializable;
 import java.util.EventListener;

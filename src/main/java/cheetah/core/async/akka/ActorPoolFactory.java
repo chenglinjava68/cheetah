@@ -4,7 +4,7 @@ import akka.actor.ActorRef;
 import cheetah.core.async.AsynchronousFactory;
 import cheetah.core.async.AsynchronousPoolFactory;
 import cheetah.core.NoMapperException;
-import cheetah.core.event.Event;
+import cheetah.event.Event;
 import cheetah.core.EventContext;
 import cheetah.handler.Handler;
 import cheetah.mapping.HandlerMapping;

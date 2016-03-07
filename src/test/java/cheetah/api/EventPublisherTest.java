@@ -1,7 +1,7 @@
 package cheetah.api;
 
 import cheetah.common.utils.ArithUtils;
-import cheetah.core.event.*;
+import cheetah.event.*;
 import cheetah.domain.Entity;
 import cheetah.domain.UUIDKeyEntity;
 import org.junit.Test;

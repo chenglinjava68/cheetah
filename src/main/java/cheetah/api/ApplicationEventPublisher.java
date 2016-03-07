@@ -1,8 +1,8 @@
 package cheetah.api;
 
 import cheetah.container.BeanFactory;
-import cheetah.core.event.ApplicationEvent;
-import cheetah.core.event.EventCollector;
+import cheetah.event.ApplicationEvent;
+import cheetah.event.EventCollector;
 
 /**
  * Created by Max on 2016/1/10.

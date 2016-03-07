@@ -1,7 +1,7 @@
 package cheetah.governor;
 
 import cheetah.common.utils.Assert;
-import cheetah.core.event.Event;
+import cheetah.event.Event;
 import cheetah.core.plugin.PluginChain;
 import cheetah.handler.Feedback;
 import cheetah.handler.Handler;

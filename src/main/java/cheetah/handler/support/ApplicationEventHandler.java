@@ -1,8 +1,8 @@
 package cheetah.handler.support;
 
-import cheetah.core.event.ApplicationEvent;
-import cheetah.core.event.ApplicationListener;
-import cheetah.core.event.Event;
+import cheetah.event.ApplicationEvent;
+import cheetah.event.ApplicationListener;
+import cheetah.event.Event;
 import cheetah.handler.AbstractHandler;
 
 import java.util.EventListener;

@@ -2,7 +2,7 @@ package cheetah.governor;
 
 import cheetah.common.utils.Assert;
 import cheetah.common.utils.IDGenerator;
-import cheetah.core.event.Event;
+import cheetah.event.Event;
 import cheetah.handler.Feedback;
 import cheetah.handler.Handler;
 

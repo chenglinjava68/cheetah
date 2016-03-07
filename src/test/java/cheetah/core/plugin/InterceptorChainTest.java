@@ -1,7 +1,7 @@
 package cheetah.core.plugin;
 
 import cheetah.core.Interceptor;
-import cheetah.core.event.Event;
+import cheetah.event.Event;
 import cheetah.worker.Command;
 
 /**

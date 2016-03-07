@@ -1,6 +1,6 @@
 package cheetah.core;
 
-import cheetah.core.event.Event;
+import cheetah.event.Event;
 
 /**
  * Created by Max on 2016/2/21.

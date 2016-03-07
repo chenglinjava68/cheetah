@@ -1,4 +1,4 @@
-package cheetah.core.event;
+package cheetah.event;
 
 import cheetah.core.EventResult;
 

@@ -1,6 +1,6 @@
 package cheetah.governor;
 
-import cheetah.core.event.Event;
+import cheetah.event.Event;
 import cheetah.handler.Feedback;
 import cheetah.handler.Handler;
 

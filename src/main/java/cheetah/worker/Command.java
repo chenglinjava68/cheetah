@@ -1,6 +1,6 @@
 package cheetah.worker;
 
-import cheetah.core.event.Event;
+import cheetah.event.Event;
 
 import java.io.Serializable;
 import java.util.EventListener;

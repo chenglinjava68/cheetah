@@ -2,7 +2,7 @@ package cheetah.handler;
 
 import cheetah.common.logger.Debug;
 import cheetah.common.logger.Error;
-import cheetah.core.event.Event;
+import cheetah.event.Event;
 
 import java.util.EventListener;
 

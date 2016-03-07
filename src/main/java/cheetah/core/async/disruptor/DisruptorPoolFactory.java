@@ -3,7 +3,7 @@ package cheetah.core.async.disruptor;
 import cheetah.core.async.AsynchronousFactory;
 import cheetah.core.async.AsynchronousPoolFactory;
 import cheetah.core.NoMapperException;
-import cheetah.core.event.DomainEvent;
+import cheetah.event.DomainEvent;
 import cheetah.core.EventContext;
 import cheetah.mapping.HandlerMapping;
 import com.lmax.disruptor.dsl.Disruptor;

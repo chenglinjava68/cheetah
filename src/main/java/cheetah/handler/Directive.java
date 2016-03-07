@@ -1,6 +1,6 @@
 package cheetah.handler;
 
-import cheetah.core.event.Event;
+import cheetah.event.Event;
 
 /**
  * 机器指令

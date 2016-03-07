@@ -1,6 +1,6 @@
 package cheetah.core;
 
-import cheetah.core.event.Event;
+import cheetah.event.Event;
 import cheetah.worker.Command;
 
 /**
