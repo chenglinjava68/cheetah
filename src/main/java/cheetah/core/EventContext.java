@@ -1,6 +1,6 @@
-package cheetah.handler;
+package cheetah.core;
 
-import cheetah.core.EventMessage;
+import cheetah.handler.Handler;
 
 import java.util.EventListener;
 import java.util.Map;
