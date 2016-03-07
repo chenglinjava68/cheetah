@@ -1,6 +1,6 @@
 package cheetah.engine.support;
 
-import cheetah.core.async.disruptor.DisruptorEvent;
+import cheetah.async.disruptor.DisruptorEvent;
 import cheetah.engine.AbstractEngine;
 import cheetah.governor.Governor;
 import cheetah.governor.support.DisruptorGovernor;

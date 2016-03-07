@@ -1,9 +1,9 @@
 package cheetah.engine.support;
 
 import akka.actor.ActorRef;
-import cheetah.core.async.AsynchronousPoolFactory;
-import cheetah.core.async.akka.ActorFactory;
-import cheetah.core.async.akka.ActorPoolFactory;
+import cheetah.async.AsynchronousPoolFactory;
+import cheetah.async.akka.ActorFactory;
+import cheetah.async.akka.ActorPoolFactory;
 import cheetah.core.Configuration;
 import cheetah.engine.EngineBuilder;
 import cheetah.governor.GovernorFactory;

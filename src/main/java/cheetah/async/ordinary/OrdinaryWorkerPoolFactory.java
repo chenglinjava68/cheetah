@@ -1,7 +1,7 @@
-package cheetah.core.async.ordinary;
+package cheetah.async.ordinary;
 
-import cheetah.core.async.AsynchronousFactory;
-import cheetah.core.async.AsynchronousPoolFactory;
+import cheetah.async.AsynchronousFactory;
+import cheetah.async.AsynchronousPoolFactory;
 import cheetah.core.NoMapperException;
 import cheetah.core.EventContext;
 import cheetah.mapping.HandlerMapping;

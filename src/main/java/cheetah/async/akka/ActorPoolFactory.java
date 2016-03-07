@@ -1,8 +1,8 @@
-package cheetah.core.async.akka;
+package cheetah.async.akka;
 
 import akka.actor.ActorRef;
-import cheetah.core.async.AsynchronousFactory;
-import cheetah.core.async.AsynchronousPoolFactory;
+import cheetah.async.AsynchronousFactory;
+import cheetah.async.AsynchronousPoolFactory;
 import cheetah.core.NoMapperException;
 import cheetah.event.Event;
 import cheetah.core.EventContext;

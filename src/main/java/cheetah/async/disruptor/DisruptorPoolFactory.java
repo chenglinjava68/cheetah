@@ -1,7 +1,7 @@
-package cheetah.core.async.disruptor;
+package cheetah.async.disruptor;
 
-import cheetah.core.async.AsynchronousFactory;
-import cheetah.core.async.AsynchronousPoolFactory;
+import cheetah.async.AsynchronousFactory;
+import cheetah.async.AsynchronousPoolFactory;
 import cheetah.core.NoMapperException;
 import cheetah.event.DomainEvent;
 import cheetah.core.EventContext;

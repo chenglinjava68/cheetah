@@ -1,6 +1,6 @@
 package cheetah.engine;
 
-import cheetah.core.async.AsynchronousPoolFactory;
+import cheetah.async.AsynchronousPoolFactory;
 import cheetah.common.logger.Debug;
 import cheetah.governor.Governor;
 import cheetah.governor.GovernorFactory;

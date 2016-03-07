@@ -1,4 +1,4 @@
-package cheetah.core.async.disruptor;
+package cheetah.async.disruptor;
 
 import cheetah.worker.Command;
 

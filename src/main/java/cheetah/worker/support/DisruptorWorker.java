@@ -1,6 +1,6 @@
 package cheetah.worker.support;
 
-import cheetah.core.async.disruptor.DisruptorEvent;
+import cheetah.async.disruptor.DisruptorEvent;
 import cheetah.handler.Directive;
 import cheetah.handler.Handler;
 import cheetah.worker.Command;

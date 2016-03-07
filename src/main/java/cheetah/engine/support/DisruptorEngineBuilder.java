@@ -1,8 +1,8 @@
 package cheetah.engine.support;
 
-import cheetah.core.async.AsynchronousPoolFactory;
-import cheetah.core.async.disruptor.DisruptorFactory;
-import cheetah.core.async.disruptor.DisruptorPoolFactory;
+import cheetah.async.AsynchronousPoolFactory;
+import cheetah.async.disruptor.DisruptorFactory;
+import cheetah.async.disruptor.DisruptorPoolFactory;
 import cheetah.core.Configuration;
 import cheetah.engine.EngineBuilder;
 import cheetah.governor.GovernorFactory;

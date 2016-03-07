@@ -1,6 +1,6 @@
-package cheetah.core.async.ordinary;
+package cheetah.async.ordinary;
 
-import cheetah.core.async.AsynchronousFactory;
+import cheetah.async.AsynchronousFactory;
 import cheetah.handler.Handler;
 import cheetah.worker.support.OrdinaryWorker;
 

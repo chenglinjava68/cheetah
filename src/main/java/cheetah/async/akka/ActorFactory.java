@@ -1,9 +1,9 @@
-package cheetah.core.async.akka;
+package cheetah.async.akka;
 
 import akka.actor.*;
 import akka.pattern.Patterns;
 import akka.routing.SmallestMailboxPool;
-import cheetah.core.async.AsynchronousFactory;
+import cheetah.async.AsynchronousFactory;
 import cheetah.common.logger.Debug;
 import cheetah.handler.Handler;
 import cheetah.worker.support.AkkaWorker;

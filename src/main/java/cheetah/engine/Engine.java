@@ -1,6 +1,6 @@
 package cheetah.engine;
 
-import cheetah.core.async.AsynchronousPoolFactory;
+import cheetah.async.AsynchronousPoolFactory;
 import cheetah.common.Startable;
 import cheetah.core.plugin.PluginChain;
 import cheetah.core.EventContext;

@@ -1,6 +1,6 @@
-package cheetah.core.async.disruptor;
+package cheetah.async.disruptor;
 
-import cheetah.core.async.AsynchronousFactory;
+import cheetah.async.AsynchronousFactory;
 import cheetah.handler.Handler;
 import cheetah.worker.support.DisruptorWorker;
 import com.lmax.disruptor.BlockingWaitStrategy;

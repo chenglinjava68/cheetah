@@ -1,4 +1,4 @@
-package cheetah.core.async;
+package cheetah.async;
 
 import cheetah.common.Startable;
 import cheetah.handler.Handler;
