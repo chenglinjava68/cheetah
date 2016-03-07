@@ -1,8 +1,8 @@
 package cheetah.engine.support;
 
-import cheetah.async.AsynchronousPoolFactory;
-import cheetah.async.disruptor.DisruptorFactory;
-import cheetah.async.disruptor.DisruptorPoolFactory;
+import cheetah.core.async.AsynchronousPoolFactory;
+import cheetah.core.async.disruptor.DisruptorFactory;
+import cheetah.core.async.disruptor.DisruptorPoolFactory;
 import cheetah.core.Configuration;
 import cheetah.engine.EngineBuilder;
 import cheetah.governor.GovernorFactory;
@@ -41,8 +41,8 @@ public class DisruptorEngineBuilder implements EngineBuilder {
     @Override
     public AsynchronousPoolFactory buildAsynchronousPoolFactory(Configuration configuration) {
         DisruptorFactory disruptorFactory = new DisruptorFactory();
-        if(configuration.ringBufferSize() > 0)
-            disruptorFactory.setRingbufferSize(configuration.ringBufferSize());
+        if(configuration.getRingBufferSize() > 0)
+            disruptorFactory.setRingbufferSize(configuration.getRingBufferSize());
         DisruptorPoolFactory poolFactory = new DisruptorPoolFactory();
         poolFactory.setAsynchronousFactory(disruptorFactory);
         return poolFactory;

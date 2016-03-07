@@ -1,9 +1,9 @@
 package cheetah.engine.support;
 
-import cheetah.async.AsynchronousFactory;
-import cheetah.async.AsynchronousPoolFactory;
-import cheetah.async.ordinary.AsyncOrdinaryWorkerFactory;
-import cheetah.async.ordinary.OrdinaryWorkerPoolFactory;
+import cheetah.core.async.AsynchronousFactory;
+import cheetah.core.async.AsynchronousPoolFactory;
+import cheetah.core.async.ordinary.AsyncOrdinaryWorkerFactory;
+import cheetah.core.async.ordinary.OrdinaryWorkerPoolFactory;
 import cheetah.core.Configuration;
 import cheetah.engine.EngineBuilder;
 import cheetah.governor.GovernorFactory;

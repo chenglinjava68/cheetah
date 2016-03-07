@@ -1,14 +1,14 @@
 package cheetah.engine;
 
-import cheetah.async.AsynchronousPoolFactory;
+import cheetah.core.async.AsynchronousPoolFactory;
 import cheetah.common.logger.Debug;
 import cheetah.governor.Governor;
 import cheetah.governor.GovernorFactory;
-import cheetah.handler.EventContext;
+import cheetah.core.EventContext;
 import cheetah.handler.Handler;
 import cheetah.handler.HandlerFactory;
 import cheetah.mapping.HandlerMapping;
-import cheetah.plugin.InterceptorChain;
+import cheetah.core.plugin.PluginChain;
 import cheetah.worker.Worker;
 import cheetah.worker.WorkerFactory;
 
@@ -19,7 +19,7 @@ public abstract class AbstractEngine implements Engine {
     private WorkerFactory workerFactory;
     private HandlerFactory handlerFactory;
     private GovernorFactory governorFactory;
-    private InterceptorChain interceptorChain;
+    private PluginChain pluginChain = new PluginChain();
     private AsynchronousPoolFactory asynchronousPoolFactory;
     private volatile HandlerMapping mapping;
     private Governor governor;
@@ -43,7 +43,7 @@ public abstract class AbstractEngine implements Engine {
         workerFactory = null;
         handlerFactory = null;
         governorFactory = null;
-        interceptorChain = null;
+        pluginChain = null;
         asynchronousPoolFactory.stop();
         asynchronousPoolFactory = null;
         Debug.log(this.getClass(), "DefualtEngine has been shut down.");
@@ -96,6 +96,11 @@ public abstract class AbstractEngine implements Engine {
         this.context = context;
     }
 
+    @Override
+    public void registerPluginChain(PluginChain pluginChain) {
+        this.pluginChain = pluginChain;
+    }
+
     public void setGovernor(Governor governor) {
         this.governor = governor;
     }
@@ -105,8 +110,8 @@ public abstract class AbstractEngine implements Engine {
         return this.mapping;
     }
 
-    public void setInterceptorChain(InterceptorChain interceptorChain) {
-        this.interceptorChain = interceptorChain;
+    public void setPluginChain(PluginChain interceptorChain) {
+        this.pluginChain = interceptorChain;
     }
 
     protected WorkerFactory workerFactory() {
@@ -121,8 +126,8 @@ public abstract class AbstractEngine implements Engine {
         return governorFactory;
     }
 
-    protected InterceptorChain interceptorChain() {
-        return interceptorChain;
+    protected PluginChain pluginChain() {
+        return pluginChain;
     }
 
     protected AsynchronousPoolFactory asynchronousPoolFactory() {

@@ -1,9 +1,9 @@
 package cheetah.engine.support;
 
 import akka.actor.ActorRef;
-import cheetah.async.AsynchronousPoolFactory;
-import cheetah.async.akka.ActorFactory;
-import cheetah.async.akka.ActorPoolFactory;
+import cheetah.core.async.AsynchronousPoolFactory;
+import cheetah.core.async.akka.ActorFactory;
+import cheetah.core.async.akka.ActorPoolFactory;
 import cheetah.core.Configuration;
 import cheetah.engine.EngineBuilder;
 import cheetah.governor.GovernorFactory;
@@ -43,8 +43,8 @@ public class AkkaEngineBuilder implements EngineBuilder {
     @Override
     public AsynchronousPoolFactory buildAsynchronousPoolFactory(Configuration configuration) {
         ActorFactory actorFactory = new ActorFactory();
-        if(configuration.eventPerformerSize() > 0)
-            actorFactory.setActorSize(configuration.eventPerformerSize());
+        if(configuration.getEventPerformerSize() > 0)
+            actorFactory.setActorSize(configuration.getEventPerformerSize());
         AsynchronousPoolFactory<ActorRef> factory = new ActorPoolFactory();
         factory.setAsynchronousFactory(actorFactory);
         return factory;

@@ -1,7 +1,7 @@
 package cheetah.worker.support;
 
 import akka.actor.*;
-import cheetah.async.akka.ActorFactory;
+import cheetah.core.async.akka.ActorFactory;
 import cheetah.common.logger.Debug;
 import cheetah.worker.Command;
 import scala.Option;

@@ -1,9 +1,8 @@
 package cheetah.governor;
 
-import cheetah.event.Event;
+import cheetah.core.event.Event;
 import cheetah.handler.Feedback;
 import cheetah.handler.Handler;
-import cheetah.plugin.InterceptorChain;
 
 import java.util.EventListener;
 import java.util.Map;
@@ -29,11 +28,11 @@ public interface Governor extends Cloneable {
     Feedback command();
 
     /**
-     * 设置负责管理的事件
+     * 注册负责管理的事件
      * @param $event
      * @return
      */
-    Governor setEvent(Event $event);
+    Governor registerEvent(Event $event);
 
     /**
      * 获取管理者唯一的标示符
@@ -68,12 +67,6 @@ public interface Governor extends Cloneable {
      * @param handler
      */
     void expelHandler(Handler handler);
-
-    /**
-     * 设置拦截器链
-     * @param $interceptorChain
-     */
-    void setInterceptorChain(InterceptorChain $interceptorChain);
 
     /**
      * 分身术-即拷贝一个管理者

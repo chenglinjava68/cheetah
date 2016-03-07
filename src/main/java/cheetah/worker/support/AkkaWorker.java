@@ -3,7 +3,7 @@ package cheetah.worker.support;
 import akka.actor.OneForOneStrategy;
 import akka.actor.SupervisorStrategy;
 import akka.actor.UntypedActor;
-import cheetah.async.akka.ActorFactory;
+import cheetah.core.async.akka.ActorFactory;
 import cheetah.common.logger.Debug;
 import cheetah.handler.Directive;
 import cheetah.handler.Feedback;

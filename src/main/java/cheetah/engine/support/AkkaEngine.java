@@ -4,6 +4,7 @@ import akka.actor.ActorRef;
 import cheetah.engine.AbstractEngine;
 import cheetah.governor.Governor;
 import cheetah.governor.support.AkkaGovernor;
+import cheetah.governor.support.AkkaGovernorAdapter;
 
 import java.util.Objects;
 
@@ -20,7 +21,8 @@ public class AkkaEngine extends AbstractEngine {
     public Governor assignGovernor() {
         if(Objects.isNull(governor())) {
             Governor governor = governorFactory().createGovernor();
-            ((AkkaGovernor) governor).setWorker((ActorRef) asynchronousPoolFactory().getAsynchronous());
+            governor = new AkkaGovernorAdapter((AkkaGovernor) governor, pluginChain());
+            ((AkkaGovernorAdapter) governor).setWorker((ActorRef) asynchronousPoolFactory().getAsynchronous());
             governor.registerHandlerSquad(context().getHandlers());
             setGovernor(governor);
             return governor;
@@ -29,12 +31,12 @@ public class AkkaEngine extends AbstractEngine {
                 Governor clone = governor().kagebunsin();
                 clone.reset();
                 ActorRef actor = (ActorRef) asynchronousPoolFactory().getAsynchronous();
-                ((AkkaGovernor) clone).setWorker(actor);
+                ((AkkaGovernorAdapter) clone).setWorker(actor);
                 return clone;
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
                 Governor governor = governorFactory().createGovernor();
-                ((AkkaGovernor) governor).setWorker((ActorRef) asynchronousPoolFactory().getAsynchronous());
+                ((AkkaGovernorAdapter) governor).setWorker((ActorRef) asynchronousPoolFactory().getAsynchronous());
                 return governor;
             }
         }

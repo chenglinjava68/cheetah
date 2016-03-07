@@ -1,6 +1,6 @@
 package cheetah.worker.support;
 
-import cheetah.async.disruptor.DisruptorEvent;
+import cheetah.core.async.disruptor.DisruptorEvent;
 import cheetah.handler.Directive;
 import cheetah.handler.Handler;
 import cheetah.worker.Command;
@@ -15,15 +15,16 @@ import java.util.Map;
  */
 public class DisruptorWorker implements Worker, EventHandler<DisruptorEvent> {
     private Map<Class<? extends EventListener>, Handler> handlerMap;
+
     @Override
-    public void onEvent(DisruptorEvent disruptorEvent, long l, boolean b) throws Exception {
+    public void onEvent(DisruptorEvent disruptorEvent, long sequence, boolean endOfBatch) throws Exception {
         Command command = disruptorEvent.get();
-        handlerMap.get(command.eventListener()).send(new Directive(command.event(), true));
+        work(command);
     }
 
     @Override
     public void work(Command command) {
-
+        handlerMap.get(command.eventListener()).send(new Directive(command.event(), true));
     }
 
     public DisruptorWorker setHandlerMap(Map<Class<? extends EventListener>, Handler> handlerMap) {

@@ -2,9 +2,9 @@ package cheetah.api;
 
 import cheetah.core.EventMessage;
 import cheetah.core.EventResult;
-import cheetah.handler.support.DispatcherHandler;
-import cheetah.event.AbstractCollector;
-import cheetah.event.Event;
+import cheetah.core.support.DispatcherHandler;
+import cheetah.core.event.AbstractCollector;
+import cheetah.core.event.Event;
 
 /**
  * Created by Max on 2016/2/3.

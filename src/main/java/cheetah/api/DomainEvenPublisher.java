@@ -1,8 +1,8 @@
 package cheetah.api;
 
 import cheetah.container.BeanFactory;
-import cheetah.event.EventCollector;
-import cheetah.event.DomainEvent;
+import cheetah.core.event.EventCollector;
+import cheetah.core.event.DomainEvent;
 
 /**
  * Created by Max on 2016/1/10.
@@ -14,19 +14,19 @@ public abstract class DomainEvenPublisher {
     private DomainEvenPublisher() {
     }
 
-    public static <E extends DomainEvent> void launch(E event) {
+    public static <E extends DomainEvent> void publish(E event) {
         collector.collect(event);
     }
 
-    public static <E extends DomainEvent> void launch(E event, boolean fisrtWin) {
+    public static <E extends DomainEvent> void publish(E event, boolean fisrtWin) {
         collector.collect(event, fisrtWin);
     }
 
-    public static <E extends DomainEvent> void launch(boolean needResult, E event) {
+    public static <E extends DomainEvent> void publish(boolean needResult, E event) {
         collector.collect(needResult, event);
     }
 
-    public static <E extends DomainEvent> void launch(boolean needResult, boolean fisrtWin, E event) {
+    public static <E extends DomainEvent> void publish(boolean needResult, boolean fisrtWin, E event) {
         collector.collect(needResult, fisrtWin, event);
     }
 

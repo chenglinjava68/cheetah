@@ -1,8 +1,8 @@
 package cheetah.core;
 
 
-import cheetah.plugin.Interceptor;
 import cheetah.common.utils.CollectionUtils;
+import cheetah.core.plugin.Plugin;
 
 import java.util.Collections;
 import java.util.EventListener;
@@ -12,7 +12,8 @@ import java.util.List;
  * Created by Max on 2016/2/2.
  */
 public class Configuration {
-    private List<Interceptor> plugins;
+    private List<Plugin> plugins;
+    private List<Interceptor> interceptors;
     private List<EventListener> eventListeners;
     private int eventPerformerSize;
     private int ringBufferSize;
@@ -22,12 +23,20 @@ public class Configuration {
         this.eventListeners = Collections.EMPTY_LIST;
     }
 
-    public List<Interceptor> getPlugins() {
+    public List<Plugin> getPlugins() {
         return Collections.unmodifiableList(plugins);
     }
 
-    public void setPlugins(List<Interceptor> plugins) {
+    public void setPlugins(List<Plugin> plugins) {
         this.plugins = plugins;
+    }
+
+    public List<Interceptor> getInterceptors() {
+        return interceptors;
+    }
+
+    public void setInterceptors(List<Interceptor> interceptors) {
+        this.interceptors = interceptors;
     }
 
     public List<EventListener> getEventListeners() {
@@ -38,7 +47,7 @@ public class Configuration {
         this.eventListeners = eventListeners;
     }
 
-    public int eventPerformerSize() {
+    public int getEventPerformerSize() {
         return eventPerformerSize;
     }
 
@@ -54,7 +63,7 @@ public class Configuration {
         return !CollectionUtils.isEmpty(this.eventListeners);
     }
 
-    public int ringBufferSize() {
+    public int getRingBufferSize() {
         return ringBufferSize;
     }
 

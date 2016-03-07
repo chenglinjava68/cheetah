@@ -1,8 +1,9 @@
 package cheetah.engine;
 
-import cheetah.async.AsynchronousPoolFactory;
+import cheetah.core.async.AsynchronousPoolFactory;
 import cheetah.common.Startable;
-import cheetah.handler.EventContext;
+import cheetah.core.plugin.PluginChain;
+import cheetah.core.EventContext;
 import cheetah.governor.Governor;
 import cheetah.governor.GovernorFactory;
 import cheetah.handler.Handler;
@@ -65,6 +66,8 @@ public interface Engine extends Startable {
     HandlerMapping getMapping();
 
     State state();
+
+    void registerPluginChain(PluginChain pluginChain);
 
     default boolean isRunning() {
         return state().equals(State.RUNNING);

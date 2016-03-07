@@ -1,6 +1,6 @@
 package cheetah.core;
 
-import cheetah.event.Event;
+import cheetah.core.event.Event;
 
 /**
  * Created by Max on 2016/2/21.
@@ -34,6 +34,18 @@ public class EventMessage {
         this.fisrtWin = fisrtWin;
     }
 
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public void setNeedResult(boolean needResult) {
+        this.needResult = needResult;
+    }
+
+    public void setFisrtWin(boolean fisrtWin) {
+        this.fisrtWin = fisrtWin;
+    }
+
     public Event event() {
         return event;
     }
@@ -45,4 +57,6 @@ public class EventMessage {
     public boolean fisrtWin() {
         return fisrtWin;
     }
+
+
 }

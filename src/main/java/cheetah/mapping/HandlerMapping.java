@@ -1,6 +1,6 @@
 package cheetah.mapping;
 
-import cheetah.event.Event;
+import cheetah.core.event.Event;
 import cheetah.handler.Handler;
 import cheetah.common.utils.ObjectUtils;
 

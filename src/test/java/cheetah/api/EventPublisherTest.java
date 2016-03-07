@@ -1,9 +1,9 @@
 package cheetah.api;
 
 import cheetah.common.utils.ArithUtils;
+import cheetah.core.event.*;
 import cheetah.domain.Entity;
 import cheetah.domain.UUIDKeyEntity;
-import cheetah.event.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -38,7 +38,7 @@ public class EventPublisherTest {
         for (int i = 0; i < 10; i++) {
             new Thread(() -> {
                 while (true) {
-                    ApplicationEventPublisher.launch(
+                    ApplicationEventPublisher.publish(
                             new ApplicationEventTest("213")
                     );
 //                    listenerTest.onApplicationEvent(event);
@@ -48,7 +48,7 @@ public class EventPublisherTest {
         for (int i = 0; i < 10; i++) {
             new Thread(() -> {
                 while (true) {
-                    DomainEvenPublisher.launch(
+                    DomainEvenPublisher.publish(
                             new DomainEventTest(new User("huahng"))
                     );
 //                    listenerTest.onApplicationEvent(event);
@@ -58,7 +58,7 @@ public class EventPublisherTest {
         for (int i = 0; i < 10; i++) {
             new Thread(() -> {
                 while (true) {
-                    ApplicationEventPublisher.launch(
+                    ApplicationEventPublisher.publish(
                             new ApplicationEventTest2("123")
                     );
 //                    listenerTest.onApplicationEvent(event);
@@ -75,7 +75,7 @@ public class EventPublisherTest {
         ApplicationListenerTest listenerTest = new ApplicationListenerTest();
         ApplicationEventTest event = new ApplicationEventTest("aaa");
         while (true) {
-            ApplicationEventPublisher.launch(
+            ApplicationEventPublisher.publish(
                     new ApplicationEventTest2("213")
             );
 //            listenerTest.onApplicationEvent(event);
@@ -88,7 +88,7 @@ public class EventPublisherTest {
     public void launch3() throws InterruptedException {
         for (int i = 0; i < 5; i++) {
             System.out.println(System.currentTimeMillis());
-            ApplicationEventPublisher.launch(
+            ApplicationEventPublisher.publish(
                     new ApplicationEventTest("213")
             );
         }
