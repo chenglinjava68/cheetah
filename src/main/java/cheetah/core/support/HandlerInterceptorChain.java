@@ -1,6 +1,5 @@
 package cheetah.core.support;
 
-import cheetah.common.logger.Error;
 import cheetah.common.utils.CollectionUtils;
 import cheetah.core.Interceptor;
 import cheetah.worker.Command;
@@ -12,22 +11,15 @@ import java.util.List;
 /**
  * Created by Max on 2016/3/7.
  */
-public class InterceptorChain {
+public class HandlerInterceptorChain {
     private List<Interceptor> interceptors = new ArrayList<>();
-    private int interceptorIndex;
+    private int interceptorIndex = 0;
 
-    public boolean startPreHandle(Command command) {
+    public boolean beforeHandle(Command command) throws Exception {
         List<Interceptor> $interceptors = getInterceptors();
         if (!CollectionUtils.isEmpty($interceptors)) {
             for (int i = 0; i < $interceptors.size(); this.interceptorIndex = i++) {
-                try {
-                    if (!$interceptors.get(i).preHandle(command)) {
-                        this.triggerAfterCompletion(command, null);
-                        return false;
-                    }
-                } catch (Exception e) {
-                    Error.log(this.getClass(), e.getMessage());
-                    this.triggerAfterCompletion(command, e);
+                if (!$interceptors.get(i).preHandle(command)) {
                     return false;
                 }
             }
@@ -35,16 +27,16 @@ public class InterceptorChain {
         return true;
     }
 
-    public void startPostHandle(Command command) throws Exception {
+    public void afterHandle(Command command) throws Exception {
         List<Interceptor> $interceptors = getInterceptors();
         if (!CollectionUtils.isEmpty($interceptors)) {
-            for (int i = 0; i < $interceptors.size(); this.interceptorIndex = --i) {
+            for(int i = $interceptors.size() - 1; i >= 0; --i) {
                 $interceptors.get(i).postHandle(command);
             }
         }
     }
 
-    public void triggerAfterCompletion(Command command, Exception ex) {
+    /*public void triggerAfterCompletion(Command command, Exception ex) {
         List<Interceptor> $interceptors = getInterceptors();
         if (!CollectionUtils.isEmpty($interceptors)) {
             for (int i = 0; i < $interceptors.size(); this.interceptorIndex = --i) {
@@ -55,7 +47,7 @@ public class InterceptorChain {
                 }
             }
         }
-    }
+    }*/
 
     public void register(Interceptor interceptor) {
         interceptors.add(interceptor);

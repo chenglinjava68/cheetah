@@ -2,8 +2,8 @@ package cheetah.async.ordinary;
 
 import cheetah.async.AsynchronousFactory;
 import cheetah.async.AsynchronousPoolFactory;
-import cheetah.core.NoMapperException;
 import cheetah.core.EventContext;
+import cheetah.core.NoMapperException;
 import cheetah.mapping.HandlerMapping;
 import cheetah.worker.support.OrdinaryWorker;
 
@@ -27,7 +27,8 @@ public class OrdinaryWorkerPoolFactory implements AsynchronousPoolFactory<Ordina
         OrdinaryWorker worker = this.workerPool.get(HandlerMapping.HandlerMapperKey.generate(context.getEventMessage().event()));
         if(Objects.nonNull(worker))
             return worker;
-        return  this.asynchronousFactory.createAsynchronous(context.getEventMessage().event().getClass().getName(), context.getHandlers());
+        return  this.asynchronousFactory.createAsynchronous(context.getEventMessage().event().getClass().getName(),
+                context.getHandlers(), context.getInterceptor());
     }
 
     @Override
@@ -46,6 +47,7 @@ public class OrdinaryWorkerPoolFactory implements AsynchronousPoolFactory<Ordina
             }
         }
     }
+
 
     @Override
     public void setEventContext(EventContext context) {

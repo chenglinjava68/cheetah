@@ -12,7 +12,5 @@ public interface Interceptor {
 
     void postHandle(Command command) throws Exception;
 
-    void afterCompletion(Command command, Exception ex) throws Exception;
-
     boolean supportsType(Class<? extends Event> event);
 }

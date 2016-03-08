@@ -3,6 +3,7 @@ package cheetah.core;
 import cheetah.common.Startable;
 import cheetah.common.logger.Debug;
 import cheetah.common.utils.CollectionUtils;
+import cheetah.common.utils.ObjectUtils;
 import cheetah.common.utils.StringUtils;
 import cheetah.event.*;
 import cheetah.core.plugin.Plugin;
@@ -19,6 +20,7 @@ import java.util.EventListener;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
     private Engine engine;
     private EngineDirector engineDirector;
     private EnginePolicy enginePolicy;
+    private final Map<InterceptorCacheKey, List<Interceptor>> interceptorCache = new ConcurrentHashMap<>();
     private final ReentrantLock lock = new ReentrantLock();
     private final EventContext context = EventContext.getContext();
 
@@ -47,6 +50,8 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
             getContext().setEventMessage(eventMessage);
             Event event = eventMessage.event();
             HandlerMapping.HandlerMapperKey key = HandlerMapping.HandlerMapperKey.generate(event.getClass(), event.getSource().getClass());
+            List<Interceptor> interceptors = findInterceptor(event);
+            context.setInterceptor(interceptors);
             boolean exists = engine.getMapping().isExists(key);
             if (exists) {
                 Map<Class<? extends EventListener>, Handler> handlerMap = engine.getMapping().getHandlers(key);
@@ -61,6 +66,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
             context.removeHandlers();
         }
     }
+
 
     @Override
     public void start() {
@@ -99,37 +105,6 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
     }
 
     /**
-     * getter and setter
-     */
-    public void setConfiguration(Configuration configuration) {
-        this.configuration = configuration;
-    }
-
-    protected Configuration getConfiguration() {
-        return configuration;
-    }
-
-    protected PluginChain getPluginChain() {
-        return pluginChain;
-    }
-
-    protected EventContext getContext() {
-        return context;
-    }
-
-    protected Engine getEngine() {
-        return engine;
-    }
-
-    protected EngineDirector getEngineDirector() {
-        return engineDirector;
-    }
-
-    protected EnginePolicy getEnginePolicy() {
-        return enginePolicy;
-    }
-
-    /**
      * Mapper helper
      *
      * @param event
@@ -148,7 +123,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
                             CollectionUtils.arrayToList(eventListener.getClass().getInterfaces())
                                     .contains(DomainEventListener.class))
                             .filter(o -> {
-                                Type[] parameterizedType = ((ParameterizedType)o.getClass().getGenericInterfaces()[0])
+                                Type[] parameterizedType = ((ParameterizedType) o.getClass().getGenericInterfaces()[0])
                                         .getActualTypeArguments();
                                 Class<? extends DomainEvent> type = (Class<? extends DomainEvent>) parameterizedType[0];
                                 return event.getClass().equals(type);
@@ -209,7 +184,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
                                                                                       List<EventListener> listeners) {
         Map<Class<? extends EventListener>, Handler> machines = listeners.stream().
                 map(o -> {
-                    Handler machine =  engine.assignDomainEventHandler();
+                    Handler machine = engine.assignDomainEventHandler();
                     machine.setEventListener(o);
                     return machine;
                 })
@@ -231,5 +206,72 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
                 }).map(listener -> (SmartDomainEventListener) listener).sorted((o1, o2) ->
                                 o1.getOrder() - o2.getOrder()
                 ).collect(Collectors.toList());
+    }
+
+
+    private List<Interceptor> findInterceptor(Event event) {
+        InterceptorCacheKey key = new InterceptorCacheKey(event.getClass());
+        List<Interceptor> $interceptors = interceptorCache.get(key);
+        if (CollectionUtils.isEmpty($interceptors)) {
+            $interceptors = this.configuration.getInterceptors().stream().filter(i ->
+                            i.supportsType(event.getClass())
+            ).collect(Collectors.toList());
+            interceptorCache.put(key, $interceptors);
+        }
+        return $interceptors;
+    }
+
+    /**
+     * getter and setter
+     */
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
+    protected Configuration getConfiguration() {
+        return configuration;
+    }
+
+    protected PluginChain getPluginChain() {
+        return pluginChain;
+    }
+
+    protected EventContext getContext() {
+        return context;
+    }
+
+    protected Engine getEngine() {
+        return engine;
+    }
+
+    protected EngineDirector getEngineDirector() {
+        return engineDirector;
+    }
+
+    protected EnginePolicy getEnginePolicy() {
+        return enginePolicy;
+    }
+
+    static class InterceptorCacheKey {
+        private Class<? extends Event> eventClz;
+
+        public InterceptorCacheKey(Class<? extends Event> eventClz) {
+            this.eventClz = eventClz;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            InterceptorCacheKey that = (InterceptorCacheKey) o;
+
+            return ObjectUtils.nullSafeEquals(this.eventClz, that.eventClz);
+        }
+
+        @Override
+        public int hashCode() {
+            return ObjectUtils.nullSafeHashCode(this.eventClz) * 29;
+        }
     }
 }

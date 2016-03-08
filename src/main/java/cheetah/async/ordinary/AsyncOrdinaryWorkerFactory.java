@@ -1,10 +1,12 @@
 package cheetah.async.ordinary;
 
 import cheetah.async.AsynchronousFactory;
+import cheetah.core.Interceptor;
 import cheetah.handler.Handler;
 import cheetah.worker.support.OrdinaryWorker;
 
 import java.util.EventListener;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,10 +18,12 @@ public class AsyncOrdinaryWorkerFactory implements AsynchronousFactory<OrdinaryW
     private ExecutorService executor = Executors.newCachedThreadPool();
 
     @Override
-    public OrdinaryWorker createAsynchronous(String name, Map<Class<? extends EventListener>, Handler> handlerMap) {
+    public OrdinaryWorker createAsynchronous(String name, Map<Class<? extends EventListener>, Handler> handlerMap,
+                                             List<Interceptor> interceptors) {
         OrdinaryWorker worker = new OrdinaryWorker();
         worker.setExecutor(executor);
         worker.setHandlerMap(handlerMap);
+        worker.setInterceptors(interceptors);
         return worker;
     }
 

@@ -1,11 +1,13 @@
 package cheetah.worker.support;
 
+import cheetah.core.Interceptor;
 import cheetah.handler.Feedback;
 import cheetah.handler.Handler;
 import cheetah.worker.Command;
 import cheetah.worker.Worker;
 
 import java.util.EventListener;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -15,9 +17,10 @@ import java.util.concurrent.*;
 public class OrdinaryWorker implements Worker {
     private Map<Class<? extends EventListener>, Handler> handlerMap;
     private ExecutorService executor;
+    private List<Interceptor> interceptors;
 
     @Override
-    public void work(Command command) {
+    public void doWork(Command command) {
         Handler handler = handlerMap.get(command.eventListener());
         CompletableFuture<Feedback> future = CompletableFuture.supplyAsync(() ->
                 handler.completeExecute(command.event())
@@ -37,11 +40,20 @@ public class OrdinaryWorker implements Worker {
         }
     }
 
+    @Override
+    public List<Interceptor> getInterceptors() {
+        return interceptors;
+    }
+
     public void setHandlerMap(Map<Class<? extends EventListener>, Handler> handlerMap) {
         this.handlerMap = handlerMap;
     }
 
     public void setExecutor(ExecutorService executor) {
         this.executor = executor;
+    }
+
+    public void setInterceptors(List<Interceptor> interceptors) {
+        this.interceptors = interceptors;
     }
 }

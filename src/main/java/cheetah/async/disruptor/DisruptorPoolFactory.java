@@ -2,9 +2,9 @@ package cheetah.async.disruptor;
 
 import cheetah.async.AsynchronousFactory;
 import cheetah.async.AsynchronousPoolFactory;
+import cheetah.core.EventContext;
 import cheetah.core.NoMapperException;
 import cheetah.event.DomainEvent;
-import cheetah.core.EventContext;
 import cheetah.mapping.HandlerMapping;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
@@ -32,9 +32,9 @@ public class DisruptorPoolFactory implements AsynchronousPoolFactory<Disruptor<D
         if (Objects.nonNull(disruptor))
             return disruptor;
         if (context.getEventMessage().event() instanceof DomainEvent)
-            return this.disruptorFactory.createAsynchronous(ProducerType.SINGLE.name(), context.getHandlers());
+            return this.disruptorFactory.createAsynchronous(ProducerType.SINGLE.name(), context.getHandlers(), context.getInterceptor());
         else
-            return this.disruptorFactory.createAsynchronous(ProducerType.MULTI.name(), context.getHandlers());
+            return this.disruptorFactory.createAsynchronous(ProducerType.MULTI.name(), context.getHandlers(),context.getInterceptor());
     }
 
     @Override
