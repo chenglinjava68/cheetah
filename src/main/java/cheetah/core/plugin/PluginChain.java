@@ -37,7 +37,7 @@ public class PluginChain {
     plugins.add(plugin);
   }
   
-  public List<Plugin> getInterceptors() {
+  public List<Plugin> interceptors() {
     return Collections.unmodifiableList(plugins);
   }
 

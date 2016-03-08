@@ -23,7 +23,7 @@ public class OrdinaryEngine extends AbstractEngine {
             Governor governor = governorFactory().createGovernor();
             governor = new OrdinaryGovernorAdapter((OrdinaryGovernor) governor, pluginChain());
             ((OrdinaryGovernorAdapter) governor).setWorker((Worker) asynchronousPoolFactory().getAsynchronous());
-            governor.registerHandlerSquad(context().getHandlers());
+            governor.registerHandlerSquad(context().handlers());
             setGovernor(governor);
             return governor;
         } else {

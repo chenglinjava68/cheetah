@@ -47,7 +47,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
     @Override
     public EventResult receive(final EventMessage eventMessage) {
         try {
-            getContext().setEventMessage(eventMessage);
+            context().setEventMessage(eventMessage);
             Event event = eventMessage.event();
             HandlerMapping.HandlerMapperKey key = HandlerMapping.HandlerMapperKey.generate(event.getClass(), event.getSource().getClass());
             List<Interceptor> interceptors = findInterceptor(event);
@@ -64,6 +64,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         } finally {
             context.removeEventMessage();
             context.removeHandlers();
+            context.removeInterceptor();
         }
     }
 
@@ -75,16 +76,16 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
                 initializesPlugin(pluginChain);
         } else
             configuration = new Configuration();
-        if (StringUtils.isEmpty(configuration.getPolicy())) {
+        if (StringUtils.isEmpty(configuration.policy())) {
             enginePolicy = EnginePolicy.DISRUPTOR;
             engineDirector = enginePolicy.getEngineDirector();
         } else {
-            enginePolicy = EnginePolicy.formatFrom(configuration.getPolicy());
+            enginePolicy = EnginePolicy.formatFrom(configuration.policy());
             engineDirector = enginePolicy.getEngineDirector();
         }
         engineDirector.setConfiguration(this.configuration);
         engine = engineDirector.directEngine();
-        engine.setContext(this.getContext());
+        engine.setContext(this.context());
         engine.registerPluginChain(pluginChain);
         engine.start();
     }
@@ -99,7 +100,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
 
     public PluginChain initializesPlugin(PluginChain chain) {
         Objects.requireNonNull(chain, "chain must not be null");
-        for (Plugin plugin : configuration.getPlugins())
+        for (Plugin plugin : configuration.plugins())
             chain.register(plugin);
         return chain;
     }
@@ -118,7 +119,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
                 if (!smartDomainEventListeners.isEmpty()) {
                     return setDomainEventListenerMapper(mapperKey, smartDomainEventListeners);
                 } else {
-                    List<EventListener> listeners = this.configuration.getEventListeners().
+                    List<EventListener> listeners = this.configuration.eventListeners().
                             stream().filter(eventListener ->
                             CollectionUtils.arrayToList(eventListener.getClass().getInterfaces())
                                     .contains(DomainEventListener.class))
@@ -136,7 +137,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
                 if (!smartAppEventListeners.isEmpty()) {
                     return setAppEventListenerMapper(mapperKey, smartAppEventListeners);
                 } else {
-                    List<EventListener> listeners = this.configuration.getEventListeners().
+                    List<EventListener> listeners = this.configuration.eventListeners().
                             stream().filter(eventListener ->
                             CollectionUtils.arrayToList(eventListener.getClass().getInterfaces())
                                     .contains(ApplicationListener.class))
@@ -167,7 +168,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
     }
 
     private List<EventListener> getSmartApplicationEventListener(ApplicationEvent event) {
-        return this.configuration.getEventListeners().
+        return this.configuration.eventListeners().
                 stream().filter(eventListener ->
                 SmartApplicationListener.class.isAssignableFrom(eventListener.getClass()))
                 .filter(eventListener -> {
@@ -195,7 +196,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
     }
 
     private List<EventListener> getSmartDomainEventListener(DomainEvent event) {
-        return this.configuration.getEventListeners().
+        return this.configuration.eventListeners().
                 stream().filter(eventListener ->
                 SmartDomainEventListener.class.isAssignableFrom(eventListener.getClass()))
                 .filter(eventListener -> {
@@ -213,7 +214,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         InterceptorCacheKey key = new InterceptorCacheKey(event.getClass());
         List<Interceptor> $interceptors = interceptorCache.get(key);
         if (CollectionUtils.isEmpty($interceptors)) {
-            $interceptors = this.configuration.getInterceptors().stream().filter(i ->
+            $interceptors = this.configuration.interceptors().stream().filter(i ->
                             i.supportsType(event.getClass())
             ).collect(Collectors.toList());
             interceptorCache.put(key, $interceptors);
@@ -228,19 +229,19 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         this.configuration = configuration;
     }
 
-    protected Configuration getConfiguration() {
+    protected Configuration configuration() {
         return configuration;
     }
 
-    protected PluginChain getPluginChain() {
+    protected PluginChain pluginChain() {
         return pluginChain;
     }
 
-    protected EventContext getContext() {
+    protected EventContext context() {
         return context;
     }
 
-    protected Engine getEngine() {
+    protected Engine engine() {
         return engine;
     }
 

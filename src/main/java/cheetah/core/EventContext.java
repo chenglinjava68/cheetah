@@ -25,7 +25,7 @@ public final class EventContext {
         EventContext.handlers.set($handlers);
     }
 
-    public final Map<Class<? extends EventListener>, Handler> getHandlers() {
+    public final Map<Class<? extends EventListener>, Handler> handlers() {
         return EventContext.handlers.get();
     }
 
@@ -37,7 +37,7 @@ public final class EventContext {
         EventContext.eventMessage.set($eventMessage);
     }
 
-    public final EventMessage getEventMessage() {
+    public final EventMessage eventMessage() {
         return EventContext.eventMessage.get();
     }
 
@@ -49,7 +49,7 @@ public final class EventContext {
         EventContext.interceptors.set(interceptors);
     }
 
-    public final List<Interceptor> getInterceptor() {
+    public final List<Interceptor> interceptors() {
         return EventContext.interceptors.get();
     }
 

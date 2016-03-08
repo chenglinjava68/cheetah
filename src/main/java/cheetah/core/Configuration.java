@@ -23,7 +23,7 @@ public class Configuration {
         this.eventListeners = Collections.EMPTY_LIST;
     }
 
-    public List<Plugin> getPlugins() {
+    public List<Plugin> plugins() {
         return Collections.unmodifiableList(plugins);
     }
 
@@ -31,7 +31,7 @@ public class Configuration {
         this.plugins = plugins;
     }
 
-    public List<Interceptor> getInterceptors() {
+    public List<Interceptor> interceptors() {
         return interceptors;
     }
 
@@ -39,7 +39,7 @@ public class Configuration {
         this.interceptors = interceptors;
     }
 
-    public List<EventListener> getEventListeners() {
+    public List<EventListener> eventListeners() {
         return Collections.unmodifiableList(eventListeners);
     }
 
@@ -47,7 +47,7 @@ public class Configuration {
         this.eventListeners = eventListeners;
     }
 
-    public int getEventPerformerSize() {
+    public int eventPerformerSize() {
         return eventPerformerSize;
     }
 
@@ -63,7 +63,7 @@ public class Configuration {
         return !CollectionUtils.isEmpty(this.eventListeners);
     }
 
-    public int getRingBufferSize() {
+    public int ringBufferSize() {
         return ringBufferSize;
     }
 
@@ -71,7 +71,7 @@ public class Configuration {
         this.ringBufferSize = ringBufferSize;
     }
 
-    public String getPolicy() {
+    public String policy() {
         return policy;
     }
 

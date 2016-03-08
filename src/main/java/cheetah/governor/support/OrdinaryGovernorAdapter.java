@@ -14,6 +14,6 @@ public class OrdinaryGovernorAdapter extends AbstractGovernorAdapter {
     }
 
     public void setWorker(Worker worker) {
-        ((OrdinaryGovernor)getAdaptee()).setWorker(worker);
+        ((OrdinaryGovernor) adaptee()).setWorker(worker);
     }
 }

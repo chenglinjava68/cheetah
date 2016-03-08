@@ -31,12 +31,12 @@ import java.util.Set;
 /**
  * @author Max
  */
-final class PluginProcessor implements MethodInterceptor {
+final class PluginHelper implements MethodInterceptor {
 
     private Plugin plugin;
     private Map<Class<?>, Set<Method>> registryMap;
 
-    private PluginProcessor(Plugin plugin) {
+    private PluginHelper(Plugin plugin) {
         this.plugin = plugin;
         this.registryMap = getRegistryMap(plugin);
     }
@@ -60,12 +60,12 @@ final class PluginProcessor implements MethodInterceptor {
         Assert.notNull(plugin);
         Class<?> type = target.getClass();
 
-        PluginProcessor pluginProcessor = new PluginProcessor(plugin);
+        PluginHelper pluginHelper = new PluginHelper(plugin);
 
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(type);
         // 回调方法
-        enhancer.setCallback(pluginProcessor);
+        enhancer.setCallback(pluginHelper);
         return enhancer;
     }
 

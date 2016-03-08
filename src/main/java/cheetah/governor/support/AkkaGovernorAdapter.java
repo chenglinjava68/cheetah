@@ -13,6 +13,6 @@ public class AkkaGovernorAdapter extends AbstractGovernorAdapter {
     }
 
     public void setWorker(ActorRef worker) {
-        ((AkkaGovernor) getAdaptee()).setWorker(worker);
+        ((AkkaGovernor) adaptee()).setWorker(worker);
     }
 }

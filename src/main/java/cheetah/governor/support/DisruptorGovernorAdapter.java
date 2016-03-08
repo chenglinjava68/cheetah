@@ -14,6 +14,6 @@ public class DisruptorGovernorAdapter extends AbstractGovernorAdapter {
     }
 
     public void setRingBuffer(RingBuffer<DisruptorEvent> ringBuffer) {
-        ((DisruptorGovernor) getAdaptee()).setRingBuffer(ringBuffer);
+        ((DisruptorGovernor) adaptee()).setRingBuffer(ringBuffer);
     }
 }

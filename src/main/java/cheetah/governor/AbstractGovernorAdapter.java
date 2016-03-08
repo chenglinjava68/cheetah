@@ -80,7 +80,7 @@ public class AbstractGovernorAdapter implements Governor {
         this.adaptee = adaptee;
     }
 
-    public Governor getAdaptee() {
+    public Governor adaptee() {
         return adaptee;
     }
 }

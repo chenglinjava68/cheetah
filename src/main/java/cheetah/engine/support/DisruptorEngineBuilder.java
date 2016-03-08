@@ -41,8 +41,8 @@ public class DisruptorEngineBuilder implements EngineBuilder {
     @Override
     public AsynchronousPoolFactory buildAsynchronousPoolFactory(Configuration configuration) {
         DisruptorFactory disruptorFactory = new DisruptorFactory();
-        if(configuration.getRingBufferSize() > 0)
-            disruptorFactory.setRingbufferSize(configuration.getRingBufferSize());
+        if(configuration.ringBufferSize() > 0)
+            disruptorFactory.setRingbufferSize(configuration.ringBufferSize());
         DisruptorPoolFactory poolFactory = new DisruptorPoolFactory();
         poolFactory.setAsynchronousFactory(disruptorFactory);
         return poolFactory;

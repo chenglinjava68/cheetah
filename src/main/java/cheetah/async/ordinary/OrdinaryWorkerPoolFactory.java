@@ -24,24 +24,24 @@ public class OrdinaryWorkerPoolFactory implements AsynchronousPoolFactory<Ordina
     }
 
     public OrdinaryWorker createWorker() {
-        OrdinaryWorker worker = this.workerPool.get(HandlerMapping.HandlerMapperKey.generate(context.getEventMessage().event()));
+        OrdinaryWorker worker = this.workerPool.get(HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event()));
         if(Objects.nonNull(worker))
             return worker;
-        return  this.asynchronousFactory.createAsynchronous(context.getEventMessage().event().getClass().getName(),
-                context.getHandlers(), context.getInterceptor());
+        return  this.asynchronousFactory.createAsynchronous(context.eventMessage().event().getClass().getName(),
+                context.handlers(), context.interceptors());
     }
 
     @Override
     public OrdinaryWorker getAsynchronous() {
-        OrdinaryWorker worker = this.workerPool.get(HandlerMapping.HandlerMapperKey.generate(context.getEventMessage().event()));
+        OrdinaryWorker worker = this.workerPool.get(HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event()));
         if (Objects.nonNull(worker)) {
             return worker;
         } else {
             synchronized (this) {
-                if(context.getHandlers().isEmpty())
+                if(context.handlers().isEmpty())
                     throw new NoMapperException();
                 worker = createWorker();
-                HandlerMapping.HandlerMapperKey key = HandlerMapping.HandlerMapperKey.generate(context.getEventMessage().event());
+                HandlerMapping.HandlerMapperKey key = HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event());
                 this.workerPool.putIfAbsent(key, worker);
                 return worker;
             }

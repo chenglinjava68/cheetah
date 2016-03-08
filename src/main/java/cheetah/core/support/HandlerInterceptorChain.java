@@ -37,7 +37,7 @@ public class HandlerInterceptorChain implements Cloneable {
     }
 
     /*public void triggerAfterCompletion(Command command, Exception ex) {
-        List<Interceptor> $interceptors = getInterceptors();
+        List<Interceptor> $interceptors = interceptors();
         if (!CollectionUtils.isEmpty($interceptors)) {
             for (int i = 0; i < $interceptors.size(); this.interceptorIndex = --i) {
                 try {

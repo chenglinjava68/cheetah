@@ -32,15 +32,15 @@ public class Invocation {
         this.args = args;
     }
 
-    public Object getTarget() {
+    public Object target() {
         return target;
     }
 
-    public MethodProxy getMethod() {
+    public MethodProxy method() {
         return method;
     }
 
-    public Object[] getArgs() {
+    public Object[] args() {
         return args;
     }
 

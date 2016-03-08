@@ -28,26 +28,26 @@ public class DisruptorPoolFactory implements AsynchronousPoolFactory<Disruptor<D
     }
 
     public Disruptor<DisruptorEvent> createDisruptor() {
-        Disruptor<DisruptorEvent> disruptor = this.disruptorPool.get(HandlerMapping.HandlerMapperKey.generate(context.getEventMessage().event()));
+        Disruptor<DisruptorEvent> disruptor = this.disruptorPool.get(HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event()));
         if (Objects.nonNull(disruptor))
             return disruptor;
-        if (context.getEventMessage().event() instanceof DomainEvent)
-            return this.disruptorFactory.createAsynchronous(ProducerType.SINGLE.name(), context.getHandlers(), context.getInterceptor());
+        if (context.eventMessage().event() instanceof DomainEvent)
+            return this.disruptorFactory.createAsynchronous(ProducerType.SINGLE.name(), context.handlers(), context.interceptors());
         else
-            return this.disruptorFactory.createAsynchronous(ProducerType.MULTI.name(), context.getHandlers(),context.getInterceptor());
+            return this.disruptorFactory.createAsynchronous(ProducerType.MULTI.name(), context.handlers(),context.interceptors());
     }
 
     @Override
     public Disruptor<DisruptorEvent> getAsynchronous() {
-        Disruptor<DisruptorEvent> disruptor = this.disruptorPool.get(HandlerMapping.HandlerMapperKey.generate(context.getEventMessage().event()));
+        Disruptor<DisruptorEvent> disruptor = this.disruptorPool.get(HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event()));
         if (Objects.nonNull(disruptor)) {
             return disruptor;
         } else {
             synchronized (this) {
-                if (context.getHandlers().isEmpty())
+                if (context.handlers().isEmpty())
                     throw new NoMapperException();
                 disruptor = createDisruptor();
-                HandlerMapping.HandlerMapperKey key = HandlerMapping.HandlerMapperKey.generate(context.getEventMessage().event());
+                HandlerMapping.HandlerMapperKey key = HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event());
                 this.disruptorPool.putIfAbsent(key, disruptor);
                 return disruptor;
             }

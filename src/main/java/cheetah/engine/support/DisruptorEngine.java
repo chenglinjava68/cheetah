@@ -21,7 +21,7 @@ public class DisruptorEngine extends AbstractEngine {
             governor = new DisruptorGovernorAdapter((DisruptorGovernor) governor, pluginChain());
             ((DisruptorGovernorAdapter) governor)
                     .setRingBuffer(((Disruptor<DisruptorEvent>) asynchronousPoolFactory().getAsynchronous()).getRingBuffer());
-            governor.registerHandlerSquad(context().getHandlers());
+            governor.registerHandlerSquad(context().handlers());
             setGovernor(governor);
             return governor;
         } else {

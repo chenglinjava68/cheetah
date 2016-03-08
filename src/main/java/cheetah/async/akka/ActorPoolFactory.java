@@ -29,26 +29,26 @@ public class ActorPoolFactory implements AsynchronousPoolFactory<ActorRef> {
     }
 
     public ActorRef createActor() {
-        Event event = context.getEventMessage().event();
+        Event event = context.eventMessage().event();
         String name = event.getClass().getName();
         HandlerMapping.HandlerMapperKey mapperKey = HandlerMapping.HandlerMapperKey.generate(event);
         if (actorPool.containsKey(mapperKey))
             return this.actorPool.get(mapperKey);
         Map<Class<? extends EventListener>, Handler> handlerMap = getMapperFrom();
-        return this.actorFactory.createAsynchronous(name, handlerMap, context.getInterceptor());
+        return this.actorFactory.createAsynchronous(name, handlerMap, context.interceptors());
     }
 
     @Override
     public ActorRef getAsynchronous() {
-        ActorRef actor = actorPool.get(HandlerMapping.HandlerMapperKey.generate(context.getEventMessage().event()));
+        ActorRef actor = actorPool.get(HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event()));
         if (Objects.nonNull(actor))
             return actor;
         else {
             synchronized (this) {
-                if (this.context.getHandlers().isEmpty())
+                if (this.context.handlers().isEmpty())
                     throw new NoMapperException();
                 actor = createActor();
-                HandlerMapping.HandlerMapperKey mapperKey = HandlerMapping.HandlerMapperKey.generate(context.getEventMessage().event());
+                HandlerMapping.HandlerMapperKey mapperKey = HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event());
                 this.actorPool.putIfAbsent(mapperKey, actor);
                 return actor;
             }
@@ -66,7 +66,7 @@ public class ActorPoolFactory implements AsynchronousPoolFactory<ActorRef> {
     }
 
     private Map<Class<? extends EventListener>, Handler> getMapperFrom() {
-        Map<Class<? extends EventListener>, Handler> handlerMap = context.getHandlers();
+        Map<Class<? extends EventListener>, Handler> handlerMap = context.handlers();
         if (handlerMap.isEmpty())
             throw new NoMapperException();
         return handlerMap;
