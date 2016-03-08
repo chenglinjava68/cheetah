@@ -2,7 +2,7 @@ package cheetah.api;
 
 import cheetah.core.EventMessage;
 import cheetah.core.EventResult;
-import cheetah.core.support.DispatcherHandler;
+import cheetah.core.support.DispatcherEvent;
 import cheetah.event.AbstractCollector;
 import cheetah.event.Event;
 
@@ -13,7 +13,7 @@ public class GenericEventCollector extends AbstractCollector {
     public GenericEventCollector() {
     }
 
-    public GenericEventCollector(DispatcherHandler dispatcher) {
+    public GenericEventCollector(DispatcherEvent dispatcher) {
         super(dispatcher);
     }
 

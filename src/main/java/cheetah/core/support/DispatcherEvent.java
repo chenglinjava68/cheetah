@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by Max on 2016/1/29.
  */
-public class DispatcherHandler extends AbstractDispatcher {
+public class DispatcherEvent extends AbstractDispatcher {
 
     @Override
     public EventResult dispatch() {

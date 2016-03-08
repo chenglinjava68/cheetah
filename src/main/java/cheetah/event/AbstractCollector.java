@@ -1,27 +1,27 @@
 package cheetah.event;
 
 
-import cheetah.core.support.DispatcherHandler;
+import cheetah.core.support.DispatcherEvent;
 
 /**
  * 事件收集器的抽象类
  * Created by Max on 2016/2/3.
  */
 public abstract class AbstractCollector implements EventCollector {
-    private DispatcherHandler dispatcher;
+    private DispatcherEvent dispatcher;
 
     public AbstractCollector() {
     }
 
-    public AbstractCollector(DispatcherHandler dispatcher) {
+    public AbstractCollector(DispatcherEvent dispatcher) {
         this.dispatcher = dispatcher;
     }
 
-    public DispatcherHandler getDispatcher() {
+    public DispatcherEvent getDispatcher() {
         return dispatcher;
     }
 
-    public void setDispatcher(DispatcherHandler dispatcher) {
+    public void setDispatcher(DispatcherEvent dispatcher) {
         this.dispatcher = dispatcher;
     }
 }

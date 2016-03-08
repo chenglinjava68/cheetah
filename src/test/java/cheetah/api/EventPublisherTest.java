@@ -89,7 +89,6 @@ public class EventPublisherTest {
     @Test
     public void launch3() throws InterruptedException {
         for (int i = 0; i < 5; i++) {
-            System.out.println(System.currentTimeMillis());
             ApplicationEventPublisher.publish(
                     new ApplicationEventTest("213")
             );
