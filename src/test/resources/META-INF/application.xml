@@ -34,7 +34,7 @@ http://www.springframework.org/schema/aop
                     <bean class="cheetah.api.HelloWorldInterceptor"/>
                 </property>
                 <!--<property name="policy" value="ordinary"/>-->
-                <property name="ringBufferSize" value="256"/>
+                <property name="ringBufferSize" value="1024"/>
             </bean>
         </property>
     </bean>

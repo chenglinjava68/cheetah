@@ -31,7 +31,13 @@ public interface Worker extends Cloneable {
     void doWork(Command command);
 
     default HandlerInterceptorChain createInterceptorChain() {
-        HandlerInterceptorChain chain = new HandlerInterceptorChain();
+        HandlerInterceptorChain chain =  HandlerInterceptorChain.getDefualtChain();
+        try {
+            chain = chain.kagebunsin();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            chain = new HandlerInterceptorChain();
+        }
         getInterceptors().forEach(chain::register);
         return chain;
     }

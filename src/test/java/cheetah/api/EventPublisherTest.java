@@ -37,7 +37,7 @@ public class EventPublisherTest {
         CountDownLatch latch = new CountDownLatch(1);
         ApplicationListenerTest listenerTest = new ApplicationListenerTest();
         ApplicationEventTest event = new ApplicationEventTest("aaa");
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             new Thread(() -> {
                 while (true) {
                     ApplicationEventPublisher.publish(
@@ -47,7 +47,7 @@ public class EventPublisherTest {
                 }
             }).start();
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             new Thread(() -> {
                 while (true) {
                     DomainEvenPublisher.publish(
@@ -57,7 +57,7 @@ public class EventPublisherTest {
                 }
             }).start();
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             new Thread(() -> {
                 while (true) {
                     ApplicationEventPublisher.publish(
@@ -78,7 +78,7 @@ public class EventPublisherTest {
         ApplicationEventTest event = new ApplicationEventTest("aaa");
         while (true) {
             ApplicationEventPublisher.publish(
-                    new ApplicationEventTest2("213")
+                    new ApplicationEventTest("213")
             );
 //            listenerTest.onApplicationEvent(event);
         }

@@ -11,9 +11,10 @@ import java.util.List;
 /**
  * Created by Max on 2016/3/7.
  */
-public class HandlerInterceptorChain {
+public class HandlerInterceptorChain implements Cloneable {
     private List<Interceptor> interceptors = new ArrayList<>();
     private int interceptorIndex = 0;
+    private final static HandlerInterceptorChain DEFAULT_CHAIN = new HandlerInterceptorChain();
 
     public boolean beforeHandle(Command command) throws Exception {
         List<Interceptor> $interceptors = getInterceptors();
@@ -57,4 +58,18 @@ public class HandlerInterceptorChain {
         return Collections.unmodifiableList(interceptors);
     }
 
+    void reset() {
+        this.interceptors.clear();
+        this.interceptorIndex = 0;
+    }
+
+    public static HandlerInterceptorChain getDefualtChain() {
+        return DEFAULT_CHAIN;
+    }
+
+    public HandlerInterceptorChain kagebunsin() throws CloneNotSupportedException {
+        HandlerInterceptorChain chain= (HandlerInterceptorChain) super.clone();
+        chain.reset();
+        return chain;
+    }
 }
