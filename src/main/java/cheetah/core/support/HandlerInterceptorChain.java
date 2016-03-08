@@ -5,16 +5,15 @@ import cheetah.core.Interceptor;
 import cheetah.worker.Command;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by Max on 2016/3/7.
  */
 public class HandlerInterceptorChain implements Cloneable {
-    private List<Interceptor> interceptors = new ArrayList<>();
-    private int interceptorIndex = 0;
-    private final static HandlerInterceptorChain DEFAULT_CHAIN = new HandlerInterceptorChain();
+    private List<Interceptor> interceptors;
+    private int interceptorIndex;
+    private static HandlerInterceptorChain DEFAULT_CHAIN = new HandlerInterceptorChain();
 
     public boolean beforeHandle(Command command) throws Exception {
         List<Interceptor> $interceptors = getInterceptors();
@@ -54,12 +53,17 @@ public class HandlerInterceptorChain implements Cloneable {
         interceptors.add(interceptor);
     }
 
-    public List<Interceptor> getInterceptors() {
-        return Collections.unmodifiableList(interceptors);
+    List<Interceptor> getInterceptors() {
+        return interceptors;
     }
 
-    void reset() {
-        this.interceptors.clear();
+    public void initialize() {
+        this.interceptorIndex = 0;
+        this.interceptors = new ArrayList<>();
+    }
+
+    public void reset() {
+        this.interceptors = null;
         this.interceptorIndex = 0;
     }
 
@@ -70,6 +74,11 @@ public class HandlerInterceptorChain implements Cloneable {
     public HandlerInterceptorChain kagebunsin() throws CloneNotSupportedException {
         HandlerInterceptorChain chain= (HandlerInterceptorChain) super.clone();
         chain.reset();
+        chain.initialize();
         return chain;
+    }
+
+    public static HandlerInterceptorChain createChain() throws CloneNotSupportedException {
+        return DEFAULT_CHAIN.kagebunsin();
     }
 }

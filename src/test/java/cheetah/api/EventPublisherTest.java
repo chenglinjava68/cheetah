@@ -89,9 +89,15 @@ public class EventPublisherTest {
     @Test
     public void launch3() throws InterruptedException {
         for (int i = 0; i < 5; i++) {
-            ApplicationEventPublisher.publish(
-                    new ApplicationEventTest("213")
+//            ApplicationEventPublisher.publish(
+//                    new ApplicationEventTest("213")
+//            );
+            DomainEvenPublisher.publish(
+                    new DomainEventTest(new User("huahng"))
             );
+//            ApplicationEventPublisher.publish(
+//                    new ApplicationEventTest2("213")
+//            );
         }
 
     }
@@ -150,38 +156,38 @@ public class EventPublisherTest {
         }
     }
 
-//    public static class SmartApplicationListenerTest implements SmartApplicationListener {
-//        @Override
-//        public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
-//            return ApplicationEventTest.class == eventType;
-//        }
-//
-//        @Override
-//        public boolean supportsSourceType(Class<?> sourceType) {
-//            return String.class == sourceType;
-//        }
-//
-//        @Override
-//        public int getOrder() {
-//            return 0;
-//        }
-//
-//        @Override
-//        public void onApplicationEvent(ApplicationEvent event) {
-//            double v = ArithUtil.round(Math.random() * 100, 0);
-//            long i = ArithUtil.convertsToLong(v);
-////            try {
-////                Thread.sleep(i);
-////            } catch (InterruptedException e) {
-////                e.printStackTrace();
-////            }
-//            int k = 1000000;
-//            while (k > 0) {
-//                k--;
+    public static class SmartApplicationListenerTest implements SmartApplicationListener {
+        @Override
+        public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
+            return ApplicationEventTest.class == eventType;
+        }
+
+        @Override
+        public boolean supportsSourceType(Class<?> sourceType) {
+            return String.class == sourceType;
+        }
+
+        @Override
+        public int getOrder() {
+            return 0;
+        }
+
+        @Override
+        public void onApplicationEvent(ApplicationEvent event) {
+            double v = ArithUtils.round(Math.random() * 100, 0);
+            long i = ArithUtils.convertsToLong(v);
+//            try {
+//                Thread.sleep(i);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
 //            }
-//            System.out.println("SmartApplicationListenerTest -- " + atomicLong.incrementAndGet());
-//        }
-//    }
+            int k = 1000000;
+            while (k > 0) {
+                k--;
+            }
+            System.out.println("SmartApplicationListenerTest -- " + atomicLong.incrementAndGet());
+        }
+    }
 
     public static class SmartApplicationListenerTest2 implements SmartApplicationListener {
         @Override

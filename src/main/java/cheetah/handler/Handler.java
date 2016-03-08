@@ -17,7 +17,7 @@ public interface Handler extends Cloneable {
      * @param directive
      * @return
      */
-    default Feedback send(Directive directive) {
+    default Feedback handle(Directive directive) {
         Feedback feedback = Feedback.FAILURE;
         if (directive.feedback()) {
             feedback = completeExecute(directive.event());
