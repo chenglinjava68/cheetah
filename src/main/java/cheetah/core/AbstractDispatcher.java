@@ -16,10 +16,7 @@ import cheetah.mapping.HandlerMapping;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.EventListener;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
@@ -209,9 +206,11 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
                 ).collect(Collectors.toList());
     }
 
-
     private List<Interceptor> findInterceptor(Event event) {
-        InterceptorCacheKey key = new InterceptorCacheKey(event.getClass());
+        if (Objects.isNull(this.configuration) ||
+                CollectionUtils.isEmpty(this.configuration.interceptors()))
+            return Collections.emptyList();
+                    InterceptorCacheKey key = new InterceptorCacheKey(event.getClass());
         List<Interceptor> $interceptors = interceptorCache.get(key);
         if (CollectionUtils.isEmpty($interceptors)) {
             $interceptors = this.configuration.interceptors().stream().filter(i ->

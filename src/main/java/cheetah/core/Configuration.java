@@ -18,9 +18,11 @@ public class Configuration {
     private int eventPerformerSize;
     private int ringBufferSize;
     private String policy;
+
     public Configuration() {
-        this.plugins = Collections.EMPTY_LIST;
-        this.eventListeners = Collections.EMPTY_LIST;
+        this.plugins = Collections.emptyList();
+        this.interceptors = Collections.emptyList();
+        this.eventListeners = Collections.emptyList();
     }
 
     public List<Plugin> plugins() {
@@ -32,7 +34,7 @@ public class Configuration {
     }
 
     public List<Interceptor> interceptors() {
-        return interceptors;
+        return Collections.unmodifiableList(interceptors);
     }
 
     public void setInterceptors(List<Interceptor> interceptors) {
