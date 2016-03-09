@@ -22,9 +22,9 @@ public class EventPublisherTest {
     public static final AtomicLong atomicLong = new AtomicLong();
     public static final AtomicLong atomicLong2 = new AtomicLong();
     public static final AtomicLong atomicLong3 = new AtomicLong();
-    private ExecutorService executorService = Executors.newCachedThreadPool();
+    private static ExecutorService executorService = Executors.newCachedThreadPool();
 
-    public void count() {
+    public static void count() {
         System.out.println("z");
         CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
             System.out.println("aa");
@@ -50,8 +50,17 @@ public class EventPublisherTest {
 
     @Test
     public void test() {
-        count();
-        count();
+        Thread t1 = new Thread(EventPublisherTest::count);
+        Thread t2 = new Thread(EventPublisherTest::count);
+        t1.start();
+        t2.start();
+        try {
+            t1.join();
+            t2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
