@@ -1,17 +1,18 @@
 package cheetah.core;
 
-import cheetah.engine.Engine;
 import cheetah.handler.Handler;
 
 import java.util.EventListener;
+import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Max on 2016/2/21.
+ * Created by Max on 2016/3/3.
  */
 public final class EventContext {
     private static final ThreadLocal<Map<Class<? extends EventListener>, Handler>> handlers = new ThreadLocal<>();
     private static final ThreadLocal<EventMessage> eventMessage = new ThreadLocal<>();
+    private static final ThreadLocal<List<Interceptor>> interceptors = new ThreadLocal<>();
 
     private static final EventContext CONTEXT = new EventContext();
     private EventContext(){}
@@ -24,7 +25,7 @@ public final class EventContext {
         EventContext.handlers.set($handlers);
     }
 
-    public final Map<Class<? extends EventListener>, Handler> getHandlers() {
+    public final Map<Class<? extends EventListener>, Handler> handlers() {
         return EventContext.handlers.get();
     }
 
@@ -36,7 +37,7 @@ public final class EventContext {
         EventContext.eventMessage.set($eventMessage);
     }
 
-    public final EventMessage getEventMessage() {
+    public final EventMessage eventMessage() {
         return EventContext.eventMessage.get();
     }
 
@@ -44,4 +45,15 @@ public final class EventContext {
         EventContext.eventMessage.remove();
     }
 
+    public final void setInterceptor(List<Interceptor> interceptors) {
+        EventContext.interceptors.set(interceptors);
+    }
+
+    public final List<Interceptor> interceptors() {
+        return EventContext.interceptors.get();
+    }
+
+    public final void removeInterceptor() {
+        EventContext.interceptors.remove();
+    }
 }

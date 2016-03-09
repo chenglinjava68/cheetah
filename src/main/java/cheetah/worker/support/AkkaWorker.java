@@ -5,16 +5,18 @@ import akka.actor.SupervisorStrategy;
 import akka.actor.UntypedActor;
 import cheetah.async.akka.ActorFactory;
 import cheetah.common.logger.Debug;
+import cheetah.core.Interceptor;
 import cheetah.handler.Directive;
 import cheetah.handler.Feedback;
 import cheetah.handler.Handler;
-import cheetah.util.Assert;
+import cheetah.common.utils.Assert;
 import cheetah.worker.Command;
 import cheetah.worker.Worker;
 import scala.Option;
 import scala.concurrent.duration.Duration;
 
 import java.util.EventListener;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +25,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class AkkaWorker extends UntypedActor implements Worker {
     private Map<Class<? extends EventListener>, Handler> eventlistenerMapper;
+    private List<Interceptor> interceptors;
 
     public AkkaWorker(Map<Class<? extends EventListener>, Handler> eventlistenerMapper) {
         this.eventlistenerMapper = eventlistenerMapper;
@@ -33,16 +36,21 @@ public class AkkaWorker extends UntypedActor implements Worker {
     }
 
     @Override
-    public void work(Command command) {
+    public void doWork(Command command) {
         try {
             Assert.notNull(command, "order must not be null");
             Handler machine = eventlistenerMapper.get(command.eventListener());
-            Feedback feedback = machine.send(new Directive(command.event(), command.needResult()));
+            Feedback feedback = machine.handle(new Directive(command.event(), command.needResult()));
 //            getSender().tell(feedback, getSelf());
         } catch (Exception e) {
             Debug.log(this.getClass(), "machine execute fail.", e);
             getSender().tell(Feedback.FAILURE, getSelf());
         }
+    }
+
+    @Override
+    public List<Interceptor> getInterceptors() {
+        return this.interceptors;
     }
 
     @Override

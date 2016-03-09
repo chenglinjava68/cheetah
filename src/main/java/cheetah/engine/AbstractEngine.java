@@ -2,19 +2,15 @@ package cheetah.engine;
 
 import cheetah.async.AsynchronousPoolFactory;
 import cheetah.common.logger.Debug;
-import cheetah.core.EventContext;
 import cheetah.governor.Governor;
 import cheetah.governor.GovernorFactory;
+import cheetah.core.EventContext;
 import cheetah.handler.Handler;
 import cheetah.handler.HandlerFactory;
-import cheetah.handler.support.GenericHandlerFactory;
-import cheetah.mapper.Mapper;
-import cheetah.plugin.InterceptorChain;
+import cheetah.mapping.HandlerMapping;
+import cheetah.core.plugin.PluginChain;
 import cheetah.worker.Worker;
 import cheetah.worker.WorkerFactory;
-import cheetah.worker.support.AkkaWorkerFactory;
-
-import java.util.Objects;
 
 /**
  * Created by Max on 2016/3/2.
@@ -23,9 +19,9 @@ public abstract class AbstractEngine implements Engine {
     private WorkerFactory workerFactory;
     private HandlerFactory handlerFactory;
     private GovernorFactory governorFactory;
-    private InterceptorChain interceptorChain;
+    private PluginChain pluginChain = new PluginChain();
     private AsynchronousPoolFactory asynchronousPoolFactory;
-    private volatile Mapper mapper;
+    private volatile HandlerMapping mapping;
     private Governor governor;
     private EventContext context;
     protected State state;
@@ -34,11 +30,6 @@ public abstract class AbstractEngine implements Engine {
     public void start() {
         Debug.log(this.getClass(), "DefaultEngine start ...");
         initialize();
-        asynchronousPoolFactory().setEventContext(context);
-        if (Objects.isNull(workerFactory()))
-            workerFactory = new AkkaWorkerFactory();
-        if (Objects.isNull(handlerFactory))
-            handlerFactory = new GenericHandlerFactory();
         this.state = State.RUNNING;
     }
 
@@ -49,11 +40,10 @@ public abstract class AbstractEngine implements Engine {
 
     @Override
     public void stop() {
-        asynchronousPoolFactory.stop();
         workerFactory = null;
         handlerFactory = null;
         governorFactory = null;
-        interceptorChain = null;
+        pluginChain = null;
         asynchronousPoolFactory.stop();
         asynchronousPoolFactory = null;
         Debug.log(this.getClass(), "DefualtEngine has been shut down.");
@@ -92,8 +82,8 @@ public abstract class AbstractEngine implements Engine {
     }
 
     @Override
-    public void setMapper(Mapper mapper) {
-        this.mapper = mapper;
+    public void setMapping(HandlerMapping mapping) {
+        this.mapping = mapping;
     }
 
     @Override
@@ -106,17 +96,22 @@ public abstract class AbstractEngine implements Engine {
         this.context = context;
     }
 
+    @Override
+    public void registerPluginChain(PluginChain pluginChain) {
+        this.pluginChain = pluginChain;
+    }
+
     public void setGovernor(Governor governor) {
         this.governor = governor;
     }
 
     @Override
-    public Mapper getMapper() {
-        return this.mapper;
+    public HandlerMapping getMapping() {
+        return this.mapping;
     }
 
-    public void setInterceptorChain(InterceptorChain interceptorChain) {
-        this.interceptorChain = interceptorChain;
+    public void setPluginChain(PluginChain interceptorChain) {
+        this.pluginChain = interceptorChain;
     }
 
     protected WorkerFactory workerFactory() {
@@ -131,16 +126,12 @@ public abstract class AbstractEngine implements Engine {
         return governorFactory;
     }
 
-    protected InterceptorChain interceptorChain() {
-        return interceptorChain;
+    protected PluginChain pluginChain() {
+        return pluginChain;
     }
 
     protected AsynchronousPoolFactory asynchronousPoolFactory() {
         return asynchronousPoolFactory;
-    }
-
-    protected Mapper mapper() {
-        return mapper;
     }
 
     protected Governor governor() {

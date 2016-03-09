@@ -1,6 +1,7 @@
 package cheetah.handler;
 
 import cheetah.common.logger.Debug;
+import cheetah.common.logger.Error;
 import cheetah.event.Event;
 
 import java.util.EventListener;
@@ -16,7 +17,7 @@ public interface Handler extends Cloneable {
      * @param directive
      * @return
      */
-    default Feedback send(Directive directive) {
+    default Feedback handle(Directive directive) {
         Feedback feedback = Feedback.FAILURE;
         if (directive.feedback()) {
             feedback = completeExecute(directive.event());
@@ -34,7 +35,7 @@ public interface Handler extends Cloneable {
      * @param event
      */
     default void onFailure(Event event) {
-        cheetah.common.logger.Error.log(this.getClass(), "Machine execute failure event is [" + event + "]");
+        Error.log(this.getClass(), "Machine execute failure event is [" + event + "]");
     }
 
     /**

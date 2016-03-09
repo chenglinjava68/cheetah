@@ -22,7 +22,7 @@ public class AkkaEngineDirector implements EngineDirector {
         engine.setWorkerFactory(builder.buildWorkerFactory());
         engine.setHandlerFactory(builder.buildHandlerFactory());
         engine.setGovernorFactory(builder.buildGovernorFactory());
-        engine.setMapper(builder.buildMapper());
+        engine.setMapping(builder.buildMapping());
         engine.setAsynchronousPoolFactory(builder.buildAsynchronousPoolFactory(configuration));
         return engine;
     }

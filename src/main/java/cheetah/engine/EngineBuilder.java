@@ -4,7 +4,7 @@ import cheetah.async.AsynchronousPoolFactory;
 import cheetah.core.Configuration;
 import cheetah.governor.GovernorFactory;
 import cheetah.handler.HandlerFactory;
-import cheetah.mapper.Mapper;
+import cheetah.mapping.HandlerMapping;
 import cheetah.worker.WorkerFactory;
 
 /**
@@ -35,7 +35,7 @@ public interface EngineBuilder {
      * 构建引擎所需的事件映射
      * @return
      */
-    Mapper buildMapper();
+    HandlerMapping buildMapping();
 
     /**
      * 构建引擎所需的异步者池子的工厂

@@ -4,6 +4,7 @@ import cheetah.async.disruptor.DisruptorEvent;
 import cheetah.engine.AbstractEngine;
 import cheetah.governor.Governor;
 import cheetah.governor.support.DisruptorGovernor;
+import cheetah.governor.support.DisruptorGovernorAdapter;
 import com.lmax.disruptor.dsl.Disruptor;
 
 import java.util.Objects;
@@ -17,22 +18,23 @@ public class DisruptorEngine extends AbstractEngine {
     public Governor assignGovernor() {
         if (Objects.isNull(governor())) {
             Governor governor = governorFactory().createGovernor();
-            ((DisruptorGovernor) governor)
+            governor = new DisruptorGovernorAdapter((DisruptorGovernor) governor, pluginChain());
+            ((DisruptorGovernorAdapter) governor)
                     .setRingBuffer(((Disruptor<DisruptorEvent>) asynchronousPoolFactory().getAsynchronous()).getRingBuffer());
-            governor.registerMachineSquad(context().getHandlers());
+            governor.registerHandlerSquad(context().handlers());
             setGovernor(governor);
             return governor;
         } else {
             try {
                 Governor clone = governor().kagebunsin();
                 clone.reset();
-                ((DisruptorGovernor) clone)
+                ((DisruptorGovernorAdapter) clone)
                         .setRingBuffer(((Disruptor<DisruptorEvent>) asynchronousPoolFactory().getAsynchronous()).getRingBuffer());
                 return clone;
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
                 Governor governor = governorFactory().createGovernor();
-                ((DisruptorGovernor) governor)
+                ((DisruptorGovernorAdapter) governor)
                         .setRingBuffer(((Disruptor<DisruptorEvent>) asynchronousPoolFactory().getAsynchronous()).getRingBuffer());
                 return governor;
             }

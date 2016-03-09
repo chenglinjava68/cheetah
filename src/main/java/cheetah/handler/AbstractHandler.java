@@ -1,7 +1,7 @@
 package cheetah.handler;
 
 import cheetah.event.Event;
-import cheetah.util.ObjectUtils;
+import cheetah.common.utils.ObjectUtils;
 
 import java.util.EventListener;
 

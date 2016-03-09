@@ -2,14 +2,16 @@ package cheetah.engine;
 
 import cheetah.async.AsynchronousPoolFactory;
 import cheetah.common.Startable;
+import cheetah.core.plugin.PluginChain;
 import cheetah.core.EventContext;
 import cheetah.governor.Governor;
 import cheetah.governor.GovernorFactory;
 import cheetah.handler.Handler;
 import cheetah.handler.HandlerFactory;
-import cheetah.mapper.Mapper;
+import cheetah.mapping.HandlerMapping;
 import cheetah.worker.Worker;
 import cheetah.worker.WorkerFactory;
+
 
 /**
  * 事件处理引擎
@@ -18,13 +20,13 @@ import cheetah.worker.WorkerFactory;
 public interface Engine extends Startable {
 
     /**
-     * 分配应用事件的工作机器
+     * 分配应用事件的工作处理器
      * @return
      */
     Handler assignApplicationEventHandler();
 
     /**
-     * 分配领域事件的工作机器
+     * 分配领域事件的工作处理器
      * @return
      */
     Handler assignDomainEventHandler();
@@ -47,7 +49,7 @@ public interface Engine extends Startable {
 
     void setGovernorFactory(GovernorFactory governorFactory);
 
-    void setMapper(Mapper mapper);
+    void setMapping(HandlerMapping mapping);
 
     void setContext(EventContext context);
 
@@ -61,9 +63,11 @@ public interface Engine extends Startable {
      * 获取事件映射器
      * @return
      */
-    Mapper getMapper();
+    HandlerMapping getMapping();
 
     State state();
+
+    void registerPluginChain(PluginChain pluginChain);
 
     default boolean isRunning() {
         return state().equals(State.RUNNING);

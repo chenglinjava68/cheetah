@@ -26,7 +26,7 @@ public class EventResult {
         this.fail = fail;
     }
 
-    public Object getSource() {
+    public Object source() {
         return source;
     }
 
@@ -34,7 +34,7 @@ public class EventResult {
         return fail;
     }
 
-    public List<Class<? extends EventListener>> getExceptionListeners() {
+    public List<Class<? extends EventListener>> exceptionListeners() {
         return exceptionListeners;
     }
 }

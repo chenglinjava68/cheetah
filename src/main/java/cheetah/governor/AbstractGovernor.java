@@ -1,11 +1,10 @@
 package cheetah.governor;
 
+import cheetah.common.utils.Assert;
+import cheetah.common.utils.IDGenerator;
 import cheetah.event.Event;
 import cheetah.handler.Feedback;
 import cheetah.handler.Handler;
-import cheetah.plugin.InterceptorChain;
-import cheetah.util.Assert;
-import cheetah.util.IDGenerator;
 
 import java.util.EventListener;
 import java.util.Map;
@@ -19,7 +18,6 @@ public abstract class AbstractGovernor implements Governor {
     private boolean needResult;
     private Event event;
     private Map<Class<? extends EventListener>, Handler> handlerMap;
-    private InterceptorChain interceptorChain;
 
     @Override
     public Governor reset() {
@@ -46,7 +44,7 @@ public abstract class AbstractGovernor implements Governor {
     protected abstract Feedback notifyAllWorker();
 
     @Override
-    public Governor setEvent(Event $event) {
+    public Governor registerEvent(Event $event) {
         this.event = $event;
         return this;
     }
@@ -63,7 +61,7 @@ public abstract class AbstractGovernor implements Governor {
     }
 
     @Override
-    public Governor registerMachineSquad(Map<Class<? extends EventListener>, Handler> handlerMap) {
+    public Governor registerHandlerSquad(Map<Class<? extends EventListener>, Handler> handlerMap) {
         this.handlerMap = handlerMap;
         return this;
     }
@@ -75,14 +73,9 @@ public abstract class AbstractGovernor implements Governor {
     }
 
     @Override
-    public void expelMachine(Handler handler) {
+    public void expelHandler(Handler handler) {
         Assert.notNull(handler, "handler must not be null");
         handlerMap.remove(handler.getEventListener().getClass());
-    }
-
-    @Override
-    public void setInterceptorChain(InterceptorChain $interceptorChain) {
-        this.interceptorChain = $interceptorChain;
     }
 
     @Override
@@ -102,15 +95,11 @@ public abstract class AbstractGovernor implements Governor {
         return needResult;
     }
 
-    public Map<Class<? extends EventListener>, Handler> handlerMap() {
+    protected Map<Class<? extends EventListener>, Handler> handlerMap() {
         return handlerMap;
     }
 
-    public InterceptorChain interceptorChain() {
-        return interceptorChain;
-    }
-
-    public Event event() {
+    protected Event event() {
         return event;
     }
 }

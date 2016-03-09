@@ -3,6 +3,7 @@ package cheetah.engine.support;
 import cheetah.engine.AbstractEngine;
 import cheetah.governor.Governor;
 import cheetah.governor.support.OrdinaryGovernor;
+import cheetah.governor.support.OrdinaryGovernorAdapter;
 import cheetah.worker.Worker;
 
 import java.util.Objects;
@@ -20,8 +21,9 @@ public class OrdinaryEngine extends AbstractEngine {
     public Governor assignGovernor() {
         if (Objects.isNull(governor())) {
             Governor governor = governorFactory().createGovernor();
-            ((OrdinaryGovernor) governor).setWorker((Worker) asynchronousPoolFactory().getAsynchronous());
-            governor.registerMachineSquad(context().getHandlers());
+            governor = new OrdinaryGovernorAdapter((OrdinaryGovernor) governor, pluginChain());
+            ((OrdinaryGovernorAdapter) governor).setWorker((Worker) asynchronousPoolFactory().getAsynchronous());
+            governor.registerHandlerSquad(context().handlers());
             setGovernor(governor);
             return governor;
         } else {
@@ -29,12 +31,12 @@ public class OrdinaryEngine extends AbstractEngine {
                 Governor clone = governor().kagebunsin();
                 clone.reset();
                 Worker worker = (Worker) asynchronousPoolFactory().getAsynchronous();
-                ((OrdinaryGovernor) clone).setWorker(worker);
+                ((OrdinaryGovernorAdapter) clone).setWorker(worker);
                 return clone;
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
                 Governor governor = governorFactory().createGovernor();
-                ((OrdinaryGovernor) governor).setWorker((Worker) asynchronousPoolFactory().getAsynchronous());
+                ((OrdinaryGovernorAdapter) governor).setWorker((Worker) asynchronousPoolFactory().getAsynchronous());
                 return governor;
             }
         }

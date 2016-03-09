@@ -9,7 +9,7 @@ import cheetah.domain.Entity;
  * 会忽略掉普通的监听器（如：DomainEvent），使用者需要注意。
  * Created by Max on 2016/1/29.
  */
-public interface SmartDomainEventListener<E extends DomainEvent> extends DomainEventListener<E> {
+public interface SmartDomainEventListener extends DomainEventListener<DomainEvent> {
     boolean supportsEventType(Class<? extends DomainEvent> eventType);
 
     boolean supportsSourceType(Class<? extends Entity> sourceType);
