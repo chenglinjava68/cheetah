@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -22,22 +22,42 @@ public class EventPublisherTest {
     public static final AtomicLong atomicLong = new AtomicLong();
     public static final AtomicLong atomicLong2 = new AtomicLong();
     public static final AtomicLong atomicLong3 = new AtomicLong();
+    private ExecutorService executorService = Executors.newCachedThreadPool();
+
+    public void count() {
+        System.out.println("z");
+        CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
+            System.out.println("aa");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            return Boolean.TRUE;
+        }, executorService);
+        System.out.println(System.currentTimeMillis());
+        try {
+            System.out.println(future.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        System.out.println(System.currentTimeMillis());
+
+    }
 
     @Test
     public void test() {
-        int k = 1000000;
-        while (k > 0) {
-            k--;
-            System.out.println(k);
-        }
+        count();
+        count();
     }
 
     @Test
     public void launch() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
-        ApplicationListenerTest listenerTest = new ApplicationListenerTest();
-        ApplicationEventTest event = new ApplicationEventTest("aaa");
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
             new Thread(() -> {
                 while (true) {
                     ApplicationEventPublisher.publish(
@@ -47,7 +67,7 @@ public class EventPublisherTest {
                 }
             }).start();
         }
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
             new Thread(() -> {
                 while (true) {
                     DomainEvenPublisher.publish(
@@ -57,7 +77,7 @@ public class EventPublisherTest {
                 }
             }).start();
         }
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
             new Thread(() -> {
                 while (true) {
                     ApplicationEventPublisher.publish(
@@ -181,7 +201,7 @@ public class EventPublisherTest {
 //            } catch (InterruptedException e) {
 //                e.printStackTrace();
 //            }
-            int k = 1000000;
+            int k = 100000;
             while (k > 0) {
                 k--;
             }
@@ -214,7 +234,7 @@ public class EventPublisherTest {
 //            } catch (InterruptedException e) {
 //                e.printStackTrace();
 //            }
-            int k = 1000000;
+            int k = 100000;
             while (k > 0) {
                 k--;
             }
@@ -248,7 +268,7 @@ public class EventPublisherTest {
 //            } catch (InterruptedException e) {
 //                e.printStackTrace();
 //            }
-            int k = 1000000;
+            int k = 100000;
             while (k > 0) {
                 k--;
             }

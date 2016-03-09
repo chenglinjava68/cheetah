@@ -19,10 +19,10 @@ public interface Worker extends Cloneable {
         try {
             HandlerInterceptorChain chain = createInterceptorChain();
             boolean result = chain.beforeHandle(command);
-            if (!result)
-                return;
-            doWork(command);
-            chain.afterHandle(command);
+            if (result) {
+                doWork(command);
+                chain.afterHandle(command);
+            }
         } catch (Exception e) {
             throw new InterceptorExecutionException(e);
         }
