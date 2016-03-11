@@ -1,16 +1,16 @@
 package cheetah.core;
 
+import cheetah.api.ProcessType;
 import cheetah.common.Startable;
 import cheetah.common.logger.Debug;
 import cheetah.common.utils.CollectionUtils;
 import cheetah.common.utils.ObjectUtils;
-import cheetah.common.utils.StringUtils;
-import cheetah.event.*;
 import cheetah.core.plugin.Plugin;
 import cheetah.core.plugin.PluginChain;
 import cheetah.engine.Engine;
 import cheetah.engine.EngineDirector;
 import cheetah.engine.support.EnginePolicy;
+import cheetah.event.*;
 import cheetah.handler.Handler;
 import cheetah.mapping.HandlerMapping;
 
@@ -28,9 +28,8 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
 
     private Configuration configuration; //框架配置
     private final PluginChain pluginChain = new PluginChain();
-    private Engine engine;
-    private EngineDirector engineDirector;
-    private EnginePolicy enginePolicy;
+    private final ThreadLocal<Engine> currentEngine = new ThreadLocal<>();
+    private Map<String, Engine> engineMap = new ConcurrentHashMap<>();
     private final Map<InterceptorCacheKey, List<Interceptor>> interceptorCache = new ConcurrentHashMap<>();
     private final ReentrantLock lock = new ReentrantLock();
     private final EventContext context = EventContext.getContext();
@@ -42,9 +41,9 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
      * @return
      */
     @Override
-    public EventResult receive(final EventMessage eventMessage) {
+    public EventResult receive(final EventMessage eventMessage, ProcessType processType) {
         try {
-            context().setEventMessage(eventMessage);
+            Engine engine = engineSelect(processType, eventMessage);
             Event event = eventMessage.event();
             HandlerMapping.HandlerMapperKey key = HandlerMapping.HandlerMapperKey.generate(event.getClass(), event.getSource().getClass());
             List<Interceptor> interceptors = findInterceptor(event);
@@ -62,7 +61,56 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
             context.removeEventMessage();
             context.removeHandlers();
             context.removeInterceptor();
+            currentEngine.remove();
         }
+    }
+
+    /**
+     * 根据策略选择一个引擎
+     *
+     * @param processType
+     * @param eventMessage
+     * @return
+     */
+    private Engine engineSelect(ProcessType processType, EventMessage eventMessage) {
+        Engine engine = buildEngine(processType.policy());
+        context.setEventMessage(eventMessage);
+        currentEngine.set(engine);
+        return engine;
+    }
+
+    /**
+     * 通过policy构建一个引擎，如果map中有，就从map中取，不重复重建
+     *
+     * @param policy
+     * @return
+     */
+    private Engine buildEngine(String policy) {
+        Engine engine = engineMap.get(policy);
+        if (Objects.nonNull(engine)) {
+            return engine;
+        }
+        synchronized (this) {
+            return createEngine(policy);
+        }
+    }
+
+    /**
+     * 根据policy创建一个引擎
+     *
+     * @param policy
+     * @return
+     */
+    private Engine createEngine(String policy) {
+        EnginePolicy enginePolicy = EnginePolicy.formatFrom(policy);
+        EngineDirector engineDirector = enginePolicy.getEngineDirector();
+        engineDirector.setConfiguration(this.configuration);
+        Engine engine = engineDirector.directEngine();
+        engine.registerPluginChain(pluginChain);
+        this.engineMap.put(policy, engine);
+        engine.setContext(context);
+        engine.start();
+        return engine;
     }
 
 
@@ -73,26 +121,28 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
                 initializesPlugin(pluginChain);
         } else
             configuration = new Configuration();
-        if (StringUtils.isEmpty(configuration.policy())) {
-            enginePolicy = EnginePolicy.DISRUPTOR;
-            engineDirector = enginePolicy.getEngineDirector();
-        } else {
-            enginePolicy = EnginePolicy.formatFrom(configuration.policy());
-            engineDirector = enginePolicy.getEngineDirector();
-        }
-        engineDirector.setConfiguration(this.configuration);
-        engine = engineDirector.directEngine();
-        engine.setContext(this.context());
-        engine.registerPluginChain(pluginChain);
-        engine.start();
+//        if (StringUtils.isEmpty(configuration.policy())) {
+//            enginePolicy = EnginePolicy.DISRUPTOR;
+//            engineDirector = enginePolicy.getEngineDirector();
+//        } else {
+//            enginePolicy = EnginePolicy.formatFrom(configuration.policy());
+//            engineDirector = enginePolicy.getEngineDirector();
+//        }
+//        engineDirector.setConfiguration(this.configuration);
+//        engine = engineDirector.directEngine();
+//        engine.setContext(this.context());
+//        engine.registerPluginChain(pluginChain);
+//        engine.start();
     }
 
     @Override
     public void stop() {
-        this.engine.stop();
-        this.engine = null;
-        engineDirector = null;
-        enginePolicy = null;
+        Map<String, Engine> tempEngine = new HashMap<>(engineMap);
+        engineMap.clear();
+        Iterator<Engine> engineIterator = tempEngine.values().iterator();
+        while (engineIterator.hasNext()) {
+            engineIterator.next().stop();
+        }
     }
 
     public PluginChain initializesPlugin(PluginChain chain) {
@@ -155,12 +205,12 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
     private Map<Class<? extends EventListener>, Handler> setAppEventListenerMapper(HandlerMapping.HandlerMapperKey mapperKey, List<EventListener> listeners) {
         Map<Class<? extends EventListener>, Handler> machines = listeners.stream().
                 map(o -> {
-                    Handler machine = engine.assignApplicationEventHandler();
+                    Handler machine = currentEngine.get().assignApplicationEventHandler();
                     machine.setEventListener(o);
                     return machine;
                 })
                 .collect(Collectors.toMap(o -> o.getEventListener().getClass(), o -> o));
-        engine.getMapping().put(mapperKey, machines);
+        currentEngine.get().getMapping().put(mapperKey, machines);
         return machines;
     }
 
@@ -182,13 +232,13 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
                                                                                       List<EventListener> listeners) {
         Map<Class<? extends EventListener>, Handler> machines = listeners.stream().
                 map(o -> {
-                    Handler machine = engine.assignDomainEventHandler();
+                    Handler machine = currentEngine.get().assignDomainEventHandler();
                     machine.setEventListener(o);
                     return machine;
                 })
                 .collect(Collectors.toMap(o -> o.getEventListener().getClass(), o -> o));
 
-        engine.getMapping().put(mapperKey, machines);
+        currentEngine.get().getMapping().put(mapperKey, machines);
         return machines;
     }
 
@@ -210,7 +260,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         if (Objects.isNull(this.configuration) ||
                 CollectionUtils.isEmpty(this.configuration.interceptors()))
             return Collections.emptyList();
-                    InterceptorCacheKey key = new InterceptorCacheKey(event.getClass());
+        InterceptorCacheKey key = new InterceptorCacheKey(event.getClass());
         List<Interceptor> $interceptors = interceptorCache.get(key);
         if (CollectionUtils.isEmpty($interceptors)) {
             $interceptors = this.configuration.interceptors().stream().filter(i ->
@@ -241,15 +291,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
     }
 
     protected Engine engine() {
-        return engine;
-    }
-
-    protected EngineDirector getEngineDirector() {
-        return engineDirector;
-    }
-
-    protected EnginePolicy getEnginePolicy() {
-        return enginePolicy;
+        return currentEngine.get();
     }
 
     static class InterceptorCacheKey {

@@ -22,10 +22,10 @@ public class OrdinaryWorker implements Worker {
     @Override
     public void doWork(Command command) {
         Handler handler = handlerMap.get(command.eventListener());
-        CompletableFuture<Feedback> future = CompletableFuture.supplyAsync(() ->
+        try {
+            CompletableFuture<Feedback> future = CompletableFuture.supplyAsync(() ->
                 handler.completeExecute(command.event())
                 , executor);
-        try {
             future.get(3, TimeUnit.SECONDS);
             handler.onSuccess(command.event());
         } catch (InterruptedException e) {

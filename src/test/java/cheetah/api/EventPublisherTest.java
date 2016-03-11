@@ -1,9 +1,9 @@
 package cheetah.api;
 
 import cheetah.common.utils.ArithUtils;
-import cheetah.event.*;
 import cheetah.domain.Entity;
 import cheetah.domain.UUIDKeyEntity;
+import cheetah.event.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -79,14 +79,14 @@ public class EventPublisherTest {
         for (int i = 0; i < 10; i++) {
             new Thread(() -> {
                 while (true) {
-                    DomainEvenPublisher.publish(
-                            new DomainEventTest(new User("huahng"))
+                    DomainEventPublisher.publish(
+                            new DomainEventTest(new User("huahng")), ProcessType.ORDINARY
                     );
 //                    listenerTest.onApplicationEvent(event);
                 }
             }).start();
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1; i++) {
             new Thread(() -> {
                 while (true) {
                     ApplicationEventPublisher.publish(
@@ -121,8 +121,8 @@ public class EventPublisherTest {
 //            ApplicationEventPublisher.publish(
 //                    new ApplicationEventTest("213")
 //            );
-            DomainEvenPublisher.publish(
-                    new DomainEventTest(new User("huahng"))
+            DomainEventPublisher.publish(
+                    new DomainEventTest(new User("huahng")), ProcessType.ORDINARY
             );
 //            ApplicationEventPublisher.publish(
 //                    new ApplicationEventTest2("213")
@@ -173,15 +173,7 @@ public class EventPublisherTest {
     public static class ApplicationListenerTest implements ApplicationListener<ApplicationEventTest> {
         @Override
         public void onApplicationEvent(ApplicationEventTest event) {
-//            double v = ArithUtils.round(Math.random() * 100, 0);
-//            long i = ArithUtils.convertsToLong(v);
-//            try {
-//                Thread.sleep(i);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
             System.out.println("ApplicationListenerTest----" + atomicLong.incrementAndGet());
-//            System.out.println(System.currentTimeMillis());
         }
     }
 
@@ -204,12 +196,7 @@ public class EventPublisherTest {
         @Override
         public void onApplicationEvent(ApplicationEvent event) {
             double v = ArithUtils.round(Math.random() * 100, 0);
-            long i = ArithUtils.convertsToLong(v);
-//            try {
-//                Thread.sleep(i);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+
             int k = 100000;
             while (k > 0) {
                 k--;
@@ -237,12 +224,7 @@ public class EventPublisherTest {
         @Override
         public void onApplicationEvent(ApplicationEvent event) {
             double v = ArithUtils.round(Math.random() * 100, 0);
-            long i = ArithUtils.convertsToLong(v);
-//            try {
-//                Thread.sleep(i);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+
             int k = 100000;
             while (k > 0) {
                 k--;
@@ -271,12 +253,6 @@ public class EventPublisherTest {
         @Override
         public void onDomainEvent(DomainEvent event) {
             double v = ArithUtils.round(Math.random() * 100, 0);
-            long i = ArithUtils.convertsToLong(v);
-//            try {
-//                Thread.sleep(i);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
             int k = 100000;
             while (k > 0) {
                 k--;

@@ -6,7 +6,7 @@
 
     <groupId>cheetah</groupId>
     <artifactId>cheetah</artifactId>
-    <version>1.1.2-RELEASE</version>
+    <version>1.2.0-RELEASE</version>
 
     <properties>
         <akka.version>2.3.9</akka.version>
