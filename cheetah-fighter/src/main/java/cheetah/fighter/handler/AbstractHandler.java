@@ -1,6 +1,6 @@
 package cheetah.fighter.handler;
 
-import cheetah.fighter.commons.utils.ObjectUtils;
+import cheetah.commons.utils.ObjectUtils;
 import cheetah.fighter.event.Event;
 
 import java.util.EventListener;

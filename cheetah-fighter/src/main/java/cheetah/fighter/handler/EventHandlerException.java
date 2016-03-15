@@ -1,6 +1,6 @@
 package cheetah.fighter.handler;
 
-import cheetah.fighter.commons.CheetahException;
+import cheetah.commons.CheetahException;
 
 /**
  * Created by Max on 2016/2/1.

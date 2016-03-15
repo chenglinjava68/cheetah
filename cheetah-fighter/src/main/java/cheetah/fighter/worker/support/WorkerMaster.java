@@ -2,7 +2,7 @@ package cheetah.fighter.worker.support;
 
 import akka.actor.*;
 import cheetah.fighter.async.akka.ActorFactory;
-import cheetah.fighter.commons.logger.Debug;
+import cheetah.commons.logger.Debug;
 import cheetah.fighter.worker.Command;
 import scala.Option;
 import scala.concurrent.duration.Duration;

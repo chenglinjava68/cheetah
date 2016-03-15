@@ -16,7 +16,7 @@
 package cheetah.fighter.core.plugin;
 
 
-import cheetah.fighter.commons.CheetahException;
+import cheetah.commons.CheetahException;
 
 /**
  * @author Max

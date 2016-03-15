@@ -1,6 +1,6 @@
 package cheetah.fighter.mapping;
 
-import cheetah.fighter.commons.utils.ObjectUtils;
+import cheetah.commons.utils.ObjectUtils;
 import cheetah.fighter.event.Event;
 import cheetah.fighter.handler.Handler;
 

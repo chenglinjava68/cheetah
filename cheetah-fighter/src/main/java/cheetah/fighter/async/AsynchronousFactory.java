@@ -1,6 +1,6 @@
 package cheetah.fighter.async;
 
-import cheetah.fighter.commons.Startable;
+import cheetah.commons.Startable;
 import cheetah.fighter.core.Interceptor;
 import cheetah.fighter.handler.Handler;
 

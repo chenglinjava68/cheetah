@@ -1,7 +1,7 @@
 package cheetah.fighter.core;
 
 
-import cheetah.fighter.commons.utils.CollectionUtils;
+import cheetah.commons.utils.CollectionUtils;
 import cheetah.fighter.core.plugin.Plugin;
 
 import java.util.Collections;

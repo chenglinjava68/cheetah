@@ -1,6 +1,6 @@
 package cheetah.fighter.api;
 
-import cheetah.fighter.commons.utils.ArithUtils;
+import cheetah.commons.utils.ArithUtils;
 import cheetah.fighter.domain.Entity;
 import cheetah.fighter.domain.UUIDKeyEntity;
 import cheetah.fighter.event.*;

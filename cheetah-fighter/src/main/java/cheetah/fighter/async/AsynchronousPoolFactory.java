@@ -1,6 +1,6 @@
 package cheetah.fighter.async;
 
-import cheetah.fighter.commons.Startable;
+import cheetah.commons.Startable;
 import cheetah.fighter.core.EventContext;
 
 /**

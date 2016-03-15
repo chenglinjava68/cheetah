@@ -1,7 +1,7 @@
 package cheetah.fighter.handler;
 
-import cheetah.fighter.commons.logger.Debug;
-import cheetah.fighter.commons.logger.Error;
+import cheetah.commons.logger.Debug;
+import cheetah.commons.logger.Error;
 import cheetah.fighter.event.Event;
 
 import java.util.EventListener;

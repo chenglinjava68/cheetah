@@ -1,6 +1,6 @@
 package cheetah.fighter.core.support;
 
-import cheetah.fighter.commons.utils.CollectionUtils;
+import cheetah.commons.utils.CollectionUtils;
 import cheetah.fighter.core.Interceptor;
 import cheetah.fighter.worker.Command;
 
@@ -20,6 +20,7 @@ public class HandlerInterceptorChain implements Cloneable {
         if (!CollectionUtils.isEmpty($interceptors)) {
             for (int i = 0; i < $interceptors.size(); this.interceptorIndex = i++) {
                 if (!$interceptors.get(i).preHandle(command)) {
+                    this.triggerAfterCompletion(command, null);
                     return false;
                 }
             }
@@ -36,18 +37,18 @@ public class HandlerInterceptorChain implements Cloneable {
         }
     }
 
-    /*public void triggerAfterCompletion(Command command, Exception ex) {
-        List<Interceptor> $interceptors = interceptors();
+    public void triggerAfterCompletion(Command command, Exception ex) {
+        List<Interceptor> $interceptors = getInterceptors();
         if (!CollectionUtils.isEmpty($interceptors)) {
             for (int i = 0; i < $interceptors.size(); this.interceptorIndex = --i) {
                 try {
                     $interceptors.get(i).afterCompletion(command, ex);
                 } catch (Exception e) {
-                    Error.log(this.getClass(), "InterceptorChain.afterCompletion threw exception");
+                    cheetah.commons.logger.Error.log(this.getClass(), "InterceptorChain.afterCompletion threw exception");
                 }
             }
         }
-    }*/
+    }
 
     public void register(Interceptor interceptor) {
         interceptors.add(interceptor);

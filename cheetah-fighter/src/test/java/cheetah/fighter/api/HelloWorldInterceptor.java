@@ -20,6 +20,11 @@ public class HelloWorldInterceptor implements Interceptor {
     }
 
     @Override
+    public void afterCompletion(Command command, Exception ex) throws Exception {
+
+    }
+
+    @Override
     public boolean supportsType(Class<? extends Event> event) {
         return EventPublisherTest.ApplicationEventTest.class == event;
     }

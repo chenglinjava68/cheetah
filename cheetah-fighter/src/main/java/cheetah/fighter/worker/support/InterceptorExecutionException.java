@@ -1,7 +1,7 @@
 package cheetah.fighter.worker.support;
 
 
-import cheetah.fighter.commons.CheetahException;
+import cheetah.commons.CheetahException;
 
 /**
  * Created by Max on 2016/3/8.

@@ -4,7 +4,7 @@ import akka.actor.*;
 import akka.pattern.Patterns;
 import akka.routing.SmallestMailboxPool;
 import cheetah.fighter.async.AsynchronousFactory;
-import cheetah.fighter.commons.logger.Debug;
+import cheetah.commons.logger.Debug;
 import cheetah.fighter.core.Interceptor;
 import cheetah.fighter.handler.Handler;
 import cheetah.fighter.worker.support.AkkaWorker;
