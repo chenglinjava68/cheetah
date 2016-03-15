@@ -11,6 +11,7 @@
     <modules>
         <module>cheetch-fighter</module>
         <module>cheetah-predator</module>
+        <module>cheetah-commons</module>
     </modules>
 
     <developers>
