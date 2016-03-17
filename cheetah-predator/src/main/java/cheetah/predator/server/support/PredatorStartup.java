@@ -1,7 +1,6 @@
-package cheetah.predator.server.mechanism;
+package cheetah.predator.server.support;
 
 import cheetah.commons.utils.Assert;
-import cheetah.predator.core.mechanism.DispatcherMessage;
 import cheetah.predator.protocol.protobuf.ProtocolConvertor;
 import cheetah.predator.server.Bootstrap;
 import cheetah.predator.transport.SessionTransportConfig;
@@ -74,7 +73,7 @@ public class PredatorStartup implements Bootstrap {
                     channelHandlers.add(new ProtobufDecoder(ProtocolConvertor.Protocol.getDefaultInstance()));
                     channelHandlers.add(new ProtobufVarint32LengthFieldPrepender());
                     channelHandlers.add(new ProtobufEncoder());
-                    channelHandlers.add(new DispatcherMessage());
+                    channelHandlers.add(new DispatcherSession());
                     channelHandlers.add(new SessionIdleStateHandler(transportConfig.getIdleTimeout(), transportConfig.getIdleInitTimeout()));
                 }
                 channelHandlers.forEach(o -> channel.pipeline().addLast(o));

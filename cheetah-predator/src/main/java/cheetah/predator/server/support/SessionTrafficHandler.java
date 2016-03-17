@@ -1,4 +1,4 @@
-package cheetah.predator.server.mechanism;
+package cheetah.predator.server.support;
 
 import io.netty.handler.traffic.ChannelTrafficShapingHandler;
 

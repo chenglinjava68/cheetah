@@ -1,4 +1,4 @@
-package cheetah.predator.server.mechanism;
+package cheetah.predator.server.support;
 
 import cheetah.commons.logger.Loggers;
 import cheetah.predator.core.Session;

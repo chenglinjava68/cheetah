@@ -19,7 +19,7 @@ public interface Bootstrap extends Startable {
     String IO_RATIO = "io.ratio";
     String TCP_BACKLOG = "tcp.backlog";
     String TCP_RECYCLE = "tcp.recycle";
-    int DEFAULT_TCP_BACKLOG = 8192;
+    int DEFAULT_TCP_BACKLOG = 9224;
     boolean DEFAULT_TCP_RECYCLE = false;
 
     @Override
