@@ -5,14 +5,27 @@ import cheetah.predator.protocol.Message;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 /**
  * Created by Max on 2016/3/13.
  */
 public class SessionImpl implements Session {
     private final ChannelHandlerContext ctx;
+    private AtomicReference<Metadata> metadataRef = new AtomicReference<>();
 
     public SessionImpl(ChannelHandlerContext channelHandlerContext) {
         this.ctx = channelHandlerContext;
+    }
+
+    @Override
+    public final Metadata metadata() {
+        return this.metadataRef.get();
+    }
+
+    @Override
+    public final void metadata(Metadata metadata) {
+        this.metadataRef.set(metadata);
     }
 
     @Override

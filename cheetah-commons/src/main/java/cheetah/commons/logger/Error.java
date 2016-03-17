@@ -4,7 +4,7 @@ package cheetah.commons.logger;
  * Created by Max on 2016/2/2.
  */
 public class Error {
-    private final static GenericLogger logger = GenericLogger.logger();
+    private final static Loggers logger = Loggers.me();
     private Error(){}
 
     public static void log(Class<?> type, String msg, Throwable e) {

@@ -24,6 +24,8 @@ public class DispatcherMessage extends SimpleChannelInboundHandler<Message> impl
     protected void messageReceived(ChannelHandlerContext channelHandlerContext, Message message) throws Exception {
         HandlerInterceptorChain chain = createInterceptorChain();
 
+
+
     }
 
     @Override

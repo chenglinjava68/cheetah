@@ -4,34 +4,31 @@ import cheetah.commons.utils.Assert;
 import cheetah.predator.core.mechanism.DispatcherMessage;
 import cheetah.predator.protocol.protobuf.ProtocolConvertor;
 import cheetah.predator.server.Bootstrap;
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.PooledByteBufAllocator;
-import io.netty.channel.*;
+import cheetah.predator.transport.SessionTransportConfig;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
-import io.netty.handler.logging.LogLevel;
-import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by Max on 2016/3/13.
  */
-public class NettyBootstrap implements Bootstrap {
+public class PredatorStartup implements Bootstrap {
     private EventLoopGroup serverBossGroup;
     private EventLoopGroup serverWorkGroup;
-    private int port;
+    private SessionTransportConfig transportConfig;
     private final List<ChannelHandler> channelHandlers;
 
-    public NettyBootstrap() {
-        this.port = 9019;
+    public PredatorStartup() {
         this.channelHandlers = new ArrayList<>();
     }
 
@@ -49,49 +46,36 @@ public class NettyBootstrap implements Bootstrap {
     }
 
     @Override
+    public void setHandlers(List<ChannelHandler> channelHandlers) {
+        this.channelHandlers.clear();
+        this.channelHandlers.addAll(channelHandlers);
+    }
+
+    @Override
     public void registerHandler(ChannelHandler channelHandler) {
         Assert.notNull(channelHandler);
         channelHandlers.add(channelHandler);
     }
 
     @Override
-    public void setPort(int port) {
-        this.port = port;
+    public int getPort() {
+        return transportConfig.port();
     }
 
     @Override
-    public void start() {
-        try {
-            new ServerBootstrap()
-                    .group(serverBossGroup, serverWorkGroup)
-                    .channel(NioServerSocketChannel.class)
-                    .handler(new LoggingHandler(LogLevel.ERROR))
-                    .childHandler(generateChannelInitializer())
-                            //                .option(ChannelOption.SO_REUSEADDR, tcpRecycle)
-                    .option(ChannelOption.TCP_NODELAY, true)
-                    .option(ChannelOption.RCVBUF_ALLOCATOR, AdaptiveRecvByteBufAllocator.DEFAULT)
-                    .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-                    .bind(port)
-                    .sync();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
-        }
-    }
-
-    private ChannelInitializer<Channel> generateChannelInitializer() {
+    public ChannelInitializer<Channel> generateChannelInitializer() {
         return new ChannelInitializer<Channel>() {
             @Override
             protected void initChannel(Channel channel) throws Exception {
                 if (channelHandlers.isEmpty()) {
-                    channelHandlers.add(new SessionTrafficHandler(0,0));
-                    channelHandlers.add(new IdleStateHandler(0, 0, 5));
+                    channelHandlers.add(new SessionTrafficHandler(transportConfig.getTrafficLimit(),transportConfig.getTrafficCheckInterval()));
+                    channelHandlers.add(new IdleStateHandler(0, 0, transportConfig.getIdleCheckPeriod()));
                     channelHandlers.add(new ProtobufVarint32FrameDecoder());
                     channelHandlers.add(new ProtobufDecoder(ProtocolConvertor.Protocol.getDefaultInstance()));
                     channelHandlers.add(new ProtobufVarint32LengthFieldPrepender());
                     channelHandlers.add(new ProtobufEncoder());
-                    channelHandlers.add(new SessionIdleStateHandler());
                     channelHandlers.add(new DispatcherMessage());
+                    channelHandlers.add(new SessionIdleStateHandler(transportConfig.getIdleTimeout(), transportConfig.getIdleInitTimeout()));
                 }
                 channelHandlers.forEach(o -> channel.pipeline().addLast(o));
             }
@@ -99,14 +83,22 @@ public class NettyBootstrap implements Bootstrap {
     }
 
     @Override
-    public void stop() {
-        if (Objects.nonNull(serverBossGroup))
-            serverBossGroup.shutdownGracefully();
-        if (Objects.nonNull(serverWorkGroup))
-            serverWorkGroup.shutdownGracefully();
+    public EventLoopGroup serverBossGroup() {
+        return serverBossGroup;
     }
 
-    public final int port() {
-        return port;
+    @Override
+    public EventLoopGroup serverWorkGroup() {
+        return serverWorkGroup;
+    }
+
+    @Override
+    public void setTransportConfig(SessionTransportConfig transportConfig) {
+        this.transportConfig = transportConfig;
+    }
+
+    @Override
+    public SessionTransportConfig transportConfig() {
+        return transportConfig;
     }
 }

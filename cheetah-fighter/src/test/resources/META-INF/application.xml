@@ -35,6 +35,7 @@ http://www.springframework.org/schema/aop
                 <!--</property>-->
                 <!--<property name="policy" value="ordinary"/>-->
                 <property name="ringBufferSize" value="1024"/>
+
             </bean>
         </property>
     </bean>

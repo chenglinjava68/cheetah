@@ -3,6 +3,7 @@ package cheetah.fighter.core;
 
 import cheetah.commons.utils.CollectionUtils;
 import cheetah.fighter.core.plugin.Plugin;
+import com.google.common.collect.Lists;
 
 import java.util.Collections;
 import java.util.EventListener;
@@ -26,7 +27,7 @@ public class Configuration {
     }
 
     public List<Plugin> plugins() {
-        return Collections.unmodifiableList(plugins);
+        return Lists.newArrayList(plugins);
     }
 
     public void setPlugins(List<Plugin> plugins) {
@@ -34,7 +35,7 @@ public class Configuration {
     }
 
     public List<Interceptor> interceptors() {
-        return Collections.unmodifiableList(interceptors);
+        return Lists.newArrayList(interceptors);
     }
 
     public void setInterceptors(List<Interceptor> interceptors) {
@@ -42,7 +43,7 @@ public class Configuration {
     }
 
     public List<EventListener> eventListeners() {
-        return Collections.unmodifiableList(eventListeners);
+        return Lists.newArrayList(eventListeners);
     }
 
     public void setEventListeners(List<EventListener> eventListeners) {
