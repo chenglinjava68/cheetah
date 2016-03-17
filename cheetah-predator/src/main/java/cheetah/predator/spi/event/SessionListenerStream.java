@@ -2,6 +2,7 @@ package cheetah.predator.spi.event;
 
 import cheetah.commons.logger.Loggers;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -11,12 +12,20 @@ import java.util.function.Consumer;
  */
 public final class SessionListenerStream implements SessionListener {
 
-    private final List<SessionListener> listeners;
+    private List<SessionListener> listeners;
+
+    public SessionListenerStream() {
+        this.listeners = Lists.newArrayList();
+    }
 
     /**
      * @param listeners
      */
     public SessionListenerStream(List<SessionListener> listeners) {
+        this.listeners = ImmutableList.copyOf(listeners);
+    }
+
+    public void setListeners(List<SessionListener> listeners) {
         this.listeners = ImmutableList.copyOf(listeners);
     }
 

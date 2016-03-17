@@ -1,9 +1,13 @@
 package cheetah.predator.server.support;
 
 import cheetah.commons.utils.Assert;
+import cheetah.fighter.core.Interceptor;
+import cheetah.predator.core.SessionRegistry;
 import cheetah.predator.protocol.protobuf.ProtocolConvertor;
 import cheetah.predator.server.Bootstrap;
+import cheetah.predator.spi.event.SessionListener;
 import cheetah.predator.transport.SessionTransportConfig;
+import com.google.common.collect.Lists;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
@@ -15,7 +19,6 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,9 +29,13 @@ public class PredatorStartup implements Bootstrap {
     private EventLoopGroup serverWorkGroup;
     private SessionTransportConfig transportConfig;
     private final List<ChannelHandler> channelHandlers;
+    private SessionRegistry sessionRegistry;
+    private SessionListener sessionListener = event -> {};
+    private List<Interceptor> interceptors;
 
     public PredatorStartup() {
-        this.channelHandlers = new ArrayList<>();
+        this.channelHandlers = Lists.newArrayList();
+        this.interceptors = Lists.newArrayList();
     }
 
     @Override
@@ -67,13 +74,19 @@ public class PredatorStartup implements Bootstrap {
             @Override
             protected void initChannel(Channel channel) throws Exception {
                 if (channelHandlers.isEmpty()) {
-                    channelHandlers.add(new SessionTrafficHandler(transportConfig.getTrafficLimit(),transportConfig.getTrafficCheckInterval()));
+                    DispatcherSession dispatcher = new DispatcherSession();
+                    dispatcher.setTransportConfig(transportConfig);
+                    dispatcher.setSessionRegistry(sessionRegistry);
+                    dispatcher.setInterceptors(interceptors);
+                    dispatcher.setSessionListener(sessionListener);
+
+                    channelHandlers.add(new SessionTrafficHandler(transportConfig.getTrafficLimit(), transportConfig.getTrafficCheckInterval()));
                     channelHandlers.add(new IdleStateHandler(0, 0, transportConfig.getIdleCheckPeriod()));
                     channelHandlers.add(new ProtobufVarint32FrameDecoder());
                     channelHandlers.add(new ProtobufDecoder(ProtocolConvertor.Protocol.getDefaultInstance()));
                     channelHandlers.add(new ProtobufVarint32LengthFieldPrepender());
                     channelHandlers.add(new ProtobufEncoder());
-                    channelHandlers.add(new DispatcherSession());
+                    channelHandlers.add(dispatcher);
                     channelHandlers.add(new SessionIdleStateHandler(transportConfig.getIdleTimeout(), transportConfig.getIdleInitTimeout()));
                 }
                 channelHandlers.forEach(o -> channel.pipeline().addLast(o));
@@ -99,5 +112,20 @@ public class PredatorStartup implements Bootstrap {
     @Override
     public SessionTransportConfig transportConfig() {
         return transportConfig;
+    }
+
+    public PredatorStartup setSessionRegistry(SessionRegistry sessionRegistry) {
+        this.sessionRegistry = sessionRegistry;
+        return this;
+    }
+
+    public PredatorStartup setSessionListener(SessionListener sessionListener) {
+        this.sessionListener = sessionListener;
+        return this;
+    }
+
+    public PredatorStartup setInterceptors(List<Interceptor> interceptors) {
+        this.interceptors = interceptors;
+        return this;
     }
 }

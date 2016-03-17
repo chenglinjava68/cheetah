@@ -1,7 +1,5 @@
 package cheetah.predator.protocol;
 
-import cheetah.predator.protocol.Header;
-
 import java.util.Map;
 
 /**
@@ -10,6 +8,14 @@ import java.util.Map;
 public final class Message {
     private Header header;
     private Map<String, Object> body;
+
+    Message() {
+    }
+
+    public Message(Header header, Map<String, Object> body) {
+        this.header = header;
+        this.body = body;
+    }
 
     public final Header header() {
         return header;
@@ -25,5 +31,13 @@ public final class Message {
 
     public final void setBody(Map<String, Object> body) {
         this.body = body;
+    }
+
+    public static Message of(Header header, Map<String, Object> body) {
+        return new Message(header, body);
+    }
+
+    public static Message of() {
+        return new Message();
     }
 }

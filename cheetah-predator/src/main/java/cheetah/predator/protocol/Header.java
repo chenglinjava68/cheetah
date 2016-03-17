@@ -1,6 +1,5 @@
 package cheetah.predator.protocol;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,30 +14,29 @@ public final class Header {
     private int priority;
     private String deliveryId;
     private long deliveryTime;
-    private Map<String, Object> attachment = new HashMap<>();
+    private Map<String, Object> attachment;
+
+    public Header(Builder builder) {
+        this.crcCode = builder.crcCode;
+        this.length = builder.length;
+        this.sessionId = builder.sessionId;
+        this.type = builder.type;
+        this.priority = builder.priority;
+        this.deliveryId = builder.deliveryId;
+        this.deliveryTime = builder.deliveryTime;
+        this.attachment = builder.attachment;
+    }
 
     public final int crcCode() {
         return crcCode;
-    }
-
-    public final void setCrcCode(int crcCode) {
-        this.crcCode = crcCode;
     }
 
     public final int length() {
         return length;
     }
 
-    public final void setLength(int length) {
-        this.length = length;
-    }
-
     public final long sessionId() {
         return sessionId;
-    }
-
-    public final void setSessionId(long sessionId) {
-        this.sessionId = sessionId;
     }
 
     public final Type type() {
@@ -49,40 +47,75 @@ public final class Header {
         return this.type;
     }
 
-    public final void setType(int type) {
-        this.type = type;
-    }
-
     public final int priority() {
         return priority;
-    }
-
-    public final void setPriority(int priority) {
-        this.priority = priority;
     }
 
     public final String deliveryId() {
         return deliveryId;
     }
 
-    public final void setDeliveryId(String deliveryId) {
-        this.deliveryId = deliveryId;
-    }
-
     public final long deliveryTime() {
         return deliveryTime;
-    }
-
-    public final void setDeliveryTime(long deliveryTime) {
-        this.deliveryTime = deliveryTime;
     }
 
     public final Map<String, Object> attachment() {
         return attachment;
     }
 
-    public final void setAttachment(Map<String, Object> attachment) {
-        this.attachment = attachment;
+    public final static class Builder {
+        int crcCode = 0xabef0101;
+        int length;
+        long sessionId;
+        int type;
+        int priority;
+        String deliveryId;
+        long deliveryTime;
+        Map<String, Object> attachment;
+
+        public Header build() {
+            return new Header(this);
+        }
+
+        public Builder setSessionId(long sessionId) {
+            this.sessionId = sessionId;
+            return this;
+        }
+
+        public Builder setCrcCode(int crcCode) {
+            this.crcCode = crcCode;
+            return this;
+        }
+
+        public Builder setLength(int length) {
+            this.length = length;
+            return this;
+        }
+
+        public Builder setType(int type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder setPriority(int priority) {
+            this.priority = priority;
+            return this;
+        }
+
+        public Builder setDeliveryId(String deliveryId) {
+            this.deliveryId = deliveryId;
+            return this;
+        }
+
+        public Builder setDeliveryTime(long deliveryTime) {
+            this.deliveryTime = deliveryTime;
+            return this;
+        }
+
+        public Builder setAttachment(Map<String, Object> attachment) {
+            this.attachment = attachment;
+            return this;
+        }
     }
 
     public enum Type {

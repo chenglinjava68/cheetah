@@ -1,5 +1,6 @@
 package cheetah.predator.server.support;
 
+import cheetah.commons.logger.Debug;
 import cheetah.commons.logger.Loggers;
 import cheetah.fighter.core.Interceptor;
 import cheetah.fighter.core.support.HandlerInterceptorChain;
@@ -7,9 +8,11 @@ import cheetah.predator.core.Dispatcher;
 import cheetah.predator.core.Session;
 import cheetah.predator.core.SessionRegistry;
 import cheetah.predator.protocol.Message;
+import cheetah.predator.protocol.protobuf.ProtocolConvertor;
 import cheetah.predator.spi.event.SessionEvent;
 import cheetah.predator.spi.event.SessionListener;
 import cheetah.predator.transport.SessionHolder;
+import cheetah.predator.transport.SessionImpl;
 import cheetah.predator.transport.SessionTransportConfig;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -20,10 +23,10 @@ import java.util.List;
 /**
  * Created by Max on 2016/3/13.
  */
-public class DispatcherSession extends SimpleChannelInboundHandler<Message> implements Dispatcher {
+public class DispatcherSession extends SimpleChannelInboundHandler<ProtocolConvertor.Protocol> implements Dispatcher {
     private List<Interceptor> interceptors;
     private SessionRegistry sessionRegistry;
-    private SessionTransportConfig sessionConfig;
+    private SessionTransportConfig transportConfig;
     private SessionListener sessionListener;
 
     @Override
@@ -32,9 +35,11 @@ public class DispatcherSession extends SimpleChannelInboundHandler<Message> impl
     }
 
     @Override
-    protected void messageReceived(ChannelHandlerContext ctx, Message message) throws Exception {
+    protected void messageReceived(ChannelHandlerContext ctx, ProtocolConvertor.Protocol protocol) throws Exception {
         HandlerInterceptorChain chain = createInterceptorChain();
         Session session = SessionHolder.getSession(ctx);
+        System.out.println(protocol);
+        Debug.log(this.getClass(), protocol.toString());
 //        Optional<io.workplus.foundations.sessioncenter.spi.MessageHandler> handlerOpt = getHandler(msg);
 //        if (!handlerOpt.isPresent()) {
 //            throw new MessageHandlerNotFoundException();
@@ -42,6 +47,26 @@ public class DispatcherSession extends SimpleChannelInboundHandler<Message> impl
 //
 //        SessionContext context = SessionContext.from(session);
 //        handlerOpt.get().handle(context, msg);
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        Session.Metadata metadata = Session.Metadata.newBuilder()
+                .state(Session.State.UNAPPROVED)
+                .accessEndpoint(transportConfig.accessEndpoint().toString())
+                .remoteEndpoint(ofRemoteEndpoint(ctx))
+                .build();
+
+        Session session = new SessionImpl(ctx);
+        session.metadata(metadata);
+
+        SessionHolder.setSession(ctx, session);
+        sessionRegistry.register(session);
+        userEventTriggered(ctx, anOpenedEventWith(session));
+    }
+
+    private SessionEvent anOpenedEventWith(Session session) {
+        return SessionEvent.of(SessionEvent.Type.OPENED, session);
     }
 
     @Override
@@ -66,7 +91,8 @@ public class DispatcherSession extends SimpleChannelInboundHandler<Message> impl
         Session session = SessionHolder.getAndRemoveSession(ctx);
         userEventTriggered(ctx, aClosedEventWith(session));
         sessionRegistry.unregister(session);
-        Loggers.me().debug(this.getClass(), session.metadata().toString() + "-- close.");
+        ctx.channel().close();
+        Loggers.me().error(this.getClass(), session.metadata().toString() + "-- unregistry.");
     }
 
     private SessionEvent aClosedEventWith(Session session) {
@@ -81,7 +107,7 @@ public class DispatcherSession extends SimpleChannelInboundHandler<Message> impl
         // Important. using remoteAddress.getHostName may cause a dns lookup.
         // use remoteAddress.getHostString instead.
         InetSocketAddress remoteAddress = (InetSocketAddress) ctx.channel().remoteAddress();
-        return String.format("%s://%s:%s", sessionConfig.scheme(), remoteAddress.getHostString(), remoteAddress.getPort());
+        return String.format("%s://%s:%s", transportConfig.scheme(), remoteAddress.getHostString(), remoteAddress.getPort());
     }
 
 
@@ -109,8 +135,8 @@ public class DispatcherSession extends SimpleChannelInboundHandler<Message> impl
         this.sessionRegistry = sessionRegistry;
     }
 
-    public void setSessionConfig(SessionTransportConfig sessionConfig) {
-        this.sessionConfig = sessionConfig;
+    public void setTransportConfig(SessionTransportConfig sessionConfig) {
+        this.transportConfig = sessionConfig;
     }
 
     public void setSessionListener(SessionListener sessionListener) {
