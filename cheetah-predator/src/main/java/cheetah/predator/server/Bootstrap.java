@@ -18,6 +18,7 @@ public interface Bootstrap extends Startable {
     String IO_RATIO = "io.ratio";
     String TCP_BACKLOG = "tcp.backlog";
     String TCP_RECYCLE = "tcp.recycle";
+    String LOG_LEVEL = "log.level";
     int DEFAULT_TCP_BACKLOG = 1024;
     boolean DEFAULT_TCP_RECYCLE = false;
 
@@ -35,7 +36,7 @@ public interface Bootstrap extends Startable {
                     .option(ChannelOption.TCP_NODELAY, true)
                     .option(ChannelOption.RCVBUF_ALLOCATOR, AdaptiveRecvByteBufAllocator.DEFAULT)
                     .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-                    .handler(new LoggingHandler(LogLevel.ERROR))
+                    .handler(new LoggingHandler(logLevel()))
                     .childHandler(ChannelCrowd());
             ChannelFuture future = bootstrap.bind(getPort()).sync();
             future.channel().closeFuture().sync();
@@ -54,6 +55,24 @@ public interface Bootstrap extends Startable {
             serverBossGroup().shutdownGracefully();
         if (Objects.nonNull(serverWorkGroup()))
             serverWorkGroup().shutdownGracefully();
+    }
+
+    default LogLevel logLevel() {
+        String logLevel = transportConfig().paramOrDefault(LOG_LEVEL, "WARN");
+        switch (logLevel) {
+            case "ERROR":
+                return LogLevel.ERROR;
+            case "WARN":
+                return LogLevel.WARN;
+            case "TRACE":
+                return LogLevel.TRACE;
+            case "DEBUG":
+                return LogLevel.DEBUG;
+            case "INFO":
+                return LogLevel.INFO;
+            default:
+                return LogLevel.WARN;
+        }
     }
 
     void initialize();

@@ -1,17 +1,17 @@
 package cheetah.predator.spi.event;
 
 import cheetah.commons.utils.Assert;
-import cheetah.fighter.event.Event;
 import cheetah.predator.core.Session;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.EventObject;
 import java.util.Objects;
 
 /**
  * @author Max
  */
-public final class SessionEvent extends Event {
+public final class SessionEvent extends EventObject {
 
     private static final long serialVersionUID = -7673066569265768009L;
 
@@ -19,6 +19,7 @@ public final class SessionEvent extends Event {
         OPENED, APPROVED, CLOSED
     }
 
+    private long occurredTime;
     private Session session;
 
     private SessionEvent(Type type, Session session) {
@@ -59,6 +60,10 @@ public final class SessionEvent extends Event {
         return Objects.equals(type(), that.type())
                 && Objects.equals(session(), that.session())
                 && Objects.equals(occurredTime(), that.occurredTime());
+    }
+
+    public long occurredTime() {
+        return occurredTime;
     }
 
     @Override

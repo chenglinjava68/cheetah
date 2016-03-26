@@ -1,11 +1,11 @@
 package cheetah.predator.server.support;
 
-import cheetah.fighter.core.Interceptor;
+import cheetah.predator.core.Interceptor;
 import cheetah.predator.core.SessionRegistry;
+import cheetah.predator.core.support.SessionTransportConfig;
 import cheetah.predator.server.Bootstrap;
 import cheetah.predator.server.ChannelCrowd;
 import cheetah.predator.spi.event.SessionListener;
-import cheetah.predator.core.support.SessionTransportConfig;
 import com.google.common.collect.Lists;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
