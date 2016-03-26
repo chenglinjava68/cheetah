@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * @author siuming
+ * @author Max
  */
 public class SessionRegistryImpl implements SessionRegistry {
 

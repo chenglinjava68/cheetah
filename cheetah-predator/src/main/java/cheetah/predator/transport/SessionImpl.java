@@ -1,7 +1,7 @@
 package cheetah.predator.transport;
 
 import cheetah.predator.core.Session;
-import cheetah.predator.protocol.Message;
+import cheetah.predator.protocol.ProtocolConvertor;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -29,12 +29,12 @@ public class SessionImpl implements Session {
     }
 
     @Override
-    public void respond(Message message) {
+    public void respond(ProtocolConvertor.Message message) {
         this.ctx.writeAndFlush(message);
     }
 
     @Override
-    public void close(Message message) throws Exception {
+    public void close(ProtocolConvertor.Message message) throws Exception {
         Object out = null == message ? new byte[0] : message;
         this.ctx.writeAndFlush(out).addListener(ChannelFutureListener.CLOSE);
     }

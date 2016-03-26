@@ -8,7 +8,7 @@ package cheetah.commons.lifecycle;
  */
 public final class Lifecycle {
 
-    public static enum State {
+    public enum State {
         INITIALIZED,
         STOPPED,
         STARTED,

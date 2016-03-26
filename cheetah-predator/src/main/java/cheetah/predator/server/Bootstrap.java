@@ -57,11 +57,7 @@ public interface Bootstrap extends Startable {
 
     void initialize();
 
-    void registerHandler(List<ChannelHandler> channelHandlers);
-
-    void setHandlers(List<ChannelHandler> channelHandlers);
-
-    void registerHandler(ChannelHandler channelHandler);
+    void setChannelHandlers(List<ChannelHandler> channelHandlers);
 
     int getPort();
 

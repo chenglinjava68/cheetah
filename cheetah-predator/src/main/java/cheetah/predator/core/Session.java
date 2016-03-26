@@ -1,6 +1,6 @@
 package cheetah.predator.core;
 
-import cheetah.predator.protocol.Message;
+import cheetah.predator.protocol.ProtocolConvertor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -204,8 +204,8 @@ public interface Session {
      */
     void metadata(Session.Metadata metadata);
 
-    void respond(Message message);
+    void respond(ProtocolConvertor.Message message);
 
-    void close(Message message) throws Exception;
+    void close(ProtocolConvertor.Message message) throws Exception;
 
 }

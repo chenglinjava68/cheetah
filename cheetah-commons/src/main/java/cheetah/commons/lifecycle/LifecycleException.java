@@ -3,7 +3,7 @@ package cheetah.commons.lifecycle;
 /**
  * <p>LifecycleException class.</p>
  *
- * @author siuming
+ * @author Max
  * @version $Id: $Id
  */
 public class LifecycleException extends RuntimeException {
