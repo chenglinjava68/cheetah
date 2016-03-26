@@ -1,7 +1,7 @@
 package cheetah.fighter.governor;
 
 import cheetah.commons.utils.Assert;
-import cheetah.fighter.core.plugin.PluginChain;
+import cheetah.fighter.plugin.PluginChain;
 import cheetah.fighter.event.Event;
 import cheetah.fighter.handler.Feedback;
 import cheetah.fighter.handler.Handler;

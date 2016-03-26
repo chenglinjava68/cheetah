@@ -13,32 +13,19 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package cheetah.fighter.core.plugin;
+package cheetah.fighter.plugin;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author Max
  */
-public class PluginChain {
-
-  private final List<Plugin> plugins = new ArrayList<>();
-
-  public Object pluginAll(Object target) {
-    for (Plugin plugin : plugins) {
-      target = plugin.plugin(target);
-    }
-    return target;
-  }
-
-  public void register(Plugin plugin) {
-    plugins.add(plugin);
-  }
-  
-  public List<Plugin> interceptors() {
-    return Collections.unmodifiableList(plugins);
-  }
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Plugins {
+  Registry[] value();
 }
+

@@ -1,7 +1,7 @@
 package cheetah.fighter.governor.support;
 
 import akka.actor.ActorRef;
-import cheetah.fighter.core.plugin.PluginChain;
+import cheetah.fighter.plugin.PluginChain;
 import cheetah.fighter.governor.AbstractGovernorAdapter;
 
 /**

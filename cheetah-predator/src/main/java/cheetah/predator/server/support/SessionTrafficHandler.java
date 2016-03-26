@@ -3,7 +3,7 @@ package cheetah.predator.server.support;
 import io.netty.handler.traffic.ChannelTrafficShapingHandler;
 
 /**
- * @author siuming
+ * @author Max
 */
 public class SessionTrafficHandler extends ChannelTrafficShapingHandler {
 

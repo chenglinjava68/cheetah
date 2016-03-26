@@ -2,7 +2,7 @@ package cheetah.fighter.core;
 
 
 import cheetah.commons.utils.CollectionUtils;
-import cheetah.fighter.core.plugin.Plugin;
+import cheetah.fighter.plugin.Plugin;
 import com.google.common.collect.Lists;
 
 import java.util.Collections;

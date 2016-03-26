@@ -2,7 +2,7 @@ package cheetah.predator.server.support;
 
 import cheetah.commons.logger.Loggers;
 import cheetah.predator.core.Session;
-import cheetah.predator.transport.SessionHolder;
+import cheetah.predator.core.support.SessionHolder;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleStateEvent;

@@ -1,7 +1,7 @@
 package cheetah.fighter.governor.support;
 
 import cheetah.fighter.async.disruptor.DisruptorEvent;
-import cheetah.fighter.core.plugin.PluginChain;
+import cheetah.fighter.plugin.PluginChain;
 import cheetah.fighter.governor.AbstractGovernorAdapter;
 import com.lmax.disruptor.RingBuffer;
 

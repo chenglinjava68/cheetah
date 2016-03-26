@@ -1,4 +1,4 @@
-package cheetah.predator.transport;
+package cheetah.predator.core.support;
 
 import cheetah.commons.Constants;
 import cheetah.commons.net.QueryStringDecoder;

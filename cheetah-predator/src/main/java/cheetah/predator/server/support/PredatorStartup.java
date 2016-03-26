@@ -1,26 +1,19 @@
 package cheetah.predator.server.support;
 
-import cheetah.commons.utils.CollectionUtils;
 import cheetah.fighter.core.Interceptor;
 import cheetah.predator.core.SessionRegistry;
-import cheetah.predator.protocol.ProtocolConvertor;
 import cheetah.predator.server.Bootstrap;
+import cheetah.predator.server.ChannelCrowd;
 import cheetah.predator.spi.event.SessionListener;
-import cheetah.predator.transport.SessionTransportConfig;
-import com.google.common.collect.ImmutableList;
+import cheetah.predator.core.support.SessionTransportConfig;
 import com.google.common.collect.Lists;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.handler.codec.protobuf.ProtobufDecoder;
-import io.netty.handler.codec.protobuf.ProtobufEncoder;
-import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
-import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
-import io.netty.handler.timeout.IdleStateHandler;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Max on 2016/3/13.
@@ -29,14 +22,13 @@ public class PredatorStartup implements Bootstrap {
     private EventLoopGroup serverBossGroup;
     private EventLoopGroup serverWorkGroup;
     private SessionTransportConfig transportConfig;
-    private List<ChannelHandler> channelHandlers;
     private SessionRegistry sessionRegistry;
     private SessionListener sessionListener = event -> {
     };
     private List<Interceptor> interceptors;
+    private ChannelCrowd channelCrowd;
 
     public PredatorStartup() {
-        this.channelHandlers = Lists.newArrayList();
         this.interceptors = Lists.newArrayList();
     }
 
@@ -48,36 +40,26 @@ public class PredatorStartup implements Bootstrap {
     }
 
     @Override
-    public void setChannelHandlers(List<ChannelHandler> channelHandlers) {
-        this.channelHandlers = ImmutableList.<ChannelHandler>builder().addAll(channelHandlers).build();
-    }
-
-    @Override
     public int getPort() {
         return transportConfig.port();
     }
 
     @Override
-    public ChannelInitializer<Channel> generateChannelInitializer() {
-        return new ChannelInitializer<Channel>() {
-            @Override
-            protected void initChannel(Channel channel) throws Exception {
-                if (CollectionUtils.isEmpty(channelHandlers)) {
-                    channelHandlers = ImmutableList.<ChannelHandler>builder()
-                            .add(new SessionTrafficHandler(transportConfig.getTrafficLimit(), transportConfig.getTrafficCheckInterval()))
-                            .add(new IdleStateHandler(0, 0, transportConfig.getIdleCheckPeriod()))
-                            .add(new ProtobufVarint32FrameDecoder())
-                            .add(new ProtobufDecoder(ProtocolConvertor.Message.getDefaultInstance()))
-                            .add(new ProtobufVarint32LengthFieldPrepender())
-                            .add(new ProtobufEncoder())
-                            .add(new DispatcherSession(interceptors))
-                            .add(new SessionIdleStateHandler(transportConfig.getIdleTimeout(), transportConfig.getIdleInitTimeout()))
-                            .add(new SessionHandler(transportConfig, sessionRegistry, sessionListener))
-                            .build();
-                }
-                channelHandlers.forEach(o -> channel.pipeline().addLast(o));
-            }
-        };
+    public void setChannelCrowd(ChannelCrowd channelCrowd) {
+        this.channelCrowd = channelCrowd;
+    }
+
+    @Override
+    public ChannelInitializer<Channel> ChannelCrowd() {
+        if (Objects.isNull(channelCrowd)) {
+            ChannelCrowd crowd = new DefaultChannelCrowd();
+            crowd.setInterceptors(this.interceptors);
+            crowd.setSessionListener(this.sessionListener);
+            crowd.setSessionRegistry(this.sessionRegistry);
+            crowd.setTransportConfig(this.transportConfig);
+            return crowd;
+        }
+        return this.channelCrowd;
     }
 
     @Override
@@ -110,8 +92,4 @@ public class PredatorStartup implements Bootstrap {
         return this;
     }
 
-    public PredatorStartup setInterceptors(List<Interceptor> interceptors) {
-        this.interceptors = ImmutableList.<Interceptor>builder().addAll(interceptors).build();
-        return this;
-    }
 }

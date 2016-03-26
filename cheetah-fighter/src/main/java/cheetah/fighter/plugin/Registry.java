@@ -1,4 +1,4 @@
-package cheetah.fighter.core.plugin;
+package cheetah.fighter.plugin;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

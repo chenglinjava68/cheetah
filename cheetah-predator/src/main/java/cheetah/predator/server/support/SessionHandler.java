@@ -5,9 +5,9 @@ import cheetah.predator.core.Session;
 import cheetah.predator.core.SessionRegistry;
 import cheetah.predator.spi.event.SessionEvent;
 import cheetah.predator.spi.event.SessionListener;
-import cheetah.predator.transport.SessionHolder;
-import cheetah.predator.transport.SessionImpl;
-import cheetah.predator.transport.SessionTransportConfig;
+import cheetah.predator.core.support.SessionHolder;
+import cheetah.predator.core.support.SessionImpl;
+import cheetah.predator.core.support.SessionTransportConfig;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -19,7 +19,8 @@ import java.net.InetSocketAddress;
 public class SessionHandler extends ChannelHandlerAdapter {
     private SessionRegistry sessionRegistry;
     private SessionTransportConfig transportConfig;
-    private SessionListener sessionListener = event -> {};
+    private SessionListener sessionListener = event -> {
+    };
 
     public SessionHandler(SessionTransportConfig transportConfig, SessionRegistry sessionRegistry, SessionListener sessionListener) {
         this.transportConfig = transportConfig;
@@ -63,8 +64,7 @@ public class SessionHandler extends ChannelHandlerAdapter {
         Session session = SessionHolder.getAndRemoveSession(ctx);
         userEventTriggered(ctx, aClosedEventWith(session));
         sessionRegistry.unregister(session);
-        ctx.channel().close();
-        Loggers.me().error(this.getClass(), session.metadata().toString() + "-- unregistry.");
+        Loggers.me().debug(this.getClass(), "[UNREGISTRY]" + session.metadata().toString());
     }
 
     private SessionEvent aClosedEventWith(Session session) {

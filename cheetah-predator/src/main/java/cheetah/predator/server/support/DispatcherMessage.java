@@ -6,7 +6,7 @@ import cheetah.fighter.core.support.HandlerInterceptorChain;
 import cheetah.predator.core.Dispatcher;
 import cheetah.predator.core.Session;
 import cheetah.predator.protocol.ProtocolConvertor;
-import cheetah.predator.transport.SessionHolder;
+import cheetah.predator.core.support.SessionHolder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -15,10 +15,10 @@ import java.util.List;
 /**
  * Created by Max on 2016/3/13.
  */
-public class DispatcherSession extends SimpleChannelInboundHandler<ProtocolConvertor.Message> implements Dispatcher {
+public class DispatcherMessage extends SimpleChannelInboundHandler<ProtocolConvertor.Message> implements Dispatcher {
     private List<Interceptor> interceptors;
 
-    public DispatcherSession(List<Interceptor> interceptors) {
+    public DispatcherMessage(List<Interceptor> interceptors) {
         this.interceptors = interceptors;
     }
 
@@ -41,6 +41,7 @@ public class DispatcherSession extends SimpleChannelInboundHandler<ProtocolConve
 //
 //        SessionContext context = SessionContext.from(session);
 //        handlerOpt.get().handle(context, msg);
+        ctx.writeAndFlush(message);
     }
 
     @Override

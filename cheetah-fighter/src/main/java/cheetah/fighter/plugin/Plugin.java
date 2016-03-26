@@ -1,4 +1,4 @@
-package cheetah.fighter.core.plugin;
+package cheetah.fighter.plugin;
 
 /**
  * Created by Max on 2016/3/7.

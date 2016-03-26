@@ -1,4 +1,4 @@
-package cheetah.predator.transport;
+package cheetah.predator.core.support;
 
 import cheetah.predator.core.Session;
 import cheetah.predator.protocol.ProtocolConvertor;

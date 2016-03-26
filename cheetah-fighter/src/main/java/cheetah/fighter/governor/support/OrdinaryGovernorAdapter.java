@@ -1,6 +1,6 @@
 package cheetah.fighter.governor.support;
 
-import cheetah.fighter.core.plugin.PluginChain;
+import cheetah.fighter.plugin.PluginChain;
 import cheetah.fighter.governor.AbstractGovernorAdapter;
 import cheetah.fighter.worker.Worker;
 

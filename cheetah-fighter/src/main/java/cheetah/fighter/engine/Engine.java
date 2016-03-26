@@ -3,7 +3,7 @@ package cheetah.fighter.engine;
 import cheetah.fighter.async.AsynchronousPoolFactory;
 import cheetah.commons.Startable;
 import cheetah.fighter.core.EventContext;
-import cheetah.fighter.core.plugin.PluginChain;
+import cheetah.fighter.plugin.PluginChain;
 import cheetah.fighter.governor.Governor;
 import cheetah.fighter.governor.GovernorFactory;
 import cheetah.fighter.handler.Handler;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cheetah.fighter.core.plugin;
+package cheetah.fighter.plugin;
 
 import net.sf.cglib.proxy.MethodProxy;
 
