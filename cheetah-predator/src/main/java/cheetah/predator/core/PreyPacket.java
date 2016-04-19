@@ -6,16 +6,16 @@ import com.google.common.base.MoreObjects;
 /**
  * Created by pdemo on 2016/4/18.
  */
-public class MyPacket implements Packet {
+public class PreyPacket implements Packet {
 
     private static final long serialVersionUID = -3612760214098827317L;
 
-    MyPacket() {
+    PreyPacket() {
         this.digest = EMPTY;
         this.body = EMPTY;
     }
 
-    MyPacket(byte type, int digestSize, byte[] digest, int bodySize, byte[] body) {
+    PreyPacket(byte type, int digestSize, byte[] digest, int bodySize, byte[] body) {
         this.digest = EMPTY;
         this.body = EMPTY;
         this.type = type;
@@ -58,27 +58,27 @@ public class MyPacket implements Packet {
 
     @Override
     public Packet type(byte type) {
-        return new MyPacket(type, this.digestSize, this.digest, this.bodySize, this.body);
+        return new PreyPacket(type, this.digestSize, this.digest, this.bodySize, this.body);
     }
 
     @Override
     public Packet digestSize(int digestSize) {
-        return new MyPacket(this.type, digestSize, this.digest, this.bodySize, this.body);
+        return new PreyPacket(this.type, digestSize, this.digest, this.bodySize, this.body);
     }
 
     @Override
     public Packet digest(byte[] digest) {
-        return new MyPacket(this.type, digest.length, digest, this.bodySize, this.body);
+        return new PreyPacket(this.type, digest.length, digest, this.bodySize, this.body);
     }
 
     @Override
     public Packet bodySize(int bodySize) {
-        return new MyPacket(this.type, this.digestSize, this.digest, bodySize, this.body);
+        return new PreyPacket(this.type, this.digestSize, this.digest, bodySize, this.body);
     }
 
     @Override
     public Packet body(byte[] body) {
-        return new MyPacket(this.type, this.digestSize, this.digest, body.length, body);
+        return new PreyPacket(this.type, this.digestSize, this.digest, body.length, body);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class MyPacket implements Packet {
         return MoreObjects.toStringHelper(this).add("type", this.type).add("digestSize", this.digestSize).add("bodySize", this.bodySize).toString();
     }
 
-    public static MyPacket empty() {
-        return new MyPacket();
+    public static PreyPacket empty() {
+        return new PreyPacket();
     }
 }

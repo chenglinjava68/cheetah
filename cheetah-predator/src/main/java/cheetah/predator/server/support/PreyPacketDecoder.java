@@ -2,7 +2,7 @@ package cheetah.predator.server.support;
 
 import cheetah.commons.logger.Loggers;
 import cheetah.commons.net.Packet;
-import cheetah.predator.core.MyPacket;
+import cheetah.predator.core.PreyPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ReplayingDecoder;
@@ -48,7 +48,7 @@ final class PreyPacketDecoder extends ReplayingDecoder<PreyPacketDecoder.State> 
     }
 
     private void initProtocol(ChannelHandlerContext ctx) {
-        ctx.attr(PROTOCOL_KEY).set(MyPacket.empty());
+        ctx.attr(PROTOCOL_KEY).set(PreyPacket.empty());
     }
 
     private void decodeFirstByte(ChannelHandlerContext ctx, ByteBuf buf) {
