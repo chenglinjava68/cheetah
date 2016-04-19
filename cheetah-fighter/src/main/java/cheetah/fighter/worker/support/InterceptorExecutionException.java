@@ -1,12 +1,12 @@
 package cheetah.fighter.worker.support;
 
 
-import cheetah.commons.CheetahException;
+import cheetah.commons.PlatformException;
 
 /**
  * Created by Max on 2016/3/8.
  */
-public class InterceptorExecutionException extends CheetahException {
+public class InterceptorExecutionException extends PlatformException {
     public InterceptorExecutionException() {
     }
 

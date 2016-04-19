@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by Max on 2016/3/26.
  */
-public abstract class ChannelCrowd extends ChannelInitializer<Channel> {
+public abstract class PipelineCrowd extends ChannelInitializer<Channel> {
     private SessionTransportConfig transportConfig;
     private SessionRegistry sessionRegistry;
     private SessionListener sessionListener;
@@ -30,7 +30,7 @@ public abstract class ChannelCrowd extends ChannelInitializer<Channel> {
         return transportConfig;
     }
 
-    public ChannelCrowd setTransportConfig(SessionTransportConfig transportConfig) {
+    public PipelineCrowd setTransportConfig(SessionTransportConfig transportConfig) {
         this.transportConfig = transportConfig;
         return this;
     }
@@ -39,7 +39,7 @@ public abstract class ChannelCrowd extends ChannelInitializer<Channel> {
         return sessionRegistry;
     }
 
-    public ChannelCrowd setSessionRegistry(SessionRegistry sessionRegistry) {
+    public PipelineCrowd setSessionRegistry(SessionRegistry sessionRegistry) {
         this.sessionRegistry = sessionRegistry;
         return this;
     }
@@ -48,7 +48,7 @@ public abstract class ChannelCrowd extends ChannelInitializer<Channel> {
         return sessionListener;
     }
 
-    public ChannelCrowd setSessionListener(SessionListener sessionListener) {
+    public PipelineCrowd setSessionListener(SessionListener sessionListener) {
         this.sessionListener = sessionListener;
         return this;
     }
@@ -57,7 +57,7 @@ public abstract class ChannelCrowd extends ChannelInitializer<Channel> {
         return interceptors;
     }
 
-    public ChannelCrowd setInterceptors(List<Interceptor> interceptors) {
+    public PipelineCrowd setInterceptors(List<Interceptor> interceptors) {
         this.interceptors = interceptors;
         return this;
     }

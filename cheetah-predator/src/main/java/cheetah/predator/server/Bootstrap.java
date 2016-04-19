@@ -3,7 +3,6 @@ package cheetah.predator.server;
 import cheetah.commons.Startable;
 import cheetah.predator.core.support.SessionTransportConfig;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.*;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
@@ -34,8 +33,10 @@ public interface Bootstrap extends Startable {
                     .option(ChannelOption.SO_REUSEADDR, tcpRecycle)
                     .option(ChannelOption.SO_BACKLOG, tcpBacklog)
                     .option(ChannelOption.TCP_NODELAY, true)
+                            //容量动态调整的接收缓冲区分配器，它会根据之前Channel接收到的数据报大小进行计算，
+                            // 如果连续填充满接收缓冲区的可写空间，则动态扩展容量。如果连续2次接收到的数据报都小于指定值，则收缩当前的容量，以节约内存
                     .option(ChannelOption.RCVBUF_ALLOCATOR, AdaptiveRecvByteBufAllocator.DEFAULT)
-                    .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+//                    .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
                     .handler(new LoggingHandler(logLevel()))
                     .childHandler(ChannelCrowd());
             ChannelFuture future = bootstrap.bind(getPort()).sync();
@@ -79,7 +80,7 @@ public interface Bootstrap extends Startable {
 
     int getPort();
 
-    void setChannelCrowd(ChannelCrowd channelCrowd);
+    void setPipelineCrowd(PipelineCrowd pipelineCrowd);
 
     ChannelInitializer<Channel> ChannelCrowd();
 

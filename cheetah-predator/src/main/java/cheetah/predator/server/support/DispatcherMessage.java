@@ -6,7 +6,7 @@ import cheetah.predator.core.Interceptor;
 import cheetah.predator.core.Session;
 import cheetah.predator.core.support.MessageHandlerChain;
 import cheetah.predator.core.support.SessionHolder;
-import cheetah.predator.protocol.ProtocolConvertor;
+import cheetah.predator.protocol.MessageBuf;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Max on 2016/3/13.
  */
-public final class DispatcherMessage extends SimpleChannelInboundHandler<ProtocolConvertor.Message> {
+public final class DispatcherMessage extends SimpleChannelInboundHandler<MessageBuf.Message> {
     private List<Interceptor> interceptors;
 
     public DispatcherMessage(List<Interceptor> interceptors) {
@@ -27,11 +27,12 @@ public final class DispatcherMessage extends SimpleChannelInboundHandler<Protoco
     }
 
     @Override
-    protected void messageReceived(ChannelHandlerContext ctx, ProtocolConvertor.Message message) throws Exception {
+    protected void messageReceived(ChannelHandlerContext ctx, MessageBuf.Message message) throws Exception {
         MessageHandlerChain chain = createInterceptorChain(message.getHeader().getType());
         Session session = SessionHolder.getSession(ctx);
         chain.handle(message, session);
         Debug.log(this.getClass(), message.toString());
+        ctx.writeAndFlush(message);
     }
 
     @Override
@@ -43,7 +44,7 @@ public final class DispatcherMessage extends SimpleChannelInboundHandler<Protoco
             Loggers.me().warn(getClass(), "packet or message codec exception or handler not found exception, for prevent dirty data, close session.", cause);
 
             Session session =  SessionHolder.getSession(ctx);
-            ProtocolConvertor.Message reason = buildMessage(session);
+            MessageBuf.Message reason = buildMessage(session);
 
             ctx.writeAndFlush(reason).addListener(ChannelFutureListener.CLOSE);
             return;
@@ -54,7 +55,7 @@ public final class DispatcherMessage extends SimpleChannelInboundHandler<Protoco
         ctx.close();
     }
 
-    private ProtocolConvertor.Message buildMessage(Session session) {
+    private MessageBuf.Message buildMessage(Session session) {
         return null;
     }
 

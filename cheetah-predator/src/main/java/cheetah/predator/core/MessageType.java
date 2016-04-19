@@ -4,32 +4,32 @@ package cheetah.predator.core;
  * Created by Max on 2016/3/26.
  */
 public enum MessageType {
-    CMD(0),
-    ACK(1),
-    CHAT(2),
-    SYSTEM(3),
-    NOTICE(4),
-    EVENT(5),
-    APP(6),
-    VOIP(7),
-    CUSTOM(8);
+    CMD(0), //命令
+    ACK(1), //确认ack
+    CHAT(2), //聊天
+    SYSTEM(3), //系统
+    NOTICE(4),  //通知
+    EVENT(5),  //事件
+    APP(6),   //应用
+    VOIP(7),  //语音
+    CUSTOM(8); //自定义
 
-    MessageType(int type) {
-        this.type = type;
+    MessageType(int value) {
+        this.value = value;
     }
 
-    private int type;
+    private int value;
 
-    static MessageType formatFrom(int type) {
+    public static MessageType formatFrom(int value) {
         for (MessageType t : MessageType.values()) {
-            if (t.type == type) {
+            if (t.value == value) {
                 return t;
             }
         }
         throw new MessageTypeNotFoundException();
     }
 
-    public int type() {
-        return type;
+    public int value() {
+        return value;
     }
 }

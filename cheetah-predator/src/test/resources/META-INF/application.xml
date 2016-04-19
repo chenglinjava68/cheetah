@@ -24,8 +24,10 @@ http://www.springframework.org/schema/aop
                 <constructor-arg index="0" value="${transport.socket.access.endpoint}"/>
             </bean>
         </property>
-        <property name="sessionRegistry">
-            <bean class="cheetah.predator.core.support.SessionRegistryImpl"/>
+        <property name="interceptors">
+            <list>
+                <bean class="cheetah.predator.server.MessageHandler"/>
+            </list>
         </property>
     </bean>
 </beans>

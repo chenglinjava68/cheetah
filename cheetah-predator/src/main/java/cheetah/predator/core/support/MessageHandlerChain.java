@@ -3,7 +3,7 @@ package cheetah.predator.core.support;
 import cheetah.commons.utils.CollectionUtils;
 import cheetah.predator.core.Interceptor;
 import cheetah.predator.core.Session;
-import cheetah.predator.protocol.ProtocolConvertor;
+import cheetah.predator.protocol.MessageBuf;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +16,19 @@ public class MessageHandlerChain implements Cloneable {
     private int interceptorIndex;
     private static MessageHandlerChain DEFAULT_CHAIN = new MessageHandlerChain();
 
-    public boolean handle(ProtocolConvertor.Message message, Session session) throws Exception {
+    public boolean handle(MessageBuf.Message message, Session session) {
         List<Interceptor> $interceptors = getInterceptors();
         if (!CollectionUtils.isEmpty($interceptors)) {
             for (int i = 0; i < $interceptors.size(); this.interceptorIndex = i++) {
-                if (!$interceptors.get(i).handle(message, session)) {
+                boolean result;
+                try {
+                    result = $interceptors.get(i).handle(message, session);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    this.triggerAfterCompletion(message, session, e);
+                    return false;
+                }
+                if (!result) {
                     this.triggerAfterCompletion(message, session, null);
                     return false;
                 }
@@ -29,10 +37,10 @@ public class MessageHandlerChain implements Cloneable {
         return true;
     }
 
-    public void triggerAfterCompletion(ProtocolConvertor.Message message, Session session, Exception ex) {
+    public void triggerAfterCompletion(MessageBuf.Message message, Session session, Exception ex) {
         List<Interceptor> $interceptors = getInterceptors();
         if (!CollectionUtils.isEmpty($interceptors)) {
-            for (int i = 0; i < $interceptors.size(); this.interceptorIndex = --i) {
+            for (int i = this.interceptorIndex; i >= 0; --i) {
                 try {
                     $interceptors.get(i).afterCompletion(message, session, ex);
                 } catch (Exception e) {

@@ -2,9 +2,10 @@ package cheetah.predator.server.support;
 
 import cheetah.predator.core.Interceptor;
 import cheetah.predator.core.SessionRegistry;
+import cheetah.predator.core.support.SessionRegistryImpl;
 import cheetah.predator.core.support.SessionTransportConfig;
 import cheetah.predator.server.Bootstrap;
-import cheetah.predator.server.ChannelCrowd;
+import cheetah.predator.server.PipelineCrowd;
 import cheetah.predator.spi.event.SessionListener;
 import com.google.common.collect.Lists;
 import io.netty.channel.Channel;
@@ -23,20 +24,21 @@ public class PredatorStartup implements Bootstrap {
     private EventLoopGroup serverWorkGroup;
     private SessionTransportConfig transportConfig;
     private SessionRegistry sessionRegistry;
+    private List<Interceptor> interceptors;
+    private PipelineCrowd pipelineCrowd;
     private SessionListener sessionListener = event -> {
     };
-    private List<Interceptor> interceptors;
-    private ChannelCrowd channelCrowd;
 
     public PredatorStartup() {
         this.interceptors = Lists.newArrayList();
+        this.sessionRegistry = new SessionRegistryImpl();
     }
 
     @Override
     public void initialize() {
         int processors = Runtime.getRuntime().availableProcessors();
         serverBossGroup = new NioEventLoopGroup(processors);
-        serverWorkGroup = new NioEventLoopGroup((int) (processors / (1 - 0.6)));
+        serverWorkGroup = new NioEventLoopGroup();
     }
 
     @Override
@@ -45,21 +47,21 @@ public class PredatorStartup implements Bootstrap {
     }
 
     @Override
-    public void setChannelCrowd(ChannelCrowd channelCrowd) {
-        this.channelCrowd = channelCrowd;
+    public void setPipelineCrowd(PipelineCrowd pipelineCrowd) {
+        this.pipelineCrowd = pipelineCrowd;
     }
 
     @Override
     public ChannelInitializer<Channel> ChannelCrowd() {
-        if (Objects.isNull(channelCrowd)) {
-            ChannelCrowd crowd = new DefaultChannelCrowd();
+        if (Objects.isNull(pipelineCrowd)) {
+            PipelineCrowd crowd = new DefaultPipelineCrowd();
             crowd.setInterceptors(this.interceptors);
             crowd.setSessionListener(this.sessionListener);
             crowd.setSessionRegistry(this.sessionRegistry);
             crowd.setTransportConfig(this.transportConfig);
             return crowd;
         }
-        return this.channelCrowd;
+        return this.pipelineCrowd;
     }
 
     @Override
@@ -92,4 +94,8 @@ public class PredatorStartup implements Bootstrap {
         return this;
     }
 
+    public PredatorStartup setInterceptors(List<Interceptor> interceptors) {
+        this.interceptors = interceptors;
+        return this;
+    }
 }

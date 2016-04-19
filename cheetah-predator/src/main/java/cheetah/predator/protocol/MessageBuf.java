@@ -3,8 +3,8 @@
 
 package cheetah.predator.protocol;
 
-public final class ProtocolConvertor {
-  private ProtocolConvertor() {}
+public final class MessageBuf {
+  private MessageBuf() {}
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
@@ -139,12 +139,12 @@ public final class ProtocolConvertor {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return ProtocolConvertor.internal_static_netty_Message_descriptor;
+      return MessageBuf.internal_static_netty_Message_descriptor;
     }
 
     protected FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return ProtocolConvertor.internal_static_netty_Message_fieldAccessorTable
+      return MessageBuf.internal_static_netty_Message_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               Message.class, Builder.class);
     }
@@ -232,27 +232,47 @@ public final class ProtocolConvertor {
        */
       long getDeliveryTime();
 
-      // repeated .netty.Message.Header.Attachment attachment = 6;
+      // required sfixed64 deviceId = 6;
       /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+       * <code>required sfixed64 deviceId = 6;</code>
+       */
+      boolean hasDeviceId();
+      /**
+       * <code>required sfixed64 deviceId = 6;</code>
+       */
+      long getDeviceId();
+
+      // required sfixed64 devicePlatform = 7;
+      /**
+       * <code>required sfixed64 devicePlatform = 7;</code>
+       */
+      boolean hasDevicePlatform();
+      /**
+       * <code>required sfixed64 devicePlatform = 7;</code>
+       */
+      long getDevicePlatform();
+
+      // repeated .netty.Message.Header.Attachment attachment = 8;
+      /**
+       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
        */
       java.util.List<Header.Attachment>
           getAttachmentList();
       /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
        */
       Header.Attachment getAttachment(int index);
       /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
        */
       int getAttachmentCount();
       /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
        */
       java.util.List<? extends Header.AttachmentOrBuilder>
           getAttachmentOrBuilderList();
       /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
        */
       Header.AttachmentOrBuilder getAttachmentOrBuilder(
               int index);
@@ -333,10 +353,20 @@ public final class ProtocolConvertor {
                 deliveryTime_ = input.readSFixed64();
                 break;
               }
-              case 50: {
-                if (!((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+              case 49: {
+                bitField0_ |= 0x00000020;
+                deviceId_ = input.readSFixed64();
+                break;
+              }
+              case 57: {
+                bitField0_ |= 0x00000040;
+                devicePlatform_ = input.readSFixed64();
+                break;
+              }
+              case 66: {
+                if (!((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
                   attachment_ = new java.util.ArrayList<Attachment>();
-                  mutable_bitField0_ |= 0x00000020;
+                  mutable_bitField0_ |= 0x00000080;
                 }
                 attachment_.add(input.readMessage(Attachment.PARSER, extensionRegistry));
                 break;
@@ -349,7 +379,7 @@ public final class ProtocolConvertor {
           throw new com.google.protobuf.InvalidProtocolBufferException(
               e.getMessage()).setUnfinishedMessage(this);
         } finally {
-          if (((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+          if (((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
             attachment_ = java.util.Collections.unmodifiableList(attachment_);
           }
           this.unknownFields = unknownFields.build();
@@ -358,12 +388,12 @@ public final class ProtocolConvertor {
       }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return ProtocolConvertor.internal_static_netty_Message_Header_descriptor;
+        return MessageBuf.internal_static_netty_Message_Header_descriptor;
       }
 
       protected FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return ProtocolConvertor.internal_static_netty_Message_Header_fieldAccessorTable
+        return MessageBuf.internal_static_netty_Message_Header_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 Header.class, Builder.class);
       }
@@ -491,12 +521,12 @@ public final class ProtocolConvertor {
         }
         public static final com.google.protobuf.Descriptors.Descriptor
             getDescriptor() {
-          return ProtocolConvertor.internal_static_netty_Message_Header_Attachment_descriptor;
+          return MessageBuf.internal_static_netty_Message_Header_Attachment_descriptor;
         }
 
         protected FieldAccessorTable
             internalGetFieldAccessorTable() {
-          return ProtocolConvertor.internal_static_netty_Message_Header_Attachment_fieldAccessorTable
+          return MessageBuf.internal_static_netty_Message_Header_Attachment_fieldAccessorTable
               .ensureFieldAccessorsInitialized(
                   Attachment.class, Builder.class);
         }
@@ -736,17 +766,17 @@ public final class ProtocolConvertor {
            implements AttachmentOrBuilder {
           public static final com.google.protobuf.Descriptors.Descriptor
               getDescriptor() {
-            return ProtocolConvertor.internal_static_netty_Message_Header_Attachment_descriptor;
+            return MessageBuf.internal_static_netty_Message_Header_Attachment_descriptor;
           }
 
           protected FieldAccessorTable
               internalGetFieldAccessorTable() {
-            return ProtocolConvertor.internal_static_netty_Message_Header_Attachment_fieldAccessorTable
+            return MessageBuf.internal_static_netty_Message_Header_Attachment_fieldAccessorTable
                 .ensureFieldAccessorsInitialized(
                     Attachment.class, Builder.class);
           }
 
-          // Construct using cheetah.predator.protocol.ProtocolConvertor.Message.Header.Attachment.newBuilder()
+          // Construct using cheetah.predator.protocol.MessageBuf.Message.Header.Attachment.newBuilder()
           private Builder() {
             maybeForceBuilderInitialization();
           }
@@ -779,7 +809,7 @@ public final class ProtocolConvertor {
 
           public com.google.protobuf.Descriptors.Descriptor
               getDescriptorForType() {
-            return ProtocolConvertor.internal_static_netty_Message_Header_Attachment_descriptor;
+            return MessageBuf.internal_static_netty_Message_Header_Attachment_descriptor;
           }
 
           public Attachment getDefaultInstanceForType() {
@@ -1188,36 +1218,68 @@ public final class ProtocolConvertor {
         return deliveryTime_;
       }
 
-      // repeated .netty.Message.Header.Attachment attachment = 6;
-      public static final int ATTACHMENT_FIELD_NUMBER = 6;
+      // required sfixed64 deviceId = 6;
+      public static final int DEVICEID_FIELD_NUMBER = 6;
+      private long deviceId_;
+      /**
+       * <code>required sfixed64 deviceId = 6;</code>
+       */
+      public boolean hasDeviceId() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>required sfixed64 deviceId = 6;</code>
+       */
+      public long getDeviceId() {
+        return deviceId_;
+      }
+
+      // required sfixed64 devicePlatform = 7;
+      public static final int DEVICEPLATFORM_FIELD_NUMBER = 7;
+      private long devicePlatform_;
+      /**
+       * <code>required sfixed64 devicePlatform = 7;</code>
+       */
+      public boolean hasDevicePlatform() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>required sfixed64 devicePlatform = 7;</code>
+       */
+      public long getDevicePlatform() {
+        return devicePlatform_;
+      }
+
+      // repeated .netty.Message.Header.Attachment attachment = 8;
+      public static final int ATTACHMENT_FIELD_NUMBER = 8;
       private java.util.List<Attachment> attachment_;
       /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
        */
       public java.util.List<Attachment> getAttachmentList() {
         return attachment_;
       }
       /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
        */
       public java.util.List<? extends AttachmentOrBuilder>
           getAttachmentOrBuilderList() {
         return attachment_;
       }
       /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
        */
       public int getAttachmentCount() {
         return attachment_.size();
       }
       /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
        */
       public Attachment getAttachment(int index) {
         return attachment_.get(index);
       }
       /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
        */
       public AttachmentOrBuilder getAttachmentOrBuilder(
           int index) {
@@ -1230,6 +1292,8 @@ public final class ProtocolConvertor {
         clientId_ = "";
         deliveryId_ = "";
         deliveryTime_ = 0L;
+        deviceId_ = 0L;
+        devicePlatform_ = 0L;
         attachment_ = java.util.Collections.emptyList();
       }
       private byte memoizedIsInitialized = -1;
@@ -1254,6 +1318,14 @@ public final class ProtocolConvertor {
           return false;
         }
         if (!hasDeliveryTime()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+        if (!hasDeviceId()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+        if (!hasDevicePlatform()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -1285,8 +1357,14 @@ public final class ProtocolConvertor {
         if (((bitField0_ & 0x00000010) == 0x00000010)) {
           output.writeSFixed64(5, deliveryTime_);
         }
+        if (((bitField0_ & 0x00000020) == 0x00000020)) {
+          output.writeSFixed64(6, deviceId_);
+        }
+        if (((bitField0_ & 0x00000040) == 0x00000040)) {
+          output.writeSFixed64(7, devicePlatform_);
+        }
         for (int i = 0; i < attachment_.size(); i++) {
-          output.writeMessage(6, attachment_.get(i));
+          output.writeMessage(8, attachment_.get(i));
         }
         getUnknownFields().writeTo(output);
       }
@@ -1317,9 +1395,17 @@ public final class ProtocolConvertor {
           size += com.google.protobuf.CodedOutputStream
             .computeSFixed64Size(5, deliveryTime_);
         }
+        if (((bitField0_ & 0x00000020) == 0x00000020)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeSFixed64Size(6, deviceId_);
+        }
+        if (((bitField0_ & 0x00000040) == 0x00000040)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeSFixed64Size(7, devicePlatform_);
+        }
         for (int i = 0; i < attachment_.size(); i++) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(6, attachment_.get(i));
+            .computeMessageSize(8, attachment_.get(i));
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -1407,17 +1493,17 @@ public final class ProtocolConvertor {
          implements HeaderOrBuilder {
         public static final com.google.protobuf.Descriptors.Descriptor
             getDescriptor() {
-          return ProtocolConvertor.internal_static_netty_Message_Header_descriptor;
+          return MessageBuf.internal_static_netty_Message_Header_descriptor;
         }
 
         protected FieldAccessorTable
             internalGetFieldAccessorTable() {
-          return ProtocolConvertor.internal_static_netty_Message_Header_fieldAccessorTable
+          return MessageBuf.internal_static_netty_Message_Header_fieldAccessorTable
               .ensureFieldAccessorsInitialized(
                   Header.class, Builder.class);
         }
 
-        // Construct using cheetah.predator.protocol.ProtocolConvertor.Message.Header.newBuilder()
+        // Construct using cheetah.predator.protocol.MessageBuf.Message.Header.newBuilder()
         private Builder() {
           maybeForceBuilderInitialization();
         }
@@ -1448,9 +1534,13 @@ public final class ProtocolConvertor {
           bitField0_ = (bitField0_ & ~0x00000008);
           deliveryTime_ = 0L;
           bitField0_ = (bitField0_ & ~0x00000010);
+          deviceId_ = 0L;
+          bitField0_ = (bitField0_ & ~0x00000020);
+          devicePlatform_ = 0L;
+          bitField0_ = (bitField0_ & ~0x00000040);
           if (attachmentBuilder_ == null) {
             attachment_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000020);
+            bitField0_ = (bitField0_ & ~0x00000080);
           } else {
             attachmentBuilder_.clear();
           }
@@ -1463,7 +1553,7 @@ public final class ProtocolConvertor {
 
         public com.google.protobuf.Descriptors.Descriptor
             getDescriptorForType() {
-          return ProtocolConvertor.internal_static_netty_Message_Header_descriptor;
+          return MessageBuf.internal_static_netty_Message_Header_descriptor;
         }
 
         public Header getDefaultInstanceForType() {
@@ -1502,10 +1592,18 @@ public final class ProtocolConvertor {
             to_bitField0_ |= 0x00000010;
           }
           result.deliveryTime_ = deliveryTime_;
+          if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+            to_bitField0_ |= 0x00000020;
+          }
+          result.deviceId_ = deviceId_;
+          if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+            to_bitField0_ |= 0x00000040;
+          }
+          result.devicePlatform_ = devicePlatform_;
           if (attachmentBuilder_ == null) {
-            if (((bitField0_ & 0x00000020) == 0x00000020)) {
+            if (((bitField0_ & 0x00000080) == 0x00000080)) {
               attachment_ = java.util.Collections.unmodifiableList(attachment_);
-              bitField0_ = (bitField0_ & ~0x00000020);
+              bitField0_ = (bitField0_ & ~0x00000080);
             }
             result.attachment_ = attachment_;
           } else {
@@ -1548,11 +1646,17 @@ public final class ProtocolConvertor {
           if (other.hasDeliveryTime()) {
             setDeliveryTime(other.getDeliveryTime());
           }
+          if (other.hasDeviceId()) {
+            setDeviceId(other.getDeviceId());
+          }
+          if (other.hasDevicePlatform()) {
+            setDevicePlatform(other.getDevicePlatform());
+          }
           if (attachmentBuilder_ == null) {
             if (!other.attachment_.isEmpty()) {
               if (attachment_.isEmpty()) {
                 attachment_ = other.attachment_;
-                bitField0_ = (bitField0_ & ~0x00000020);
+                bitField0_ = (bitField0_ & ~0x00000080);
               } else {
                 ensureAttachmentIsMutable();
                 attachment_.addAll(other.attachment_);
@@ -1565,7 +1669,7 @@ public final class ProtocolConvertor {
                 attachmentBuilder_.dispose();
                 attachmentBuilder_ = null;
                 attachment_ = other.attachment_;
-                bitField0_ = (bitField0_ & ~0x00000020);
+                bitField0_ = (bitField0_ & ~0x00000080);
                 attachmentBuilder_ = 
                   com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                      getAttachmentFieldBuilder() : null;
@@ -1596,6 +1700,14 @@ public final class ProtocolConvertor {
             return false;
           }
           if (!hasDeliveryTime()) {
+            
+            return false;
+          }
+          if (!hasDeviceId()) {
+            
+            return false;
+          }
+          if (!hasDevicePlatform()) {
             
             return false;
           }
@@ -1915,13 +2027,79 @@ public final class ProtocolConvertor {
           return this;
         }
 
-        // repeated .netty.Message.Header.Attachment attachment = 6;
+        // required sfixed64 deviceId = 6;
+        private long deviceId_ ;
+        /**
+         * <code>required sfixed64 deviceId = 6;</code>
+         */
+        public boolean hasDeviceId() {
+          return ((bitField0_ & 0x00000020) == 0x00000020);
+        }
+        /**
+         * <code>required sfixed64 deviceId = 6;</code>
+         */
+        public long getDeviceId() {
+          return deviceId_;
+        }
+        /**
+         * <code>required sfixed64 deviceId = 6;</code>
+         */
+        public Builder setDeviceId(long value) {
+          bitField0_ |= 0x00000020;
+          deviceId_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>required sfixed64 deviceId = 6;</code>
+         */
+        public Builder clearDeviceId() {
+          bitField0_ = (bitField0_ & ~0x00000020);
+          deviceId_ = 0L;
+          onChanged();
+          return this;
+        }
+
+        // required sfixed64 devicePlatform = 7;
+        private long devicePlatform_ ;
+        /**
+         * <code>required sfixed64 devicePlatform = 7;</code>
+         */
+        public boolean hasDevicePlatform() {
+          return ((bitField0_ & 0x00000040) == 0x00000040);
+        }
+        /**
+         * <code>required sfixed64 devicePlatform = 7;</code>
+         */
+        public long getDevicePlatform() {
+          return devicePlatform_;
+        }
+        /**
+         * <code>required sfixed64 devicePlatform = 7;</code>
+         */
+        public Builder setDevicePlatform(long value) {
+          bitField0_ |= 0x00000040;
+          devicePlatform_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>required sfixed64 devicePlatform = 7;</code>
+         */
+        public Builder clearDevicePlatform() {
+          bitField0_ = (bitField0_ & ~0x00000040);
+          devicePlatform_ = 0L;
+          onChanged();
+          return this;
+        }
+
+        // repeated .netty.Message.Header.Attachment attachment = 8;
         private java.util.List<Attachment> attachment_ =
           java.util.Collections.emptyList();
         private void ensureAttachmentIsMutable() {
-          if (!((bitField0_ & 0x00000020) == 0x00000020)) {
+          if (!((bitField0_ & 0x00000080) == 0x00000080)) {
             attachment_ = new java.util.ArrayList<Attachment>(attachment_);
-            bitField0_ |= 0x00000020;
+            bitField0_ |= 0x00000080;
            }
         }
 
@@ -1929,7 +2107,7 @@ public final class ProtocolConvertor {
             Attachment, Attachment.Builder, AttachmentOrBuilder> attachmentBuilder_;
 
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public java.util.List<Attachment> getAttachmentList() {
           if (attachmentBuilder_ == null) {
@@ -1939,7 +2117,7 @@ public final class ProtocolConvertor {
           }
         }
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public int getAttachmentCount() {
           if (attachmentBuilder_ == null) {
@@ -1949,7 +2127,7 @@ public final class ProtocolConvertor {
           }
         }
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public Attachment getAttachment(int index) {
           if (attachmentBuilder_ == null) {
@@ -1959,7 +2137,7 @@ public final class ProtocolConvertor {
           }
         }
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public Builder setAttachment(
             int index, Attachment value) {
@@ -1976,7 +2154,7 @@ public final class ProtocolConvertor {
           return this;
         }
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public Builder setAttachment(
             int index, Attachment.Builder builderForValue) {
@@ -1990,7 +2168,7 @@ public final class ProtocolConvertor {
           return this;
         }
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public Builder addAttachment(Attachment value) {
           if (attachmentBuilder_ == null) {
@@ -2006,7 +2184,7 @@ public final class ProtocolConvertor {
           return this;
         }
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public Builder addAttachment(
             int index, Attachment value) {
@@ -2023,7 +2201,7 @@ public final class ProtocolConvertor {
           return this;
         }
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public Builder addAttachment(
             Attachment.Builder builderForValue) {
@@ -2037,7 +2215,7 @@ public final class ProtocolConvertor {
           return this;
         }
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public Builder addAttachment(
             int index, Attachment.Builder builderForValue) {
@@ -2051,7 +2229,7 @@ public final class ProtocolConvertor {
           return this;
         }
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public Builder addAllAttachment(
             Iterable<? extends Attachment> values) {
@@ -2065,12 +2243,12 @@ public final class ProtocolConvertor {
           return this;
         }
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public Builder clearAttachment() {
           if (attachmentBuilder_ == null) {
             attachment_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000020);
+            bitField0_ = (bitField0_ & ~0x00000080);
             onChanged();
           } else {
             attachmentBuilder_.clear();
@@ -2078,7 +2256,7 @@ public final class ProtocolConvertor {
           return this;
         }
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public Builder removeAttachment(int index) {
           if (attachmentBuilder_ == null) {
@@ -2091,14 +2269,14 @@ public final class ProtocolConvertor {
           return this;
         }
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public Attachment.Builder getAttachmentBuilder(
             int index) {
           return getAttachmentFieldBuilder().getBuilder(index);
         }
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public AttachmentOrBuilder getAttachmentOrBuilder(
             int index) {
@@ -2108,7 +2286,7 @@ public final class ProtocolConvertor {
           }
         }
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public java.util.List<? extends AttachmentOrBuilder>
              getAttachmentOrBuilderList() {
@@ -2119,14 +2297,14 @@ public final class ProtocolConvertor {
           }
         }
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public Attachment.Builder addAttachmentBuilder() {
           return getAttachmentFieldBuilder().addBuilder(
               Attachment.getDefaultInstance());
         }
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public Attachment.Builder addAttachmentBuilder(
             int index) {
@@ -2134,7 +2312,7 @@ public final class ProtocolConvertor {
               index, Attachment.getDefaultInstance());
         }
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 6;</code>
+         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
          */
         public java.util.List<Attachment.Builder>
              getAttachmentBuilderList() {
@@ -2147,7 +2325,7 @@ public final class ProtocolConvertor {
             attachmentBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
                 Attachment, Attachment.Builder, AttachmentOrBuilder>(
                     attachment_,
-                    ((bitField0_ & 0x00000020) == 0x00000020),
+                    ((bitField0_ & 0x00000080) == 0x00000080),
                     getParentForChildren(),
                     isClean());
             attachment_ = null;
@@ -2274,12 +2452,12 @@ public final class ProtocolConvertor {
       }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return ProtocolConvertor.internal_static_netty_Message_Body_descriptor;
+        return MessageBuf.internal_static_netty_Message_Body_descriptor;
       }
 
       protected FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return ProtocolConvertor.internal_static_netty_Message_Body_fieldAccessorTable
+        return MessageBuf.internal_static_netty_Message_Body_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 Body.class, Builder.class);
       }
@@ -2519,17 +2697,17 @@ public final class ProtocolConvertor {
          implements BodyOrBuilder {
         public static final com.google.protobuf.Descriptors.Descriptor
             getDescriptor() {
-          return ProtocolConvertor.internal_static_netty_Message_Body_descriptor;
+          return MessageBuf.internal_static_netty_Message_Body_descriptor;
         }
 
         protected FieldAccessorTable
             internalGetFieldAccessorTable() {
-          return ProtocolConvertor.internal_static_netty_Message_Body_fieldAccessorTable
+          return MessageBuf.internal_static_netty_Message_Body_fieldAccessorTable
               .ensureFieldAccessorsInitialized(
                   Body.class, Builder.class);
         }
 
-        // Construct using cheetah.predator.protocol.ProtocolConvertor.Message.Body.newBuilder()
+        // Construct using cheetah.predator.protocol.MessageBuf.Message.Body.newBuilder()
         private Builder() {
           maybeForceBuilderInitialization();
         }
@@ -2562,7 +2740,7 @@ public final class ProtocolConvertor {
 
         public com.google.protobuf.Descriptors.Descriptor
             getDescriptorForType() {
-          return ProtocolConvertor.internal_static_netty_Message_Body_descriptor;
+          return MessageBuf.internal_static_netty_Message_Body_descriptor;
         }
 
         public Body getDefaultInstanceForType() {
@@ -3007,17 +3185,17 @@ public final class ProtocolConvertor {
        implements MessageOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return ProtocolConvertor.internal_static_netty_Message_descriptor;
+        return MessageBuf.internal_static_netty_Message_descriptor;
       }
 
       protected FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return ProtocolConvertor.internal_static_netty_Message_fieldAccessorTable
+        return MessageBuf.internal_static_netty_Message_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 Message.class, Builder.class);
       }
 
-      // Construct using cheetah.predator.protocol.ProtocolConvertor.Message.newBuilder()
+      // Construct using cheetah.predator.protocol.MessageBuf.Message.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -3060,7 +3238,7 @@ public final class ProtocolConvertor {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return ProtocolConvertor.internal_static_netty_Message_descriptor;
+        return MessageBuf.internal_static_netty_Message_descriptor;
       }
 
       public Message getDefaultInstanceForType() {
@@ -3579,17 +3757,17 @@ public final class ProtocolConvertor {
       descriptor;
   static {
     String[] descriptorData = {
-      "\n\016Protocol.proto\022\005netty\"\277\002\n\007Message\022%\n\006h" +
+      "\n\016Protocol.proto\022\005netty\"\351\002\n\007Message\022%\n\006h" +
       "eader\030\001 \002(\0132\025.netty.Message.Header\022!\n\004bo" +
-      "dy\030\002 \003(\0132\023.netty.Message.Body\032\305\001\n\006Header" +
+      "dy\030\002 \003(\0132\023.netty.Message.Body\032\357\001\n\006Header" +
       "\022\021\n\tsessionId\030\001 \002(\t\022\014\n\004type\030\002 \002(\005\022\020\n\010cli" +
       "entId\030\003 \002(\t\022\022\n\ndeliveryId\030\004 \002(\t\022\024\n\014deliv" +
-      "eryTime\030\005 \002(\020\0224\n\nattachment\030\006 \003(\0132 .nett" +
-      "y.Message.Header.Attachment\032(\n\nAttachmen" +
-      "t\022\013\n\003key\030\001 \002(\t\022\r\n\005value\030\002 \002(\t\032\"\n\004Body\022\013\n" +
-      "\003key\030\001 \002(\t\022\r\n\005value\030\002 \002(\tB7\n\"cheetah.pre" +
-      "dator.protocol.protobufB\021ProtocolConvert",
-      "or"
+      "eryTime\030\005 \002(\020\022\020\n\010deviceId\030\006 \002(\020\022\026\n\016devic" +
+      "ePlatform\030\007 \002(\020\0224\n\nattachment\030\010 \003(\0132 .ne" +
+      "tty.Message.Header.Attachment\032(\n\nAttachm" +
+      "ent\022\013\n\003key\030\001 \002(\t\022\r\n\005value\030\002 \002(\t\032\"\n\004Body\022" +
+      "\013\n\003key\030\001 \002(\t\022\r\n\005value\030\002 \002(\tB\'\n\031cheetah.p",
+      "redator.protocolB\nMessageBuf"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -3607,7 +3785,7 @@ public final class ProtocolConvertor {
           internal_static_netty_Message_Header_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_netty_Message_Header_descriptor,
-              new String[] { "SessionId", "Type", "ClientId", "DeliveryId", "DeliveryTime", "Attachment", });
+              new String[] { "SessionId", "Type", "ClientId", "DeliveryId", "DeliveryTime", "DeviceId", "DevicePlatform", "Attachment", });
           internal_static_netty_Message_Header_Attachment_descriptor =
             internal_static_netty_Message_Header_descriptor.getNestedTypes().get(0);
           internal_static_netty_Message_Header_Attachment_fieldAccessorTable = new

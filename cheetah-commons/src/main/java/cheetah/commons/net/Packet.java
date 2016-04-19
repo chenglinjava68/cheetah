@@ -17,6 +17,7 @@ public interface Packet extends Serializable {
     int MAX_BODY_SIZE = 65536;
     int MIN_DIGEST_SIZE = 0;
     int MAX_DIGEST_SIZE = 256;
+    byte[] EMPTY = new byte[0];
 
     byte type();
 

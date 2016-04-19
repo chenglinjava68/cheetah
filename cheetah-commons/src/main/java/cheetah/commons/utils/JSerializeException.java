@@ -1,11 +1,11 @@
 package cheetah.commons.utils;
 
-import cheetah.commons.CheetahException;
+import cheetah.commons.PlatformException;
 
 /**
  * Created by Max on 2016/2/28.
  */
-public class JSerializeException extends CheetahException {
+public class JSerializeException extends PlatformException {
     private static final long serialVersionUID = 2336359841576111685L;
 
     public JSerializeException() {

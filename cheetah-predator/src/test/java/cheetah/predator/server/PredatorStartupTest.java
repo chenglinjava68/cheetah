@@ -20,4 +20,5 @@ public class PredatorStartupTest {
 
         latch.await();
     }
+
 }
