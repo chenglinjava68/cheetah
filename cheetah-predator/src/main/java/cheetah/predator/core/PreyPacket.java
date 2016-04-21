@@ -98,7 +98,7 @@ public class PreyPacket implements Packet {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("type", this.crcCode).add("digestSize", this.digestSize).add("bodySize", this.bodySize).toString();
+        return MoreObjects.toStringHelper(this).add("type", this.type).add("crcCode", this.crcCode).add("digestSize", this.digestSize).add("bodySize", this.bodySize).toString();
     }
 
     public static PreyPacket empty() {

@@ -55,8 +55,8 @@ final class PreyPacketDecoder extends ReplayingDecoder<PreyPacketDecoder.State> 
         Loggers.me().info(getClass(), "decode first byte.");
 //        int type = (firstByte >> 4) & 0x0F;// [0000]0000
 //        int qos = firstByte & 0x0F;//0000[0000]
-//        PreyPacket packet = ctx.attr(PROTOCOL_KEY).get().type(type);
-//        ctx.attr(PROTOCOL_KEY).set(packet);
+        PreyPacket packet = ctx.attr(PROTOCOL_KEY).get().type(type);
+        ctx.attr(PROTOCOL_KEY).set(packet);
     }
 
     private void decodeDigestSize(ChannelHandlerContext ctx, ByteBuf buf) {
