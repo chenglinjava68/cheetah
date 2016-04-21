@@ -116,6 +116,7 @@
             </dependency>
 
             <!-- nio -->
+            <!--<version>4.0.33.Final | 5.0.0.Alpha2</version>-->
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-handler</artifactId>
@@ -126,6 +127,7 @@
                 <artifactId>netty-codec-http</artifactId>
                 <version>5.0.0.Alpha2</version>
             </dependency>
+
             <!-- 序列化 -->
             <dependency>
                 <groupId>com.google.protobuf</groupId>

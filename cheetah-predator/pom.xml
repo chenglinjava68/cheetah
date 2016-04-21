@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cheetah-fighter</artifactId>
+    <artifactId>cheetah-predator</artifactId>
 
     <dependencies>
         <dependency>
