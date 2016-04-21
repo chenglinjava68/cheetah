@@ -3,8 +3,8 @@ package cheetah.predator.server.support;
 import cheetah.commons.logger.Loggers;
 import cheetah.predator.core.Session;
 import cheetah.predator.core.support.SessionHolder;
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
 
 import java.util.concurrent.TimeUnit;
@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Max on 2016/3/14.
  */
-final class SessionIdleStateHandler extends ChannelHandlerAdapter {
+final class SessionIdleStateHandler extends ChannelInboundHandlerAdapter {
 
     final long idleTimeout;
     final long idleInitTimeout;

@@ -4,15 +4,15 @@ package cheetah.predator.core;
  * Created by Max on 2016/3/26.
  */
 public enum MessageType {
-    CMD(0), //ÃüÁî
-    ACK(1), //È·ÈÏack
-    CHAT(2), //ÁÄÌì
-    SYSTEM(3), //ÏµÍ³
-    NOTICE(4),  //Í¨Öª
-    EVENT(5),  //ÊÂ¼ş
-    APP(6),   //Ó¦ÓÃ
-    VOIP(7),  //ÓïÒô
-    CUSTOM(8); //×Ô¶¨Òå
+    CMD(0), //å‘½ä»¤
+    ACK(1), //ç¡®è®¤ack
+    CHAT(2), //èŠå¤©
+    SYSTEM(3), //ç³»ç»Ÿ
+    NOTICE(4),  //é€šçŸ¥
+    EVENT(5),  //äº‹ä»¶
+    APP(6),   //åº”ç”¨
+    VOIP(7),  //è¯­éŸ³
+    CUSTOM(8); //è‡ªå®šä¹‰
 
     MessageType(int value) {
         this.value = value;

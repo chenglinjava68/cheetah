@@ -7,12 +7,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import io.netty.channel.ChannelHandlerAppender;
+import io.netty.channel.CombinedChannelDuplexHandler;
 
 /**
  * Created by Max on 2016/4/20.
  */
-public class MessageCodec extends ChannelHandlerAppender {
+public class MessageCodec extends CombinedChannelDuplexHandler {
 
     static ObjectMapper OBJECT_MAPPER;
 

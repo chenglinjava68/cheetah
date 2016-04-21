@@ -27,7 +27,7 @@ public final class DispatcherMessage extends SimpleChannelInboundHandler<Message
     }
 
     @Override
-    protected void messageReceived(ChannelHandlerContext ctx, MessageBuf.Message message) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, MessageBuf.Message message) throws Exception {
         MessageHandlerChain chain = createInterceptorChain(message.getHeader().getType());
         Session session = SessionHolder.getSession(ctx);
         chain.handle(message, session);

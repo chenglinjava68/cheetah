@@ -5,14 +5,14 @@ import cheetah.predator.core.Message;
 import cheetah.predator.core.PreyPacket;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToMessageDecoder;
+import io.netty.handler.codec.MessageToMessageEncoder;
 
 import java.util.List;
 
 /**
  * Created by Max on 2016/4/21.
  */
-public class MessageEncoder extends MessageToMessageDecoder<Message> {
+public class MessageEncoder extends MessageToMessageEncoder<Message> {
     private ObjectMapper objectMapper;
 
     public MessageEncoder(ObjectMapper objectMapper) {
@@ -20,7 +20,7 @@ public class MessageEncoder extends MessageToMessageDecoder<Message> {
     }
 
     @Override
-    protected void decode(ChannelHandlerContext channelHandlerContext, Message msg, List<Object> list) throws Exception {
+    protected void encode(ChannelHandlerContext channelHandlerContext, Message msg, List<Object> list) throws Exception {
         byte[] body = objectMapper.writeValueAsBytes(msg);
 
         PreyPacket packet = PreyPacket.empty().type(PreyPacket.POST_TYPE).body(body);

@@ -120,12 +120,12 @@
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-handler</artifactId>
-                <version>5.0.0.Alpha2</version>
+                <version>4.0.23.Final</version>
             </dependency>
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-codec-http</artifactId>
-                <version>5.0.0.Alpha2</version>
+                <version>4.0.23.Final</version>
             </dependency>
 
             <!-- 序列化 -->

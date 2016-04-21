@@ -3,20 +3,20 @@ package cheetah.predator.server.support;
 import cheetah.commons.logger.Loggers;
 import cheetah.predator.core.Session;
 import cheetah.predator.core.SessionRegistry;
-import cheetah.predator.spi.event.SessionEvent;
-import cheetah.predator.spi.event.SessionListener;
 import cheetah.predator.core.support.SessionHolder;
 import cheetah.predator.core.support.SessionImpl;
 import cheetah.predator.core.support.SessionTransportConfig;
-import io.netty.channel.ChannelHandlerAdapter;
+import cheetah.predator.spi.event.SessionEvent;
+import cheetah.predator.spi.event.SessionListener;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.net.InetSocketAddress;
 
 /**
  * Created by Max on 2016/3/26.
  */
-public class SessionHandler extends ChannelHandlerAdapter {
+public class SessionHandler extends ChannelInboundHandlerAdapter {
     private SessionRegistry sessionRegistry;
     private SessionTransportConfig transportConfig;
     private SessionListener sessionListener = event -> {

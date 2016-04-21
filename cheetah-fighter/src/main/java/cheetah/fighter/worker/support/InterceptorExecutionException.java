@@ -8,6 +8,7 @@ import cheetah.commons.PlatformException;
  */
 public class InterceptorExecutionException extends PlatformException {
     public InterceptorExecutionException() {
+        super("");
     }
 
     public InterceptorExecutionException(String message) {
@@ -19,7 +20,7 @@ public class InterceptorExecutionException extends PlatformException {
     }
 
     public InterceptorExecutionException(Throwable cause) {
-        super(cause);
+        super("", cause);
     }
 
     public InterceptorExecutionException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
