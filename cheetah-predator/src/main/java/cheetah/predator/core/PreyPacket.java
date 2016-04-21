@@ -80,7 +80,6 @@ public class PreyPacket implements Packet {
         return new PreyPacket(type, crcCode, digestSize, digest, bodySize, body);
     }
 
-
     public PreyPacket digestSize(int digestSize) {
         return new PreyPacket(type, this.crcCode, digestSize, this.digest, this.bodySize, this.body);
     }
