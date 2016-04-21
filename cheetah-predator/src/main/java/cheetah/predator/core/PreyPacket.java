@@ -30,10 +30,11 @@ public class PreyPacket implements Packet {
         this.body = EMPTY;
     }
 
-    PreyPacket(int crcCode, int digestSize, byte[] digest, int bodySize, byte[] body) {
+    PreyPacket(int type, int crcCode, int digestSize, byte[] digest, int bodySize, byte[] body) {
         this.digest = EMPTY;
         this.body = EMPTY;
         this.crcCode = crcCode;
+        this.type = type;
         this.digestSize = digestSize;
         this.digest = digest;
         this.bodySize = bodySize;
@@ -41,6 +42,7 @@ public class PreyPacket implements Packet {
     }
 
     private int crcCode;
+    private int type;
     private int digestSize;
     private byte[] digest;
     private int bodySize;
@@ -48,6 +50,10 @@ public class PreyPacket implements Packet {
 
     public int crcCode() {
         return this.crcCode;
+    }
+
+    public int type() {
+        return type;
     }
 
     public int digestSize() {
@@ -67,23 +73,28 @@ public class PreyPacket implements Packet {
     }
 
     public PreyPacket crcCode(int crcCode) {
-        return new PreyPacket(crcCode, this.digestSize, this.digest, this.bodySize, this.body);
+        return new PreyPacket(type, crcCode, this.digestSize, this.digest, this.bodySize, this.body);
     }
 
+    public PreyPacket type(int type) {
+        return new PreyPacket(type, crcCode, digestSize, digest, bodySize, body);
+    }
+
+
     public PreyPacket digestSize(int digestSize) {
-        return new PreyPacket(this.crcCode, digestSize, this.digest, this.bodySize, this.body);
+        return new PreyPacket(type, this.crcCode, digestSize, this.digest, this.bodySize, this.body);
     }
 
     public PreyPacket digest(byte[] digest) {
-        return new PreyPacket(this.crcCode, digest.length, digest, this.bodySize, this.body);
+        return new PreyPacket(type, this.crcCode, digest.length, digest, this.bodySize, this.body);
     }
 
     public PreyPacket bodySize(int bodySize) {
-        return new PreyPacket(this.crcCode, this.digestSize, this.digest, bodySize, this.body);
+        return new PreyPacket(type, this.crcCode, this.digestSize, this.digest, bodySize, this.body);
     }
 
     public PreyPacket body(byte[] body) {
-        return new PreyPacket(this.crcCode, this.digestSize, this.digest, body.length, body);
+        return new PreyPacket(type, this.crcCode, this.digestSize, this.digest, body.length, body);
     }
 
     @Override

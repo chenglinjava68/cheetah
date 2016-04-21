@@ -91,6 +91,18 @@ public abstract class Assert {
         }
     }
 
+    public static void isBlank(String text, String message) {
+        if (StringUtils.isBlank(text)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    public static void notBlank(String text, String message) {
+        if (StringUtils.isNotBlank(text)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
     /**
      * Assert that the given String is not empty; that is,
      * it must not be {@code null} and not the empty String.
