@@ -14,6 +14,8 @@ public class DefaultPipelineCrowd extends PipelineCrowd {
         channel.pipeline().addLast(new SessionTrafficHandler(transportConfig().getTrafficLimit(), transportConfig().getTrafficCheckInterval()));
         channel.pipeline().addLast(new IdleStateHandler(0, 0, transportConfig().getIdleCheckPeriod()));
         channel.pipeline().addLast(new PreyPacketCodec());
+        channel.pipeline().addLast(new PreyPacketHandler());
+        channel.pipeline().addLast(new MessageCodec());
         channel.pipeline().addLast(new DispatcherMessage(interceptors()));
         channel.pipeline().addLast(new SessionIdleStateHandler(transportConfig().getIdleTimeout(), transportConfig().getIdleInitTimeout()));
         channel.pipeline().addLast(new SessionHandler(transportConfig(), sessionRegistry(), sessionListener()));

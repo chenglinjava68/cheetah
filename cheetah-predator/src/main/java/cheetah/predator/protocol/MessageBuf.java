@@ -49,6 +49,16 @@ public final class MessageBuf {
      */
     Message.BodyOrBuilder getBodyOrBuilder(
             int index);
+
+    // optional bytes attachment = 8;
+    /**
+     * <code>optional bytes attachment = 8;</code>
+     */
+    boolean hasAttachment();
+    /**
+     * <code>optional bytes attachment = 8;</code>
+     */
+    com.google.protobuf.ByteString getAttachment();
   }
   /**
    * Protobuf type {@code netty.Message}
@@ -122,6 +132,11 @@ public final class MessageBuf {
               body_.add(input.readMessage(Body.PARSER, extensionRegistry));
               break;
             }
+            case 66: {
+              bitField0_ |= 0x00000002;
+              attachment_ = input.readBytes();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -167,115 +182,100 @@ public final class MessageBuf {
     public interface HeaderOrBuilder
         extends com.google.protobuf.MessageOrBuilder {
 
-      // required string sessionId = 1;
+      // required fixed32 type = 1;
       /**
-       * <code>required string sessionId = 1;</code>
-       */
-      boolean hasSessionId();
-      /**
-       * <code>required string sessionId = 1;</code>
-       */
-      String getSessionId();
-      /**
-       * <code>required string sessionId = 1;</code>
-       */
-      com.google.protobuf.ByteString
-          getSessionIdBytes();
-
-      // required int32 type = 2;
-      /**
-       * <code>required int32 type = 2;</code>
+       * <code>required fixed32 type = 1;</code>
        */
       boolean hasType();
       /**
-       * <code>required int32 type = 2;</code>
+       * <code>required fixed32 type = 1;</code>
        */
       int getType();
 
-      // required string clientId = 3;
+      // required string from = 2;
       /**
-       * <code>required string clientId = 3;</code>
+       * <code>required string from = 2;</code>
        */
-      boolean hasClientId();
+      boolean hasFrom();
       /**
-       * <code>required string clientId = 3;</code>
+       * <code>required string from = 2;</code>
        */
-      String getClientId();
+      String getFrom();
       /**
-       * <code>required string clientId = 3;</code>
+       * <code>required string from = 2;</code>
        */
       com.google.protobuf.ByteString
-          getClientIdBytes();
+          getFromBytes();
 
-      // required string deliveryId = 4;
+      // required string to = 3;
       /**
-       * <code>required string deliveryId = 4;</code>
+       * <code>required string to = 3;</code>
+       */
+      boolean hasTo();
+      /**
+       * <code>required string to = 3;</code>
+       */
+      String getTo();
+      /**
+       * <code>required string to = 3;</code>
+       */
+      com.google.protobuf.ByteString
+          getToBytes();
+
+      // required string delivery_id = 4;
+      /**
+       * <code>required string delivery_id = 4;</code>
        */
       boolean hasDeliveryId();
       /**
-       * <code>required string deliveryId = 4;</code>
+       * <code>required string delivery_id = 4;</code>
        */
       String getDeliveryId();
       /**
-       * <code>required string deliveryId = 4;</code>
+       * <code>required string delivery_id = 4;</code>
        */
       com.google.protobuf.ByteString
           getDeliveryIdBytes();
 
-      // required sfixed64 deliveryTime = 5;
+      // required fixed64 delivery_time = 5;
       /**
-       * <code>required sfixed64 deliveryTime = 5;</code>
+       * <code>required fixed64 delivery_time = 5;</code>
        */
       boolean hasDeliveryTime();
       /**
-       * <code>required sfixed64 deliveryTime = 5;</code>
+       * <code>required fixed64 delivery_time = 5;</code>
        */
       long getDeliveryTime();
 
-      // required sfixed64 deviceId = 6;
+      // required string device_id = 6;
       /**
-       * <code>required sfixed64 deviceId = 6;</code>
+       * <code>required string device_id = 6;</code>
        */
       boolean hasDeviceId();
       /**
-       * <code>required sfixed64 deviceId = 6;</code>
+       * <code>required string device_id = 6;</code>
        */
-      long getDeviceId();
-
-      // required sfixed64 devicePlatform = 7;
+      String getDeviceId();
       /**
-       * <code>required sfixed64 devicePlatform = 7;</code>
+       * <code>required string device_id = 6;</code>
+       */
+      com.google.protobuf.ByteString
+          getDeviceIdBytes();
+
+      // required string device_platform = 7;
+      /**
+       * <code>required string device_platform = 7;</code>
        */
       boolean hasDevicePlatform();
       /**
-       * <code>required sfixed64 devicePlatform = 7;</code>
+       * <code>required string device_platform = 7;</code>
        */
-      long getDevicePlatform();
-
-      // repeated .netty.Message.Header.Attachment attachment = 8;
+      String getDevicePlatform();
       /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
+       * <code>required string device_platform = 7;</code>
        */
-      java.util.List<Header.Attachment>
-          getAttachmentList();
-      /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-       */
-      Header.Attachment getAttachment(int index);
-      /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-       */
-      int getAttachmentCount();
-      /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-       */
-      java.util.List<? extends Header.AttachmentOrBuilder>
-          getAttachmentOrBuilderList();
-      /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-       */
-      Header.AttachmentOrBuilder getAttachmentOrBuilder(
-              int index);
+      com.google.protobuf.ByteString
+          getDevicePlatformBytes();
     }
     /**
      * Protobuf type {@code netty.Message.Header}
@@ -328,19 +328,19 @@ public final class MessageBuf {
                 }
                 break;
               }
-              case 10: {
+              case 13: {
                 bitField0_ |= 0x00000001;
-                sessionId_ = input.readBytes();
+                type_ = input.readFixed32();
                 break;
               }
-              case 16: {
+              case 18: {
                 bitField0_ |= 0x00000002;
-                type_ = input.readInt32();
+                from_ = input.readBytes();
                 break;
               }
               case 26: {
                 bitField0_ |= 0x00000004;
-                clientId_ = input.readBytes();
+                to_ = input.readBytes();
                 break;
               }
               case 34: {
@@ -350,25 +350,17 @@ public final class MessageBuf {
               }
               case 41: {
                 bitField0_ |= 0x00000010;
-                deliveryTime_ = input.readSFixed64();
+                deliveryTime_ = input.readFixed64();
                 break;
               }
-              case 49: {
+              case 50: {
                 bitField0_ |= 0x00000020;
-                deviceId_ = input.readSFixed64();
+                deviceId_ = input.readBytes();
                 break;
               }
-              case 57: {
+              case 58: {
                 bitField0_ |= 0x00000040;
-                devicePlatform_ = input.readSFixed64();
-                break;
-              }
-              case 66: {
-                if (!((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
-                  attachment_ = new java.util.ArrayList<Attachment>();
-                  mutable_bitField0_ |= 0x00000080;
-                }
-                attachment_.add(input.readMessage(Attachment.PARSER, extensionRegistry));
+                devicePlatform_ = input.readBytes();
                 break;
               }
             }
@@ -379,9 +371,6 @@ public final class MessageBuf {
           throw new com.google.protobuf.InvalidProtocolBufferException(
               e.getMessage()).setUnfinishedMessage(this);
         } finally {
-          if (((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
-            attachment_ = java.util.Collections.unmodifiableList(attachment_);
-          }
           this.unknownFields = unknownFields.build();
           makeExtensionsImmutable();
         }
@@ -413,723 +402,37 @@ public final class MessageBuf {
         return PARSER;
       }
 
-      public interface AttachmentOrBuilder
-          extends com.google.protobuf.MessageOrBuilder {
-
-        // required string key = 1;
-        /**
-         * <code>required string key = 1;</code>
-         */
-        boolean hasKey();
-        /**
-         * <code>required string key = 1;</code>
-         */
-        String getKey();
-        /**
-         * <code>required string key = 1;</code>
-         */
-        com.google.protobuf.ByteString
-            getKeyBytes();
-
-        // required string value = 2;
-        /**
-         * <code>required string value = 2;</code>
-         */
-        boolean hasValue();
-        /**
-         * <code>required string value = 2;</code>
-         */
-        String getValue();
-        /**
-         * <code>required string value = 2;</code>
-         */
-        com.google.protobuf.ByteString
-            getValueBytes();
-      }
-      /**
-       * Protobuf type {@code netty.Message.Header.Attachment}
-       */
-      public static final class Attachment extends
-          com.google.protobuf.GeneratedMessage
-          implements AttachmentOrBuilder {
-        // Use Attachment.newBuilder() to construct.
-        private Attachment(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-          super(builder);
-          this.unknownFields = builder.getUnknownFields();
-        }
-        private Attachment(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-        private static final Attachment defaultInstance;
-        public static Attachment getDefaultInstance() {
-          return defaultInstance;
-        }
-
-        public Attachment getDefaultInstanceForType() {
-          return defaultInstance;
-        }
-
-        private final com.google.protobuf.UnknownFieldSet unknownFields;
-        @Override
-        public final com.google.protobuf.UnknownFieldSet
-            getUnknownFields() {
-          return this.unknownFields;
-        }
-        private Attachment(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          initFields();
-          int mutable_bitField0_ = 0;
-          com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-              com.google.protobuf.UnknownFieldSet.newBuilder();
-          try {
-            boolean done = false;
-            while (!done) {
-              int tag = input.readTag();
-              switch (tag) {
-                case 0:
-                  done = true;
-                  break;
-                default: {
-                  if (!parseUnknownField(input, unknownFields,
-                                         extensionRegistry, tag)) {
-                    done = true;
-                  }
-                  break;
-                }
-                case 10: {
-                  bitField0_ |= 0x00000001;
-                  key_ = input.readBytes();
-                  break;
-                }
-                case 18: {
-                  bitField0_ |= 0x00000002;
-                  value_ = input.readBytes();
-                  break;
-                }
-              }
-            }
-          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            throw e.setUnfinishedMessage(this);
-          } catch (java.io.IOException e) {
-            throw new com.google.protobuf.InvalidProtocolBufferException(
-                e.getMessage()).setUnfinishedMessage(this);
-          } finally {
-            this.unknownFields = unknownFields.build();
-            makeExtensionsImmutable();
-          }
-        }
-        public static final com.google.protobuf.Descriptors.Descriptor
-            getDescriptor() {
-          return MessageBuf.internal_static_netty_Message_Header_Attachment_descriptor;
-        }
-
-        protected FieldAccessorTable
-            internalGetFieldAccessorTable() {
-          return MessageBuf.internal_static_netty_Message_Header_Attachment_fieldAccessorTable
-              .ensureFieldAccessorsInitialized(
-                  Attachment.class, Builder.class);
-        }
-
-        public static com.google.protobuf.Parser<Attachment> PARSER =
-            new com.google.protobuf.AbstractParser<Attachment>() {
-          public Attachment parsePartialFrom(
-              com.google.protobuf.CodedInputStream input,
-              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-              throws com.google.protobuf.InvalidProtocolBufferException {
-            return new Attachment(input, extensionRegistry);
-          }
-        };
-
-        @Override
-        public com.google.protobuf.Parser<Attachment> getParserForType() {
-          return PARSER;
-        }
-
-        private int bitField0_;
-        // required string key = 1;
-        public static final int KEY_FIELD_NUMBER = 1;
-        private Object key_;
-        /**
-         * <code>required string key = 1;</code>
-         */
-        public boolean hasKey() {
-          return ((bitField0_ & 0x00000001) == 0x00000001);
-        }
-        /**
-         * <code>required string key = 1;</code>
-         */
-        public String getKey() {
-          Object ref = key_;
-          if (ref instanceof String) {
-            return (String) ref;
-          } else {
-            com.google.protobuf.ByteString bs = 
-                (com.google.protobuf.ByteString) ref;
-            String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              key_ = s;
-            }
-            return s;
-          }
-        }
-        /**
-         * <code>required string key = 1;</code>
-         */
-        public com.google.protobuf.ByteString
-            getKeyBytes() {
-          Object ref = key_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (String) ref);
-            key_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-
-        // required string value = 2;
-        public static final int VALUE_FIELD_NUMBER = 2;
-        private Object value_;
-        /**
-         * <code>required string value = 2;</code>
-         */
-        public boolean hasValue() {
-          return ((bitField0_ & 0x00000002) == 0x00000002);
-        }
-        /**
-         * <code>required string value = 2;</code>
-         */
-        public String getValue() {
-          Object ref = value_;
-          if (ref instanceof String) {
-            return (String) ref;
-          } else {
-            com.google.protobuf.ByteString bs = 
-                (com.google.protobuf.ByteString) ref;
-            String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              value_ = s;
-            }
-            return s;
-          }
-        }
-        /**
-         * <code>required string value = 2;</code>
-         */
-        public com.google.protobuf.ByteString
-            getValueBytes() {
-          Object ref = value_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (String) ref);
-            value_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-
-        private void initFields() {
-          key_ = "";
-          value_ = "";
-        }
-        private byte memoizedIsInitialized = -1;
-        public final boolean isInitialized() {
-          byte isInitialized = memoizedIsInitialized;
-          if (isInitialized != -1) return isInitialized == 1;
-
-          if (!hasKey()) {
-            memoizedIsInitialized = 0;
-            return false;
-          }
-          if (!hasValue()) {
-            memoizedIsInitialized = 0;
-            return false;
-          }
-          memoizedIsInitialized = 1;
-          return true;
-        }
-
-        public void writeTo(com.google.protobuf.CodedOutputStream output)
-                            throws java.io.IOException {
-          getSerializedSize();
-          if (((bitField0_ & 0x00000001) == 0x00000001)) {
-            output.writeBytes(1, getKeyBytes());
-          }
-          if (((bitField0_ & 0x00000002) == 0x00000002)) {
-            output.writeBytes(2, getValueBytes());
-          }
-          getUnknownFields().writeTo(output);
-        }
-
-        private int memoizedSerializedSize = -1;
-        public int getSerializedSize() {
-          int size = memoizedSerializedSize;
-          if (size != -1) return size;
-
-          size = 0;
-          if (((bitField0_ & 0x00000001) == 0x00000001)) {
-            size += com.google.protobuf.CodedOutputStream
-              .computeBytesSize(1, getKeyBytes());
-          }
-          if (((bitField0_ & 0x00000002) == 0x00000002)) {
-            size += com.google.protobuf.CodedOutputStream
-              .computeBytesSize(2, getValueBytes());
-          }
-          size += getUnknownFields().getSerializedSize();
-          memoizedSerializedSize = size;
-          return size;
-        }
-
-        private static final long serialVersionUID = 0L;
-        @Override
-        protected Object writeReplace()
-            throws java.io.ObjectStreamException {
-          return super.writeReplace();
-        }
-
-        public static Attachment parseFrom(
-            com.google.protobuf.ByteString data)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          return PARSER.parseFrom(data);
-        }
-        public static Attachment parseFrom(
-            com.google.protobuf.ByteString data,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          return PARSER.parseFrom(data, extensionRegistry);
-        }
-        public static Attachment parseFrom(byte[] data)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          return PARSER.parseFrom(data);
-        }
-        public static Attachment parseFrom(
-            byte[] data,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          return PARSER.parseFrom(data, extensionRegistry);
-        }
-        public static Attachment parseFrom(java.io.InputStream input)
-            throws java.io.IOException {
-          return PARSER.parseFrom(input);
-        }
-        public static Attachment parseFrom(
-            java.io.InputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          return PARSER.parseFrom(input, extensionRegistry);
-        }
-        public static Attachment parseDelimitedFrom(java.io.InputStream input)
-            throws java.io.IOException {
-          return PARSER.parseDelimitedFrom(input);
-        }
-        public static Attachment parseDelimitedFrom(
-            java.io.InputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          return PARSER.parseDelimitedFrom(input, extensionRegistry);
-        }
-        public static Attachment parseFrom(
-            com.google.protobuf.CodedInputStream input)
-            throws java.io.IOException {
-          return PARSER.parseFrom(input);
-        }
-        public static Attachment parseFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          return PARSER.parseFrom(input, extensionRegistry);
-        }
-
-        public static Builder newBuilder() { return Builder.create(); }
-        public Builder newBuilderForType() { return newBuilder(); }
-        public static Builder newBuilder(Attachment prototype) {
-          return newBuilder().mergeFrom(prototype);
-        }
-        public Builder toBuilder() { return newBuilder(this); }
-
-        @Override
-        protected Builder newBuilderForType(
-            BuilderParent parent) {
-          Builder builder = new Builder(parent);
-          return builder;
-        }
-        /**
-         * Protobuf type {@code netty.Message.Header.Attachment}
-         */
-        public static final class Builder extends
-            com.google.protobuf.GeneratedMessage.Builder<Builder>
-           implements AttachmentOrBuilder {
-          public static final com.google.protobuf.Descriptors.Descriptor
-              getDescriptor() {
-            return MessageBuf.internal_static_netty_Message_Header_Attachment_descriptor;
-          }
-
-          protected FieldAccessorTable
-              internalGetFieldAccessorTable() {
-            return MessageBuf.internal_static_netty_Message_Header_Attachment_fieldAccessorTable
-                .ensureFieldAccessorsInitialized(
-                    Attachment.class, Builder.class);
-          }
-
-          // Construct using cheetah.predator.protocol.MessageBuf.Message.Header.Attachment.newBuilder()
-          private Builder() {
-            maybeForceBuilderInitialization();
-          }
-
-          private Builder(
-              BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-          }
-          private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-            }
-          }
-          private static Builder create() {
-            return new Builder();
-          }
-
-          public Builder clear() {
-            super.clear();
-            key_ = "";
-            bitField0_ = (bitField0_ & ~0x00000001);
-            value_ = "";
-            bitField0_ = (bitField0_ & ~0x00000002);
-            return this;
-          }
-
-          public Builder clone() {
-            return create().mergeFrom(buildPartial());
-          }
-
-          public com.google.protobuf.Descriptors.Descriptor
-              getDescriptorForType() {
-            return MessageBuf.internal_static_netty_Message_Header_Attachment_descriptor;
-          }
-
-          public Attachment getDefaultInstanceForType() {
-            return Attachment.getDefaultInstance();
-          }
-
-          public Attachment build() {
-            Attachment result = buildPartial();
-            if (!result.isInitialized()) {
-              throw newUninitializedMessageException(result);
-            }
-            return result;
-          }
-
-          public Attachment buildPartial() {
-            Attachment result = new Attachment(this);
-            int from_bitField0_ = bitField0_;
-            int to_bitField0_ = 0;
-            if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-              to_bitField0_ |= 0x00000001;
-            }
-            result.key_ = key_;
-            if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-              to_bitField0_ |= 0x00000002;
-            }
-            result.value_ = value_;
-            result.bitField0_ = to_bitField0_;
-            onBuilt();
-            return result;
-          }
-
-          public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (other instanceof Attachment) {
-              return mergeFrom((Attachment)other);
-            } else {
-              super.mergeFrom(other);
-              return this;
-            }
-          }
-
-          public Builder mergeFrom(Attachment other) {
-            if (other == Attachment.getDefaultInstance()) return this;
-            if (other.hasKey()) {
-              bitField0_ |= 0x00000001;
-              key_ = other.key_;
-              onChanged();
-            }
-            if (other.hasValue()) {
-              bitField0_ |= 0x00000002;
-              value_ = other.value_;
-              onChanged();
-            }
-            this.mergeUnknownFields(other.getUnknownFields());
-            return this;
-          }
-
-          public final boolean isInitialized() {
-            if (!hasKey()) {
-              
-              return false;
-            }
-            if (!hasValue()) {
-              
-              return false;
-            }
-            return true;
-          }
-
-          public Builder mergeFrom(
-              com.google.protobuf.CodedInputStream input,
-              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-              throws java.io.IOException {
-            Attachment parsedMessage = null;
-            try {
-              parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-              parsedMessage = (Attachment) e.getUnfinishedMessage();
-              throw e;
-            } finally {
-              if (parsedMessage != null) {
-                mergeFrom(parsedMessage);
-              }
-            }
-            return this;
-          }
-          private int bitField0_;
-
-          // required string key = 1;
-          private Object key_ = "";
-          /**
-           * <code>required string key = 1;</code>
-           */
-          public boolean hasKey() {
-            return ((bitField0_ & 0x00000001) == 0x00000001);
-          }
-          /**
-           * <code>required string key = 1;</code>
-           */
-          public String getKey() {
-            Object ref = key_;
-            if (!(ref instanceof String)) {
-              String s = ((com.google.protobuf.ByteString) ref)
-                  .toStringUtf8();
-              key_ = s;
-              return s;
-            } else {
-              return (String) ref;
-            }
-          }
-          /**
-           * <code>required string key = 1;</code>
-           */
-          public com.google.protobuf.ByteString
-              getKeyBytes() {
-            Object ref = key_;
-            if (ref instanceof String) {
-              com.google.protobuf.ByteString b = 
-                  com.google.protobuf.ByteString.copyFromUtf8(
-                      (String) ref);
-              key_ = b;
-              return b;
-            } else {
-              return (com.google.protobuf.ByteString) ref;
-            }
-          }
-          /**
-           * <code>required string key = 1;</code>
-           */
-          public Builder setKey(
-              String value) {
-            if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-            key_ = value;
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>required string key = 1;</code>
-           */
-          public Builder clearKey() {
-            bitField0_ = (bitField0_ & ~0x00000001);
-            key_ = getDefaultInstance().getKey();
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>required string key = 1;</code>
-           */
-          public Builder setKeyBytes(
-              com.google.protobuf.ByteString value) {
-            if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-            key_ = value;
-            onChanged();
-            return this;
-          }
-
-          // required string value = 2;
-          private Object value_ = "";
-          /**
-           * <code>required string value = 2;</code>
-           */
-          public boolean hasValue() {
-            return ((bitField0_ & 0x00000002) == 0x00000002);
-          }
-          /**
-           * <code>required string value = 2;</code>
-           */
-          public String getValue() {
-            Object ref = value_;
-            if (!(ref instanceof String)) {
-              String s = ((com.google.protobuf.ByteString) ref)
-                  .toStringUtf8();
-              value_ = s;
-              return s;
-            } else {
-              return (String) ref;
-            }
-          }
-          /**
-           * <code>required string value = 2;</code>
-           */
-          public com.google.protobuf.ByteString
-              getValueBytes() {
-            Object ref = value_;
-            if (ref instanceof String) {
-              com.google.protobuf.ByteString b = 
-                  com.google.protobuf.ByteString.copyFromUtf8(
-                      (String) ref);
-              value_ = b;
-              return b;
-            } else {
-              return (com.google.protobuf.ByteString) ref;
-            }
-          }
-          /**
-           * <code>required string value = 2;</code>
-           */
-          public Builder setValue(
-              String value) {
-            if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-            value_ = value;
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>required string value = 2;</code>
-           */
-          public Builder clearValue() {
-            bitField0_ = (bitField0_ & ~0x00000002);
-            value_ = getDefaultInstance().getValue();
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>required string value = 2;</code>
-           */
-          public Builder setValueBytes(
-              com.google.protobuf.ByteString value) {
-            if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-            value_ = value;
-            onChanged();
-            return this;
-          }
-
-          // @@protoc_insertion_point(builder_scope:netty.Message.Header.Attachment)
-        }
-
-        static {
-          defaultInstance = new Attachment(true);
-          defaultInstance.initFields();
-        }
-
-        // @@protoc_insertion_point(class_scope:netty.Message.Header.Attachment)
-      }
-
       private int bitField0_;
-      // required string sessionId = 1;
-      public static final int SESSIONID_FIELD_NUMBER = 1;
-      private Object sessionId_;
+      // required fixed32 type = 1;
+      public static final int TYPE_FIELD_NUMBER = 1;
+      private int type_;
       /**
-       * <code>required string sessionId = 1;</code>
+       * <code>required fixed32 type = 1;</code>
        */
-      public boolean hasSessionId() {
+      public boolean hasType() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required string sessionId = 1;</code>
-       */
-      public String getSessionId() {
-        Object ref = sessionId_;
-        if (ref instanceof String) {
-          return (String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            sessionId_ = s;
-          }
-          return s;
-        }
-      }
-      /**
-       * <code>required string sessionId = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getSessionIdBytes() {
-        Object ref = sessionId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (String) ref);
-          sessionId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-
-      // required int32 type = 2;
-      public static final int TYPE_FIELD_NUMBER = 2;
-      private int type_;
-      /**
-       * <code>required int32 type = 2;</code>
-       */
-      public boolean hasType() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required int32 type = 2;</code>
+       * <code>required fixed32 type = 1;</code>
        */
       public int getType() {
         return type_;
       }
 
-      // required string clientId = 3;
-      public static final int CLIENTID_FIELD_NUMBER = 3;
-      private Object clientId_;
+      // required string from = 2;
+      public static final int FROM_FIELD_NUMBER = 2;
+      private Object from_;
       /**
-       * <code>required string clientId = 3;</code>
+       * <code>required string from = 2;</code>
        */
-      public boolean hasClientId() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+      public boolean hasFrom() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required string clientId = 3;</code>
+       * <code>required string from = 2;</code>
        */
-      public String getClientId() {
-        Object ref = clientId_;
+      public String getFrom() {
+        Object ref = from_;
         if (ref instanceof String) {
           return (String) ref;
         } else {
@@ -1137,39 +440,82 @@ public final class MessageBuf {
               (com.google.protobuf.ByteString) ref;
           String s = bs.toStringUtf8();
           if (bs.isValidUtf8()) {
-            clientId_ = s;
+            from_ = s;
           }
           return s;
         }
       }
       /**
-       * <code>required string clientId = 3;</code>
+       * <code>required string from = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getClientIdBytes() {
-        Object ref = clientId_;
+          getFromBytes() {
+        Object ref = from_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
-          clientId_ = b;
+          from_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
 
-      // required string deliveryId = 4;
-      public static final int DELIVERYID_FIELD_NUMBER = 4;
+      // required string to = 3;
+      public static final int TO_FIELD_NUMBER = 3;
+      private Object to_;
+      /**
+       * <code>required string to = 3;</code>
+       */
+      public boolean hasTo() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required string to = 3;</code>
+       */
+      public String getTo() {
+        Object ref = to_;
+        if (ref instanceof String) {
+          return (String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            to_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>required string to = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getToBytes() {
+        Object ref = to_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (String) ref);
+          to_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      // required string delivery_id = 4;
+      public static final int DELIVERY_ID_FIELD_NUMBER = 4;
       private Object deliveryId_;
       /**
-       * <code>required string deliveryId = 4;</code>
+       * <code>required string delivery_id = 4;</code>
        */
       public boolean hasDeliveryId() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>required string deliveryId = 4;</code>
+       * <code>required string delivery_id = 4;</code>
        */
       public String getDeliveryId() {
         Object ref = deliveryId_;
@@ -1186,7 +532,7 @@ public final class MessageBuf {
         }
       }
       /**
-       * <code>required string deliveryId = 4;</code>
+       * <code>required string delivery_id = 4;</code>
        */
       public com.google.protobuf.ByteString
           getDeliveryIdBytes() {
@@ -1202,114 +548,131 @@ public final class MessageBuf {
         }
       }
 
-      // required sfixed64 deliveryTime = 5;
-      public static final int DELIVERYTIME_FIELD_NUMBER = 5;
+      // required fixed64 delivery_time = 5;
+      public static final int DELIVERY_TIME_FIELD_NUMBER = 5;
       private long deliveryTime_;
       /**
-       * <code>required sfixed64 deliveryTime = 5;</code>
+       * <code>required fixed64 delivery_time = 5;</code>
        */
       public boolean hasDeliveryTime() {
         return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>required sfixed64 deliveryTime = 5;</code>
+       * <code>required fixed64 delivery_time = 5;</code>
        */
       public long getDeliveryTime() {
         return deliveryTime_;
       }
 
-      // required sfixed64 deviceId = 6;
-      public static final int DEVICEID_FIELD_NUMBER = 6;
-      private long deviceId_;
+      // required string device_id = 6;
+      public static final int DEVICE_ID_FIELD_NUMBER = 6;
+      private Object deviceId_;
       /**
-       * <code>required sfixed64 deviceId = 6;</code>
+       * <code>required string device_id = 6;</code>
        */
       public boolean hasDeviceId() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>required sfixed64 deviceId = 6;</code>
+       * <code>required string device_id = 6;</code>
        */
-      public long getDeviceId() {
-        return deviceId_;
+      public String getDeviceId() {
+        Object ref = deviceId_;
+        if (ref instanceof String) {
+          return (String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            deviceId_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>required string device_id = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getDeviceIdBytes() {
+        Object ref = deviceId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (String) ref);
+          deviceId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
       }
 
-      // required sfixed64 devicePlatform = 7;
-      public static final int DEVICEPLATFORM_FIELD_NUMBER = 7;
-      private long devicePlatform_;
+      // required string device_platform = 7;
+      public static final int DEVICE_PLATFORM_FIELD_NUMBER = 7;
+      private Object devicePlatform_;
       /**
-       * <code>required sfixed64 devicePlatform = 7;</code>
+       * <code>required string device_platform = 7;</code>
        */
       public boolean hasDevicePlatform() {
         return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
-       * <code>required sfixed64 devicePlatform = 7;</code>
+       * <code>required string device_platform = 7;</code>
        */
-      public long getDevicePlatform() {
-        return devicePlatform_;
-      }
-
-      // repeated .netty.Message.Header.Attachment attachment = 8;
-      public static final int ATTACHMENT_FIELD_NUMBER = 8;
-      private java.util.List<Attachment> attachment_;
-      /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-       */
-      public java.util.List<Attachment> getAttachmentList() {
-        return attachment_;
-      }
-      /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-       */
-      public java.util.List<? extends AttachmentOrBuilder>
-          getAttachmentOrBuilderList() {
-        return attachment_;
+      public String getDevicePlatform() {
+        Object ref = devicePlatform_;
+        if (ref instanceof String) {
+          return (String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            devicePlatform_ = s;
+          }
+          return s;
+        }
       }
       /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
+       * <code>required string device_platform = 7;</code>
        */
-      public int getAttachmentCount() {
-        return attachment_.size();
-      }
-      /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-       */
-      public Attachment getAttachment(int index) {
-        return attachment_.get(index);
-      }
-      /**
-       * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-       */
-      public AttachmentOrBuilder getAttachmentOrBuilder(
-          int index) {
-        return attachment_.get(index);
+      public com.google.protobuf.ByteString
+          getDevicePlatformBytes() {
+        Object ref = devicePlatform_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (String) ref);
+          devicePlatform_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
       }
 
       private void initFields() {
-        sessionId_ = "";
         type_ = 0;
-        clientId_ = "";
+        from_ = "";
+        to_ = "";
         deliveryId_ = "";
         deliveryTime_ = 0L;
-        deviceId_ = 0L;
-        devicePlatform_ = 0L;
-        attachment_ = java.util.Collections.emptyList();
+        deviceId_ = "";
+        devicePlatform_ = "";
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
         byte isInitialized = memoizedIsInitialized;
         if (isInitialized != -1) return isInitialized == 1;
 
-        if (!hasSessionId()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
         if (!hasType()) {
           memoizedIsInitialized = 0;
           return false;
         }
-        if (!hasClientId()) {
+        if (!hasFrom()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+        if (!hasTo()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -1329,12 +692,6 @@ public final class MessageBuf {
           memoizedIsInitialized = 0;
           return false;
         }
-        for (int i = 0; i < getAttachmentCount(); i++) {
-          if (!getAttachment(i).isInitialized()) {
-            memoizedIsInitialized = 0;
-            return false;
-          }
-        }
         memoizedIsInitialized = 1;
         return true;
       }
@@ -1343,28 +700,25 @@ public final class MessageBuf {
                           throws java.io.IOException {
         getSerializedSize();
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          output.writeBytes(1, getSessionIdBytes());
+          output.writeFixed32(1, type_);
         }
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          output.writeInt32(2, type_);
+          output.writeBytes(2, getFromBytes());
         }
         if (((bitField0_ & 0x00000004) == 0x00000004)) {
-          output.writeBytes(3, getClientIdBytes());
+          output.writeBytes(3, getToBytes());
         }
         if (((bitField0_ & 0x00000008) == 0x00000008)) {
           output.writeBytes(4, getDeliveryIdBytes());
         }
         if (((bitField0_ & 0x00000010) == 0x00000010)) {
-          output.writeSFixed64(5, deliveryTime_);
+          output.writeFixed64(5, deliveryTime_);
         }
         if (((bitField0_ & 0x00000020) == 0x00000020)) {
-          output.writeSFixed64(6, deviceId_);
+          output.writeBytes(6, getDeviceIdBytes());
         }
         if (((bitField0_ & 0x00000040) == 0x00000040)) {
-          output.writeSFixed64(7, devicePlatform_);
-        }
-        for (int i = 0; i < attachment_.size(); i++) {
-          output.writeMessage(8, attachment_.get(i));
+          output.writeBytes(7, getDevicePlatformBytes());
         }
         getUnknownFields().writeTo(output);
       }
@@ -1377,15 +731,15 @@ public final class MessageBuf {
         size = 0;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(1, getSessionIdBytes());
+            .computeFixed32Size(1, type_);
         }
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(2, type_);
+            .computeBytesSize(2, getFromBytes());
         }
         if (((bitField0_ & 0x00000004) == 0x00000004)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(3, getClientIdBytes());
+            .computeBytesSize(3, getToBytes());
         }
         if (((bitField0_ & 0x00000008) == 0x00000008)) {
           size += com.google.protobuf.CodedOutputStream
@@ -1393,19 +747,15 @@ public final class MessageBuf {
         }
         if (((bitField0_ & 0x00000010) == 0x00000010)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeSFixed64Size(5, deliveryTime_);
+            .computeFixed64Size(5, deliveryTime_);
         }
         if (((bitField0_ & 0x00000020) == 0x00000020)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeSFixed64Size(6, deviceId_);
+            .computeBytesSize(6, getDeviceIdBytes());
         }
         if (((bitField0_ & 0x00000040) == 0x00000040)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeSFixed64Size(7, devicePlatform_);
-        }
-        for (int i = 0; i < attachment_.size(); i++) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(8, attachment_.get(i));
+            .computeBytesSize(7, getDevicePlatformBytes());
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -1515,7 +865,6 @@ public final class MessageBuf {
         }
         private void maybeForceBuilderInitialization() {
           if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-            getAttachmentFieldBuilder();
           }
         }
         private static Builder create() {
@@ -1524,26 +873,20 @@ public final class MessageBuf {
 
         public Builder clear() {
           super.clear();
-          sessionId_ = "";
-          bitField0_ = (bitField0_ & ~0x00000001);
           type_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000001);
+          from_ = "";
           bitField0_ = (bitField0_ & ~0x00000002);
-          clientId_ = "";
+          to_ = "";
           bitField0_ = (bitField0_ & ~0x00000004);
           deliveryId_ = "";
           bitField0_ = (bitField0_ & ~0x00000008);
           deliveryTime_ = 0L;
           bitField0_ = (bitField0_ & ~0x00000010);
-          deviceId_ = 0L;
+          deviceId_ = "";
           bitField0_ = (bitField0_ & ~0x00000020);
-          devicePlatform_ = 0L;
+          devicePlatform_ = "";
           bitField0_ = (bitField0_ & ~0x00000040);
-          if (attachmentBuilder_ == null) {
-            attachment_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000080);
-          } else {
-            attachmentBuilder_.clear();
-          }
           return this;
         }
 
@@ -1575,15 +918,15 @@ public final class MessageBuf {
           if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
             to_bitField0_ |= 0x00000001;
           }
-          result.sessionId_ = sessionId_;
+          result.type_ = type_;
           if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
             to_bitField0_ |= 0x00000002;
           }
-          result.type_ = type_;
+          result.from_ = from_;
           if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
             to_bitField0_ |= 0x00000004;
           }
-          result.clientId_ = clientId_;
+          result.to_ = to_;
           if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
             to_bitField0_ |= 0x00000008;
           }
@@ -1600,15 +943,6 @@ public final class MessageBuf {
             to_bitField0_ |= 0x00000040;
           }
           result.devicePlatform_ = devicePlatform_;
-          if (attachmentBuilder_ == null) {
-            if (((bitField0_ & 0x00000080) == 0x00000080)) {
-              attachment_ = java.util.Collections.unmodifiableList(attachment_);
-              bitField0_ = (bitField0_ & ~0x00000080);
-            }
-            result.attachment_ = attachment_;
-          } else {
-            result.attachment_ = attachmentBuilder_.build();
-          }
           result.bitField0_ = to_bitField0_;
           onBuilt();
           return result;
@@ -1625,17 +959,17 @@ public final class MessageBuf {
 
         public Builder mergeFrom(Header other) {
           if (other == Header.getDefaultInstance()) return this;
-          if (other.hasSessionId()) {
-            bitField0_ |= 0x00000001;
-            sessionId_ = other.sessionId_;
-            onChanged();
-          }
           if (other.hasType()) {
             setType(other.getType());
           }
-          if (other.hasClientId()) {
+          if (other.hasFrom()) {
+            bitField0_ |= 0x00000002;
+            from_ = other.from_;
+            onChanged();
+          }
+          if (other.hasTo()) {
             bitField0_ |= 0x00000004;
-            clientId_ = other.clientId_;
+            to_ = other.to_;
             onChanged();
           }
           if (other.hasDeliveryId()) {
@@ -1647,51 +981,29 @@ public final class MessageBuf {
             setDeliveryTime(other.getDeliveryTime());
           }
           if (other.hasDeviceId()) {
-            setDeviceId(other.getDeviceId());
+            bitField0_ |= 0x00000020;
+            deviceId_ = other.deviceId_;
+            onChanged();
           }
           if (other.hasDevicePlatform()) {
-            setDevicePlatform(other.getDevicePlatform());
-          }
-          if (attachmentBuilder_ == null) {
-            if (!other.attachment_.isEmpty()) {
-              if (attachment_.isEmpty()) {
-                attachment_ = other.attachment_;
-                bitField0_ = (bitField0_ & ~0x00000080);
-              } else {
-                ensureAttachmentIsMutable();
-                attachment_.addAll(other.attachment_);
-              }
-              onChanged();
-            }
-          } else {
-            if (!other.attachment_.isEmpty()) {
-              if (attachmentBuilder_.isEmpty()) {
-                attachmentBuilder_.dispose();
-                attachmentBuilder_ = null;
-                attachment_ = other.attachment_;
-                bitField0_ = (bitField0_ & ~0x00000080);
-                attachmentBuilder_ = 
-                  com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                     getAttachmentFieldBuilder() : null;
-              } else {
-                attachmentBuilder_.addAllMessages(other.attachment_);
-              }
-            }
+            bitField0_ |= 0x00000040;
+            devicePlatform_ = other.devicePlatform_;
+            onChanged();
           }
           this.mergeUnknownFields(other.getUnknownFields());
           return this;
         }
 
         public final boolean isInitialized() {
-          if (!hasSessionId()) {
-            
-            return false;
-          }
           if (!hasType()) {
             
             return false;
           }
-          if (!hasClientId()) {
+          if (!hasFrom()) {
+            
+            return false;
+          }
+          if (!hasTo()) {
             
             return false;
           }
@@ -1710,12 +1022,6 @@ public final class MessageBuf {
           if (!hasDevicePlatform()) {
             
             return false;
-          }
-          for (int i = 0; i < getAttachmentCount(); i++) {
-            if (!getAttachment(i).isInitialized()) {
-              
-              return false;
-            }
           }
           return true;
         }
@@ -1739,197 +1045,197 @@ public final class MessageBuf {
         }
         private int bitField0_;
 
-        // required string sessionId = 1;
-        private Object sessionId_ = "";
+        // required fixed32 type = 1;
+        private int type_ ;
         /**
-         * <code>required string sessionId = 1;</code>
+         * <code>required fixed32 type = 1;</code>
          */
-        public boolean hasSessionId() {
+        public boolean hasType() {
           return ((bitField0_ & 0x00000001) == 0x00000001);
         }
         /**
-         * <code>required string sessionId = 1;</code>
-         */
-        public String getSessionId() {
-          Object ref = sessionId_;
-          if (!(ref instanceof String)) {
-            String s = ((com.google.protobuf.ByteString) ref)
-                .toStringUtf8();
-            sessionId_ = s;
-            return s;
-          } else {
-            return (String) ref;
-          }
-        }
-        /**
-         * <code>required string sessionId = 1;</code>
-         */
-        public com.google.protobuf.ByteString
-            getSessionIdBytes() {
-          Object ref = sessionId_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (String) ref);
-            sessionId_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>required string sessionId = 1;</code>
-         */
-        public Builder setSessionId(
-            String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-          sessionId_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>required string sessionId = 1;</code>
-         */
-        public Builder clearSessionId() {
-          bitField0_ = (bitField0_ & ~0x00000001);
-          sessionId_ = getDefaultInstance().getSessionId();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>required string sessionId = 1;</code>
-         */
-        public Builder setSessionIdBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-          sessionId_ = value;
-          onChanged();
-          return this;
-        }
-
-        // required int32 type = 2;
-        private int type_ ;
-        /**
-         * <code>required int32 type = 2;</code>
-         */
-        public boolean hasType() {
-          return ((bitField0_ & 0x00000002) == 0x00000002);
-        }
-        /**
-         * <code>required int32 type = 2;</code>
+         * <code>required fixed32 type = 1;</code>
          */
         public int getType() {
           return type_;
         }
         /**
-         * <code>required int32 type = 2;</code>
+         * <code>required fixed32 type = 1;</code>
          */
         public Builder setType(int value) {
-          bitField0_ |= 0x00000002;
+          bitField0_ |= 0x00000001;
           type_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>required int32 type = 2;</code>
+         * <code>required fixed32 type = 1;</code>
          */
         public Builder clearType() {
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000001);
           type_ = 0;
           onChanged();
           return this;
         }
 
-        // required string clientId = 3;
-        private Object clientId_ = "";
+        // required string from = 2;
+        private Object from_ = "";
         /**
-         * <code>required string clientId = 3;</code>
+         * <code>required string from = 2;</code>
          */
-        public boolean hasClientId() {
-          return ((bitField0_ & 0x00000004) == 0x00000004);
+        public boolean hasFrom() {
+          return ((bitField0_ & 0x00000002) == 0x00000002);
         }
         /**
-         * <code>required string clientId = 3;</code>
+         * <code>required string from = 2;</code>
          */
-        public String getClientId() {
-          Object ref = clientId_;
+        public String getFrom() {
+          Object ref = from_;
           if (!(ref instanceof String)) {
             String s = ((com.google.protobuf.ByteString) ref)
                 .toStringUtf8();
-            clientId_ = s;
+            from_ = s;
             return s;
           } else {
             return (String) ref;
           }
         }
         /**
-         * <code>required string clientId = 3;</code>
+         * <code>required string from = 2;</code>
          */
         public com.google.protobuf.ByteString
-            getClientIdBytes() {
-          Object ref = clientId_;
+            getFromBytes() {
+          Object ref = from_;
           if (ref instanceof String) {
             com.google.protobuf.ByteString b = 
                 com.google.protobuf.ByteString.copyFromUtf8(
                     (String) ref);
-            clientId_ = b;
+            from_ = b;
             return b;
           } else {
             return (com.google.protobuf.ByteString) ref;
           }
         }
         /**
-         * <code>required string clientId = 3;</code>
+         * <code>required string from = 2;</code>
          */
-        public Builder setClientId(
+        public Builder setFrom(
+            String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+          from_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>required string from = 2;</code>
+         */
+        public Builder clearFrom() {
+          bitField0_ = (bitField0_ & ~0x00000002);
+          from_ = getDefaultInstance().getFrom();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>required string from = 2;</code>
+         */
+        public Builder setFromBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+          from_ = value;
+          onChanged();
+          return this;
+        }
+
+        // required string to = 3;
+        private Object to_ = "";
+        /**
+         * <code>required string to = 3;</code>
+         */
+        public boolean hasTo() {
+          return ((bitField0_ & 0x00000004) == 0x00000004);
+        }
+        /**
+         * <code>required string to = 3;</code>
+         */
+        public String getTo() {
+          Object ref = to_;
+          if (!(ref instanceof String)) {
+            String s = ((com.google.protobuf.ByteString) ref)
+                .toStringUtf8();
+            to_ = s;
+            return s;
+          } else {
+            return (String) ref;
+          }
+        }
+        /**
+         * <code>required string to = 3;</code>
+         */
+        public com.google.protobuf.ByteString
+            getToBytes() {
+          Object ref = to_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (String) ref);
+            to_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>required string to = 3;</code>
+         */
+        public Builder setTo(
             String value) {
           if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000004;
-          clientId_ = value;
+          to_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>required string clientId = 3;</code>
+         * <code>required string to = 3;</code>
          */
-        public Builder clearClientId() {
+        public Builder clearTo() {
           bitField0_ = (bitField0_ & ~0x00000004);
-          clientId_ = getDefaultInstance().getClientId();
+          to_ = getDefaultInstance().getTo();
           onChanged();
           return this;
         }
         /**
-         * <code>required string clientId = 3;</code>
+         * <code>required string to = 3;</code>
          */
-        public Builder setClientIdBytes(
+        public Builder setToBytes(
             com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000004;
-          clientId_ = value;
+          to_ = value;
           onChanged();
           return this;
         }
 
-        // required string deliveryId = 4;
+        // required string delivery_id = 4;
         private Object deliveryId_ = "";
         /**
-         * <code>required string deliveryId = 4;</code>
+         * <code>required string delivery_id = 4;</code>
          */
         public boolean hasDeliveryId() {
           return ((bitField0_ & 0x00000008) == 0x00000008);
         }
         /**
-         * <code>required string deliveryId = 4;</code>
+         * <code>required string delivery_id = 4;</code>
          */
         public String getDeliveryId() {
           Object ref = deliveryId_;
@@ -1943,7 +1249,7 @@ public final class MessageBuf {
           }
         }
         /**
-         * <code>required string deliveryId = 4;</code>
+         * <code>required string delivery_id = 4;</code>
          */
         public com.google.protobuf.ByteString
             getDeliveryIdBytes() {
@@ -1959,7 +1265,7 @@ public final class MessageBuf {
           }
         }
         /**
-         * <code>required string deliveryId = 4;</code>
+         * <code>required string delivery_id = 4;</code>
          */
         public Builder setDeliveryId(
             String value) {
@@ -1972,7 +1278,7 @@ public final class MessageBuf {
           return this;
         }
         /**
-         * <code>required string deliveryId = 4;</code>
+         * <code>required string delivery_id = 4;</code>
          */
         public Builder clearDeliveryId() {
           bitField0_ = (bitField0_ & ~0x00000008);
@@ -1981,7 +1287,7 @@ public final class MessageBuf {
           return this;
         }
         /**
-         * <code>required string deliveryId = 4;</code>
+         * <code>required string delivery_id = 4;</code>
          */
         public Builder setDeliveryIdBytes(
             com.google.protobuf.ByteString value) {
@@ -1994,22 +1300,22 @@ public final class MessageBuf {
           return this;
         }
 
-        // required sfixed64 deliveryTime = 5;
+        // required fixed64 delivery_time = 5;
         private long deliveryTime_ ;
         /**
-         * <code>required sfixed64 deliveryTime = 5;</code>
+         * <code>required fixed64 delivery_time = 5;</code>
          */
         public boolean hasDeliveryTime() {
           return ((bitField0_ & 0x00000010) == 0x00000010);
         }
         /**
-         * <code>required sfixed64 deliveryTime = 5;</code>
+         * <code>required fixed64 delivery_time = 5;</code>
          */
         public long getDeliveryTime() {
           return deliveryTime_;
         }
         /**
-         * <code>required sfixed64 deliveryTime = 5;</code>
+         * <code>required fixed64 delivery_time = 5;</code>
          */
         public Builder setDeliveryTime(long value) {
           bitField0_ |= 0x00000010;
@@ -2018,7 +1324,7 @@ public final class MessageBuf {
           return this;
         }
         /**
-         * <code>required sfixed64 deliveryTime = 5;</code>
+         * <code>required fixed64 delivery_time = 5;</code>
          */
         public Builder clearDeliveryTime() {
           bitField0_ = (bitField0_ & ~0x00000010);
@@ -2027,310 +1333,152 @@ public final class MessageBuf {
           return this;
         }
 
-        // required sfixed64 deviceId = 6;
-        private long deviceId_ ;
+        // required string device_id = 6;
+        private Object deviceId_ = "";
         /**
-         * <code>required sfixed64 deviceId = 6;</code>
+         * <code>required string device_id = 6;</code>
          */
         public boolean hasDeviceId() {
           return ((bitField0_ & 0x00000020) == 0x00000020);
         }
         /**
-         * <code>required sfixed64 deviceId = 6;</code>
+         * <code>required string device_id = 6;</code>
          */
-        public long getDeviceId() {
-          return deviceId_;
+        public String getDeviceId() {
+          Object ref = deviceId_;
+          if (!(ref instanceof String)) {
+            String s = ((com.google.protobuf.ByteString) ref)
+                .toStringUtf8();
+            deviceId_ = s;
+            return s;
+          } else {
+            return (String) ref;
+          }
         }
         /**
-         * <code>required sfixed64 deviceId = 6;</code>
+         * <code>required string device_id = 6;</code>
          */
-        public Builder setDeviceId(long value) {
-          bitField0_ |= 0x00000020;
+        public com.google.protobuf.ByteString
+            getDeviceIdBytes() {
+          Object ref = deviceId_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (String) ref);
+            deviceId_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>required string device_id = 6;</code>
+         */
+        public Builder setDeviceId(
+            String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
           deviceId_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>required sfixed64 deviceId = 6;</code>
+         * <code>required string device_id = 6;</code>
          */
         public Builder clearDeviceId() {
           bitField0_ = (bitField0_ & ~0x00000020);
-          deviceId_ = 0L;
+          deviceId_ = getDefaultInstance().getDeviceId();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>required string device_id = 6;</code>
+         */
+        public Builder setDeviceIdBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+          deviceId_ = value;
           onChanged();
           return this;
         }
 
-        // required sfixed64 devicePlatform = 7;
-        private long devicePlatform_ ;
+        // required string device_platform = 7;
+        private Object devicePlatform_ = "";
         /**
-         * <code>required sfixed64 devicePlatform = 7;</code>
+         * <code>required string device_platform = 7;</code>
          */
         public boolean hasDevicePlatform() {
           return ((bitField0_ & 0x00000040) == 0x00000040);
         }
         /**
-         * <code>required sfixed64 devicePlatform = 7;</code>
+         * <code>required string device_platform = 7;</code>
          */
-        public long getDevicePlatform() {
-          return devicePlatform_;
+        public String getDevicePlatform() {
+          Object ref = devicePlatform_;
+          if (!(ref instanceof String)) {
+            String s = ((com.google.protobuf.ByteString) ref)
+                .toStringUtf8();
+            devicePlatform_ = s;
+            return s;
+          } else {
+            return (String) ref;
+          }
         }
         /**
-         * <code>required sfixed64 devicePlatform = 7;</code>
+         * <code>required string device_platform = 7;</code>
          */
-        public Builder setDevicePlatform(long value) {
-          bitField0_ |= 0x00000040;
+        public com.google.protobuf.ByteString
+            getDevicePlatformBytes() {
+          Object ref = devicePlatform_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (String) ref);
+            devicePlatform_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>required string device_platform = 7;</code>
+         */
+        public Builder setDevicePlatform(
+            String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
           devicePlatform_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>required sfixed64 devicePlatform = 7;</code>
+         * <code>required string device_platform = 7;</code>
          */
         public Builder clearDevicePlatform() {
           bitField0_ = (bitField0_ & ~0x00000040);
-          devicePlatform_ = 0L;
+          devicePlatform_ = getDefaultInstance().getDevicePlatform();
           onChanged();
           return this;
         }
-
-        // repeated .netty.Message.Header.Attachment attachment = 8;
-        private java.util.List<Attachment> attachment_ =
-          java.util.Collections.emptyList();
-        private void ensureAttachmentIsMutable() {
-          if (!((bitField0_ & 0x00000080) == 0x00000080)) {
-            attachment_ = new java.util.ArrayList<Attachment>(attachment_);
-            bitField0_ |= 0x00000080;
-           }
-        }
-
-        private com.google.protobuf.RepeatedFieldBuilder<
-            Attachment, Attachment.Builder, AttachmentOrBuilder> attachmentBuilder_;
-
         /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
+         * <code>required string device_platform = 7;</code>
          */
-        public java.util.List<Attachment> getAttachmentList() {
-          if (attachmentBuilder_ == null) {
-            return java.util.Collections.unmodifiableList(attachment_);
-          } else {
-            return attachmentBuilder_.getMessageList();
-          }
-        }
-        /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-         */
-        public int getAttachmentCount() {
-          if (attachmentBuilder_ == null) {
-            return attachment_.size();
-          } else {
-            return attachmentBuilder_.getCount();
-          }
-        }
-        /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-         */
-        public Attachment getAttachment(int index) {
-          if (attachmentBuilder_ == null) {
-            return attachment_.get(index);
-          } else {
-            return attachmentBuilder_.getMessage(index);
-          }
-        }
-        /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-         */
-        public Builder setAttachment(
-            int index, Attachment value) {
-          if (attachmentBuilder_ == null) {
-            if (value == null) {
-              throw new NullPointerException();
-            }
-            ensureAttachmentIsMutable();
-            attachment_.set(index, value);
-            onChanged();
-          } else {
-            attachmentBuilder_.setMessage(index, value);
-          }
+        public Builder setDevicePlatformBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+          devicePlatform_ = value;
+          onChanged();
           return this;
-        }
-        /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-         */
-        public Builder setAttachment(
-            int index, Attachment.Builder builderForValue) {
-          if (attachmentBuilder_ == null) {
-            ensureAttachmentIsMutable();
-            attachment_.set(index, builderForValue.build());
-            onChanged();
-          } else {
-            attachmentBuilder_.setMessage(index, builderForValue.build());
-          }
-          return this;
-        }
-        /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-         */
-        public Builder addAttachment(Attachment value) {
-          if (attachmentBuilder_ == null) {
-            if (value == null) {
-              throw new NullPointerException();
-            }
-            ensureAttachmentIsMutable();
-            attachment_.add(value);
-            onChanged();
-          } else {
-            attachmentBuilder_.addMessage(value);
-          }
-          return this;
-        }
-        /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-         */
-        public Builder addAttachment(
-            int index, Attachment value) {
-          if (attachmentBuilder_ == null) {
-            if (value == null) {
-              throw new NullPointerException();
-            }
-            ensureAttachmentIsMutable();
-            attachment_.add(index, value);
-            onChanged();
-          } else {
-            attachmentBuilder_.addMessage(index, value);
-          }
-          return this;
-        }
-        /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-         */
-        public Builder addAttachment(
-            Attachment.Builder builderForValue) {
-          if (attachmentBuilder_ == null) {
-            ensureAttachmentIsMutable();
-            attachment_.add(builderForValue.build());
-            onChanged();
-          } else {
-            attachmentBuilder_.addMessage(builderForValue.build());
-          }
-          return this;
-        }
-        /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-         */
-        public Builder addAttachment(
-            int index, Attachment.Builder builderForValue) {
-          if (attachmentBuilder_ == null) {
-            ensureAttachmentIsMutable();
-            attachment_.add(index, builderForValue.build());
-            onChanged();
-          } else {
-            attachmentBuilder_.addMessage(index, builderForValue.build());
-          }
-          return this;
-        }
-        /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-         */
-        public Builder addAllAttachment(
-            Iterable<? extends Attachment> values) {
-          if (attachmentBuilder_ == null) {
-            ensureAttachmentIsMutable();
-            super.addAll(values, attachment_);
-            onChanged();
-          } else {
-            attachmentBuilder_.addAllMessages(values);
-          }
-          return this;
-        }
-        /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-         */
-        public Builder clearAttachment() {
-          if (attachmentBuilder_ == null) {
-            attachment_ = java.util.Collections.emptyList();
-            bitField0_ = (bitField0_ & ~0x00000080);
-            onChanged();
-          } else {
-            attachmentBuilder_.clear();
-          }
-          return this;
-        }
-        /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-         */
-        public Builder removeAttachment(int index) {
-          if (attachmentBuilder_ == null) {
-            ensureAttachmentIsMutable();
-            attachment_.remove(index);
-            onChanged();
-          } else {
-            attachmentBuilder_.remove(index);
-          }
-          return this;
-        }
-        /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-         */
-        public Attachment.Builder getAttachmentBuilder(
-            int index) {
-          return getAttachmentFieldBuilder().getBuilder(index);
-        }
-        /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-         */
-        public AttachmentOrBuilder getAttachmentOrBuilder(
-            int index) {
-          if (attachmentBuilder_ == null) {
-            return attachment_.get(index);  } else {
-            return attachmentBuilder_.getMessageOrBuilder(index);
-          }
-        }
-        /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-         */
-        public java.util.List<? extends AttachmentOrBuilder>
-             getAttachmentOrBuilderList() {
-          if (attachmentBuilder_ != null) {
-            return attachmentBuilder_.getMessageOrBuilderList();
-          } else {
-            return java.util.Collections.unmodifiableList(attachment_);
-          }
-        }
-        /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-         */
-        public Attachment.Builder addAttachmentBuilder() {
-          return getAttachmentFieldBuilder().addBuilder(
-              Attachment.getDefaultInstance());
-        }
-        /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-         */
-        public Attachment.Builder addAttachmentBuilder(
-            int index) {
-          return getAttachmentFieldBuilder().addBuilder(
-              index, Attachment.getDefaultInstance());
-        }
-        /**
-         * <code>repeated .netty.Message.Header.Attachment attachment = 8;</code>
-         */
-        public java.util.List<Attachment.Builder>
-             getAttachmentBuilderList() {
-          return getAttachmentFieldBuilder().getBuilderList();
-        }
-        private com.google.protobuf.RepeatedFieldBuilder<
-            Attachment, Attachment.Builder, AttachmentOrBuilder>
-            getAttachmentFieldBuilder() {
-          if (attachmentBuilder_ == null) {
-            attachmentBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-                Attachment, Attachment.Builder, AttachmentOrBuilder>(
-                    attachment_,
-                    ((bitField0_ & 0x00000080) == 0x00000080),
-                    getParentForChildren(),
-                    isClean());
-            attachment_ = null;
-          }
-          return attachmentBuilder_;
         }
 
         // @@protoc_insertion_point(builder_scope:netty.Message.Header)
@@ -3046,9 +2194,26 @@ public final class MessageBuf {
       return body_.get(index);
     }
 
+    // optional bytes attachment = 8;
+    public static final int ATTACHMENT_FIELD_NUMBER = 8;
+    private com.google.protobuf.ByteString attachment_;
+    /**
+     * <code>optional bytes attachment = 8;</code>
+     */
+    public boolean hasAttachment() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional bytes attachment = 8;</code>
+     */
+    public com.google.protobuf.ByteString getAttachment() {
+      return attachment_;
+    }
+
     private void initFields() {
       header_ = Header.getDefaultInstance();
       body_ = java.util.Collections.emptyList();
+      attachment_ = com.google.protobuf.ByteString.EMPTY;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -3082,6 +2247,9 @@ public final class MessageBuf {
       for (int i = 0; i < body_.size(); i++) {
         output.writeMessage(2, body_.get(i));
       }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(8, attachment_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -3098,6 +2266,10 @@ public final class MessageBuf {
       for (int i = 0; i < body_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, body_.get(i));
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(8, attachment_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -3229,6 +2401,8 @@ public final class MessageBuf {
         } else {
           bodyBuilder_.clear();
         }
+        attachment_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -3274,6 +2448,10 @@ public final class MessageBuf {
         } else {
           result.body_ = bodyBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.attachment_ = attachment_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -3318,6 +2496,9 @@ public final class MessageBuf {
               bodyBuilder_.addAllMessages(other.body_);
             }
           }
+        }
+        if (other.hasAttachment()) {
+          setAttachment(other.getAttachment());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -3717,6 +2898,42 @@ public final class MessageBuf {
         return bodyBuilder_;
       }
 
+      // optional bytes attachment = 8;
+      private com.google.protobuf.ByteString attachment_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes attachment = 8;</code>
+       */
+      public boolean hasAttachment() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional bytes attachment = 8;</code>
+       */
+      public com.google.protobuf.ByteString getAttachment() {
+        return attachment_;
+      }
+      /**
+       * <code>optional bytes attachment = 8;</code>
+       */
+      public Builder setAttachment(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        attachment_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes attachment = 8;</code>
+       */
+      public Builder clearAttachment() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        attachment_ = getDefaultInstance().getAttachment();
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:netty.Message)
     }
 
@@ -3739,11 +2956,6 @@ public final class MessageBuf {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_netty_Message_Header_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_netty_Message_Header_Attachment_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_netty_Message_Header_Attachment_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_netty_Message_Body_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -3757,17 +2969,15 @@ public final class MessageBuf {
       descriptor;
   static {
     String[] descriptorData = {
-      "\n\016Protocol.proto\022\005netty\"\351\002\n\007Message\022%\n\006h" +
+      "\n\016Protocol.proto\022\005netty\"\226\002\n\007Message\022%\n\006h" +
       "eader\030\001 \002(\0132\025.netty.Message.Header\022!\n\004bo" +
-      "dy\030\002 \003(\0132\023.netty.Message.Body\032\357\001\n\006Header" +
-      "\022\021\n\tsessionId\030\001 \002(\t\022\014\n\004type\030\002 \002(\005\022\020\n\010cli" +
-      "entId\030\003 \002(\t\022\022\n\ndeliveryId\030\004 \002(\t\022\024\n\014deliv" +
-      "eryTime\030\005 \002(\020\022\020\n\010deviceId\030\006 \002(\020\022\026\n\016devic" +
-      "ePlatform\030\007 \002(\020\0224\n\nattachment\030\010 \003(\0132 .ne" +
-      "tty.Message.Header.Attachment\032(\n\nAttachm" +
-      "ent\022\013\n\003key\030\001 \002(\t\022\r\n\005value\030\002 \002(\t\032\"\n\004Body\022" +
-      "\013\n\003key\030\001 \002(\t\022\r\n\005value\030\002 \002(\tB\'\n\031cheetah.p",
-      "redator.protocolB\nMessageBuf"
+      "dy\030\002 \003(\0132\023.netty.Message.Body\022\022\n\nattachm" +
+      "ent\030\010 \001(\014\032\210\001\n\006Header\022\014\n\004type\030\001 \002(\007\022\014\n\004fr" +
+      "om\030\002 \002(\t\022\n\n\002to\030\003 \002(\t\022\023\n\013delivery_id\030\004 \002(" +
+      "\t\022\025\n\rdelivery_time\030\005 \002(\006\022\021\n\tdevice_id\030\006 " +
+      "\002(\t\022\027\n\017device_platform\030\007 \002(\t\032\"\n\004Body\022\013\n\003" +
+      "key\030\001 \002(\t\022\r\n\005value\030\002 \002(\tB\'\n\031cheetah.pred" +
+      "ator.protocolB\nMessageBuf"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -3779,19 +2989,13 @@ public final class MessageBuf {
           internal_static_netty_Message_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_netty_Message_descriptor,
-              new String[] { "Header", "Body", });
+              new String[] { "Header", "Body", "Attachment", });
           internal_static_netty_Message_Header_descriptor =
             internal_static_netty_Message_descriptor.getNestedTypes().get(0);
           internal_static_netty_Message_Header_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_netty_Message_Header_descriptor,
-              new String[] { "SessionId", "Type", "ClientId", "DeliveryId", "DeliveryTime", "DeviceId", "DevicePlatform", "Attachment", });
-          internal_static_netty_Message_Header_Attachment_descriptor =
-            internal_static_netty_Message_Header_descriptor.getNestedTypes().get(0);
-          internal_static_netty_Message_Header_Attachment_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_netty_Message_Header_Attachment_descriptor,
-              new String[] { "Key", "Value", });
+              new String[] { "Type", "From", "To", "DeliveryId", "DeliveryTime", "DeviceId", "DevicePlatform", });
           internal_static_netty_Message_Body_descriptor =
             internal_static_netty_Message_descriptor.getNestedTypes().get(1);
           internal_static_netty_Message_Body_fieldAccessorTable = new

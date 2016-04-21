@@ -9,6 +9,7 @@ public class JSerializeException extends PlatformException {
     private static final long serialVersionUID = 2336359841576111685L;
 
     public JSerializeException() {
+        super("");
     }
 
     public JSerializeException(String message) {
@@ -16,7 +17,7 @@ public class JSerializeException extends PlatformException {
     }
 
     public JSerializeException(Throwable cause) {
-        super(cause);
+        super("", cause);
     }
 
     public JSerializeException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {

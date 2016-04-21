@@ -4,86 +4,91 @@ import cheetah.commons.net.Packet;
 import com.google.common.base.MoreObjects;
 
 /**
- * Created by pdemo on 2016/4/18.
+ * Created by Max on 2016/4/18.
  */
 public class PreyPacket implements Packet {
 
     private static final long serialVersionUID = -3612760214098827317L;
+
+    public final static int DEFAULT_CRC_CODE = 0xAEF0100;
+
+    public final static byte CONNECT_TYPE = 1;
+    public final static byte CONNECT_ACK_TYPE = 2;
+    public final static byte CONNECT_RST_TYPE = 3;
+    public final static byte PING_TYPE = 4;
+    public final static byte PONG_TYPE = 5;
+    public final static byte POST_TYPE = 6;
+    public final static byte DISCONNECT_TYPE = 15;
+    public final static int MIN_BODY_SIZE = 0;
+    public final static int MAX_BODY_SIZE = 65536;
+    public final static int MIN_DIGEST_SIZE = 0;
+    public final static int MAX_DIGEST_SIZE = 256;
+    public final static byte[] EMPTY = new byte[0];
 
     PreyPacket() {
         this.digest = EMPTY;
         this.body = EMPTY;
     }
 
-    PreyPacket(byte type, int digestSize, byte[] digest, int bodySize, byte[] body) {
+    PreyPacket(int crcCode, int digestSize, byte[] digest, int bodySize, byte[] body) {
         this.digest = EMPTY;
         this.body = EMPTY;
-        this.type = type;
+        this.crcCode = crcCode;
         this.digestSize = digestSize;
         this.digest = digest;
         this.bodySize = bodySize;
         this.body = body;
     }
 
-    private byte type;
+    private int crcCode;
     private int digestSize;
     private byte[] digest;
     private int bodySize;
     private byte[] body;
 
-    @Override
-    public byte type() {
-        return this.type;
+    public int crcCode() {
+        return this.crcCode;
     }
 
-    @Override
     public int digestSize() {
         return this.digestSize;
     }
 
-    @Override
     public byte[] digest() {
         return this.digest;
     }
 
-    @Override
     public int bodySize() {
         return this.bodySize;
     }
 
-    @Override
     public byte[] body() {
         return this.body;
     }
 
-    @Override
-    public Packet type(byte type) {
-        return new PreyPacket(type, this.digestSize, this.digest, this.bodySize, this.body);
+    public PreyPacket crcCode(int crcCode) {
+        return new PreyPacket(crcCode, this.digestSize, this.digest, this.bodySize, this.body);
     }
 
-    @Override
-    public Packet digestSize(int digestSize) {
-        return new PreyPacket(this.type, digestSize, this.digest, this.bodySize, this.body);
+    public PreyPacket digestSize(int digestSize) {
+        return new PreyPacket(this.crcCode, digestSize, this.digest, this.bodySize, this.body);
     }
 
-    @Override
-    public Packet digest(byte[] digest) {
-        return new PreyPacket(this.type, digest.length, digest, this.bodySize, this.body);
+    public PreyPacket digest(byte[] digest) {
+        return new PreyPacket(this.crcCode, digest.length, digest, this.bodySize, this.body);
     }
 
-    @Override
-    public Packet bodySize(int bodySize) {
-        return new PreyPacket(this.type, this.digestSize, this.digest, bodySize, this.body);
+    public PreyPacket bodySize(int bodySize) {
+        return new PreyPacket(this.crcCode, this.digestSize, this.digest, bodySize, this.body);
     }
 
-    @Override
-    public Packet body(byte[] body) {
-        return new PreyPacket(this.type, this.digestSize, this.digest, body.length, body);
+    public PreyPacket body(byte[] body) {
+        return new PreyPacket(this.crcCode, this.digestSize, this.digest, body.length, body);
     }
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("type", this.type).add("digestSize", this.digestSize).add("bodySize", this.bodySize).toString();
+        return MoreObjects.toStringHelper(this).add("type", this.crcCode).add("digestSize", this.digestSize).add("bodySize", this.bodySize).toString();
     }
 
     public static PreyPacket empty() {

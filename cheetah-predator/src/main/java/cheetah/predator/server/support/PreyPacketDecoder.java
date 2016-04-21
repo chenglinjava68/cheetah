@@ -1,7 +1,6 @@
 package cheetah.predator.server.support;
 
 import cheetah.commons.logger.Loggers;
-import cheetah.commons.net.Packet;
 import cheetah.predator.core.PreyPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -15,7 +14,7 @@ import java.util.List;
  */
 final class PreyPacketDecoder extends ReplayingDecoder<PreyPacketDecoder.State> {
 
-    static final AttributeKey<Packet> PROTOCOL_KEY = AttributeKey.valueOf("PROTOCOL_KEY");
+    static final AttributeKey<PreyPacket> PROTOCOL_KEY = AttributeKey.valueOf("PROTOCOL_KEY");
 
     PreyPacketDecoder() {
         super(State.INIT);
@@ -56,13 +55,13 @@ final class PreyPacketDecoder extends ReplayingDecoder<PreyPacketDecoder.State> 
         Loggers.me().info(getClass(), "decode first byte.");
 //        int type = (firstByte >> 4) & 0x0F;// [0000]0000
 //        int qos = firstByte & 0x0F;//0000[0000]
-        Packet packet = ctx.attr(PROTOCOL_KEY).get().type(type);
-        ctx.attr(PROTOCOL_KEY).set(packet);
+//        PreyPacket packet = ctx.attr(PROTOCOL_KEY).get().type(type);
+//        ctx.attr(PROTOCOL_KEY).set(packet);
     }
 
     private void decodeDigestSize(ChannelHandlerContext ctx, ByteBuf buf) {
 
-        Packet packet = ctx.attr(PROTOCOL_KEY).get();
+        PreyPacket packet = ctx.attr(PROTOCOL_KEY).get();
         short digestSize = buf.readUnsignedByte();
 
         Loggers.me().info(getClass(), "decode digest size.");
@@ -75,11 +74,11 @@ final class PreyPacketDecoder extends ReplayingDecoder<PreyPacketDecoder.State> 
     }
 
     private boolean isUnexpectDigest(short digestSize) {
-        return digestSize > Packet.MAX_DIGEST_SIZE || digestSize < Packet.MIN_DIGEST_SIZE;
+        return digestSize > PreyPacket.MAX_DIGEST_SIZE || digestSize < PreyPacket.MIN_DIGEST_SIZE;
     }
 
     private void decodeDigest(ChannelHandlerContext ctx, ByteBuf buf) {
-        Packet packet = ctx.attr(PROTOCOL_KEY).get();
+        PreyPacket packet = ctx.attr(PROTOCOL_KEY).get();
         ByteBuf digest = buf.readBytes(packet.digestSize());
         Loggers.me().debug(getClass(), "decode digest, expect {} bytes.", packet.digestSize());
 
@@ -88,7 +87,7 @@ final class PreyPacketDecoder extends ReplayingDecoder<PreyPacketDecoder.State> 
     }
 
     private void decodeBodySize(ChannelHandlerContext ctx, ByteBuf buf) {
-        Packet packet = ctx.attr(PROTOCOL_KEY).get();
+        PreyPacket packet = ctx.attr(PROTOCOL_KEY).get();
 
         Loggers.me().info(getClass(), "decode body size.");
         int bodySize = buf.readUnsignedShort();
@@ -101,11 +100,11 @@ final class PreyPacketDecoder extends ReplayingDecoder<PreyPacketDecoder.State> 
     }
 
     private boolean isUnexpectBody(int bodySize) {
-        return bodySize > Packet.MAX_BODY_SIZE || bodySize < Packet.MIN_BODY_SIZE;
+        return bodySize > PreyPacket.MAX_BODY_SIZE || bodySize < PreyPacket.MIN_BODY_SIZE;
     }
 
     private void decodeBody(ChannelHandlerContext ctx, ByteBuf buf, List<Object> out) {
-        Packet packet = ctx.attr(PROTOCOL_KEY).get();
+        PreyPacket packet = ctx.attr(PROTOCOL_KEY).get();
         Loggers.me().info(getClass(), "decode body, expect {} bytes.", packet.bodySize());
 
         ByteBuf body = buf.readBytes(packet.bodySize());
