@@ -3,10 +3,11 @@ package cheetah.predator.server.support;
 import cheetah.commons.logger.Debug;
 import cheetah.commons.logger.Loggers;
 import cheetah.predator.core.Interceptor;
+import cheetah.predator.core.Message;
+import cheetah.predator.core.MessageType;
 import cheetah.predator.core.Session;
 import cheetah.predator.core.support.MessageHandlerChain;
 import cheetah.predator.core.support.SessionHolder;
-import cheetah.predator.protocol.MessageBuf;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Max on 2016/3/13.
  */
-public final class DispatcherMessage extends SimpleChannelInboundHandler<MessageBuf.Message> {
+public final class DispatcherMessage extends SimpleChannelInboundHandler<Message> {
     private List<Interceptor> interceptors;
 
     public DispatcherMessage(List<Interceptor> interceptors) {
@@ -27,8 +28,8 @@ public final class DispatcherMessage extends SimpleChannelInboundHandler<Message
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, MessageBuf.Message message) throws Exception {
-        MessageHandlerChain chain = createInterceptorChain(message.getHeader().getType());
+    protected void channelRead0(ChannelHandlerContext ctx, Message message) throws Exception {
+        MessageHandlerChain chain = createInterceptorChain(message.getType());
         Session session = SessionHolder.getSession(ctx);
         chain.handle(message, session);
         Debug.log(this.getClass(), message.toString());
@@ -44,7 +45,7 @@ public final class DispatcherMessage extends SimpleChannelInboundHandler<Message
             Loggers.me().warn(getClass(), "packet or message codec exception or handler not found exception, for prevent dirty data, close session.", cause);
 
             Session session =  SessionHolder.getSession(ctx);
-            MessageBuf.Message reason = buildMessage(session);
+            Message reason = buildMessage(session);
 
             ctx.writeAndFlush(reason).addListener(ChannelFutureListener.CLOSE);
             return;
@@ -55,11 +56,11 @@ public final class DispatcherMessage extends SimpleChannelInboundHandler<Message
         ctx.close();
     }
 
-    private MessageBuf.Message buildMessage(Session session) {
+    private Message buildMessage(Session session) {
         return null;
     }
 
-    MessageHandlerChain createInterceptorChain(int messageType) {
+    MessageHandlerChain createInterceptorChain(MessageType messageType) {
         MessageHandlerChain chain;
         try {
             chain = MessageHandlerChain.of();

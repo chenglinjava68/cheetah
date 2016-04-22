@@ -29,7 +29,7 @@ final class PreyPacketDecoder extends ReplayingDecoder<PreyPacketDecoder.State> 
                 initProtocol(ctx);
                 checkpoint(State.FIRST_BYTE);
             case FIRST_BYTE:
-                decodeFirstByte(ctx, buf);
+                decodeCrcCodeByte(ctx, buf);
                 checkpoint(State.DIGEST_SIZE);
             case DIGEST_SIZE:
                 decodeDigestSize(ctx, buf);
@@ -50,19 +50,18 @@ final class PreyPacketDecoder extends ReplayingDecoder<PreyPacketDecoder.State> 
         ctx.attr(PROTOCOL_KEY).set(PreyPacket.empty());
     }
 
-    private void decodeFirstByte(ChannelHandlerContext ctx, ByteBuf buf) {
-        byte type = buf.readByte();
+    private void decodeCrcCodeByte(ChannelHandlerContext ctx, ByteBuf buf) {
+        int crcCode = (int) buf.readUnsignedInt();
         Loggers.me().info(getClass(), "decode first byte.");
-//        int type = (firstByte >> 4) & 0x0F;// [0000]0000
-//        int qos = firstByte & 0x0F;//0000[0000]
-        PreyPacket packet = ctx.attr(PROTOCOL_KEY).get().type(type);
+        int type = crcCode & 0xF;
+        PreyPacket packet = ctx.attr(PROTOCOL_KEY).get().crcCode(crcCode).type(type);
         ctx.attr(PROTOCOL_KEY).set(packet);
     }
 
     private void decodeDigestSize(ChannelHandlerContext ctx, ByteBuf buf) {
 
         PreyPacket packet = ctx.attr(PROTOCOL_KEY).get();
-        short digestSize = buf.readUnsignedByte();
+        short digestSize = (short) buf.readUnsignedShort();
 
         Loggers.me().info(getClass(), "decode digest size.");
         if (isUnexpectDigest(digestSize)) {
@@ -90,7 +89,7 @@ final class PreyPacketDecoder extends ReplayingDecoder<PreyPacketDecoder.State> 
         PreyPacket packet = ctx.attr(PROTOCOL_KEY).get();
 
         Loggers.me().info(getClass(), "decode body size.");
-        int bodySize = buf.readUnsignedShort();
+        int bodySize = (int) buf.readUnsignedInt();
         if (isUnexpectBody(bodySize)) {
             throw new PacketException("", "bodySize over limit or invalid.", bodySize);
         }

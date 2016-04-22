@@ -59,7 +59,7 @@ public interface Bootstrap extends Startable {
     }
 
     default LogLevel logLevel() {
-        String logLevel = transportConfig().paramOrDefault(LOG_LEVEL, "WARN");
+        String logLevel = transportConfig().paramOrDefault(LOG_LEVEL, "WARN").toUpperCase();
         switch (logLevel) {
             case "ERROR":
                 return LogLevel.ERROR;

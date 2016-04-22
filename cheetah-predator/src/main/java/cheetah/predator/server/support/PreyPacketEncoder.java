@@ -22,8 +22,8 @@ final class PreyPacketEncoder extends MessageToByteEncoder<PreyPacket> {
             throw new PacketException("", "bodySize over limit or invalid.", packet.bodySize());
         }
 
-//        int firstByte = (packet.type() << 4) | packet.qos();
-//        buf.writeByte(packet.type());
+        int crcCode = (packet.crcCode() << 8) | packet.type();
+        buf.writeByte(crcCode);
         buf.writeByte(packet.digestSize());
         buf.writeBytes(packet.digest());
         buf.writeShort(packet.bodySize());

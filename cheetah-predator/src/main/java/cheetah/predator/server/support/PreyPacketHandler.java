@@ -1,5 +1,6 @@
 package cheetah.predator.server.support;
 
+import cheetah.commons.logger.Info;
 import cheetah.commons.logger.Loggers;
 import cheetah.predator.core.PreyPacket;
 import io.netty.channel.ChannelHandlerContext;
@@ -28,6 +29,8 @@ public final class PreyPacketHandler extends SimpleChannelInboundHandler<PreyPac
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, PreyPacket packet) throws Exception {
-
+        System.out.println(packet);
+        Info.log(this.getClass(), "data received: " + packet);
     }
+
 }

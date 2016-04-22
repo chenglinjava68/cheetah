@@ -2,8 +2,8 @@ package cheetah.predator.core.support;
 
 import cheetah.commons.utils.CollectionUtils;
 import cheetah.predator.core.Interceptor;
+import cheetah.predator.core.Message;
 import cheetah.predator.core.Session;
-import cheetah.predator.protocol.MessageBuf;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class MessageHandlerChain implements Cloneable {
     private int interceptorIndex;
     private static MessageHandlerChain DEFAULT_CHAIN = new MessageHandlerChain();
 
-    public boolean handle(MessageBuf.Message message, Session session) {
+    public boolean handle(Message message, Session session) {
         List<Interceptor> $interceptors = getInterceptors();
         if (!CollectionUtils.isEmpty($interceptors)) {
             for (int i = 0; i < $interceptors.size(); this.interceptorIndex = i++) {
@@ -37,7 +37,7 @@ public class MessageHandlerChain implements Cloneable {
         return true;
     }
 
-    public void triggerAfterCompletion(MessageBuf.Message message, Session session, Exception ex) {
+    public void triggerAfterCompletion(Message message, Session session, Exception ex) {
         List<Interceptor> $interceptors = getInterceptors();
         if (!CollectionUtils.isEmpty($interceptors)) {
             for (int i = this.interceptorIndex; i >= 0; --i) {

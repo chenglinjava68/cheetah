@@ -12,7 +12,7 @@ import io.netty.channel.CombinedChannelDuplexHandler;
 /**
  * Created by Max on 2016/4/20.
  */
-public class MessageCodec extends CombinedChannelDuplexHandler {
+public final class MessageCodec extends CombinedChannelDuplexHandler {
 
     static ObjectMapper OBJECT_MAPPER;
 
@@ -30,4 +30,5 @@ public class MessageCodec extends CombinedChannelDuplexHandler {
     public MessageCodec() {
         super(new MessageDecoder(OBJECT_MAPPER), new MessageEncoder(OBJECT_MAPPER));
     }
+
 }

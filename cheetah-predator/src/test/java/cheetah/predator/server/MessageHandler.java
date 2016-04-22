@@ -1,4 +1,4 @@
-package cheetah.predator.core.support;
+package cheetah.predator.server;
 
 import cheetah.predator.core.Interceptor;
 import cheetah.predator.core.Message;
@@ -6,9 +6,9 @@ import cheetah.predator.core.MessageType;
 import cheetah.predator.core.Session;
 
 /**
- * Created by Max on 2016/3/26.
+ * Created by Max on 2016/4/22.
  */
-public class AbstractMessageHandler implements Interceptor {
+public abstract class MessageHandler implements Interceptor {
     @Override
     public boolean handle(Message message, Session session) throws Exception {
         return false;
@@ -21,6 +21,6 @@ public class AbstractMessageHandler implements Interceptor {
 
     @Override
     public boolean supportsType(MessageType type) {
-        return false;
+        return true;
     }
 }
