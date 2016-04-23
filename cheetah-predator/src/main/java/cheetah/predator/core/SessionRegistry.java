@@ -30,5 +30,9 @@ public interface SessionRegistry {
      */
     void unregister(Session session);
 
+    void ratify(Session session);
+
     int size();
+
+    int ratifySize();
 }

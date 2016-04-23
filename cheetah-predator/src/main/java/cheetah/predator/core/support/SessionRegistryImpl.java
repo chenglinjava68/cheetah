@@ -6,6 +6,7 @@ import cheetah.predator.core.SessionRegistry;
 import com.google.common.collect.Maps;
 
 import java.net.URI;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentMap;
 
@@ -15,6 +16,7 @@ import java.util.concurrent.ConcurrentMap;
 public class SessionRegistryImpl implements SessionRegistry {
 
     private final ConcurrentMap<String, Session> sessions = Maps.newConcurrentMap();
+    private final ConcurrentMap<String, Session> ratifySessions = Maps.newConcurrentMap();
 
     @Override
     public Optional<Session> lookup(String remoteEndpoint) {
@@ -23,7 +25,9 @@ public class SessionRegistryImpl implements SessionRegistry {
 
     @Override
     public Optional<Session> lookup(URI remoteEndpoint) {
-        Session session = this.sessions.get(calcSessionKey(remoteEndpoint));
+        Session session = this.ratifySessions.get(calcSessionKey(remoteEndpoint));
+        if(Objects.isNull(session))
+            session= this.sessions.get(calcSessionKey(remoteEndpoint));
         return Optional.ofNullable(session);
     }
 
@@ -43,10 +47,25 @@ public class SessionRegistryImpl implements SessionRegistry {
         URI uri = URI.create(session.metadata().remoteEndpoint());
         Loggers.me().debug(getClass(), "session[{}] unregistered.", uri);
         this.sessions.remove(calcSessionKey(uri));
+        this.ratifySessions.remove(calcSessionKey(uri));
+    }
+
+    @Override
+    public void ratify(Session session) {
+        Session.Metadata metadata = session.metadata().toBuilder().state(Session.State.APPROVED).build();
+        session.metadata(metadata);
+        URI uri = URI.create(session.metadata().remoteEndpoint());
+        ratifySessions.put(calcSessionKey(uri), session);
+        sessions.remove(calcSessionKey(uri));
     }
 
     @Override
     public int size() {
         return sessions.size();
+    }
+
+    @Override
+    public int ratifySize() {
+        return ratifySessions.size();
     }
 }
