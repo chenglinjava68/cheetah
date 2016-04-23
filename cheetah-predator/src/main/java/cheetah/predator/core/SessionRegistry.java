@@ -30,5 +30,5 @@ public interface SessionRegistry {
      */
     void unregister(Session session);
 
-    long size();
+    int size();
 }

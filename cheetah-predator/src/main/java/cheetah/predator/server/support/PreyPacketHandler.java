@@ -30,6 +30,7 @@ public final class PreyPacketHandler extends SimpleChannelInboundHandler<PreyPac
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, PreyPacket packet) throws Exception {
         Info.log(this.getClass(), "data received: " + packet);
+
     }
 
 }

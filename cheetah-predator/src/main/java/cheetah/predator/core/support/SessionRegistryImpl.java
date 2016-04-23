@@ -46,7 +46,7 @@ public class SessionRegistryImpl implements SessionRegistry {
     }
 
     @Override
-    public long size() {
+    public int size() {
         return sessions.size();
     }
 }
