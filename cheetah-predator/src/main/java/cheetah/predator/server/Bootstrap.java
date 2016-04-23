@@ -37,9 +37,9 @@ public interface Bootstrap extends Startable {
                             //容量动态调整的接收缓冲区分配器，它会根据之前Channel接收到的数据报大小进行计算，
                             // 如果连续填充满接收缓冲区的可写空间，则动态扩展容量。如果连续2次接收到的数据报都小于指定值，则收缩当前的容量，以节约内存
                     .option(ChannelOption.RCVBUF_ALLOCATOR, AdaptiveRecvByteBufAllocator.DEFAULT)
-                    .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-                    .option(ChannelOption.WRITE_BUFFER_HIGH_WATER_MARK, 64 * 1024)  //
-                    .option(ChannelOption.WRITE_BUFFER_LOW_WATER_MARK, 32 * 1024)
+                    .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)  //设置netty使用内存池
+                    .option(ChannelOption.WRITE_BUFFER_HIGH_WATER_MARK, 64 * 1024)  //channel些缓冲区的最大值
+                    .option(ChannelOption.WRITE_BUFFER_LOW_WATER_MARK, 32 * 1024)   //channel些缓冲区的默认值
                     .handler(new LoggingHandler(logLevel()))
                     .childHandler(ChannelCrowd());
             ChannelFuture future = bootstrap.bind(getPort()).sync();
