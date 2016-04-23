@@ -2,10 +2,7 @@ package cheetah.predator.server.support;
 
 import cheetah.commons.logger.Debug;
 import cheetah.commons.logger.Loggers;
-import cheetah.predator.core.Interceptor;
-import cheetah.predator.core.Message;
-import cheetah.predator.core.MessageType;
-import cheetah.predator.core.Session;
+import cheetah.predator.core.*;
 import cheetah.predator.core.support.MessageHandlerChain;
 import cheetah.predator.core.support.SessionHolder;
 import io.netty.channel.ChannelFutureListener;
@@ -22,9 +19,11 @@ import java.util.stream.Collectors;
  */
 public final class DispatcherMessage extends SimpleChannelInboundHandler<Message> {
     private List<Interceptor> interceptors;
+    private SessionRegistry sessionRegistry;
 
-    public DispatcherMessage(List<Interceptor> interceptors) {
+    public DispatcherMessage(List<Interceptor> interceptors, SessionRegistry sessionRegistry) {
         this.interceptors = interceptors;
+        this.sessionRegistry = sessionRegistry;
     }
 
     @Override
@@ -33,6 +32,7 @@ public final class DispatcherMessage extends SimpleChannelInboundHandler<Message
         Session session = SessionHolder.getSession(ctx);
         chain.handle(message, session);
         Debug.log(this.getClass(), message.toString());
+        System.out.println(sessionRegistry.size());
         ctx.writeAndFlush(message);
     }
 

@@ -1,8 +1,10 @@
 package cheetah.predator.server.support;
 
+import cheetah.predator.core.Message;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -29,6 +31,18 @@ public final class MessageCodec extends CombinedChannelDuplexHandler {
 
     public MessageCodec() {
         super(new MessageDecoder(OBJECT_MAPPER), new MessageEncoder(OBJECT_MAPPER));
+    }
+
+    public static void main(String[] args) throws JsonProcessingException {
+        Message message = Message.ackType()
+                .deliveryId("deliveryId")
+                .deliveryTime(System.currentTimeMillis())
+                .from("from")
+                .to("to")
+                .body("type", "article")
+                .body("url", "url")
+                .build();
+        System.out.println(OBJECT_MAPPER.writeValueAsString(message));
     }
 
 }

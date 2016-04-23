@@ -10,7 +10,7 @@ public class PreyPacket implements Packet {
 
     private static final long serialVersionUID = -3612760214098827317L;
 
-    public final static int DEFAULT_CRC_CODE = 0xAEF0100;
+    public final static int DEFAULT_CRC_CODE = 0xF0101;
 
     public final static byte CONNECT_TYPE = 1;
     public final static byte CONNECT_ACK_TYPE = 2;

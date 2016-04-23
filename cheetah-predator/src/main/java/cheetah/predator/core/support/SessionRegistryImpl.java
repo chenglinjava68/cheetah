@@ -44,4 +44,9 @@ public class SessionRegistryImpl implements SessionRegistry {
         Loggers.me().debug(getClass(), "session[{}] unregistered.", uri);
         this.sessions.remove(calcSessionKey(uri));
     }
+
+    @Override
+    public long size() {
+        return sessions.size();
+    }
 }

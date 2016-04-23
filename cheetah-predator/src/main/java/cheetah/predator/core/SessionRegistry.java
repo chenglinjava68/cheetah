@@ -29,4 +29,6 @@ public interface SessionRegistry {
      * @param session
      */
     void unregister(Session session);
+
+    long size();
 }

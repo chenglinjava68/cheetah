@@ -54,7 +54,7 @@ final class PreyPacketDecoder extends ReplayingDecoder<PreyPacketDecoder.State> 
         int crcCode = (int) buf.readUnsignedInt();
         Loggers.me().info(getClass(), "decode first byte.");
         int type = crcCode & 0xF;
-        PreyPacket packet = ctx.attr(PROTOCOL_KEY).get().crcCode(crcCode).type(type);
+        PreyPacket packet = ctx.attr(PROTOCOL_KEY).get().crcCode(crcCode >> 8).type(type);
         ctx.attr(PROTOCOL_KEY).set(packet);
     }
 
