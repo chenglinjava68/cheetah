@@ -22,12 +22,13 @@ final class PreyPacketEncoder extends MessageToByteEncoder<PreyPacket> {
             throw new PacketException("", "bodySize over limit or invalid.", packet.bodySize());
         }
 
-        int crcCode = (packet.crcCode() << 8) | packet.type();
-        buf.writeByte(crcCode);
+        int crcCode = (PreyPacket.DEFAULT_CRC_CODE << 8) | packet.type();
+        buf.writeInt(crcCode);
         buf.writeByte(packet.digestSize());
         buf.writeBytes(packet.digest());
         buf.writeShort(packet.bodySize());
         buf.writeBytes(packet.body());
+        buf.writeBytes("$_".getBytes());
         Loggers.me().info(getClass(), "{} encode success.", packet);
     }
 

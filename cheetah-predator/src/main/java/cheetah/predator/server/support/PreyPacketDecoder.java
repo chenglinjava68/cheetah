@@ -115,6 +115,12 @@ final class PreyPacketDecoder extends ReplayingDecoder<PreyPacketDecoder.State> 
         Loggers.me().info(getClass(), "{} decode success.", packet);
     }
 
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        super.exceptionCaught(ctx, cause);
+
+    }
+
     /**
      * @author siuming
      */
