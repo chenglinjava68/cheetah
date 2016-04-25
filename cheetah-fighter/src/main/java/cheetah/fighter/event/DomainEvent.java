@@ -1,7 +1,7 @@
 package cheetah.fighter.event;
 
 
-import cheetah.fighter.domain.Entity;
+import cheetah.domain.Entity;
 
 /**
  * Created by Max on 2016/1/29.

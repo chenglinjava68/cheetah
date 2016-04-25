@@ -1,4 +1,4 @@
-package cheetah.fighter.domain;
+package cheetah.domain;
 
 /**
  * 基于数字类型id的模型基类

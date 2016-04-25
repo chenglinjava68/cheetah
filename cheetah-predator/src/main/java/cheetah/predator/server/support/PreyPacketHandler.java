@@ -11,10 +11,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
  */
 public final class PreyPacketHandler extends SimpleChannelInboundHandler<PreyPacket> {
 
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-
-    }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
@@ -30,7 +26,6 @@ public final class PreyPacketHandler extends SimpleChannelInboundHandler<PreyPac
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, PreyPacket packet) throws Exception {
         Info.log(this.getClass(), "data received: " + packet);
-
     }
 
 }

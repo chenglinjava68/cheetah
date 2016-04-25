@@ -1,8 +1,8 @@
 package cheetah.fighter.api;
 
 import cheetah.commons.utils.ArithUtils;
-import cheetah.fighter.domain.Entity;
-import cheetah.fighter.domain.UUIDKeyEntity;
+import cheetah.domain.Entity;
+import cheetah.domain.UUIDKeyEntity;
 import cheetah.fighter.event.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -168,6 +168,8 @@ public class EventPublisherTest {
         public DomainEventTest(Entity source) {
             super(source);
         }
+
+
     }
 
     public static class ApplicationListenerTest implements ApplicationListener<ApplicationEventTest> {

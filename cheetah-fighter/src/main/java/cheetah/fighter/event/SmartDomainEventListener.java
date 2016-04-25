@@ -1,6 +1,6 @@
 package cheetah.fighter.event;
 
-import cheetah.fighter.domain.Entity;
+import cheetah.domain.Entity;
 
 /**
  * 一种聪明的监听器

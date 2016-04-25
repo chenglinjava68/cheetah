@@ -1,4 +1,4 @@
-package cheetah.fighter.domain;
+package cheetah.domain;
 
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
@@ -15,19 +15,21 @@ public abstract class AbstractEntity<ID extends TrackingId>
     @EmbeddedId
     private ID trackingId;
     @Embedded
-    private Timist timist = new Timist();
+    private Timist timist;
     @Version
     private Long version;
 
     public AbstractEntity() {
+        timist = new Timist();
     }
 
     public AbstractEntity(ID trackingId) {
+        this();
         this.trackingId = trackingId;
     }
 
     public AbstractEntity(ID trackingId, Timist timist, Long version) {
-        this.trackingId = trackingId;
+        this(trackingId);
         this.timist = timist;
         this.version = version;
     }

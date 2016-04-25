@@ -1,4 +1,4 @@
-package cheetah.fighter.domain;
+package cheetah.domain;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

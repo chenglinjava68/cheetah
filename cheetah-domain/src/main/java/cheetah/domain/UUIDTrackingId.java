@@ -1,4 +1,4 @@
-package cheetah.fighter.domain;
+package cheetah.domain;
 
 import javax.persistence.Column;
 

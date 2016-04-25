@@ -1,4 +1,4 @@
-package cheetah.fighter.domain;
+package cheetah.domain;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
