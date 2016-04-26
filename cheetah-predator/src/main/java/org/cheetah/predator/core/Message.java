@@ -1,9 +1,9 @@
 package org.cheetah.predator.core;
 
 
-import cheetah.commons.net.MetaData;
-import cheetah.commons.utils.Assert;
-import cheetah.commons.utils.IDGenerator;
+import org.cheetah.commons.net.MetaData;
+import org.cheetah.commons.utils.Assert;
+import org.cheetah.commons.utils.IDGenerator;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

@@ -1,7 +1,7 @@
 package org.cheetah.predator.server.support;
 
-import cheetah.commons.logger.Info;
-import cheetah.commons.logger.Loggers;
+import org.cheetah.commons.logger.Info;
+import org.cheetah.commons.logger.Loggers;
 import org.cheetah.predator.core.PreyPacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

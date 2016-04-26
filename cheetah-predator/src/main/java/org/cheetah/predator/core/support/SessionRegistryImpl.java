@@ -1,6 +1,6 @@
 package org.cheetah.predator.core.support;
 
-import cheetah.commons.logger.Loggers;
+import org.cheetah.commons.logger.Loggers;
 import org.cheetah.predator.core.Session;
 import org.cheetah.predator.core.SessionRegistry;
 import com.google.common.collect.Maps;

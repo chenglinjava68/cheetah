@@ -1,6 +1,6 @@
 package org.cheetah.predator.server.support;
 
-import cheetah.commons.PlatformException;
+import org.cheetah.commons.PlatformException;
 
 /**
  * Created by Max on 2016/4/19.

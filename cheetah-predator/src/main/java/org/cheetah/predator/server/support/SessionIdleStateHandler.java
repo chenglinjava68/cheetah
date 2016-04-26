@@ -1,6 +1,6 @@
 package org.cheetah.predator.server.support;
 
-import cheetah.commons.logger.Loggers;
+import org.cheetah.commons.logger.Loggers;
 import org.cheetah.predator.core.Session;
 import org.cheetah.predator.core.support.SessionHolder;
 import io.netty.channel.ChannelHandlerContext;

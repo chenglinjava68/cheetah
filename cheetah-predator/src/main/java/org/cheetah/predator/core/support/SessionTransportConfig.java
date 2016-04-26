@@ -1,8 +1,8 @@
 package org.cheetah.predator.core.support;
 
-import cheetah.commons.Constants;
-import cheetah.commons.net.QueryStringDecoder;
-import cheetah.commons.utils.Assert;
+import org.cheetah.commons.Constants;
+import org.cheetah.commons.net.QueryStringDecoder;
+import org.cheetah.commons.utils.Assert;
 import com.google.common.base.Strings;
 
 import java.net.URI;

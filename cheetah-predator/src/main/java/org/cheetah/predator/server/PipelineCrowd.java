@@ -1,11 +1,12 @@
 package org.cheetah.predator.server;
 
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelInitializer;
 import org.cheetah.predator.core.Interceptor;
+import org.cheetah.predator.core.MessageHandler;
 import org.cheetah.predator.core.SessionRegistry;
 import org.cheetah.predator.core.support.SessionTransportConfig;
 import org.cheetah.predator.spi.event.SessionListener;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelInitializer;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public abstract class PipelineCrowd extends ChannelInitializer<Channel> {
     private SessionRegistry sessionRegistry;
     private SessionListener sessionListener;
     private List<Interceptor> interceptors;
+    private List<MessageHandler> messagehandlers;
 
     @Override
     protected void initChannel(Channel channel) throws Exception {
@@ -60,5 +62,13 @@ public abstract class PipelineCrowd extends ChannelInitializer<Channel> {
     public PipelineCrowd setInterceptors(List<Interceptor> interceptors) {
         this.interceptors = interceptors;
         return this;
+    }
+
+    public List<MessageHandler> messagehandlers() {
+        return messagehandlers;
+    }
+
+    public void setMessagehandlers(List<MessageHandler> messagehandlers) {
+        this.messagehandlers = messagehandlers;
     }
 }

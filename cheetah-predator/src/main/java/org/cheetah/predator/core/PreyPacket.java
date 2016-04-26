@@ -1,6 +1,6 @@
 package org.cheetah.predator.core;
 
-import cheetah.commons.net.Packet;
+import org.cheetah.commons.net.Packet;
 import com.google.common.base.MoreObjects;
 
 /**

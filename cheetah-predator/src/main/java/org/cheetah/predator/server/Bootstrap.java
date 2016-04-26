@@ -1,6 +1,6 @@
 package org.cheetah.predator.server;
 
-import cheetah.commons.Startable;
+import org.cheetah.commons.Startable;
 import org.cheetah.predator.core.support.SessionTransportConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;

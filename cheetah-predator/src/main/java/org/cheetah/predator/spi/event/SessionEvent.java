@@ -1,6 +1,6 @@
 package org.cheetah.predator.spi.event;
 
-import cheetah.commons.utils.Assert;
+import org.cheetah.commons.utils.Assert;
 import org.cheetah.predator.core.Session;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

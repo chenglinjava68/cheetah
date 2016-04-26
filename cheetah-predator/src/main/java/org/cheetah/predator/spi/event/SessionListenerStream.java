@@ -1,6 +1,6 @@
 package org.cheetah.predator.spi.event;
 
-import cheetah.commons.logger.Loggers;
+import org.cheetah.commons.logger.Loggers;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 

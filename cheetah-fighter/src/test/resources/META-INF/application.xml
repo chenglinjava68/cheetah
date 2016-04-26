@@ -18,16 +18,16 @@ http://www.springframework.org/schema/aop
     <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
     <aop:aspectj-autoproxy/>
 
-    <bean id="beanFactoryProvider" class="cheetah.fighter.container.spring.SpringAplicationContextProvider"/>
+    <bean id="beanFactoryProvider" class="org.cheetah.fighter.container.spring.SpringAplicationContextProvider"/>
 
-    <bean id="dispatcher" class="cheetah.fighter.core.support.DispatcherEvent" init-method="start" destroy-method="stop">
+    <bean id="dispatcher" class="org.cheetah.fighter.core.support.DispatcherEvent" init-method="start" destroy-method="stop">
         <property name="configuration">
-            <bean class="cheetah.fighter.core.Configuration">
+            <bean class="org.cheetah.fighter.core.Configuration">
                 <property name="eventListeners">
                     <list>
-                        <bean class="cheetah.fighter.api.EventPublisherTest.ApplicationListenerTest"/>
-                        <bean class="cheetah.fighter.api.EventPublisherTest.SmartApplicationListenerTest2"/>
-                        <bean class="cheetah.fighter.api.EventPublisherTest.SmartDomainListenerTest"/>
+                        <bean class="org.cheetah.fighter.api.EventPublisherTest.ApplicationListenerTest"/>
+                        <bean class="org.cheetah.fighter.api.EventPublisherTest.SmartApplicationListenerTest2"/>
+                        <bean class="org.cheetah.fighter.api.EventPublisherTest.SmartDomainListenerTest"/>
                     </list>
                 </property>
                 <!--<property name="interceptors">-->
@@ -40,7 +40,7 @@ http://www.springframework.org/schema/aop
         </property>
     </bean>
 
-    <bean id="collector" class="cheetah.fighter.api.GenericEventCollector">
+    <bean id="collector" class="org.cheetah.fighter.api.GenericEventCollector">
         <constructor-arg index="0" ref="dispatcher"/>
     </bean>
 

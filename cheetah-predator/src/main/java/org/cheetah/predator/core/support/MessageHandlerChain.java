@@ -1,6 +1,7 @@
 package org.cheetah.predator.core.support;
 
-import cheetah.commons.utils.CollectionUtils;
+import org.cheetah.commons.utils.CollectionUtils;
+import org.cheetah.commons.logger.Error;
 import org.cheetah.predator.core.Interceptor;
 import org.cheetah.predator.core.Message;
 import org.cheetah.predator.core.Session;
@@ -44,7 +45,7 @@ public class MessageHandlerChain implements Cloneable {
                 try {
                     $interceptors.get(i).afterCompletion(message, session, ex);
                 } catch (Exception e) {
-                    cheetah.commons.logger.Error.log(this.getClass(), "InterceptorChain.afterCompletion threw exception");
+                    Error.log(this.getClass(), "InterceptorChain.afterCompletion threw exception");
                 }
             }
         }

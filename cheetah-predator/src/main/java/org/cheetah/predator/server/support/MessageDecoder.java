@@ -1,6 +1,6 @@
 package org.cheetah.predator.server.support;
 
-import cheetah.commons.logger.Loggers;
+import org.cheetah.commons.logger.Loggers;
 import org.cheetah.predator.core.Message;
 import org.cheetah.predator.core.PreyPacket;
 import com.fasterxml.jackson.databind.JavaType;

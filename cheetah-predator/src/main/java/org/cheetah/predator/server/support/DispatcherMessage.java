@@ -1,7 +1,7 @@
 package org.cheetah.predator.server.support;
 
-import cheetah.commons.logger.Debug;
-import cheetah.commons.logger.Loggers;
+import org.cheetah.commons.logger.Debug;
+import org.cheetah.commons.logger.Loggers;
 import org.cheetah.predator.core.*;
 import org.cheetah.predator.core.support.MessageHandlerChain;
 import org.cheetah.predator.core.support.SessionHolder;

@@ -1,6 +1,6 @@
 package org.cheetah.predator.server.support;
 
-import cheetah.commons.logger.Loggers;
+import org.cheetah.commons.logger.Loggers;
 import org.cheetah.predator.core.PreyPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
