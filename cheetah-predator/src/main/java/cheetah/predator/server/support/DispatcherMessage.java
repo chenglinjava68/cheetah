@@ -19,10 +19,12 @@ import java.util.stream.Collectors;
  */
 public final class DispatcherMessage extends SimpleChannelInboundHandler<Message> {
     private List<Interceptor> interceptors;
+    private List<MessageHandler> messageHandlers;
     private SessionRegistry sessionRegistry;
 
-    public DispatcherMessage(List<Interceptor> interceptors, SessionRegistry sessionRegistry) {
+    public DispatcherMessage(List<Interceptor> interceptors, List<MessageHandler> messageHandlers, SessionRegistry sessionRegistry) {
         this.interceptors = interceptors;
+        this.messageHandlers = messageHandlers;
         this.sessionRegistry = sessionRegistry;
     }
 
@@ -79,8 +81,11 @@ public final class DispatcherMessage extends SimpleChannelInboundHandler<Message
         return interceptors;
     }
 
-    public void setInterceptors(List<Interceptor> interceptors) {
-        this.interceptors = interceptors;
+    public List<MessageHandler> messageHandlers() {
+        return messageHandlers;
     }
 
+    public SessionRegistry sessionRegistry() {
+        return sessionRegistry;
+    }
 }
