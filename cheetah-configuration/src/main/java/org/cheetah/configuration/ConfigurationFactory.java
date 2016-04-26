@@ -28,11 +28,11 @@ public class ConfigurationFactory {
     public static ConfigurationFactory singleton() {
         return instance;
     }
-
+    @Deprecated
     public WritableConfiguration fromDatabase(DataSource dataSource) {
         return instance.fromDatabase(dataSource);
     }
-
+    @Deprecated
     public WritableConfiguration fromDatabase(DataSource dataSource, String tableName, String keyColumn, String valueColumn) {
         return instance.fromDatabase(dataSource, tableName, keyColumn, valueColumn);
     }
