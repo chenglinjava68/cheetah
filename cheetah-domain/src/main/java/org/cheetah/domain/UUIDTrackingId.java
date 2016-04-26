@@ -1,13 +1,11 @@
 package org.cheetah.domain;
 
-import javax.persistence.Column;
-
 /**
  * UUID类型的ID基类
  * Created by Max on 2015/12/25.
  */
 public class UUIDTrackingId extends TrackingId<String> {
-    @Column(name = "id")
+//    @Column(name = "id")
     protected String id;
 
     public UUIDTrackingId() {

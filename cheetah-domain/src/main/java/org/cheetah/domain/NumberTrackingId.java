@@ -1,14 +1,12 @@
 package org.cheetah.domain;
 
 
-import javax.persistence.Column;
-
 /**
  * 数字型id
  * Created by Max on 2015/12/25.
  */
 public class NumberTrackingId extends TrackingId<Long> {
-    @Column(name = "id")
+//    @Column(name = "id")
     protected Long id;
 
     public NumberTrackingId() {

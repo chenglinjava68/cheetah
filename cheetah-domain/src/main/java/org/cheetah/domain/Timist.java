@@ -2,18 +2,15 @@ package org.cheetah.domain;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-
 /**
  * 模型-关心时间值对象
  * Created by Max on 2015/12/25.
  */
-@Embeddable
+//@Embeddable
 public class Timist implements ValueObject<Timist> {
-    @Column(name = "create_time")
+//    @Column(name = "create_time")
     private Long createTime = System.currentTimeMillis();
-    @Column(name = "modify_time")
+//    @Column(name = "modify_time")
     private Long modifyTime = System.currentTimeMillis();
 
     Timist() {

@@ -1,22 +1,17 @@
 package org.cheetah.domain;
 
-import javax.persistence.Embedded;
-import javax.persistence.EmbeddedId;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
-
 /**
  * 实体模型抽象类
  * Created by Max on 2015/12/25.
  */
-@MappedSuperclass
+//@MappedSuperclass
 public abstract class AbstractEntity<ID extends TrackingId>
         implements OptLockEntity<AbstractEntity, ID> {
-    @EmbeddedId
+//    @EmbeddedId
     private ID trackingId;
-    @Embedded
+//    @Embedded
     private Timist timist;
-    @Version
+//    @Version
     private Long version;
 
     public AbstractEntity() {
