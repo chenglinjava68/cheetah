@@ -13,6 +13,7 @@
         <module>cheetah-predator</module>
         <module>cheetah-commons</module>
         <module>cheetah-domain</module>
+        <module>cheetah-configuration</module>
     </modules>
 
     <developers>

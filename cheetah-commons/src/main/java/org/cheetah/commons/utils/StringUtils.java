@@ -55,8 +55,12 @@ public abstract class StringUtils {
      * @param str the candidate String
      * @since 3.2.1
      */
-    public static boolean isEmpty(Object str) {
+    public static boolean isEmpty(CharSequence str) {
         return (str == null || "".equals(str));
+    }
+
+    public static boolean isNotEmpty(CharSequence cs) {
+        return !isEmpty(cs);
     }
 
     /**
