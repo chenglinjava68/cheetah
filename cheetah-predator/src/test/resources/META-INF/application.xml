@@ -18,15 +18,15 @@ http://www.springframework.org/schema/aop
     <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
     <aop:aspectj-autoproxy/>
 
-    <bean class="cheetah.predator.server.support.PredatorStartup" init-method="start" destroy-method="stop">
+    <bean class="org.cheetah.predator.server.support.PredatorStartup" init-method="start" destroy-method="stop">
         <property name="transportConfig">
-            <bean class="cheetah.predator.core.support.SessionTransportConfig">
+            <bean class="org.cheetah.predator.core.support.SessionTransportConfig">
                 <constructor-arg index="0" value="${transport.socket.access.endpoint}"/>
             </bean>
         </property>
         <property name="interceptors">
             <list>
-                <bean class="cheetah.predator.server.MessageHandler"/>
+                <bean class="org.cheetah.predator.server.MessageHandler"/>
             </list>
         </property>
     </bean>
