@@ -13,6 +13,7 @@
         <module>cheetah-commons</module>
         <module>cheetah-domain</module>
         <module>cheetah-configuration</module>
+        <module>cheetah-repository</module>
     </modules>
 
     <developers>
