@@ -23,6 +23,7 @@ public class ApplicationEventHandler extends AbstractHandler {
         ApplicationEvent $event = (ApplicationEvent) event;
         ApplicationListener listener = ((ApplicationListener) this.getEventListener());
         listener.onApplicationEvent($event);
+        listener.onFinish();
     }
 
 }

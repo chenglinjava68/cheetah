@@ -21,11 +21,12 @@ public class GenericEventHandler extends AbstractHandler {
             ApplicationListener applicationListener = (ApplicationListener) this.getEventListener();
             ApplicationEvent $event = (ApplicationEvent) event;
             applicationListener.onApplicationEvent($event);
-
+            applicationListener.onFinish();
         } else if (this.getEventListener().getClass().isAssignableFrom(DomainEventListener.class)) {
             DomainEventListener domainEventListener = (DomainEventListener) this.getEventListener();
             DomainEvent $event = (DomainEvent) event;
             domainEventListener.onDomainEvent($event);
+            domainEventListener.onFinish();
         } else
             throw new EventHandlerException("[cheetah-distributor] : Generic event handler handle type error");
     }

@@ -21,7 +21,9 @@ public class DomainEventHandler extends AbstractHandler {
 
     protected void doExecute(Event event) {
         DomainEvent $event = (DomainEvent) event;
-        ((DomainEventListener<DomainEvent>) getEventListener()).onDomainEvent($event);
+        DomainEventListener<DomainEvent> listener = (DomainEventListener<DomainEvent>) getEventListener();
+        listener.onDomainEvent($event);
+        listener.onFinish();
     }
 
 }

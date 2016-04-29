@@ -8,4 +8,6 @@ import java.util.EventListener;
  */
 public interface ApplicationListener<E extends ApplicationEvent> extends EventListener, Serializable {
     void onApplicationEvent(E event);
+
+    void onFinish();
 }
