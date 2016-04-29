@@ -40,7 +40,7 @@ public class AkkaWorker extends UntypedActor implements Worker {
         try {
             Assert.notNull(command, "order must not be null");
             Handler machine = eventlistenerMapper.get(command.eventListener());
-            Feedback feedback = machine.handle(new Directive(command.event(), command.needResult()));
+            Feedback feedback = machine.handle(new Directive(command.event(), command.callback(), command.needResult()));
 //            getSender().tell(feedback, getSelf());
         } catch (Exception e) {
             Debug.log(this.getClass(), "machine execute fail.", e);

@@ -1,6 +1,7 @@
 package org.cheetah.fighter.worker.support;
 
 import org.cheetah.fighter.core.Interceptor;
+import org.cheetah.fighter.handler.Directive;
 import org.cheetah.fighter.handler.Feedback;
 import org.cheetah.fighter.worker.Command;
 import org.cheetah.fighter.worker.Worker;
@@ -22,21 +23,24 @@ public class OrdinaryWorker implements Worker {
     @Override
     public void doWork(Command command) {
         Handler handler = handlerMap.get(command.eventListener());
+
+        Directive directive = new Directive(command.event(), command.callback(), command.needResult());
+
         CompletableFuture<Feedback> future = CompletableFuture.supplyAsync(() ->
-                handler.completeExecute(command.event())
+                handler.handle(directive)
                 , executor);
         try {
             future.get(3, TimeUnit.SECONDS);
-            handler.onSuccess(command.event());
+            handler.onSuccess(directive);
         } catch (InterruptedException e) {
             e.printStackTrace();
-            handler.onFailure(command.event());
+            handler.onFailure(directive);
         } catch (ExecutionException e) {
             e.printStackTrace();
-            handler.onFailure(command.event());
+            handler.onFailure(directive);
         } catch (TimeoutException e) {
             e.printStackTrace();
-            handler.onFailure(command.event());
+            handler.onFailure(directive);
         }
     }
 

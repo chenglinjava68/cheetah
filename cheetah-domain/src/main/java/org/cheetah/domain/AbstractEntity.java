@@ -71,7 +71,7 @@ public abstract class AbstractEntity<ID extends TrackingId>
 
     @Override
     public String toString() {
-        return "[" + this.getClass().getName() + " getId=" + trackingId().toString() + " version=" + version() + "]";
+        return "[" + this.getClass().getName() + " id=" + trackingId().toString() + " version=" + version() + "]";
     }
 
 }

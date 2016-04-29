@@ -1,5 +1,6 @@
 package org.cheetah.fighter.handler;
 
+import org.cheetah.fighter.event.Callback;
 import org.cheetah.fighter.event.Event;
 
 /**
@@ -8,15 +9,21 @@ import org.cheetah.fighter.event.Event;
  */
 public class Directive {
     private Event event;
+    private Callback callback;
     private boolean feedback;
 
-    public Directive(Event event, boolean feedback) {
+    public Directive(Event event, Callback callback, boolean feedback) {
         this.event = event;
+        this.callback = callback;
         this.feedback = feedback;
     }
 
     public Event event() {
         return event;
+    }
+
+    public Callback callback() {
+        return callback;
     }
 
     public boolean feedback() {

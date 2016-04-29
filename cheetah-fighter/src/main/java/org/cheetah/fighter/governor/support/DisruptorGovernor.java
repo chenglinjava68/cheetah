@@ -19,7 +19,7 @@ public class DisruptorGovernor extends AbstractGovernor {
             return Feedback.EMPTY;
         Translator translator = new Translator();
         this.handlerMap().keySet().forEach(c -> {
-            Command command = Command.of(event(), c);
+            Command command = Command.of(details().event(), details().callback(), c);
             ringBuffer.publishEvent(translator, command);
         });
 

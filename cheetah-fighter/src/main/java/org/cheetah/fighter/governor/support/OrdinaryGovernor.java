@@ -20,7 +20,7 @@ public class OrdinaryGovernor extends AbstractGovernor {
             return Feedback.EMPTY;
         Translator translator = new Translator();
         for (Class<? extends EventListener> clz : this.handlerMap().keySet()) {
-            Command command = Command.of(event(), clz);
+            Command command = Command.of(details().event(), details().callback(), clz);
             worker.work(command);
         }
 

@@ -16,17 +16,16 @@
 package org.cheetah.fighter.plugin;
 
 
-import org.cheetah.commons.PlatformException;
+import org.cheetah.fighter.core.FighterException;
 
 /**
  * @author Max
  */
-public class PluginException extends PlatformException {
+public class PluginException extends FighterException {
 
   private static final long serialVersionUID = 8548771664564998595L;
 
   public PluginException() {
-    super("");
   }
 
   public PluginException(String message) {

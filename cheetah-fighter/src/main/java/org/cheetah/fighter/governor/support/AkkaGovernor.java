@@ -35,7 +35,7 @@ public class AkkaGovernor extends AbstractGovernor {
         Map<Class<? extends EventListener>, Feedback> feedbackMap = new HashMap<>();
         for (Class<? extends EventListener> clz : this.handlerMap().keySet()) {
             try {
-                Command command = Command.of(event(), clz);
+                Command command = Command.of(details().event(), details().callback(), clz);
 //                Future<Object> future = Patterns.ask(this.worker, command, 3000);
 //                Object result = Await.result(future, Duration.create(3000, TimeUnit.MILLISECONDS));
 //                if (result instanceof Feedback) {

@@ -23,10 +23,8 @@ public class DispatcherEvent extends AbstractDispatcher {
         if (!handlerMap.isEmpty()) {
             Governor governor = engine().assignGovernor();
             Feedback report = governor.initialize()
-                    .registerEvent(eventMessage.event())
+                    .accept(eventMessage)
                     .registerHandlerSquad(handlerMap)
-                    .setFisrtSucceed(eventMessage.fisrtWin())
-                    .setNeedResult(eventMessage.needResult())
                     .command();
             return new EventResult(eventMessage.event().getSource(), report.isFail());
         }

@@ -1,9 +1,9 @@
 package org.cheetah.fighter.api;
 
 import org.cheetah.fighter.core.EventMessage;
-import org.cheetah.fighter.core.EventResult;
 import org.cheetah.fighter.core.support.DispatcherEvent;
 import org.cheetah.fighter.event.AbstractCollector;
+import org.cheetah.fighter.event.Callback;
 import org.cheetah.fighter.event.Event;
 
 /**
@@ -23,18 +23,9 @@ public class GenericEventCollector extends AbstractCollector {
     }
 
     @Override
-    public void collect(Event event, boolean fisrtWin) {
-        getDispatcher().receive(new EventMessage(event, fisrtWin));
+    public void collect(Event event, Callback callback) {
+        getDispatcher().receive(new EventMessage(event, callback));
     }
 
-    @Override
-    public EventResult collect(boolean needResult, Event event) {
-        return getDispatcher().receive(new EventMessage(needResult, event));
-    }
-
-    @Override
-    public EventResult collect(boolean needResult, boolean fisrtWin, Event event) {
-        return getDispatcher().receive(new EventMessage(event, needResult, fisrtWin));
-    }
 
 }

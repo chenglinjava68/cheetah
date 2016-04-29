@@ -5,6 +5,7 @@ import org.cheetah.commons.logger.Error;
 import org.cheetah.fighter.event.Event;
 
 import java.util.EventListener;
+import java.util.Objects;
 
 /**
  * 每个lisnter都会配一Machine负责监控和处理
@@ -14,6 +15,7 @@ public interface Handler extends Cloneable {
 
     /**
      * 给机器发送一个指令，让其工作
+     *
      * @param directive
      * @return
      */
@@ -22,9 +24,9 @@ public interface Handler extends Cloneable {
         if (directive.feedback()) {
             feedback = completeExecute(directive.event());
             if (feedback.isFail())
-                onFailure(directive.event());
+                onFailure(directive);
             else
-                onSuccess(directive.event());
+                onSuccess(directive);
         } else execute(directive.event());
 
         return feedback;
@@ -32,28 +34,36 @@ public interface Handler extends Cloneable {
 
     /**
      * 机器工作故障后的回调函数
-     * @param event
+     *
+     * @param directive
      */
-    default void onFailure(Event event) {
-        Error.log(this.getClass(), "Machine execute failure event is [" + event + "]");
+    default void onFailure(Directive directive) {
+        Error.log(this.getClass(), "Machine execute failure event is [" + directive + "]");
+        if (Objects.nonNull(directive.callback()))
+            directive.callback().call(false, directive.event().getSource());
     }
 
     /**
      * 机器工作故障后的回调函数
-     * @param event
+     *
+     * @param directive
      */
-    default void onSuccess(Event event) {
-        Debug.log(this.getClass(), "Machine execute success event is [" + event + "]");
+    default void onSuccess(Directive directive) {
+        Debug.log(this.getClass(), "Machine execute success event is [" + directive + "]");
+        if (Objects.nonNull(directive.callback()))
+            directive.callback().call(true, directive.event().getSource());
     }
 
     /**
      * 无工作反馈的执行方式
+     *
      * @param event
      */
     void execute(Event event);
 
     /**
      * 有反馈的执行方式
+     *
      * @param event
      * @return
      */

@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Max on 2016/1/29.
  */
-public class Event<T> implements Serializable {
+public abstract class Event<T> implements Serializable {
     private static final long serialVersionUID = -7391802226495046190L;
     private Long occurredTime;
     /**

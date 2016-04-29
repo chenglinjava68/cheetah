@@ -2,6 +2,7 @@ package org.cheetah.fighter.api;
 
 import org.cheetah.fighter.container.BeanFactory;
 import org.cheetah.fighter.event.ApplicationEvent;
+import org.cheetah.fighter.event.Callback;
 import org.cheetah.fighter.event.EventCollector;
 
 /**
@@ -17,17 +18,8 @@ public abstract class ApplicationEventPublisher {
         collector.collect(event);
     }
 
-    public static <E extends ApplicationEvent> void publish(E event, boolean fisrtWin) {
-        collector.collect(event, fisrtWin);
+    public static <E extends ApplicationEvent> void publish(E event, Callback callback) {
+        collector.collect(event, callback);
     }
-
-    public static <E extends ApplicationEvent> void publish(boolean needResult, E event) {
-        collector.collect(needResult, event);
-    }
-
-    public static <E extends ApplicationEvent> void publish(boolean needResult, boolean fisrtWin, E event) {
-        collector.collect(needResult, fisrtWin, event);
-    }
-
 
 }

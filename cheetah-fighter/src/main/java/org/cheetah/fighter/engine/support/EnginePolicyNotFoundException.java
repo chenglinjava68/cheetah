@@ -1,12 +1,12 @@
 package org.cheetah.fighter.engine.support;
 
 
-import org.cheetah.commons.PlatformException;
+import org.cheetah.fighter.core.FighterException;
 
 /**
  * Created by Max on 2016/3/2.
  */
-public class EnginePolicyNotFoundException extends PlatformException {
+public class EnginePolicyNotFoundException extends FighterException {
     public EnginePolicyNotFoundException() {
         super("There is no policy.");
     }

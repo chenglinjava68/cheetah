@@ -1,10 +1,10 @@
 package org.cheetah.fighter.governor;
 
 import org.cheetah.commons.utils.Assert;
-import org.cheetah.fighter.plugin.PluginChain;
-import org.cheetah.fighter.event.Event;
+import org.cheetah.fighter.core.EventMessage;
 import org.cheetah.fighter.handler.Feedback;
 import org.cheetah.fighter.handler.Handler;
+import org.cheetah.fighter.plugin.PluginChain;
 
 import java.util.EventListener;
 import java.util.Map;
@@ -35,9 +35,15 @@ public class AbstractGovernorAdapter implements Governor {
     }
 
     @Override
-    public Governor registerEvent(Event $event) {
-        return adaptee.registerEvent($event);
+    public Governor accept(EventMessage eventMessage) {
+        return adaptee.accept(eventMessage);
     }
+
+    @Override
+    public EventMessage details() {
+        return null;
+    }
+
 
     @Override
     public String getId() {
@@ -45,18 +51,8 @@ public class AbstractGovernorAdapter implements Governor {
     }
 
     @Override
-    public Governor setFisrtSucceed(boolean $fisrtSucceed) {
-        return adaptee.setFisrtSucceed($fisrtSucceed);
-    }
-
-    @Override
     public Governor registerHandlerSquad(Map<Class<? extends EventListener>, Handler> handlerMap) {
         return adaptee.registerHandlerSquad(handlerMap);
-    }
-
-    @Override
-    public Governor setNeedResult(boolean $needResult) {
-        return adaptee.setNeedResult($needResult);
     }
 
     @Override

@@ -102,33 +102,31 @@ public class EventPublisherTest {
 
     @Test
     public void launch2() throws InterruptedException {
-
-        ApplicationListenerTest listenerTest = new ApplicationListenerTest();
-        ApplicationEventTest event = new ApplicationEventTest("aaa");
         while (true) {
             ApplicationEventPublisher.publish(
                     new ApplicationEventTest("213")
             );
 //            listenerTest.onApplicationEvent(event);
         }
-
     }
 
 
     @Test
     public void launch3() throws InterruptedException {
-        for (int i = 0; i < 5; i++) {
-//            ApplicationEventPublisher.publish(
-//                    new ApplicationEventTest("213")
-//            );
-            DomainEvenPublisher.publish(
-                    new DomainEventTest(new User("huahng"))
+        CountDownLatch latch = new CountDownLatch(1);
+        long start = System.currentTimeMillis();
+        int i = 0;
+        while (true) {
+            i++;
+            ApplicationEventPublisher.publish(
+                    new ApplicationEventTest("123")
             );
-//            ApplicationEventPublisher.publish(
-//                    new ApplicationEventTest2("213")
-//            );
+            if (i == 1000000) {
+                break;
+            }
         }
-
+        System.out.println(System.currentTimeMillis() - start);
+        latch.await();
     }
 
     public static class ApplicationEventTest extends ApplicationEvent {
@@ -185,6 +183,11 @@ public class EventPublisherTest {
             System.out.println("ApplicationListenerTest----" + atomicLong.incrementAndGet());
 //            System.out.println(System.currentTimeMillis());
         }
+
+        @Override
+        public void onFinish() {
+
+        }
     }
 
     public static class SmartApplicationListenerTest implements SmartApplicationListener {
@@ -217,6 +220,11 @@ public class EventPublisherTest {
                 k--;
             }
             System.out.println("SmartApplicationListenerTest -- " + atomicLong.incrementAndGet());
+        }
+
+        @Override
+        public void onFinish() {
+
         }
     }
 
@@ -251,6 +259,11 @@ public class EventPublisherTest {
             }
             System.out.println("SmartApplicationListenerTest2 -- " + atomicLong2.incrementAndGet());
         }
+
+        @Override
+        public void onFinish() {
+
+        }
     }
 
     public static class SmartDomainListenerTest implements SmartDomainEventListener {
@@ -284,6 +297,11 @@ public class EventPublisherTest {
                 k--;
             }
             System.out.println("DomainEventTest -- " + atomicLong3.incrementAndGet());
+        }
+
+        @Override
+        public void onFinish() {
+
         }
 
     }
