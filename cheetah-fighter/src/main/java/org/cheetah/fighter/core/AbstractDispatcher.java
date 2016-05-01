@@ -43,6 +43,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
      */
     @Override
     public EventResult receive(final EventMessage eventMessage) {
+        Debug.log(this.getClass(), "receive message: " + eventMessage);
         try {
             context().setEventMessage(eventMessage);
             Event event = eventMessage.event();

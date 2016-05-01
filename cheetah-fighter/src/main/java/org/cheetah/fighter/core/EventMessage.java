@@ -72,4 +72,14 @@ public class EventMessage {
     public void setCallback(Callback callback) {
         this.callback = callback;
     }
+
+    @Override
+    public String toString() {
+        return "EventMessage{" +
+                "event=" + event +
+                ", needResult=" + needResult +
+                ", fisrtWin=" + fisrtWin +
+                ", callback=" + callback +
+                '}';
+    }
 }

@@ -6,8 +6,8 @@
             <pattern>%d [%thread] %-5level %logger{24} - %msg%n</pattern>
         </encoder>
     </appender>
-    <logger name="cheetah" level="ERROR" />
-    <root level="ERROR">
+    <logger name="org.cheetah.fighter" level="debug" />
+    <root level="debug">
         <appender-ref ref="console" />
     </root>
 </configuration>
