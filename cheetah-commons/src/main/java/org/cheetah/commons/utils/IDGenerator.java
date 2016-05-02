@@ -8,8 +8,8 @@ import java.util.UUID;
 public abstract class IDGenerator {
 
     public static String generateId() {
-        String random =  (Math.random() + "").replace(".", "").substring(1, 6);
-        return UUID.randomUUID().toString() + "-" + random;
+        String random =  (Math.random() + "").replace(".", "").substring(1, 5);
+        return UUID.randomUUID().toString().replace("-", "") + random;
     }
 
 }
