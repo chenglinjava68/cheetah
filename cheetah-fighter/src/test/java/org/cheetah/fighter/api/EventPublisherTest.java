@@ -103,8 +103,9 @@ public class EventPublisherTest {
     @Test
     public void launch2() throws InterruptedException {
         while (true) {
+            Thread.sleep(1);
             ApplicationEventPublisher.publish(
-                    new ApplicationEventTest("213")
+                    new ApplicationEventTest2("213")
             );
 //            listenerTest.onApplicationEvent(event);
         }

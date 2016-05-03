@@ -34,6 +34,41 @@
         <developerConnection>scm:git:git@git.oschina.net:puffCode/cheetah.git</developerConnection>
     </scm>
 
+    <distributionManagement>
+        <repository>
+            <id>scho-releases</id>
+            <name>Dayatang release repository</name>
+            <url>http://192.168.1.215:8081/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>scho-snapshots</id>
+            <name>Dayatang snapshot repository</name>
+            <url>http://192.168.1.215:8081/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>scho-releases</id>
+            <url>http://192.168.1.215:8081/nexus/content/groups/public-releases</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>scho-snapshots</id>
+            <url>http://192.168.1.215:8081/nexus/content/groups/public-snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <properties>
         <akka.version>2.3.9</akka.version>

@@ -39,7 +39,7 @@ public abstract class AbstractHandler implements Handler {
     public Feedback completeExecute(Event event) {
         try {
             doExecute(event);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return Feedback.FAILURE;
         }
