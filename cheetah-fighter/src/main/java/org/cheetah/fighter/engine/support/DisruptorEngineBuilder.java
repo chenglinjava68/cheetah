@@ -43,6 +43,10 @@ public class DisruptorEngineBuilder implements EngineBuilder {
         DisruptorFactory disruptorFactory = new DisruptorFactory();
         if(configuration.ringBufferSize() > 0)
             disruptorFactory.setRingbufferSize(configuration.ringBufferSize());
+        if(configuration.maxThreads() > 0 && configuration.minThreads() > 0) {
+            disruptorFactory.setMinThreads(configuration.minThreads());
+            disruptorFactory.setMaxThreads(configuration.maxThreads());
+        }
         DisruptorPoolFactory poolFactory = new DisruptorPoolFactory();
         poolFactory.setAsynchronousFactory(disruptorFactory);
         return poolFactory;

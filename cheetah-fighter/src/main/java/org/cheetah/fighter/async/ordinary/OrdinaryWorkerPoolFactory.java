@@ -61,7 +61,7 @@ public class OrdinaryWorkerPoolFactory implements AsynchronousPoolFactory<Ordina
 
     @Override
     public void start() {
-
+        this.asynchronousFactory.start();
     }
 
     @Override

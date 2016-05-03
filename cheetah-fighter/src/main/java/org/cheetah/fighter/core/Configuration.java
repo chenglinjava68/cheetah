@@ -18,6 +18,8 @@ public class Configuration {
     private List<EventListener> eventListeners;
     private int eventPerformerSize;
     private int ringBufferSize;
+    private int minThreads;
+    private int maxThreads;
     private String policy;
 
     public Configuration() {
@@ -80,5 +82,21 @@ public class Configuration {
 
     public void setPolicy(String policy) {
         this.policy = policy;
+    }
+
+    public int minThreads() {
+        return minThreads;
+    }
+
+    public void setMinThreads(int minThreads) {
+        this.minThreads = minThreads;
+    }
+
+    public int maxThreads() {
+        return maxThreads;
+    }
+
+    public void setMaxThreads(int maxThreads) {
+        this.maxThreads = maxThreads;
     }
 }

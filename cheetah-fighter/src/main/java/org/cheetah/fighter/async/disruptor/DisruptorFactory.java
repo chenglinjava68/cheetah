@@ -1,32 +1,31 @@
 package org.cheetah.fighter.async.disruptor;
 
-import org.cheetah.fighter.async.AsynchronousFactory;
-import org.cheetah.fighter.core.Interceptor;
-import org.cheetah.fighter.handler.Handler;
-import org.cheetah.fighter.worker.support.DisruptorWorker;
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+import org.cheetah.fighter.async.AbstractAsynchronousFactory;
+import org.cheetah.fighter.core.Interceptor;
+import org.cheetah.fighter.handler.Handler;
+import org.cheetah.fighter.worker.support.DisruptorWorker;
 
 import java.util.EventListener;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executors;
 
 /**
  * Created by Max on 2016/2/29.
  */
-public class DisruptorFactory implements AsynchronousFactory<Disruptor<DisruptorEvent>> {
+public class DisruptorFactory extends AbstractAsynchronousFactory<Disruptor<DisruptorEvent>> {
     private int ringbufferSize = 8;
 
     public Disruptor<DisruptorEvent> createMultiDisruptor() {
-        return new Disruptor<>(new DisruptorEventFactory(), ringbufferSize, Executors.newCachedThreadPool());
+        return new Disruptor<>(new DisruptorEventFactory(), ringbufferSize, executorService());
     }
 
     public Disruptor<DisruptorEvent> createSingleDisruptor() {
         WaitStrategy waitStrategy = new BlockingWaitStrategy();
-        return new Disruptor<>(new DisruptorEventFactory(), ringbufferSize, Executors.newCachedThreadPool(), ProducerType.SINGLE, waitStrategy);
+        return new Disruptor<>(new DisruptorEventFactory(), ringbufferSize, executorService(), ProducerType.SINGLE, waitStrategy);
     }
 
     public void setRingbufferSize(int ringbufferSize) {
@@ -46,16 +45,6 @@ public class DisruptorFactory implements AsynchronousFactory<Disruptor<Disruptor
         disruptor.handleEventsWith(worker);
         disruptor.start();
         return disruptor;
-    }
-
-    @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void stop() {
-
     }
 
 }

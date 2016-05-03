@@ -66,7 +66,7 @@ public class DisruptorPoolFactory implements AsynchronousPoolFactory<Disruptor<D
 
     @Override
     public void start() {
-
+        disruptorFactory.start();
     }
 
     @Override
@@ -78,6 +78,7 @@ public class DisruptorPoolFactory implements AsynchronousPoolFactory<Disruptor<D
             Disruptor<DisruptorEvent> disruptor = iterator.next();
             disruptor.halt();
         }
+        disruptorFactory.stop();
     }
 
 }
