@@ -1,9 +1,6 @@
 package org.cheetah.fighter.async;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * Created by Max on 2016/5/3.
@@ -48,7 +45,7 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
     protected synchronized ExecutorService buildExecutorService() {
         if(this.executorService == null)
             executorService =  new ThreadPoolExecutor(minThreads, maxThreads,
-                    0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue(2500));
+                    3000L, TimeUnit.MILLISECONDS, new LinkedTransferQueue());
         return executorService;
     }
 
