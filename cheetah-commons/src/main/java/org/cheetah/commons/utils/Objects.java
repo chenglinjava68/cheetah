@@ -6,7 +6,7 @@ import java.util.Comparator;
 /**
  * Created by Max on 2016/5/4.
  */
-public class Objects {
+public final class Objects {
     private Objects() {
         throw new AssertionError("No java.util.Objects instances for you!");
     }

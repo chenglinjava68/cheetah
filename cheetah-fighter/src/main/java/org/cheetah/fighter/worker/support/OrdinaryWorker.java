@@ -1,5 +1,6 @@
 package org.cheetah.fighter.worker.support;
 
+import com.google.common.util.concurrent.*;
 import org.cheetah.fighter.core.Interceptor;
 import org.cheetah.fighter.handler.Directive;
 import org.cheetah.fighter.handler.Feedback;
@@ -17,8 +18,9 @@ import java.util.concurrent.*;
  */
 public class OrdinaryWorker extends AbstractWorker {
     private Map<Class<? extends EventListener>, Handler> handlerMap;
-    private ExecutorService executor;
+    private ListeningExecutorService executor;
     private List<Interceptor> interceptors;
+
 
     @Override
     public void doWork(Command command) {
@@ -26,7 +28,7 @@ public class OrdinaryWorker extends AbstractWorker {
 
         final Directive directive = new Directive(command.event(), command.callback(), command.needResult());
 
-        Future<Boolean> future = executor.submit(new Callable<Boolean>() {
+        ListenableFuture future = executor.submit(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 Feedback feedback = handler.handle(directive);
@@ -36,6 +38,17 @@ public class OrdinaryWorker extends AbstractWorker {
             }
         });
 
+        Futures.addCallback(future, new FutureCallback() {
+            @Override
+            public void onSuccess(Object o) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                handler.onFailure(directive);
+            }
+        });
         try {
             future.get(3, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
@@ -57,7 +70,7 @@ public class OrdinaryWorker extends AbstractWorker {
     }
 
     public void setExecutor(ExecutorService executor) {
-        this.executor = executor;
+        this.executor = MoreExecutors.listeningDecorator(executor);
     }
 
     public void setInterceptors(List<Interceptor> interceptors) {
