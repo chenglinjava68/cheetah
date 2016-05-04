@@ -1,7 +1,5 @@
 package org.cheetah.fighter.container;
 
-import org.cheetah.fighter.container.spring.SpringBeanFactoryProvider;
-
 import java.lang.annotation.Annotation;
 import java.util.Map;
 
@@ -10,10 +8,6 @@ import java.util.Map;
  */
 public class BeanFactory {
     private static BeanFactoryProvider beanFactoryProvider;
-
-    static {
-        beanFactoryProvider = new SpringBeanFactoryProvider();
-    }
 
     public static <T> T getBean(Class<T> bean) {
         return beanFactoryProvider.getBean(bean);
@@ -31,7 +25,7 @@ public class BeanFactory {
         return beanFactoryProvider.getBeansWithAnnotation(annoClass);
     }
 
-    public void setBeanFactoryProvider(BeanFactoryProvider provider) {
+    public static void setBeanFactoryProvider(BeanFactoryProvider provider) {
         beanFactoryProvider = provider;
     }
 }
