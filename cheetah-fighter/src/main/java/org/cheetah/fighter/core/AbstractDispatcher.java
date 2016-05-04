@@ -122,7 +122,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
                 if (!smartDomainEventListeners.isEmpty()) {
                     return setDomainEventListenerMapper(mapperKey, smartDomainEventListeners);
                 } else {
-                    Collection<EventListener> listeners = Collections2.filter(this.configuration.eventListeners(), new Predicate<EventListener>() {
+                    /*Collection<EventListener> listeners = Collections2.filter(this.configuration.eventListeners(), new Predicate<EventListener>() {
                         @Override
                         public boolean apply(EventListener eventListener) {
                             boolean include = CollectionUtils.arrayToList(eventListener.getClass().getInterfaces())
@@ -131,11 +131,11 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
                                 return false;
                             Type[] parameterizedType = ((ParameterizedType) eventListener.getClass().getGenericInterfaces()[0])
                                     .getActualTypeArguments();
-                            Class<? extends DomainEvent> type = (Class<? extends DomainEvent>) parameterizedType[0];
+                            Class<? extends DomainEvent> type = (Class<? extends DomainEvent>) parameterizedType[0].getClass();
                             return event.getClass().equals(type);
                         }
-                    });
-
+                    });*/
+                    Collection<EventListener> listeners = getNotSmartListener(event, DomainEventListener.class);
                     return setDomainEventListenerMapper(mapperKey, Lists.newArrayList(listeners));
                 }
             } else if (ApplicationEvent.class.isAssignableFrom(event.getClass())) {
@@ -144,19 +144,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
                 if (!smartAppEventListeners.isEmpty()) {
                     return setAppEventListenerMapper(mapperKey, smartAppEventListeners);
                 } else {
-                    Collection<EventListener> listeners = Collections2.filter(this.configuration.eventListeners(), new Predicate<EventListener>() {
-                        @Override
-                        public boolean apply(EventListener eventListener) {
-                            boolean include = CollectionUtils.arrayToList(eventListener.getClass().getInterfaces())
-                                    .contains(ApplicationListener.class);
-                            if (!include)
-                                return false;
-                            Type[] parameterizedType = ((ParameterizedType) eventListener.getClass().getGenericInterfaces()[0])
-                                    .getActualTypeArguments();
-                            Class<? extends ApplicationEvent> type = (Class<? extends ApplicationEvent>) parameterizedType[0];
-                            return event.getClass().equals(type);
-                        }
-                    });
+                    Collection<EventListener> listeners = getNotSmartListener(event, ApplicationListener.class);
                     return setAppEventListenerMapper(mapperKey, Lists.newArrayList(listeners));
                 }
             } else throw new ErrorEventTypeException();
@@ -165,13 +153,27 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         }
     }
 
+    private Collection<EventListener> getNotSmartListener(final Event event, final Class<? extends EventListener> Listeners$class) {
+        return Collections2.filter(this.configuration.eventListeners(), new Predicate<EventListener>() {
+                            @Override
+                            public boolean apply(EventListener eventListener) {
+                                boolean include = CollectionUtils.arrayToList(eventListener.getClass().getInterfaces())
+                                        .contains(Listeners$class);
+                                if (!include)
+                                    return false;
+                                Type[] parameterizedType = ((ParameterizedType) eventListener.getClass().getGenericInterfaces()[0])
+                                        .getActualTypeArguments();
+                                return event.getClass().equals(parameterizedType[0]);
+                            }
+                        });
+    }
+
     private Map<Class<? extends EventListener>, Handler> setAppEventListenerMapper(HandlerMapping.HandlerMapperKey mapperKey, List<EventListener> listeners) {
         Map<Class<? extends EventListener>, Handler> machines = Maps.newHashMap();
         for (EventListener listener : listeners) {
             Handler handler = engine.assignApplicationEventHandler();
             handler.setEventListener(listener);
             machines.put(listener.getClass(), handler);
-
         }
         engine.getMapping().put(mapperKey, machines);
         return machines;
@@ -225,6 +227,11 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         return machines;
     }
 
+    /**
+     * 根据domainevent过滤出相应的listener
+     * @param event
+     * @return
+     */
     private List<EventListener> getSmartDomainEventListener(final DomainEvent event) {
         List<EventListener> list = this.configuration.eventListeners();
 
