@@ -33,13 +33,10 @@ public class OrdinaryWorker implements Worker {
             future.get(3, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
-            handler.onFailure(directive);
         } catch (ExecutionException e) {
             e.printStackTrace();
-            handler.onFailure(directive);
         } catch (TimeoutException e) {
             e.printStackTrace();
-            handler.onFailure(directive);
         }
     }
 
