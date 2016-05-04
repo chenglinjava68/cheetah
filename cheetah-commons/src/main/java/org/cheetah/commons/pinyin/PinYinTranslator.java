@@ -1,13 +1,12 @@
 package org.cheetah.commons.pinyin;
 
-import org.cheetah.commons.utils.StringUtils;
 import com.github.stuxuhai.jpinyin.ChineseHelper;
 import com.github.stuxuhai.jpinyin.PinyinFormat;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.google.common.collect.Maps;
+import org.cheetah.commons.utils.StringUtils;
 
 import java.util.Map;
-import java.util.stream.Stream;
 
 /**
  * @author ericxin
@@ -27,21 +26,18 @@ public final class PinYinTranslator {
         }
         String[] letter = chinese.split(SEPARATOR);
         StringBuilder pinyin = new StringBuilder();
-        Stream.of(letter)
-                .forEach(
-                        it -> {
-                            if (!ChineseHelper.isChinese(it.charAt(0))) {
-                                pinyin.append(it.toLowerCase());
-                                return;
-                            }
-                            if (!PIN_YIN.containsKey(it)) {
-                                PIN_YIN.put(
-                                        it, PinyinHelper.convertToPinyinString(it, SEPARATOR, PinyinFormat.WITHOUT_TONE)
-                                );
-                            }
-                            pinyin.append(PIN_YIN.get(it));
-                        }
+        for (String it : letter) {
+            if (!ChineseHelper.isChinese(it.charAt(0))) {
+                pinyin.append(it.toLowerCase());
+                break;
+            }
+            if (!PIN_YIN.containsKey(it)) {
+                PIN_YIN.put(
+                        it, PinyinHelper.convertToPinyinString(it, SEPARATOR, PinyinFormat.WITHOUT_TONE)
                 );
+            }
+            pinyin.append(PIN_YIN.get(it));
+        }
         PIN_YIN.put(chinese, pinyin.toString());
         return pinyin.toString();
     }
@@ -55,23 +51,20 @@ public final class PinYinTranslator {
         }
         String[] letter = chinese.split(SEPARATOR);
         StringBuilder initial = new StringBuilder();
-        Stream.of(letter)
-                .forEach(
-                        it -> {
-                            if (!INITIAL.containsKey(it)) {
-                                if (!ChineseHelper.isChinese(it.charAt(0))) {
-                                    initial.append(it.toLowerCase());
-                                    return;
-                                }
-                                if (!INITIAL.containsKey(it)) {
-                                    INITIAL.put(
-                                            it, PinyinHelper.getShortPinyin(it)
-                                    );
-                                }
-                            }
-                            initial.append(INITIAL.get(it));
-                        }
-                );
+        for (String it : letter) {
+            if (!INITIAL.containsKey(it)) {
+                if (!ChineseHelper.isChinese(it.charAt(0))) {
+                    initial.append(it.toLowerCase());
+                    break;
+                }
+                if (!INITIAL.containsKey(it)) {
+                    INITIAL.put(
+                            it, PinyinHelper.getShortPinyin(it)
+                    );
+                }
+            }
+            initial.append(INITIAL.get(it));
+        }
         INITIAL.put(chinese, initial.toString());
         return initial.toString();
     }

@@ -1,8 +1,6 @@
 package org.cheetah.fighter.worker;
 
 import org.cheetah.fighter.core.Interceptor;
-import org.cheetah.fighter.core.support.HandlerInterceptorChain;
-import org.cheetah.fighter.worker.support.InterceptorExecutionException;
 
 import java.util.List;
 
@@ -15,32 +13,9 @@ public interface Worker extends Cloneable {
      * 根据接受到命令开始工作
      * @param command
      */
-    default void work(Command command) {
-        try {
-            HandlerInterceptorChain chain = createInterceptorChain();
-            boolean result = chain.beforeHandle(command);
-            if (result) {
-                doWork(command);
-                chain.afterHandle(command);
-            }
-        } catch (Exception e) {
-            throw new InterceptorExecutionException(e);
-        }
-    }
+    void work(Command command);
 
     void doWork(Command command);
-
-    default HandlerInterceptorChain createInterceptorChain() {
-        HandlerInterceptorChain chain;
-        try {
-            chain = HandlerInterceptorChain.createChain();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-            chain = new HandlerInterceptorChain();
-        }
-        getInterceptors().forEach(chain::register);
-        return chain;
-    }
 
     List<Interceptor> getInterceptors();
 }

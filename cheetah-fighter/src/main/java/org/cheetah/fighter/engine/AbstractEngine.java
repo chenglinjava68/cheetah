@@ -51,6 +51,11 @@ public abstract class AbstractEngine implements Engine {
     }
 
     @Override
+    public boolean isRunning() {
+        return state().equals(State.RUNNING);
+    }
+
+    @Override
     public Handler assignApplicationEventHandler() {
         return handlerFactory.createApplicationEventHandler();
     }

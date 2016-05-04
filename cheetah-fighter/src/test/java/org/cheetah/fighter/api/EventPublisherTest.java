@@ -22,77 +22,48 @@ public class EventPublisherTest {
     public static final AtomicLong atomicLong = new AtomicLong();
     public static final AtomicLong atomicLong2 = new AtomicLong();
     public static final AtomicLong atomicLong3 = new AtomicLong();
-    private static ExecutorService executorService = Executors.newCachedThreadPool();
 
-    public static void count() {
-        System.out.println("z");
-        CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
-            System.out.println("aa");
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            return Boolean.TRUE;
-        }, executorService);
-        System.out.println(System.currentTimeMillis());
-        try {
-            System.out.println(future.get());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        System.out.println(System.currentTimeMillis());
-
-    }
-
-    @Test
-    public void test() {
-        Thread t1 = new Thread(EventPublisherTest::count);
-        Thread t2 = new Thread(EventPublisherTest::count);
-        t1.start();
-        t2.start();
-        try {
-            t1.join();
-            t2.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     @Test
     public void launch() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         for (int i = 0; i < 10; i++) {
-            new Thread(() -> {
-                while (true) {
-                    ApplicationEventPublisher.publish(
-                            new ApplicationEventTest("213")
-                    );
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (true) {
+                        ApplicationEventPublisher.publish(
+                                new ApplicationEventTest("213")
+                        );
 //                    listenerTest.onApplicationEvent(event);
+                    }
+                }
+            }).start();
+
+        }
+        for (int i = 0; i < 10; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (true) {
+                        DomainEvenPublisher.publish(
+                                new DomainEventTest(new User("huahng"))
+                        );
+//                    listenerTest.onApplicationEvent(event);
+                    }
                 }
             }).start();
         }
         for (int i = 0; i < 10; i++) {
-            new Thread(() -> {
-                while (true) {
-                    DomainEvenPublisher.publish(
-                            new DomainEventTest(new User("huahng"))
-                    );
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (true) {
+                        ApplicationEventPublisher.publish(
+                                new ApplicationEventTest2("123")
+                        );
 //                    listenerTest.onApplicationEvent(event);
-                }
-            }).start();
-        }
-        for (int i = 0; i < 10; i++) {
-            new Thread(() -> {
-                while (true) {
-                    ApplicationEventPublisher.publish(
-                            new ApplicationEventTest2("123")
-                    );
-//                    listenerTest.onApplicationEvent(event);
+                    }
                 }
             }).start();
         }

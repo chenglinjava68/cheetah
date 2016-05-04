@@ -42,9 +42,9 @@ public abstract class AbstractConfiguration implements Configuration {
 
     public String getString(String key, String defaultValue) {
         Assert.notBlank(key, "Key is null or empty!");
-        String result = (String)this.getHashtable().get(key);
+        String result = this.getHashtable().get(key);
         if(result == null) {
-            result = (String)this.getHashtable().get(this.prefix + key);
+            result = this.getHashtable().get(this.prefix + key);
         }
 
         return result == null?defaultValue:result;

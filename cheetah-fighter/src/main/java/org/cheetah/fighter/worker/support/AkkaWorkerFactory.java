@@ -10,7 +10,8 @@ public class AkkaWorkerFactory implements WorkerFactory {
 
     @Override
     public Worker createWorker() {
-        return new AkkaWorker();
+        AkkaWorkerAdaptor adaptor = new AkkaWorkerAdaptor(new AkkaWorker());
+        return adaptor;
     }
 
 }

@@ -1,11 +1,8 @@
 package org.cheetah.fighter.handler;
 
-import org.cheetah.commons.logger.Debug;
-import org.cheetah.commons.logger.Error;
 import org.cheetah.fighter.event.Event;
 
 import java.util.EventListener;
-import java.util.Objects;
 
 /**
  * 每个lisnter都会配一Machine负责监控和处理
@@ -19,40 +16,21 @@ public interface Handler extends Cloneable {
      * @param directive
      * @return
      */
-    default Feedback handle(Directive directive) {
-        Feedback feedback = Feedback.FAILURE;
-        if (directive.feedback()) {
-            feedback = completeExecute(directive.event());
-            if (feedback.isFail())
-                onFailure(directive);
-            else
-                onSuccess(directive);
-        } else execute(directive.event());
-
-        return feedback;
-    }
+    Feedback handle(Directive directive);
 
     /**
      * 机器工作故障后的回调函数
      *
      * @param directive
      */
-    default void onFailure(Directive directive) {
-        Error.log(this.getClass(), "Machine execute failure event is [" + directive + "]");
-        if (Objects.nonNull(directive.callback()))
-            directive.callback().call(false, directive.event().getSource());
-    }
+    void onFailure(Directive directive);
 
     /**
      * 机器工作故障后的回调函数
      *
      * @param directive
      */
-    default void onSuccess(Directive directive) {
-        Debug.log(this.getClass(), "Machine execute success event is [" + directive + "]");
-        if (Objects.nonNull(directive.callback()))
-            directive.callback().call(true, directive.event().getSource());
-    }
+    void onSuccess(Directive directive);
 
     /**
      * 无工作反馈的执行方式
