@@ -7,12 +7,12 @@ package org.cheetah.domain;
 //@MappedSuperclass
 public abstract class AbstractEntity<ID extends TrackingId>
         implements OptLockEntity<AbstractEntity, ID> {
-//    @EmbeddedId
-    private ID trackingId;
-//    @Embedded
-    private Timist timist;
-//    @Version
-    private Long version;
+    //    @EmbeddedId
+    protected ID trackingId;
+    //    @Embedded
+    protected Timist timist;
+    //    @Version
+    protected Long version;
 
     public AbstractEntity() {
         timist = new Timist();
