@@ -7,7 +7,7 @@
     <groupId>org.cheetah</groupId>
     <artifactId>cheetah</artifactId>
     <packaging>pom</packaging>
-    <version>2.1.0-RELEASE</version>
+    <version>2.2.0-RELEASE</version>
     <modules>
         <module>cheetah-fighter</module>
         <module>cheetah-commons</module>
