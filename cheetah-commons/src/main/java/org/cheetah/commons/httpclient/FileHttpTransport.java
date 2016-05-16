@@ -21,6 +21,7 @@ public class FileHttpTransport implements ChunkHttpTransport {
     @Override
     public void download(HttpClient httpClient, String url, String toPath) {
         FileOutputStream out = null;
+        InputStream in = null;
         HttpGet get = null;
         try {
             logger.info("request url : " + url);
@@ -34,13 +35,18 @@ public class FileHttpTransport implements ChunkHttpTransport {
             StatusLine statusLine = resp.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
                 out = new FileOutputStream(new File(toPath));
-                resp.getEntity().writeTo(out);
+                in = resp.getEntity().getContent();
+                byte[] buff = new byte[1024];
+                int j = 0;
+                while ((j = in.read(buff, 0, 1024)) != -1) {
+                    out.write(buff, 0, j);
+                }
             }
         } catch (Exception e) {
             logger.info("request error!", e);
             e.printStackTrace();
         } finally {
-            HttpClientUtils.close(out, null, get);
+            HttpClientUtils.close(out, in, get);
         }
     }
 
@@ -59,7 +65,11 @@ public class FileHttpTransport implements ChunkHttpTransport {
             StatusLine statusLine = resp.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
                 in = resp.getEntity().getContent();
-                resp.getEntity().writeTo(stream);
+                byte[] buff = new byte[1024];
+                int j = 0;
+                while ((j = in.read(buff, 0, 1024)) != -1) {
+                    stream.write(buff, 0, j);
+                }
             }
         } catch (Exception e) {
             logger.info("request error!", e);
@@ -72,6 +82,7 @@ public class FileHttpTransport implements ChunkHttpTransport {
     @Override
     public InputStream download(HttpClient httpClient, String url) {
         ByteArrayOutputStream bos = null;
+        InputStream in = null;
         HttpGet get = null;
         try {
             logger.info("request url : " + url);
@@ -84,14 +95,19 @@ public class FileHttpTransport implements ChunkHttpTransport {
             }
             StatusLine statusLine = resp.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                resp.getEntity().writeTo(bos);
+                in = resp.getEntity().getContent();
+                byte[] buff = new byte[1024];
+                int j = 0;
+                while ((j = in.read(buff, 0, 1024)) != -1) {
+                    bos.write(buff, 0, j);
+                }
             }
             return new ByteArrayInputStream(bos.toByteArray());
         } catch (Exception e) {
             logger.info("request error!", e);
             e.printStackTrace();
         } finally {
-            HttpClientUtils.close(bos, null, get);
+            HttpClientUtils.close(bos, in, get);
         }
         return null;
     }
