@@ -43,8 +43,8 @@ public class FileHttpTransport implements ChunkHttpTransport {
                 }
             }
         } catch (Exception e) {
-            logger.info("request error!", e);
-            e.printStackTrace();
+            logger.error("request error!", e);
+            throw new HttpPostException("download failure", e);
         } finally {
             HttpClientUtils.close(out, in, get);
         }
@@ -72,8 +72,8 @@ public class FileHttpTransport implements ChunkHttpTransport {
                 }
             }
         } catch (Exception e) {
-            logger.info("request error!", e);
-            e.printStackTrace();
+            logger.error("request error!", e);
+            throw new HttpPostException("download failure", e);
         } finally {
             HttpClientUtils.close(null, in, get);
         }
@@ -104,12 +104,11 @@ public class FileHttpTransport implements ChunkHttpTransport {
             }
             return new ByteArrayInputStream(bos.toByteArray());
         } catch (Exception e) {
-            logger.info("request error!", e);
-            e.printStackTrace();
+            logger.error("request error!", e);
+            throw new HttpPostException("download failure", e);
         } finally {
             HttpClientUtils.close(bos, in, get);
         }
-        return null;
     }
 
 

@@ -66,7 +66,7 @@ public class BinaryHttpTransport implements HttpTransport<byte[]> {
             }
         } catch (Exception e) {
             logger.info("request error!", e);
-            throw new RuntimeException("Http get request error --> url:" + url, e);
+            throw new HttpGetException("Http get request error --> url:" + url, e);
         } finally {
             HttpClientUtils.close(get, httpEntity, resp);
         }
