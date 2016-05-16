@@ -91,7 +91,7 @@ public class FileHttpTransport implements ChunkHttpTransport {
             logger.info("request error!", e);
             e.printStackTrace();
         } finally {
-            HttpClientUtils.close(null, null, get);
+            HttpClientUtils.close(bos, null, get);
         }
         return null;
     }
