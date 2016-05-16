@@ -3,6 +3,7 @@ package org.cheetah.commons.httpclient;
 import org.apache.http.impl.client.CloseableHttpClient;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -180,6 +181,10 @@ public class GenericHttpClient {
 	 */
 	public InputStream download(String url) {
 		return chunkHttpTransport.download(this.httpclient, url);
+	}
+
+	public void download(String url, OutputStream destOs) {
+		chunkHttpTransport.download(destOs, this.httpclient, url);
 	}
 
 	public CloseableHttpClient getHttpclient() {

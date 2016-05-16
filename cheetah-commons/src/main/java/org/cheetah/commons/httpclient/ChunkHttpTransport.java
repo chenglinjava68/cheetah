@@ -2,6 +2,7 @@ package org.cheetah.commons.httpclient;
 
 import org.apache.http.client.HttpClient;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
@@ -12,4 +13,6 @@ public interface ChunkHttpTransport {
     void download(HttpClient httpClient, String url, String toPath);
 
     void  download(OutputStream stream, HttpClient httpClient, String url);
+
+    InputStream download(HttpClient httpClient, String url);
 }
