@@ -18,6 +18,7 @@ import java.util.Map;
  */
 public class BinaryHttpTransport implements HttpTransport<byte[]> {
     private final Logger logger = LoggerFactory.getLogger(FileHttpTransport.class);
+
     @Override
     public byte[] post(CloseableHttpClient httpClient, String url, Map<String, String> params, Map<String, String> headers) {
         byte[] result = null;
@@ -36,7 +37,8 @@ public class BinaryHttpTransport implements HttpTransport<byte[]> {
                 HttpClientUtils.gzipDecompression(resp);
                 httpEntity = resp.getEntity();
                 result = EntityUtils.toByteArray(httpEntity);
-            }
+            } else
+                throw new HttpPostException("Http get request error[" + statusLine.getStatusCode() + "]-->url : " + url);
         } catch (Exception e) {
             logger.info("request error!", e);
             throw new HttpPostException("Http post request error --> url : " + url, e);
@@ -63,7 +65,8 @@ public class BinaryHttpTransport implements HttpTransport<byte[]> {
                 HttpClientUtils.gzipDecompression(resp);
                 httpEntity = resp.getEntity();
                 result = EntityUtils.toByteArray(httpEntity);
-            }
+            } else
+                throw new HttpGetException("Http get request error[" + statusLine.getStatusCode() + "]-->url : " + url);
         } catch (Exception e) {
             logger.info("request error!", e);
             throw new HttpGetException("Http get request error --> url:" + url, e);

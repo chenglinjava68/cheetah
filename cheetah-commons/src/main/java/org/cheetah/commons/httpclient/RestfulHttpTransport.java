@@ -37,7 +37,8 @@ public class RestfulHttpTransport extends TextHttpTransport {
                 HttpClientUtils.gzipDecompression(resp);
                 httpEntity = resp.getEntity();
                 result = EntityUtils.toString(httpEntity, "UTF-8");
-            }
+            } else
+                throw new HttpPostException("Http get request error["+statusLine.getStatusCode()+"]-->url : " + url);
         } catch (Exception e) {
             logger.info("request error!", e);
             throw new HttpPostException("Http post request error-->url : " + url, e);

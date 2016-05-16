@@ -41,7 +41,8 @@ public class FileHttpTransport implements ChunkHttpTransport {
                 while ((j = in.read(buff, 0, 1024)) != -1) {
                     out.write(buff, 0, j);
                 }
-            }
+            } else
+                throw new HttpPostException("Http get request error[" + statusLine.getStatusCode() + "]-->url : " + url);
         } catch (Exception e) {
             logger.error("request error!", e);
             throw new HttpPostException("download failure", e);
@@ -70,7 +71,8 @@ public class FileHttpTransport implements ChunkHttpTransport {
                 while ((j = in.read(buff, 0, 1024)) != -1) {
                     stream.write(buff, 0, j);
                 }
-            }
+            } else
+                throw new HttpPostException("Http get request error[" + statusLine.getStatusCode() + "]-->url : " + url);
         } catch (Exception e) {
             logger.error("request error!", e);
             throw new HttpPostException("download failure", e);
@@ -101,7 +103,8 @@ public class FileHttpTransport implements ChunkHttpTransport {
                 while ((j = in.read(buff, 0, 1024)) != -1) {
                     bos.write(buff, 0, j);
                 }
-            }
+            } else
+                throw new HttpPostException("Http get request error[" + statusLine.getStatusCode() + "]-->url : " + url);
             return new ByteArrayInputStream(bos.toByteArray());
         } catch (Exception e) {
             logger.error("request error!", e);

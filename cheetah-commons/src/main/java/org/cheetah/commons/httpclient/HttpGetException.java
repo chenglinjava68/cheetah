@@ -8,6 +8,10 @@ public class HttpGetException extends RuntimeException {
         super();
     }
 
+    public HttpGetException(String message) {
+        super(message);
+    }
+
     public HttpGetException(String message, Exception e) {
         super(message, e);
     }

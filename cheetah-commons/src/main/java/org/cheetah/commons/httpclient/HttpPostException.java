@@ -8,6 +8,10 @@ public class HttpPostException extends RuntimeException {
         super();
     }
 
+    public HttpPostException(String message) {
+        super(message);
+    }
+
     public HttpPostException(String message, Throwable cause) {
         super(message, cause);
     }
