@@ -25,8 +25,9 @@ public abstract class ApiAccessFilter implements ContainerRequestFilter, Contain
     @Override
     public final void filter(ContainerRequestContext requestContext) throws IOException {
         String path = requestContext.getUriInfo().getAbsolutePath().getPath();
-        if (exclusivePaths.stream().anyMatch(pattern -> pathMatcher.matches(pattern, path))) {
-            return;
+        for (String exclusivePath : exclusivePaths) {
+            if (pathMatcher.matches(exclusivePath, path))
+                return ;
         }
 
         if (inclusivePaths.isEmpty()) {
@@ -34,8 +35,9 @@ public abstract class ApiAccessFilter implements ContainerRequestFilter, Contain
             return;
         }
 
-        if (inclusivePaths.stream().anyMatch(pattern -> pathMatcher.matches(pattern, path))) {
-            preRequest(requestContext);
+        for (String pattern : inclusivePaths) {
+            if (pathMatcher.matches(pattern, path))
+                return ;
         }
     }
 

@@ -69,9 +69,7 @@ public interface Engine extends Startable {
 
     void registerPluginChain(PluginChain pluginChain);
 
-    default boolean isRunning() {
-        return state().equals(State.RUNNING);
-    }
+    boolean isRunning();
 
 
     enum State {

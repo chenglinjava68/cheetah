@@ -1,12 +1,12 @@
 package org.cheetah.fighter.worker.support;
 
+import com.lmax.disruptor.EventHandler;
 import org.cheetah.fighter.async.disruptor.DisruptorEvent;
 import org.cheetah.fighter.core.Interceptor;
 import org.cheetah.fighter.handler.Directive;
 import org.cheetah.fighter.handler.Handler;
+import org.cheetah.fighter.worker.AbstractWorker;
 import org.cheetah.fighter.worker.Command;
-import org.cheetah.fighter.worker.Worker;
-import com.lmax.disruptor.EventHandler;
 
 import java.util.EventListener;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by Max on 2016/2/29.
  */
-public class DisruptorWorker implements Worker, EventHandler<DisruptorEvent> {
+public class DisruptorWorker extends AbstractWorker implements EventHandler<DisruptorEvent> {
     private Map<Class<? extends EventListener>, Handler> handlerMap;
     private List<Interceptor> interceptors;
 

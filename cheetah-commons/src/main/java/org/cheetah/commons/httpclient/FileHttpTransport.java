@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Created by Max on 2015/11/26.
@@ -53,7 +54,7 @@ public class FileHttpTransport implements ChunkHttpTransport {
     }
 
     @Override
-    public InputStream download(HttpClient httpClient, String url) {
+    public void download(OutputStream stream, HttpClient httpClient, String url) {
         InputStream in = null;
         HttpGet get = null;
         try {
@@ -61,16 +62,24 @@ public class FileHttpTransport implements ChunkHttpTransport {
             URIBuilder uri = new URIBuilder(url);
             get = new HttpGet(uri.toString());
             HttpResponse resp = httpClient.execute(get);
+            for (Header header : resp.getAllHeaders()) {
+                logger.info(header.getName() + " --- " + header.getValue());
+            }
             StatusLine statusLine = resp.getStatusLine();
             if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
                 in = resp.getEntity().getContent();
+                byte[] buff = new byte[1024];
+                int j = 0;
+                while ((j = in.read(buff, 0, 1024)) != -1) {
+                    stream.write(buff, 0, j);
+                }
             }
         } catch (Exception e) {
             logger.info("request error!", e);
             e.printStackTrace();
         } finally {
-            HttpClientUtils.close(null, null, get);
+            HttpClientUtils.close(null, in, get);
         }
-        return in;
     }
+
 }

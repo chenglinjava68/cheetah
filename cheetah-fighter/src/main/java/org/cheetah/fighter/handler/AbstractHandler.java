@@ -1,5 +1,7 @@
 package org.cheetah.fighter.handler;
 
+import org.cheetah.commons.logger.Debug;
+import org.cheetah.commons.logger.Error;
 import org.cheetah.commons.utils.ObjectUtils;
 import org.cheetah.fighter.event.Event;
 
@@ -16,6 +18,50 @@ public abstract class AbstractHandler implements Handler {
 
     public AbstractHandler(EventListener eventListener) {
         this.eventListener = eventListener;
+    }
+
+    /**
+     * 给机器发送一个指令，让其工作
+     *
+     * @param directive
+     * @return
+     */
+    @Override
+    public Feedback handle(Directive directive) {
+        Feedback feedback = Feedback.FAILURE;
+        if (directive.feedback()) {
+            feedback = completeExecute(directive.event());
+            if (feedback.isFail())
+                onFailure(directive);
+            else
+                onSuccess(directive);
+        } else execute(directive.event());
+
+        return feedback;
+    }
+
+    /**
+     * 机器工作故障后的回调函数
+     *
+     * @param directive
+     */
+    @Override
+    public void onFailure(Directive directive) {
+        Error.log(this.getClass(), "Machine execute failure event is [" + directive + "]");
+        if (directive.callback() != null)
+            directive.callback().call(false, directive.event().getSource());
+    }
+
+    /**
+     * 机器工作故障后的回调函数
+     *
+     * @param directive
+     */
+    @Override
+    public void onSuccess(Directive directive) {
+        Debug.log(this.getClass(), "Machine execute success event is [" + directive + "]");
+        if (directive.callback() != null)
+            directive.callback().call(true, directive.event().getSource());
     }
 
     @Override
