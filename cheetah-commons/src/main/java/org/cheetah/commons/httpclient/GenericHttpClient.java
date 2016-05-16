@@ -108,7 +108,9 @@ public class GenericHttpClient {
 	 * @return
 	 */
 	public String post(String url, String body) {
-		return restfulHttpTransport.post(this.httpclient, url, body, null);
+		Map<String, String> headers = new HashMap<>();
+		headers.put("content-type", "application/json");
+		return restfulHttpTransport.post(this.httpclient, url, body, headers);
 	}
 
 	/**
