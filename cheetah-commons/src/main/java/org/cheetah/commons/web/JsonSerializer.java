@@ -21,14 +21,8 @@ public abstract class JsonSerializer {
 
     static {
         objectMapper = new ObjectMapper();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        objectMapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
-        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-
     }
 
     private JsonSerializer() {
