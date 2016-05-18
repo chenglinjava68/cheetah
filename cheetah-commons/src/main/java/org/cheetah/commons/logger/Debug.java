@@ -10,9 +10,15 @@ public class Debug {
     public static void log(Class<?> type, String msg, Throwable e) {
         logger.debug(type, msg, e);
     }
+    public static void log(String moduleName, String msg, Throwable e) {
+        logger.debug(moduleName, msg, e);
+    }
 
     public static void log(Class<?> type, String msg, Object... objs) {
         logger.debug(type, msg, objs);
+    }
+    public static void log(String moduleName, String msg, Object... objs) {
+        logger.debug(moduleName, msg, objs);
     }
 
 }

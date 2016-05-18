@@ -14,4 +14,12 @@ public class Warn {
     public static void log(Class<?> type, String msg, Object... objs) {
         logger.warn(type, msg, objs);
     }
+
+    public static void log(String moduleName, String msg, Throwable e) {
+        logger.warn(moduleName, msg, e);
+    }
+
+    public static void log(String moduleName, String msg, Object... objs) {
+        logger.warn(moduleName, msg, objs);
+    }
 }

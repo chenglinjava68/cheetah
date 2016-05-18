@@ -1,7 +1,5 @@
 package org.cheetah.commons;
 
-import org.cheetah.commons.utils.StringUtils;
-
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,12 +13,25 @@ public class PlatformException extends RuntimeException implements Serializable 
     public static final String PLATFORM_ERROR = "platform error";
     private static final long serialVersionUID = 4307299885198466202L;
     private String errorCode;
+    private String message;
     private List<Object> params;
 
     public PlatformException(String errorCode) {
         super(errorCode);
         this.params = Collections.emptyList();
         this.errorCode = errorCode;
+    }
+
+    public PlatformException(String errorCode, String message) {
+        super(errorCode);
+        this.errorCode = errorCode;
+        this.message = message;
+    }
+
+    public PlatformException(String errorCode, String message, Throwable cause) {
+        super(errorCode, cause);
+        this.errorCode = errorCode;
+        this.message = message;
     }
 
     public PlatformException(String errorCode, Throwable cause) {
@@ -52,7 +63,7 @@ public class PlatformException extends RuntimeException implements Serializable 
     }
 
     public String getMessage() {
-        return this.message() + " " + String.format("[errorCode: %s] ", new Object[]{this.getErrorCode()}) + " ,params: " + this.getParams();
+        return this.message() + " " + String.format("[errorCode: %s] ", new Object[]{this.getErrorCode()}) + " ,message: " + this.message();
     }
 
     public String getErrorCode() {
@@ -65,6 +76,7 @@ public class PlatformException extends RuntimeException implements Serializable 
 
     public String message() {
 //        return StringUtils.isBlank(this.errorCode)?"platform error":configuration.getString(this.errorCode, "platform error");
-        return StringUtils.isBlank(this.errorCode)?"platform error":PLATFORM_ERROR;
+        return this.message;
     }
+
 }

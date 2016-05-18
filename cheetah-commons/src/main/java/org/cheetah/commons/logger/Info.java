@@ -14,4 +14,12 @@ public class Info {
     public static void log(Class<?> type, String msg, Object... objs) {
         logger.info(type, msg, objs);
     }
+
+    public static void log(String moduleName, String msg, Throwable e) {
+        logger.info(moduleName, msg, e);
+    }
+
+    public static void log(String moduleName, String msg, Object... objs) {
+        logger.info(moduleName, msg, objs);
+    }
 }

@@ -14,4 +14,12 @@ public class Error {
     public static void log(Class<?> type, String msg, Object... objs) {
         logger.error(type, msg, objs);
     }
+
+    public static void log(String moduleName, String msg, Throwable e) {
+        logger.error(moduleName, msg, e);
+    }
+
+    public static void log(String moduleName, String msg, Object... objs) {
+        logger.error(moduleName, msg, objs);
+    }
 }
