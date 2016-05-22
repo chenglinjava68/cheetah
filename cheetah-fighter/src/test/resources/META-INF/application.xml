@@ -18,7 +18,7 @@ http://www.springframework.org/schema/aop
     <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
     <aop:aspectj-autoproxy/>
 
-    <bean id="beanFactoryProvider" class="org.cheetah.fighter.container.spring.SpringAplicationContextProvider"/>
+    <bean id="beanFactoryProvider" class="org.cheetah.ioc.spring.SpringAplicationContextProvider"/>
 
     <bean id="dispatcher" class="org.cheetah.fighter.core.support.DispatcherEvent" init-method="start" destroy-method="stop">
         <property name="configuration">

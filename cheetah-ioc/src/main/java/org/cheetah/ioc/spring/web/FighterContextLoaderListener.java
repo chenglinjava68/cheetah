@@ -1,8 +1,9 @@
-package org.cheetah.fighter.container.spring.web;
+package org.cheetah.ioc.spring.web;
 
-import org.cheetah.fighter.container.BeanFactory;
-import org.cheetah.fighter.container.BeanFactoryProvider;
-import org.cheetah.fighter.container.spring.SpringBeanFactoryProvider;
+
+import org.cheetah.ioc.BeanFactory;
+import org.cheetah.ioc.BeanFactoryProvider;
+import org.cheetah.ioc.spring.SpringBeanFactoryProvider;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;

@@ -1,4 +1,4 @@
-package org.cheetah.fighter.container;
+package org.cheetah.ioc;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
