@@ -6,8 +6,8 @@ import java.util.concurrent.*;
  * Created by Max on 2016/5/3.
  */
 public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFactory<T> {
-    private int minThreads = 256;
-    private int maxThreads = 256;
+    private int minThreads = Runtime.getRuntime().availableProcessors();
+    private int maxThreads = Runtime.getRuntime().availableProcessors() * 2 + 16;
     private ExecutorService executorService;
 
     @Override
