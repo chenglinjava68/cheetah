@@ -5,7 +5,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.cheetah.commons.Startable;
-import org.cheetah.commons.logger.Debug;
+import org.cheetah.commons.logger.Info;
 import org.cheetah.commons.utils.CollectionUtils;
 import org.cheetah.commons.utils.ObjectUtils;
 import org.cheetah.commons.utils.StringUtils;
@@ -48,7 +48,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
      */
     @Override
     public EventResult receive(final EventMessage eventMessage) {
-        Debug.log(this.getClass(), "receive message: " + eventMessage);
+        Info.log(this.getClass(), "receive message: " + eventMessage);
         try {
             context().setEventMessage(eventMessage);
             Event event = eventMessage.event();
@@ -117,7 +117,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         lock.lock();
         try {
             if (DomainEvent.class.isAssignableFrom(event.getClass())) {
-                Debug.log(this.getClass(), "event is DomainEvent");
+                Info.log(this.getClass(), "event is DomainEvent");
                 List<EventListener> smartDomainEventListeners = getSmartDomainEventListener((DomainEvent) event);
                 if (!smartDomainEventListeners.isEmpty()) {
                     return setDomainEventListenerMapper(mapperKey, smartDomainEventListeners);
@@ -139,7 +139,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
                     return setDomainEventListenerMapper(mapperKey, Lists.newArrayList(listeners));
                 }
             } else if (ApplicationEvent.class.isAssignableFrom(event.getClass())) {
-                Debug.log(this.getClass(), "event is ApplicationEvent");
+                Info.log(this.getClass(), "event is ApplicationEvent");
                 List<EventListener> smartAppEventListeners = getSmartApplicationEventListener((ApplicationEvent) event);
                 if (!smartAppEventListeners.isEmpty()) {
                     return setAppEventListenerMapper(mapperKey, smartAppEventListeners);

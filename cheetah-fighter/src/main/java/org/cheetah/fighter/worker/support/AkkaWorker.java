@@ -1,6 +1,6 @@
 package org.cheetah.fighter.worker.support;
 
-import org.cheetah.commons.logger.Debug;
+import org.cheetah.commons.logger.Info;
 import org.cheetah.commons.utils.Assert;
 import org.cheetah.fighter.core.Interceptor;
 import org.cheetah.fighter.handler.Directive;
@@ -34,7 +34,7 @@ public class AkkaWorker extends AbstractWorker {
             Handler machine = eventlistenerMapper.get(command.eventListener());
             machine.handle(new Directive(command.event(), command.callback(), command.needResult()));
         } catch (Exception e) {
-            Debug.log(this.getClass(), "machine execute fail.", e);
+            Info.log(this.getClass(), "machine execute fail.", e);
         }
     }
 

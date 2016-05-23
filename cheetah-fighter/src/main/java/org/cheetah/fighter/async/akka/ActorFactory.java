@@ -4,7 +4,7 @@ import akka.actor.*;
 import akka.pattern.Patterns;
 import akka.routing.SmallestMailboxPool;
 import org.cheetah.fighter.async.AsynchronousFactory;
-import org.cheetah.commons.logger.Debug;
+import org.cheetah.commons.logger.Info;
 import org.cheetah.fighter.core.Interceptor;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.worker.support.AkkaWorker;
@@ -39,7 +39,7 @@ public class ActorFactory implements AsynchronousFactory<ActorRef> {
         SupervisorStrategy strategy = new OneForOneStrategy(3, Duration.create("1 minute"), Collections.<Class<? extends Throwable>>singletonList(Exception.class));
         ActorRef actor = actorSystem.actorOf(Props.create(AkkaWorker.class, handlerMap)
                 .withRouter(new SmallestMailboxPool(actorSize).withSupervisorStrategy(strategy)), name);
-        Debug.log(this.getClass(), "create actor for name [" + name + "]");
+        Info.log(this.getClass(), "create actor for name [" + name + "]");
         ok(actor);
         return actor;
     }

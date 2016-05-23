@@ -1,7 +1,7 @@
 package org.cheetah.fighter.engine;
 
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
-import org.cheetah.commons.logger.Debug;
+import org.cheetah.commons.logger.Info;
 import org.cheetah.fighter.core.EventContext;
 import org.cheetah.fighter.plugin.PluginChain;
 import org.cheetah.fighter.handler.Handler;
@@ -28,7 +28,7 @@ public abstract class AbstractEngine implements Engine {
 
     @Override
     public void start() {
-        Debug.log(this.getClass(), "DefaultEngine start ...");
+        Info.log(this.getClass(), "DefaultEngine start ...");
         initialize();
         this.state = State.RUNNING;
     }
@@ -46,7 +46,7 @@ public abstract class AbstractEngine implements Engine {
         pluginChain = null;
         asynchronousPoolFactory.stop();
         asynchronousPoolFactory = null;
-        Debug.log(this.getClass(), "DefualtEngine has been shut down.");
+        Info.log(this.getClass(), "DefualtEngine has been shut down.");
         this.state = State.STOP;
     }
 

@@ -1,6 +1,6 @@
 package org.cheetah.configuration.impl;
 
-import org.cheetah.commons.logger.Debug;
+import org.cheetah.commons.logger.Info;
 import org.cheetah.commons.utils.StringUtils;
 import org.cheetah.configuration.ConfigurationException;
 import org.cheetah.configuration.WritableConfiguration;
@@ -51,7 +51,7 @@ public class ConfigurationFileImpl extends AbstractConfiguration implements Writ
             in = new FileInputStream(this.file);
             props.load(in);
             this.hTable = this.pfu.rectifyProperties(props);
-            Debug.log(this.getClass(), "Load configuration from {} at {}", new Object[]{this.file.getAbsolutePath(), new Date()});
+            Info.log(this.getClass(), "Load configuration from {} at {}", new Object[]{this.file.getAbsolutePath(), new Date()});
         } catch (IOException var11) {
             throw new ConfigurationException("Cannot load config file: " + this.file, var11);
         } finally {
@@ -113,7 +113,7 @@ public class ConfigurationFileImpl extends AbstractConfiguration implements Writ
             }
         }
 
-        Debug.log(this.getClass(), "Save configuration to {} at {}", new Object[]{this.file.getAbsolutePath(), new Date()});
+        Info.log(this.getClass(), "Save configuration to {} at {}", new Object[]{this.file.getAbsolutePath(), new Date()});
     }
 
     private String convertString(String theString, boolean escapeSpace) {

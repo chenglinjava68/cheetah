@@ -1,7 +1,7 @@
 package org.cheetah.fighter.handler;
 
-import org.cheetah.commons.logger.Debug;
-import org.cheetah.commons.logger.Error;
+import org.cheetah.commons.logger.Info;
+import org.cheetah.commons.logger.Warn;
 import org.cheetah.commons.utils.ObjectUtils;
 import org.cheetah.fighter.event.Event;
 
@@ -47,7 +47,7 @@ public abstract class AbstractHandler implements Handler {
      */
     @Override
     public void onFailure(Directive directive) {
-        Error.log(this.getClass(), "Machine execute failure event is [" + directive + "]");
+        Warn.log(this.getClass(), "Machine execute failure event is [" + directive.event() + "]");
         if (directive.callback() != null)
             directive.callback().call(false, directive.event().getSource());
     }
@@ -59,7 +59,7 @@ public abstract class AbstractHandler implements Handler {
      */
     @Override
     public void onSuccess(Directive directive) {
-        Debug.log(this.getClass(), "Machine execute success event is [" + directive + "]");
+        Info.log(this.getClass(), "Machine execute success event is [" + directive.event() + "]");
         if (directive.callback() != null)
             directive.callback().call(true, directive.event().getSource());
     }

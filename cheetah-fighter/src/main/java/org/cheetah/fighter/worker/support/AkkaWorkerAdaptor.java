@@ -4,7 +4,7 @@ import akka.actor.OneForOneStrategy;
 import akka.actor.SupervisorStrategy;
 import akka.actor.UntypedActor;
 import akka.japi.Function;
-import org.cheetah.commons.logger.Debug;
+import org.cheetah.commons.logger.Info;
 import org.cheetah.fighter.async.akka.ActorFactory;
 import org.cheetah.fighter.core.Interceptor;
 import org.cheetah.fighter.worker.Command;
@@ -52,22 +52,22 @@ public class AkkaWorkerAdaptor extends UntypedActor implements Worker {
 
     @Override
     public void preStart() throws Exception {
-        Debug.log(getClass(), "worker actor =>" + getSelf().path() + "-----> start");
+        Info.log(getClass(), "worker actor =>" + getSelf().path() + "-----> start");
     }
 
     @Override
     public void postStop() throws Exception {
-        Debug.log(getClass(), "worker actor =>" + getSelf().path() + "-----> postStop");
+        Info.log(getClass(), "worker actor =>" + getSelf().path() + "-----> postStop");
     }
 
     @Override
     public void preRestart(Throwable reason, Option<Object> message) throws Exception {
-        Debug.log(getClass(), "worker actor =>" + getSelf().path() + "-----> preRestart");
+        Info.log(getClass(), "worker actor =>" + getSelf().path() + "-----> preRestart");
     }
 
     @Override
     public void postRestart(Throwable reason) throws Exception {
-        Debug.log(getClass(), "worker actor =>" + getSelf().path() + "-----> postRestart");
+        Info.log(getClass(), "worker actor =>" + getSelf().path() + "-----> postRestart");
     }
 
     @Override
