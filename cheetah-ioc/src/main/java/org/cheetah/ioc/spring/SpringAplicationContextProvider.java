@@ -1,4 +1,4 @@
-package org.cheetah.fighter.container.spring;
+package org.cheetah.ioc.spring;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

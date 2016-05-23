@@ -1,6 +1,6 @@
-package org.cheetah.fighter.container.spring;
+package org.cheetah.ioc.spring;
 
-import org.cheetah.fighter.container.BeanFactoryProvider;
+import org.cheetah.ioc.BeanFactoryProvider;
 import org.springframework.context.ApplicationContext;
 
 import java.lang.annotation.Annotation;
