@@ -1,7 +1,6 @@
 package org.cheetah.commons.httpclient;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -33,7 +32,7 @@ public class BinaryHttpTransport implements HttpTransport<byte[]> {
             HttpClientUtils.setParameter(params, headers, post);
             resp = httpClient.execute(post);
             StatusLine statusLine = resp.getStatusLine();
-            if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+            if (HttpClientUtils.status(statusLine)) {
                 HttpClientUtils.gzipDecompression(resp);
                 httpEntity = resp.getEntity();
                 result = EntityUtils.toByteArray(httpEntity);
@@ -61,7 +60,7 @@ public class BinaryHttpTransport implements HttpTransport<byte[]> {
             get = HttpClientUtils.setParameter(url, params, headers);
             resp = httpClient.execute(get);
             StatusLine statusLine = resp.getStatusLine();
-            if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+            if (HttpClientUtils.status(statusLine)) {
                 HttpClientUtils.gzipDecompression(resp);
                 httpEntity = resp.getEntity();
                 result = EntityUtils.toByteArray(httpEntity);

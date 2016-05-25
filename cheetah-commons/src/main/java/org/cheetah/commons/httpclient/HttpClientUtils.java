@@ -141,4 +141,13 @@ final class HttpClientUtils {
 			e.printStackTrace();
 		}
 	}
+
+	static boolean status(StatusLine statusLine) {
+		return statusLine.getStatusCode() == HttpStatus.SC_OK;
+	}
+
+	static boolean resetSuccessStatus(StatusLine statusLine) {
+		return statusLine.getStatusCode() == HttpStatus.SC_OK || statusLine.getStatusCode() == HttpStatus.SC_CREATED
+				|| statusLine.getStatusCode() == HttpStatus.SC_NO_CONTENT || statusLine.getStatusCode() == HttpStatus.SC_ACCEPTED;
+	}
 }

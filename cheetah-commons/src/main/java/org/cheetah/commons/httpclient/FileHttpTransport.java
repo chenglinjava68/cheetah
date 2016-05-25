@@ -2,7 +2,6 @@ package org.cheetah.commons.httpclient;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -33,7 +32,7 @@ public class FileHttpTransport implements ChunkHttpTransport {
                 logger.info(header.getName() + " --- " + header.getValue());
             }
             StatusLine statusLine = resp.getStatusLine();
-            if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+            if (HttpClientUtils.status(statusLine)) {
                 out = new FileOutputStream(new File(toPath));
                 in = resp.getEntity().getContent();
                 byte[] buff = new byte[1024];
@@ -64,7 +63,7 @@ public class FileHttpTransport implements ChunkHttpTransport {
                 logger.info(header.getName() + " --- " + header.getValue());
             }
             StatusLine statusLine = resp.getStatusLine();
-            if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+            if (HttpClientUtils.status(statusLine)) {
                 in = resp.getEntity().getContent();
                 byte[] buff = new byte[1024];
                 int j = 0;
@@ -96,7 +95,7 @@ public class FileHttpTransport implements ChunkHttpTransport {
                 logger.info(header.getName() + " --- " + header.getValue());
             }
             StatusLine statusLine = resp.getStatusLine();
-            if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+            if (HttpClientUtils.status(statusLine)) {
                 in = resp.getEntity().getContent();
                 byte[] buff = new byte[1024];
                 int j = 0;

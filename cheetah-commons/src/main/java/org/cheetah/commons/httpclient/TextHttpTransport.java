@@ -33,7 +33,7 @@ public abstract class TextHttpTransport implements HttpTransport<String> {
             HttpClientUtils.setParameter(params, headers, post);
             resp = httpClient.execute(post);
             StatusLine statusLine = resp.getStatusLine();
-            if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+            if (HttpClientUtils.resetSuccessStatus(statusLine)) {
                 HttpClientUtils.gzipDecompression(resp);
                 httpEntity = resp.getEntity();
                 result = EntityUtils.toString(httpEntity, "UTF-8");

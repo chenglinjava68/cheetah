@@ -1,7 +1,6 @@
 package org.cheetah.commons.httpclient;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -32,7 +31,7 @@ public class RestfulHttpTransport extends TextHttpTransport {
             resp = httpClient.execute(post);
             StatusLine statusLine = resp.getStatusLine();
 
-            if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+            if (HttpClientUtils.resetSuccessStatus(statusLine)) {
                 logger.info("request ok!");
                 HttpClientUtils.gzipDecompression(resp);
                 httpEntity = resp.getEntity();
