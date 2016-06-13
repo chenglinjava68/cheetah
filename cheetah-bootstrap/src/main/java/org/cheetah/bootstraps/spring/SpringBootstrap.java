@@ -7,7 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * @author siuming
+ * @author Max
  */
 public class SpringBootstrap implements Bootstrap {
 

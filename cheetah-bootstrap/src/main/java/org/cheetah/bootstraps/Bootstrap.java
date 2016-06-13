@@ -1,7 +1,7 @@
 package org.cheetah.bootstraps;
 
 /**
- * @author siuming
+ * @author Max
  */
 public interface Bootstrap {
 

@@ -16,8 +16,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * @author yyang
- * @author siuming
+ * @author Max
  */
 public class CxfBootstrap implements Bootstrap {
 

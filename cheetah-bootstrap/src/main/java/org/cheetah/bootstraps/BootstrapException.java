@@ -1,7 +1,7 @@
 package org.cheetah.bootstraps;
 
 /**
- * @author siuming
+ * @author Max
  */
 public class BootstrapException extends RuntimeException{
     private static final long serialVersionUID = 8866164572690003382L;
