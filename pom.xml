@@ -16,6 +16,7 @@
         <module>cheetah-repository</module>
         <module>cheetah-bootstrap</module>
         <module>cheetah-ioc</module>
+        <module>cheetah-reset</module>
     </modules>
 
     <developers>
@@ -52,7 +53,7 @@
     <repositories>
         <repository>
             <id>scho-releases</id>
-            <url>http://192.168.1.215:8081/nexus/content/groups/public-releases</url>
+            <url>http://192.168.1.215:8081/nexus/content/groups/public</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -62,7 +63,7 @@
         </repository>
         <repository>
             <id>scho-snapshots</id>
-            <url>http://192.168.1.215:8081/nexus/content/groups/public-snapshots</url>
+            <url>http://192.168.1.215:8081/nexus/content/groups/public</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
