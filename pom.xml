@@ -36,7 +36,7 @@
         <connection>scm:git:https://git.oschina.net/puffCode/cheetah.git</connection>
         <developerConnection>scm:git:git@git.oschina.net:puffCode/cheetah.git</developerConnection>
     </scm>
-
+<!--
     <distributionManagement>
         <repository>
             <id>scho-releases</id>
@@ -71,7 +71,7 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-    </repositories>
+    </repositories>-->
 
     <properties>
         <akka.version>2.3.9</akka.version>

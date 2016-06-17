@@ -24,15 +24,15 @@ import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-/**
- * @author Max
- */
-@Provider
-@Consumes(MediaType.WILDCARD) // NOTE: required to support "non-standard" JSON variants
-@Produces(MediaType.WILDCARD)
-public class ApiJsonProvider implements MessageBodyReader<Object>, MessageBodyWriter<Object> {
+    /**
+     * @author Max
+     */
+    @Provider
+    @Consumes(MediaType.WILDCARD) // NOTE: required to support "non-standard" JSON variants
+    @Produces(MediaType.WILDCARD)
+    public class ApiJsonProvider implements MessageBodyReader<Object>, MessageBodyWriter<Object> {
 
-    static ObjectMapper OBJECT_MAPPER;
+        static ObjectMapper OBJECT_MAPPER;
 
     static {
         OBJECT_MAPPER = new ObjectMapper();
