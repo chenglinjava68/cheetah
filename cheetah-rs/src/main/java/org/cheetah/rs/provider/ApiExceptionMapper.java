@@ -1,9 +1,9 @@
-package org.cheetah.reset.provider;
+package org.cheetah.rs.provider;
 
 import org.cheetah.commons.PlatformException;
 import org.cheetah.commons.logger.Loggers;
-import org.cheetah.reset.ApiExceptionMetadata;
-import org.cheetah.reset.ApiResult;
+import org.cheetah.rs.ApiExceptionMetadata;
+import org.cheetah.rs.ApiResult;
 
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;

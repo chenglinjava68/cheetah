@@ -1,8 +1,8 @@
-package org.cheetah.reset.core;
+package org.cheetah.rs.core;
 
-import org.cheetah.reset.ApiConstants;
-import org.cheetah.reset.ApiException;
-import org.cheetah.reset.ApiExceptionMetadata;
+import org.cheetah.rs.ApiConstants;
+import org.cheetah.rs.ApiException;
+import org.cheetah.rs.ApiExceptionMetadata;
 
 /**
  * @author Max

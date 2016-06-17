@@ -1,4 +1,4 @@
-package org.cheetah.reset.core;
+package org.cheetah.rs.core;
 
 import java.io.Serializable;
 

@@ -1,7 +1,7 @@
-package org.cheetah.reset.filter;
+package org.cheetah.rs.filter;
 
 import org.cheetah.commons.logger.Loggers;
-import org.cheetah.reset.IllegalVisitorAddressException;
+import org.cheetah.rs.IllegalVisitorAddressException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;

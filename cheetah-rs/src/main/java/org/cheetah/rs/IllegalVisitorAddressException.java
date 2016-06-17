@@ -1,4 +1,4 @@
-package org.cheetah.reset;
+package org.cheetah.rs;
 
 /**
  * Created by Max on 2016/1/22.

@@ -1,4 +1,4 @@
-package org.cheetah.reset;
+package org.cheetah.rs;
 
 
 /**

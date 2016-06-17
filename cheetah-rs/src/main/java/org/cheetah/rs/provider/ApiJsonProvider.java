@@ -1,4 +1,4 @@
-package org.cheetah.reset.provider;
+package org.cheetah.rs.provider;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;

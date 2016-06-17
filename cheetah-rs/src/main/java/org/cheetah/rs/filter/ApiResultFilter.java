@@ -1,7 +1,7 @@
-package org.cheetah.reset.filter;
+package org.cheetah.rs.filter;
 
 
-import org.cheetah.reset.ApiResult;
+import org.cheetah.rs.ApiResult;
 
 import javax.annotation.Priority;
 import javax.ws.rs.container.ContainerRequestContext;

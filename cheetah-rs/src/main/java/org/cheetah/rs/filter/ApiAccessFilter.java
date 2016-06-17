@@ -1,4 +1,4 @@
-package org.cheetah.reset.filter;
+package org.cheetah.rs.filter;
 
 
 import org.cheetah.commons.path.AntPathMatcher;
