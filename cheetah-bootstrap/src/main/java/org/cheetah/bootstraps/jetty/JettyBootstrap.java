@@ -35,7 +35,7 @@ public class JettyBootstrap implements Bootstrap {
     public static final int DEFAULT_ACCEPT_QUEUE_SIZE = 512;
     public static final long DEFAULT_IDLE_TIMEOUT = 30000;
     public static final String DEFAULT_CONTEXT_PATH = "/";
-    public static final String DEFAULT_SERVER_DESCRIPTOR = "./webapp/WEB_INF/web.xml";
+    public static final String DEFAULT_SERVER_DESCRIPTOR = "./webapp/WEB-INF/web.xml";
 
     private final Configuration configuration;
     private String applicationConfig = "classpath:META-INF/application.xml";
