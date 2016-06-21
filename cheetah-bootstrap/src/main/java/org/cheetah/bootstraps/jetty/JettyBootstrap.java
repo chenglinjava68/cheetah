@@ -1,4 +1,4 @@
-package org.cheetah.bootstraps.cxf;
+package org.cheetah.bootstraps.jetty;
 
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.cheetah.bootstraps.Bootstrap;
@@ -9,41 +9,67 @@ import org.cheetah.configuration.ConfigurationFactory;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.FilterHolder;
-import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.util.thread.QueuedThreadPool;
+import org.eclipse.jetty.webapp.WebAppContext;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import javax.servlet.Servlet;
 import java.util.concurrent.CountDownLatch;
 
 /**
  * @author Max
  */
-public class CxfBootstrap implements Bootstrap {
+public class JettyBootstrap implements Bootstrap {
 
     public static final String PORT_KEY = "http.port";
     public static final String IDLE_TIMEOUT_KEY = "http.idle.timeout";
     public static final String CONTEXT_PATH_KEY = "http.context.path";
     public static final String ACCEPT_QUEUE_SIZE_KEY = "http.accept.queue.size";
+    public static final String MIN_THREADS = "server.min.threads";
+    public static final String MAX_THREADS = "server.man.threads";
+    public static final String SERVER_DESCRIPTOR = "server.descriptor";
 
     public static final int DEFAULT_PORT = 8000;
     public static final int DEFAULT_ACCEPT_QUEUE_SIZE = 512;
     public static final long DEFAULT_IDLE_TIMEOUT = 30000;
     public static final String DEFAULT_CONTEXT_PATH = "/";
+    public static final String DEFAULT_SERVER_DESCRIPTOR = "./webapp/WEB_INF/web.xml";
 
     private final Configuration configuration;
+    private String applicationConfig = "classpath:META-INF/application.xml";
 
     private Server server;
     private ServerConnector serverConnector;
-    private ServletContextHandler contextHandler;
+    private WebAppContext webAppContext;
+    private Class<? extends Servlet> dispatcher;
 
-    public CxfBootstrap() {
+    public JettyBootstrap() {
         this(new ConfigurationFactory().fromClasspath("/application.properties"));
     }
 
-    public CxfBootstrap(Configuration configuration) {
+    public JettyBootstrap(Class<? extends Servlet> dispatcher) {
+        this(new ConfigurationFactory().fromClasspath("/application.properties"));
+        this.dispatcher = dispatcher;
+    }
+
+    public JettyBootstrap(Configuration configuration) {
         this.configuration = configuration;
     }
 
+    public JettyBootstrap(Configuration configuration, String applicationConfig) {
+        this.configuration = configuration;
+        this.applicationConfig = applicationConfig;
+    }
+
+    public static JettyBootstrap cxf() {
+        return new JettyBootstrap(CXFServlet.class);
+    }
+    
+    public static JettyBootstrap jersey() {
+        return new JettyBootstrap(CXFServlet.class);
+    }
+    
     @Override
     public void bootstrap() {
 
@@ -54,7 +80,7 @@ public class CxfBootstrap implements Bootstrap {
             @Override
             public void run() {
                 signal.countDown();
-                CxfBootstrap.this.stop();
+                JettyBootstrap.this.stop();
             }
         });
 
@@ -75,18 +101,19 @@ public class CxfBootstrap implements Bootstrap {
 
     private void start() {
         try {
-            server = new Server();
+            server = new Server(new QueuedThreadPool(configuration.getInt(MAX_THREADS, 256),
+                    configuration.getInt(MIN_THREADS, Runtime.getRuntime().availableProcessors() * 2)));
             serverConnector = new ServerConnector(server);
             configServerConnector();
 
-            contextHandler = new ServletContextHandler();
-            configContextHandler();
+            webAppContext = new WebAppContext();
+            configWebAppContext();
 
             server.addConnector(serverConnector);
-            server.setHandler(contextHandler);
+            server.setHandler(webAppContext);
             server.start();
         } catch (Exception e) {
-            throw new BootstrapException("cxf boot occurs error.", e);
+            throw new BootstrapException("jetty boot occurs error.", e);
         }
     }
 
@@ -97,12 +124,13 @@ public class CxfBootstrap implements Bootstrap {
         serverConnector.setAcceptQueueSize(configuration.getInt(ACCEPT_QUEUE_SIZE_KEY, DEFAULT_ACCEPT_QUEUE_SIZE));
     }
 
-    private void configContextHandler() {
-        contextHandler.setContextPath(configuration.getString(CONTEXT_PATH_KEY, DEFAULT_CONTEXT_PATH));    //设置上下文根路径
-        contextHandler.addEventListener(new ContextLoaderListener());  //提供Spring支持能力
-        contextHandler.setInitParameter("contextConfigLocation", "classpath:META-INF/application.xml");    //Spring配置文件位置
-        contextHandler.addFilter(createEncodingFilter(), "/*", null);  //添加编码过滤器，解决中文问题
-        contextHandler.addServlet(CXFServlet.class, "/*"); //引入Apache CXF，提供Restful Web Service能力
+    private void configWebAppContext() {
+        webAppContext.setContextPath(configuration.getString(CONTEXT_PATH_KEY, DEFAULT_CONTEXT_PATH));    //设置上下文根路径
+        webAppContext.addEventListener(new ContextLoaderListener());  //提供Spring支持能力
+        webAppContext.setInitParameter("contextConfigLocation", applicationConfig);    //Spring配置文件位置
+        webAppContext.addFilter(createEncodingFilter(), "/*", null);  //添加编码过滤器，解决中文问题
+        webAppContext.addServlet(dispatcher, "/*"); //引入Apache CXF，提供Restful Web Service能力
+        webAppContext.setDescriptor(configuration.getString(SERVER_DESCRIPTOR, DEFAULT_SERVER_DESCRIPTOR));
     }
 
     private FilterHolder createEncodingFilter() {
