@@ -11,6 +11,7 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.glassfish.jersey.servlet.ServletContainer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
@@ -67,7 +68,7 @@ public class JettyBootstrap implements Bootstrap {
     }
     
     public static JettyBootstrap jersey() {
-        return new JettyBootstrap(CXFServlet.class);
+        return new JettyBootstrap(ServletContainer.class);
     }
     
     @Override
