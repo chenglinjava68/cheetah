@@ -30,12 +30,14 @@ public class JettyBootstrap implements Bootstrap {
     public static final String MIN_THREADS = "server.min.threads";
     public static final String MAX_THREADS = "server.man.threads";
     public static final String SERVER_DESCRIPTOR = "server.descriptor";
+    public static final String SERVER_RESOURCE_BASE  = "server.resource.base";
 
     public static final int DEFAULT_PORT = 8000;
     public static final int DEFAULT_ACCEPT_QUEUE_SIZE = 512;
     public static final long DEFAULT_IDLE_TIMEOUT = 30000;
     public static final String DEFAULT_CONTEXT_PATH = "/";
     public static final String DEFAULT_SERVER_DESCRIPTOR = "./webapp/WEB-INF/web.xml";
+    public static final String DEFAULT_SERVER_RESOURCE_BASE = "./webapp";
 
     private final Configuration configuration;
     private String applicationConfig = "classpath:META-INF/application.xml";
@@ -132,6 +134,7 @@ public class JettyBootstrap implements Bootstrap {
         webAppContext.addFilter(createEncodingFilter(), "/*", null);  //添加编码过滤器，解决中文问题
         webAppContext.addServlet(dispatcher, "/*"); //引入Apache CXF，提供Restful Web Service能力
         webAppContext.setDescriptor(configuration.getString(SERVER_DESCRIPTOR, DEFAULT_SERVER_DESCRIPTOR));
+        webAppContext.setResourceBase(configuration.getString(SERVER_RESOURCE_BASE, DEFAULT_SERVER_RESOURCE_BASE));
     }
 
     private FilterHolder createEncodingFilter() {
