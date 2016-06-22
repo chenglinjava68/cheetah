@@ -30,6 +30,11 @@
         </dependency>
         <dependency>
             <groupId>org.cheetah</groupId>
+            <artifactId>cheetah-ioc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.cheetah</groupId>
             <artifactId>cheetah-configuration</artifactId>
             <version>${project.version}</version>
         </dependency>

@@ -19,3 +19,4 @@ public final class FighterContext {
         collector.collect(event, callback);
     }
 }
+
