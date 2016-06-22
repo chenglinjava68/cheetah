@@ -37,7 +37,7 @@ public class JettyBootstrap extends BootstrapSupport {
     public static final String DEFAULT_SERVER_DESCRIPTOR = "./webapp/WEB-INF/web.xml";
     public static final String DEFAULT_SERVER_WEBAPP_PATH = "./webapp";
 
-    private final Configuration configuration;
+    private Configuration configuration;
     private String applicationConfig = "classpath:META-INF/application.xml";
     private JettyServerConfig serverConfig;
     private Server server;
@@ -52,6 +52,11 @@ public class JettyBootstrap extends BootstrapSupport {
     public JettyBootstrap(Class<? extends Servlet> dispatcher) {
         this(new ConfigurationFactory().fromClasspath("/application.properties"));
         this.dispatcher = dispatcher;
+    }
+
+    public JettyBootstrap(String applicationConfig, JettyServerConfig serverConfig) {
+        this.applicationConfig = applicationConfig;
+        this.serverConfig = serverConfig;
     }
 
     public JettyBootstrap(Configuration configuration) {
