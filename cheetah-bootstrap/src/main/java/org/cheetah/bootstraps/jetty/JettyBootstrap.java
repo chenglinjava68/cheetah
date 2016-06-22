@@ -6,7 +6,7 @@ import org.cheetah.bootstraps.BootstrapSupport;
 import org.cheetah.commons.logger.Loggers;
 import org.cheetah.configuration.Configuration;
 import org.cheetah.configuration.ConfigurationFactory;
-import org.cheetah.ioc.spring.web.FighterContextLoaderListener;
+import org.cheetah.ioc.spring.web.CheetahContextLoaderListener;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.FilterHolder;
@@ -108,17 +108,17 @@ public class JettyBootstrap extends BootstrapSupport {
         webAppContext.setContextPath(configuration.getString(CONTEXT_PATH_KEY, DEFAULT_CONTEXT_PATH));    //设置上下文根路径
         setContextLoaderListener();
         webAppContext.addFilter(createEncodingFilter(), "/*", null);  //添加编码过滤器，解决中文问题
-        setDispatcherServlet(); //引入Apache CXF，提供Restful Web Service能力
+        setDispatcher(); //引入Apache CXF、Jersey，提供Restful Web Service能力
         webAppContext.setDescriptor(configuration.getString(SERVER_DESCRIPTOR, DEFAULT_SERVER_DESCRIPTOR));
         webAppContext.setResourceBase(configuration.getString(SERVER_WEBAPP_PATH, DEFAULT_SERVER_WEBAPP_PATH));
     }
 
     protected void setContextLoaderListener() {
-        webAppContext.addEventListener(new FighterContextLoaderListener());  //提供Spring支持能力
+        webAppContext.addEventListener(new CheetahContextLoaderListener());  //提供Spring支持能力
         webAppContext.setInitParameter("contextConfigLocation", applicationConfig);    //Spring配置文件位置
     }
 
-    protected void setDispatcherServlet() {
+    protected void setDispatcher() {
         webAppContext.addServlet(dispatcher, "/*");
     }
 

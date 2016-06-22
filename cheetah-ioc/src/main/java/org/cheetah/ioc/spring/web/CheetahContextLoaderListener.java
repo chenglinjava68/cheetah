@@ -13,7 +13,7 @@ import javax.servlet.ServletContextEvent;
 /**
  * Created by Max on 2016/5/4.
  */
-public class FighterContextLoaderListener extends ContextLoaderListener {
+public class CheetahContextLoaderListener extends ContextLoaderListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
         super.contextInitialized(event);
