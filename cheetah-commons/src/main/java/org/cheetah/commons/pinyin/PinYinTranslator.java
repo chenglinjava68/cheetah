@@ -9,7 +9,7 @@ import org.cheetah.commons.utils.StringUtils;
 import java.util.Map;
 
 /**
- * @author ericxin
+ * @author Max
  */
 public final class PinYinTranslator {
 
