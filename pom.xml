@@ -81,6 +81,7 @@
         <spring.version>4.1.6.RELEASE</spring.version>
         <mybatis.version>3.2.8</mybatis.version>
         <hibernate.version>4.3.10.Final</hibernate.version>
+        <poi.version>3.12</poi.version>
     </properties>
 
     <dependencyManagement>
@@ -245,6 +246,23 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpcore</artifactId>
                 <version>4.3.2</version>
+            </dependency>
+
+            <!-- poi -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml-schemas</artifactId>
+                <version>${poi.version}</version>
             </dependency>
 
             <!--test-->
