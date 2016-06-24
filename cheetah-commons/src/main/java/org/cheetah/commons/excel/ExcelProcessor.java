@@ -163,6 +163,7 @@ public class ExcelProcessor<T> {
                 objs.add(obj);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ExcelException(e);
         }
         return objs;
