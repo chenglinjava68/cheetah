@@ -51,7 +51,7 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
         if(this.executorService == null)
             executorService =  new ThreadPoolExecutor(minThreads, maxThreads,
                     3000L, TimeUnit.MILLISECONDS, new LinkedTransferQueue(),
-                    new ThreadFactoryBuilder().setNameFormat("Cheetah-Fighter").build());
+                    new ThreadFactoryBuilder().setNameFormat("Cheetah-Fighter-%d").build());
         return executorService;
     }
 
