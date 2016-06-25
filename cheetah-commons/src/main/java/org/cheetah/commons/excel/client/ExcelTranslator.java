@@ -1,7 +1,7 @@
 package org.cheetah.commons.excel.client;
 
-import org.cheetah.commons.excel.ExcelProcessor;
 import org.cheetah.commons.excel.ExcelException;
+import org.cheetah.commons.excel.ExcelProcessor;
 import org.cheetah.commons.excel.processor.SimpleProcessor;
 import org.cheetah.commons.excel.processor.TemplateProcessor;
 
@@ -26,7 +26,7 @@ public class ExcelTranslator<T> {
      * @return
      */
     public List<T> translator(InputStream inputStream, Class<T> clz) {
-        return readProcessor.read(inputStream, clz, 0, 0, 0);
+        return translator(inputStream, clz, 0);
     }
 
     /**
@@ -38,7 +38,7 @@ public class ExcelTranslator<T> {
      * @return
      */
     public List<T> translator(InputStream inputStream, Class<T> clz, int sheetIndex) {
-        return readProcessor.read(inputStream, clz, sheetIndex, 0, 0);
+        return translator(inputStream, clz, sheetIndex, 0, 0);
     }
 
     /**
@@ -64,21 +64,7 @@ public class ExcelTranslator<T> {
      * @return
      */
     public List<T> translator(String srcPath, Class<T> clz) {
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(srcPath);
-            return readProcessor.read(fis, clz, 0, 0, 0);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            throw new ExcelException("excel文件找不到！");
-        } finally {
-            try {
-                if (fis != null)
-                    fis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        return translator(srcPath, clz, 0);
     }
 
     /**
@@ -90,22 +76,7 @@ public class ExcelTranslator<T> {
      * @return
      */
     public List<T> translator(String srcPath, Class<T> clz, int sheetIndex) {
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(srcPath);
-            return readProcessor.read(fis, clz, sheetIndex, 0, 0);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            throw new ExcelException("excel文件找不到！");
-        } finally {
-            try {
-                if (fis != null)
-                    fis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
+        return translator(srcPath, clz, sheetIndex, 0, 0);
     }
 
     /**
