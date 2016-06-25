@@ -1,6 +1,6 @@
 package org.cheetah.commons.excel.client;
 
-import org.cheetah.commons.ExcelProcessor;
+import org.cheetah.commons.excel.ExcelProcessor;
 import org.cheetah.commons.excel.ExcelException;
 import org.cheetah.commons.excel.processor.SimpleProcessor;
 import org.cheetah.commons.excel.processor.TemplateProcessor;

@@ -3,7 +3,7 @@ package org.cheetah.commons.excel.processor;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.*;
-import org.cheetah.commons.ExcelProcessor;
+import org.cheetah.commons.excel.ExcelProcessor;
 import org.cheetah.commons.excel.ExcelException;
 
 import java.io.InputStream;
@@ -32,12 +32,11 @@ public abstract class AbstractProcessor<T> implements ExcelProcessor<T> {
     @Override
     public List<T> read(InputStream inputStream, Class<T> clz, int sheetIndex,
                         int readLine, int tailLine) {
-        List<T> datas;
+        List<T> datas = new ArrayList<>();
         try {
             Workbook wb = WorkbookFactory.create(inputStream);
             Sheet sheet = wb.getSheetAt(sheetIndex);
             Row row = sheet.getRow(readLine);
-            datas = new ArrayList<>();
             Map<Integer, String> maps = ExcelResourcesHelper.getHeaderMap(row, clz);
             if (maps == null || maps.size() <= 0)
                 throw new ExcelException("要读取的Excel的格式不正确，检查是否设定了合适的行");
