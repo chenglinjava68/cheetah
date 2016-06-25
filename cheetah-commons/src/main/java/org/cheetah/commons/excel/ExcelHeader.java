@@ -20,6 +20,10 @@ public class ExcelHeader implements Comparable<ExcelHeader> {
      */
     private String targetName;
 
+    public boolean targetNameisField() {
+        return !targetName.startsWith("get") && !targetName.startsWith("set");
+    }
+
     public String getTitle()
     {
         return title;

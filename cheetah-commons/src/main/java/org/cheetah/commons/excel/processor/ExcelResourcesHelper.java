@@ -57,12 +57,14 @@ final class ExcelResourcesHelper {
     }
 
     /**
-     * 根据标题获取相应的方法名称
+     * 根据标题获取相应的方法名称或者字段名
      *
      * @param eh
      * @return
      */
-    static String getMethodName(ExcelHeader eh) {
+    static String getTargetName(ExcelHeader eh) {
+        if(eh.targetNameisField())
+            return eh.getTargetName();
         String mn = eh.getTargetName().substring(3);
         mn = mn.substring(0, 1).toLowerCase() + mn.substring(1);
         return mn;

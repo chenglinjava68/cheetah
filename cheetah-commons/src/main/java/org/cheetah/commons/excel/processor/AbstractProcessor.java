@@ -50,9 +50,14 @@ public abstract class AbstractProcessor<T> implements ExcelProcessor<T> {
                     int ci = c.getColumnIndex();
                     if (!maps.containsKey(ci))
                         break;
-                    String mn = maps.get(ci).substring(3);
-                    mn = mn.substring(0, 1).toLowerCase() + mn.substring(1);
-                    BeanUtils.copyProperty(obj, mn, this.getCellValue(c));
+                    String value = maps.get(ci);
+                    if(!value.startsWith("set"))//如果是字段名称
+                        BeanUtils.copyProperty(obj, value, this.getCellValue(c));
+                    else { //方法名称
+                        String mn = value.substring(3);
+                        mn = mn.substring(0, 1).toLowerCase() + mn.substring(1);
+                        BeanUtils.copyProperty(obj, mn, this.getCellValue(c));
+                    }
                 }
                 datas.add(obj);
             }

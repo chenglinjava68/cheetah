@@ -28,17 +28,19 @@ public class Anchor {
     public static final String NICKNAME = "nickname";
     public static final String NAME = "name";
     public static final String PHONENUMBER = "phoneNumber";
-
     private long fxId;
+    @ExcelTitle(order = 2, title = "房间号")
     private int liveRoom;
+    @ExcelTitle(order = 3, title = "昵称")
     private String nickname;
+    @ExcelTitle(order = 4, title = "真实姓名")
     private String name;
+    @ExcelTitle(order = 5, title = "手机号")
     private long phoneNumber;
 
     public Anchor() {
 
     }
-
     @ExcelTitle(order = 1, title = "繁星ID")
     public long getFxId() {
         return fxId;
@@ -48,7 +50,6 @@ public class Anchor {
         this.fxId = fxId;
     }
 
-    @ExcelTitle(order = 2, title = "房间号")
     public int getLiveRoom() {
         return liveRoom;
     }
@@ -57,7 +58,6 @@ public class Anchor {
         this.liveRoom = liveRoom;
     }
 
-    @ExcelTitle(order = 3, title = "昵称")
     public String getNickname() {
         return nickname;
     }
@@ -66,7 +66,6 @@ public class Anchor {
         this.nickname = nickname;
     }
 
-    @ExcelTitle(order = 4, title = "真实姓名")
     public String getName() {
         return name;
     }
@@ -75,7 +74,6 @@ public class Anchor {
         this.name = name;
     }
 
-    @ExcelTitle(order = 5, title = "手机号")
     public long getPhoneNumber() {
         return phoneNumber;
     }

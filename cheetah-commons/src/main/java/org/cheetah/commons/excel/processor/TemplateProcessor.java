@@ -79,7 +79,7 @@ public class TemplateProcessor<T> extends AbstractProcessor<T> {
             for (T obj : datas) {
                 excelTemplate.createNewRow();
                 for (ExcelHeader eh : headers)
-                    excelTemplate.createCell(BeanUtils.getProperty(obj, ExcelResourcesHelper.getMethodName(eh)));
+                    excelTemplate.createCell(BeanUtils.getProperty(obj, ExcelResourcesHelper.getTargetName(eh)));
             }
             excelTemplate.replaceFinalData(templateBasicData);
         } catch (Exception e) {

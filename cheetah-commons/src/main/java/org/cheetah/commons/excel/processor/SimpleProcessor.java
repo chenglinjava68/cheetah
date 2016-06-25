@@ -91,7 +91,7 @@ public class SimpleProcessor<T> extends AbstractProcessor<T> {
                     this.styleHandlers.forEach(o -> o.handle(cell, rowIndex));
                     cell.setCellValue(
                             BeanUtils.getProperty(obj,
-                                    ExcelResourcesHelper.getMethodName(headers.get(j))));
+                                    ExcelResourcesHelper.getTargetName(headers.get(j))));
                 }
             }
         } catch (Exception e) {
