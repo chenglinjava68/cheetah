@@ -141,20 +141,20 @@ public class ExcelTranslator<T> {
     /**
      * 将数据转为excel文件流
      *
-     * @param translator
+     * @param translation
      */
-    public void translator(Translator<T> translator) {
+    public void translator(Translation<T> translation) {
         ExcelProcessor<T> processor;
-        if (translator.hasTemplate()) {
+        if (translation.hasTemplate()) {
             try {
-                processor = new TemplateProcessor<>(translator.templateStream(), translator.basicData());
+                processor = new TemplateProcessor<>(translation.templateStream(), translation.basicData());
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new ExcelException("创建模板异常", e);
             }
         } else
-            processor = new SimpleProcessor<>(translator.xssf());
-        processor.write(translator.data(), translator.entity());
-        processor.export(translator.toStream());
+            processor = new SimpleProcessor<>(translation.xssf());
+        processor.write(translation.data(), translation.entity());
+        processor.export(translation.toStream());
     }
 }

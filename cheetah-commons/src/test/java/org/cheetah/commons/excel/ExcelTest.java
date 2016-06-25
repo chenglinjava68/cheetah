@@ -1,7 +1,7 @@
 package org.cheetah.commons.excel;
 
 import org.cheetah.commons.excel.client.ExcelTranslator;
-import org.cheetah.commons.excel.client.Translator;
+import org.cheetah.commons.excel.client.Translation;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
@@ -40,7 +40,7 @@ public class ExcelTest {
         List<Anchor> anchors = new ExcelTranslator<Anchor>().translator("E:\\test.xlsx", Anchor.class);
         System.out.println(anchors);
 
-        Translator<Anchor> t = Translator.newBuilder()
+        Translation<Anchor> t = Translation.newBuilder()
                 .toStream(new FileOutputStream("E:/test2.xls"))
                 .data(anchors)
                 .build();
