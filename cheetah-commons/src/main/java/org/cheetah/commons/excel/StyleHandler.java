@@ -6,5 +6,5 @@ import org.apache.poi.ss.usermodel.Cell;
  * Created by Max on 2016/6/25.
  */
 public interface StyleHandler {
-    void handle(Cell cell, int cellIndex, int rowIndex);
+    void handle(Cell cell, int rowIndex);
 }

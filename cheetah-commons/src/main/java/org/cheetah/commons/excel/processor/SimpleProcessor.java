@@ -77,8 +77,7 @@ public class SimpleProcessor<T> extends AbstractProcessor<T> {
             // 写标题
             for (int i = 0; i < headers.size(); i++) {
                 Cell cell = r.createCell(i);
-                final int cellIndex = i;
-                this.styleHandlers.forEach(o -> o.handle(cell, cellIndex, 0));
+                this.styleHandlers.forEach(o -> o.handle(cell, 0));
                 cell.setCellValue(headers.get(i).getTitle());
             }
             // 写数据
@@ -88,9 +87,8 @@ public class SimpleProcessor<T> extends AbstractProcessor<T> {
                 obj = datas.get(i);
                 for (int j = 0; j < headers.size(); j++) {
                     Cell cell = r.createCell(j);
-                    final int cellIndex = j;
                     final int rowIndex = i + 1;
-                    this.styleHandlers.forEach(o -> o.handle(cell, cellIndex, rowIndex));
+                    this.styleHandlers.forEach(o -> o.handle(cell, rowIndex));
                     cell.setCellValue(
                             BeanUtils.getProperty(obj,
                                     ExcelResourcesHelper.getMethodName(headers.get(j))));
