@@ -43,6 +43,7 @@ public class ExcelTest {
         Translation<Anchor> t = Translation.newBuilder()
                 .toStream(new FileOutputStream("E:/test2.xls"))
                 .data(anchors)
+                .entity(Anchor.class)
                 .build();
 
         translator.translator(t);
