@@ -97,6 +97,7 @@ public class SimpleProcessor<T> extends AbstractProcessor<T> {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ExcelException(e);
         }
     }

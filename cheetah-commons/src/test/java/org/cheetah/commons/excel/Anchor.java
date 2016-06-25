@@ -88,6 +88,10 @@ public class Anchor {
     public String toString() {
         return "Anchor{" +
                 "fxId=" + fxId +
+                ", liveRoom=" + liveRoom +
+                ", nickname='" + nickname + '\'' +
+                ", name='" + name + '\'' +
+                ", phoneNumber=" + phoneNumber +
                 '}';
     }
 }
