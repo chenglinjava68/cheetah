@@ -21,12 +21,12 @@ import java.util.List;
  *
  * @author Max
  */
-public class SimpleProcessor<T> extends AbstractProcessor<T> {
+public class SimpleExcelProcessor<T> extends AbstractExcelProcessor<T> {
 
-    public SimpleProcessor() {
+    public SimpleExcelProcessor() {
     }
 
-    public SimpleProcessor(boolean isXssf) {
+    public SimpleExcelProcessor(boolean isXssf) {
         super(isXssf);
         if (isXssf) {
             workbook = new XSSFWorkbook();

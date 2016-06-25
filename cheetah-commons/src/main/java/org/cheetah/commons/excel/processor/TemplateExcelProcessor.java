@@ -20,15 +20,15 @@ import java.util.Map;
  *
  * @author Max
  */
-public class TemplateProcessor<T> extends AbstractProcessor<T> {
+public class TemplateExcelProcessor<T> extends AbstractExcelProcessor<T> {
     private ExcelTemplate excelTemplate;
     private Map<String, String> templateBasicData;
 
-    TemplateProcessor() {
+    TemplateExcelProcessor() {
         super(true);
     }
 
-    public TemplateProcessor(File templateFile, Map<String, String> basicData) throws IOException, InvalidFormatException {
+    public TemplateExcelProcessor(File templateFile, Map<String, String> basicData) throws IOException, InvalidFormatException {
         this();
         this.templateBasicData = basicData;
         workbook = WorkbookFactory.create(templateFile);
@@ -36,7 +36,7 @@ public class TemplateProcessor<T> extends AbstractProcessor<T> {
         createOrFlushExcelTemplate();
     }
 
-    public TemplateProcessor(InputStream templateInputStream, Map<String, String> basicData) throws IOException, InvalidFormatException {
+    public TemplateExcelProcessor(InputStream templateInputStream, Map<String, String> basicData) throws IOException, InvalidFormatException {
         this();
         this.templateBasicData = basicData;
         workbook = WorkbookFactory.create(templateInputStream);

@@ -2,8 +2,8 @@ package org.cheetah.commons.excel.client;
 
 import org.cheetah.commons.excel.ExcelException;
 import org.cheetah.commons.excel.ExcelProcessor;
-import org.cheetah.commons.excel.processor.SimpleProcessor;
-import org.cheetah.commons.excel.processor.TemplateProcessor;
+import org.cheetah.commons.excel.processor.SimpleExcelProcessor;
+import org.cheetah.commons.excel.processor.TemplateExcelProcessor;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,7 +16,7 @@ import java.util.List;
  * Created by Max on 2016/6/25.
  */
 public class ExcelTranslator<T> {
-    private SimpleProcessor<T> readProcessor = new SimpleProcessor<>();
+    private SimpleExcelProcessor<T> readProcessor = new SimpleExcelProcessor<>();
 
     /**
      * 将excel转为数据
@@ -118,13 +118,13 @@ public class ExcelTranslator<T> {
         ExcelProcessor<T> processor;
         if (translation.hasTemplate()) {
             try {
-                processor = new TemplateProcessor<>(translation.templateStream(), translation.basicData());
+                processor = new TemplateExcelProcessor<>(translation.templateStream(), translation.basicData());
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new ExcelException("创建模板异常", e);
             }
         } else
-            processor = new SimpleProcessor<>(translation.xssf());
+            processor = new SimpleExcelProcessor<>(translation.xssf());
         processor.write(translation.data(), translation.entity());
         processor.export(translation.toStream());
     }

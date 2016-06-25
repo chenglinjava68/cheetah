@@ -18,16 +18,16 @@ import java.util.Map;
 /**
  * Created by Max on 2016/6/25.
  */
-public abstract class AbstractProcessor<T> implements ExcelProcessor<T> {
+public abstract class AbstractExcelProcessor<T> implements ExcelProcessor<T> {
     protected Workbook workbook;
     protected Sheet sheet;
     protected boolean isXssf;
     protected List<StyleHandler> styleHandlers = Lists.newArrayList();
 
-    public AbstractProcessor() {
+    public AbstractExcelProcessor() {
     }
 
-    public AbstractProcessor(boolean isXssf) {
+    public AbstractExcelProcessor(boolean isXssf) {
         this.isXssf = isXssf;
     }
 
