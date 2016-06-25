@@ -7,7 +7,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.cheetah.commons.excel.ExcelException;
 import org.cheetah.commons.excel.ExcelHeader;
-import org.cheetah.commons.excel.support.ExcelResourcesHelper;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

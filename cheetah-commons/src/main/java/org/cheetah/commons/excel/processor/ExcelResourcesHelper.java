@@ -1,4 +1,4 @@
-package org.cheetah.commons.excel.support;
+package org.cheetah.commons.excel.processor;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -15,9 +15,9 @@ import java.util.Map;
 /**
  * Created by Max on 2016/6/25.
  */
-public final class ExcelResourcesHelper {
+final class ExcelResourcesHelper {
 
-    public static Map<Integer, String> getHeaderMap(Row titleRow, Class clz) {
+    static Map<Integer, String> getHeaderMap(Row titleRow, Class clz) {
         List<ExcelHeader> headers = getHeaderList(clz);
         Map<Integer, String> maps = new HashMap<>();
         for (Cell c : titleRow) {
@@ -33,7 +33,7 @@ public final class ExcelResourcesHelper {
         return maps;
     }
 
-    public static List<ExcelHeader> getHeaderList(Class clz) {
+    static List<ExcelHeader> getHeaderList(Class clz) {
         List<ExcelHeader> headers = new ArrayList<>();
         Method[] ms = clz.getDeclaredMethods();
         for (Method m : ms) {
@@ -62,7 +62,7 @@ public final class ExcelResourcesHelper {
      * @param eh
      * @return
      */
-    public static String getMethodName(ExcelHeader eh) {
+    static String getMethodName(ExcelHeader eh) {
         String mn = eh.getTargetName().substring(3);
         mn = mn.substring(0, 1).toLowerCase() + mn.substring(1);
         return mn;
