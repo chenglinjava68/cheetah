@@ -14,6 +14,8 @@ public interface ExcelProcessor<T> {
 
     void write(List<T> datas, Class<T> clz);
 
+    void addStyleHandler(StyleHandler styleHandler);
+
     void export(OutputStream desc);
 
     void export(String descPath);

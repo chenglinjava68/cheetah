@@ -1,15 +1,16 @@
 package org.cheetah.commons.excel.processor;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.*;
-import org.cheetah.commons.excel.ExcelProcessor;
 import org.cheetah.commons.excel.ExcelException;
+import org.cheetah.commons.excel.ExcelProcessor;
+import org.cheetah.commons.excel.StyleHandler;
 
 import java.io.InputStream;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ public abstract class AbstractProcessor<T> implements ExcelProcessor<T> {
     protected Workbook workbook;
     protected Sheet sheet;
     protected boolean isXssf;
+    protected List<StyleHandler> styleHandlers = Lists.newArrayList();
 
     public AbstractProcessor() {
     }
@@ -32,7 +34,7 @@ public abstract class AbstractProcessor<T> implements ExcelProcessor<T> {
     @Override
     public List<T> read(InputStream inputStream, Class<T> clz, int sheetIndex,
                         int readLine, int tailLine) {
-        List<T> datas = new ArrayList<>();
+        List<T> datas = Lists.newArrayList();
         try {
             Workbook wb = WorkbookFactory.create(inputStream);
             Sheet sheet = wb.getSheetAt(sheetIndex);
@@ -59,6 +61,12 @@ public abstract class AbstractProcessor<T> implements ExcelProcessor<T> {
             throw new ExcelException(e);
         }
         return datas;
+    }
+
+    @Override
+    public void addStyleHandler(StyleHandler styleHandler) {
+        if (styleHandler != null)
+            this.styleHandlers.add(styleHandler);
     }
 
     protected String getCellValue(Cell c) {

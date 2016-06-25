@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * excel转换参数
  * Created by Max on 2016/6/25.
  */
 public class Translator<T> {

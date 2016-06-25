@@ -2,6 +2,7 @@ package org.cheetah.commons.excel.processor;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -21,6 +22,7 @@ import java.util.List;
  * @author Max
  */
 public class SimpleProcessor<T> extends AbstractProcessor<T> {
+
     public SimpleProcessor() {
     }
 
@@ -61,10 +63,6 @@ public class SimpleProcessor<T> extends AbstractProcessor<T> {
     }
 
     /**
-     *------------------------------------------------------------------------------------------------------------------
-     */
-
-    /**
      * @param datas
      * @param clz
      * @return
@@ -78,7 +76,10 @@ public class SimpleProcessor<T> extends AbstractProcessor<T> {
             Collections.sort(headers);
             // 写标题
             for (int i = 0; i < headers.size(); i++) {
-                r.createCell(i).setCellValue(headers.get(i).getTitle());
+                Cell cell = r.createCell(i);
+                final int cellIndex = i;
+                this.styleHandlers.forEach(o -> o.handle(cell, cellIndex, 0));
+                cell.setCellValue(headers.get(i).getTitle());
             }
             // 写数据
             Object obj;
@@ -86,7 +87,11 @@ public class SimpleProcessor<T> extends AbstractProcessor<T> {
                 r = sheet.createRow(i + 1);
                 obj = datas.get(i);
                 for (int j = 0; j < headers.size(); j++) {
-                    r.createCell(j).setCellValue(
+                    Cell cell = r.createCell(j);
+                    final int cellIndex = j;
+                    final int rowIndex = i + 1;
+                    this.styleHandlers.forEach(o -> o.handle(cell, cellIndex, rowIndex));
+                    cell.setCellValue(
                             BeanUtils.getProperty(obj,
                                     ExcelResourcesHelper.getMethodName(headers.get(j))));
                 }
