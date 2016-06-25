@@ -1,5 +1,7 @@
 package org.cheetah.commons.excel.annotation;
 
+import org.cheetah.commons.excel.StyleHandler;
+
 import java.lang.annotation.*;
 
 /**
@@ -9,4 +11,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ExcelStyles {
+    Class<? extends StyleHandler> handler();
 }
