@@ -1,7 +1,7 @@
 package org.cheetah.commons.excel;
 
 import com.google.common.collect.Maps;
-import org.cheetah.commons.excel.annotation.ExcelTitle;
+import org.cheetah.commons.excel.annotation.ExcelResources;
 
 import java.util.LinkedHashMap;
 
@@ -29,19 +29,19 @@ public class Anchor {
     public static final String NAME = "name";
     public static final String PHONENUMBER = "phoneNumber";
     private long fxId;
-    @ExcelTitle(order = 2, title = "房间号")
+    @ExcelResources(order = 2, title = "房间号")
     private int liveRoom;
-    @ExcelTitle(order = 3, title = "昵称")
+    @ExcelResources(order = 3, title = "昵称")
     private String nickname;
-    @ExcelTitle(order = 4, title = "真实姓名")
+    @ExcelResources(order = 4, title = "真实姓名")
     private String name;
-    @ExcelTitle(order = 5, title = "手机号")
+    @ExcelResources(order = 5, title = "手机号")
     private long phoneNumber;
 
     public Anchor() {
 
     }
-    @ExcelTitle(order = 1, title = "繁星ID")
+    @ExcelResources(order = 1, title = "繁星ID")
     public long getFxId() {
         return fxId;
     }

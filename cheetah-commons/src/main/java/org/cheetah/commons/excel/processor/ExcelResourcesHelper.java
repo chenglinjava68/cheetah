@@ -3,7 +3,7 @@ package org.cheetah.commons.excel.processor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.cheetah.commons.excel.ExcelHeader;
-import org.cheetah.commons.excel.annotation.ExcelTitle;
+import org.cheetah.commons.excel.annotation.ExcelResources;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -39,8 +39,8 @@ final class ExcelResourcesHelper {
         for (Method m : ms) {
             String mn = m.getName();
             if (mn.startsWith("get")) {
-                if (m.isAnnotationPresent(ExcelTitle.class)) {
-                    ExcelTitle er = m.getAnnotation(ExcelTitle.class);
+                if (m.isAnnotationPresent(ExcelResources.class)) {
+                    ExcelResources er = m.getAnnotation(ExcelResources.class);
                     headers.add(new ExcelHeader(er.title(), er.order(), mn));
                 }
             }
@@ -48,8 +48,8 @@ final class ExcelResourcesHelper {
 
         Field[] fs = clz.getDeclaredFields();
         for (Field f : fs) {
-            if (f.isAnnotationPresent(ExcelTitle.class)) {
-                ExcelTitle er = f.getAnnotation(ExcelTitle.class);
+            if (f.isAnnotationPresent(ExcelResources.class)) {
+                ExcelResources er = f.getAnnotation(ExcelResources.class);
                 headers.add(new ExcelHeader(er.title(), er.order(), f.getName()));
             }
         }
