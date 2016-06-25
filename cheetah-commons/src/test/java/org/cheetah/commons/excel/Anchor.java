@@ -1,6 +1,7 @@
 package org.cheetah.commons.excel;
 
 import com.google.common.collect.Maps;
+import org.cheetah.commons.excel.annotation.CellStyle;
 import org.cheetah.commons.excel.annotation.ExcelResources;
 
 import java.util.LinkedHashMap;
@@ -49,7 +50,7 @@ public class Anchor {
     public void setFxId(long fxId) {
         this.fxId = fxId;
     }
-
+    @CellStyle(handler = StyleHandler.class)
     public int getLiveRoom() {
         return liveRoom;
     }
