@@ -1,7 +1,6 @@
-package org.cheetah.commons.excel;
+package org.cheetah.commons.excel.annotation;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.*;
 
 /**
  * 用来在对象的get方法上加入的annotation，通过该annotation说明某个属性所对应的标题
@@ -9,8 +8,10 @@ import java.lang.annotation.RetentionPolicy;
  * @author Max
  * 
  */
+@Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ExcelResources
+@Documented
+public @interface ExcelTitle
 {
 	/**
 	 * 属性的标题名称

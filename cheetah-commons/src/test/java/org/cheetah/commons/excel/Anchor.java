@@ -1,6 +1,7 @@
 package org.cheetah.commons.excel;
 
 import com.google.common.collect.Maps;
+import org.cheetah.commons.excel.annotation.ExcelTitle;
 
 import java.util.LinkedHashMap;
 
@@ -38,7 +39,7 @@ public class Anchor {
 
     }
 
-    @ExcelResources(order = 1, title = "繁星ID")
+    @ExcelTitle(order = 1, title = "繁星ID")
     public long getFxId() {
         return fxId;
     }
@@ -47,7 +48,7 @@ public class Anchor {
         this.fxId = fxId;
     }
 
-    @ExcelResources(order = 2, title = "房间号")
+    @ExcelTitle(order = 2, title = "房间号")
     public int getLiveRoom() {
         return liveRoom;
     }
@@ -56,7 +57,7 @@ public class Anchor {
         this.liveRoom = liveRoom;
     }
 
-    @ExcelResources(order = 3, title = "昵称")
+    @ExcelTitle(order = 3, title = "昵称")
     public String getNickname() {
         return nickname;
     }
@@ -65,7 +66,7 @@ public class Anchor {
         this.nickname = nickname;
     }
 
-    @ExcelResources(order = 4, title = "真实姓名")
+    @ExcelTitle(order = 4, title = "真实姓名")
     public String getName() {
         return name;
     }
@@ -74,7 +75,7 @@ public class Anchor {
         this.name = name;
     }
 
-    @ExcelResources(order = 5, title = "手机号")
+    @ExcelTitle(order = 5, title = "手机号")
     public long getPhoneNumber() {
         return phoneNumber;
     }
