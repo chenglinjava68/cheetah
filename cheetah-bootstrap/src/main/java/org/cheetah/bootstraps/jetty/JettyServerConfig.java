@@ -1,5 +1,8 @@
 package org.cheetah.bootstraps.jetty;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * Created by Max on 2016/6/22.
  */
@@ -61,16 +64,7 @@ public final class JettyServerConfig {
 
     @Override
     public String toString() {
-        return "JettyServerConfig{" +
-                "port=" + port +
-                ", timeout=" + timeout +
-                ", contextPath='" + contextPath + '\'' +
-                ", acceptQueueSize=" + acceptQueueSize +
-                ", minThreads=" + minThreads +
-                ", maxThreads=" + maxThreads +
-                ", descriptor='" + descriptor + '\'' +
-                ", webappPath='" + webappPath + '\'' +
-                '}';
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
     public static Builder newBuilder() {
