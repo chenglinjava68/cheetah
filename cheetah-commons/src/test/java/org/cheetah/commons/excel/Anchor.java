@@ -1,6 +1,8 @@
 package org.cheetah.commons.excel;
 
 import com.google.common.collect.Maps;
+import org.cheetah.commons.excel.annotation.CellStyle;
+import org.cheetah.commons.excel.annotation.ExcelResources;
 
 import java.util.LinkedHashMap;
 
@@ -27,17 +29,19 @@ public class Anchor {
     public static final String NICKNAME = "nickname";
     public static final String NAME = "name";
     public static final String PHONENUMBER = "phoneNumber";
-
     private long fxId;
+    @ExcelResources(order = 2, title = "房间号")
     private int liveRoom;
+    @ExcelResources(order = 3, title = "昵称")
     private String nickname;
+    @ExcelResources(order = 4, title = "真实姓名")
     private String name;
+    @ExcelResources(order = 5, title = "手机号")
     private long phoneNumber;
 
     public Anchor() {
 
     }
-
     @ExcelResources(order = 1, title = "繁星ID")
     public long getFxId() {
         return fxId;
@@ -46,8 +50,7 @@ public class Anchor {
     public void setFxId(long fxId) {
         this.fxId = fxId;
     }
-
-    @ExcelResources(order = 2, title = "房间号")
+    @CellStyle(handler = StyleHandler.class)
     public int getLiveRoom() {
         return liveRoom;
     }
@@ -56,7 +59,6 @@ public class Anchor {
         this.liveRoom = liveRoom;
     }
 
-    @ExcelResources(order = 3, title = "昵称")
     public String getNickname() {
         return nickname;
     }
@@ -65,7 +67,6 @@ public class Anchor {
         this.nickname = nickname;
     }
 
-    @ExcelResources(order = 4, title = "真实姓名")
     public String getName() {
         return name;
     }
@@ -74,7 +75,6 @@ public class Anchor {
         this.name = name;
     }
 
-    @ExcelResources(order = 5, title = "手机号")
     public long getPhoneNumber() {
         return phoneNumber;
     }
@@ -87,6 +87,10 @@ public class Anchor {
     public String toString() {
         return "Anchor{" +
                 "fxId=" + fxId +
+                ", liveRoom=" + liveRoom +
+                ", nickname='" + nickname + '\'' +
+                ", name='" + name + '\'' +
+                ", phoneNumber=" + phoneNumber +
                 '}';
     }
 }

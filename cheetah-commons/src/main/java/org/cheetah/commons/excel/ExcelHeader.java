@@ -16,9 +16,13 @@ public class ExcelHeader implements Comparable<ExcelHeader> {
      */
     private int order;
     /**
-     * 说对应方法名称
+     * 说对应方法名称或者字段名
      */
-    private String methodName;
+    private String targetName;
+
+    public boolean targetNameisField() {
+        return !targetName.startsWith("get") && !targetName.startsWith("set");
+    }
 
     public String getTitle()
     {
@@ -40,22 +44,22 @@ public class ExcelHeader implements Comparable<ExcelHeader> {
         this.order = order;
     }
 
-    public String getMethodName()
+    public String getTargetName()
     {
-        return methodName;
+        return targetName;
     }
 
-    public void setMethodName(String methodName)
+    public void setTargetName(String targetName)
     {
-        this.methodName = methodName;
+        this.targetName = targetName;
     }
 
-    public ExcelHeader(String title, int order, String methodName)
+    public ExcelHeader(String title, int order, String targetName)
     {
         super();
         this.title = title;
         this.order = order;
-        this.methodName = methodName;
+        this.targetName = targetName;
     }
 
     @Override
@@ -67,6 +71,24 @@ public class ExcelHeader implements Comparable<ExcelHeader> {
     @Override
     public String toString()
     {
-        return order + "," + title + "," + methodName;
+        return order + "," + title + "," + targetName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ExcelHeader that = (ExcelHeader) o;
+
+        if (order != that.order) return false;
+        return title != null ? title.equals(that.title) : that.title == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = title != null ? title.hashCode() : 0;
+        result = 31 * result + order;
+        return result;
     }
 }
