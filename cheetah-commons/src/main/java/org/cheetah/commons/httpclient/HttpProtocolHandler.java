@@ -165,10 +165,6 @@ public class HttpProtocolHandler {
                     TimeUnit.SECONDS);
 
             logger.info("schedule status : " + es.isShutdown());
-            // idleConnectionMonitor.start();
-            //
-            // idleConnectionMonitor.shutdown();
-            // idleConnectionMonitor.join();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -181,6 +177,14 @@ public class HttpProtocolHandler {
 
     public void setMaxTotalConn(int maxTotalConn) {
         this.maxTotalConn = maxTotalConn;
+    }
+
+    public void setRequsetTimeout(int requsetTimeout) {
+        this.requsetTimeout = requsetTimeout;
+    }
+
+    public void setRequestSocketTimeout(int requestSocketTimeout) {
+        this.requestSocketTimeout = requestSocketTimeout;
     }
 
     private class IdleConnectionMonitorThread extends Thread {
