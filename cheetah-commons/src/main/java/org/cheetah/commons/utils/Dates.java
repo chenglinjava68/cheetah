@@ -1,8 +1,6 @@
 package org.cheetah.commons.utils;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -52,4 +50,12 @@ public final class Dates {
     public static int day(String date, String format) {
         return LocalDate.parse(date, DateTimeFormatter.ofPattern(format)).getDayOfMonth();
     }
+
+    public static int diffMonths(int year, int month, int day) {
+        LocalDate dateTime = LocalDate.of(year, Month.of(month), day);
+        Period period = Period.between(LocalDate.now(), dateTime);
+        return period.getMonths();
+    }
+
+
 }

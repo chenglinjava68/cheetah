@@ -1,5 +1,6 @@
 package org.cheetah.commons.httpclient;
 
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.HttpClientConnectionManager;
@@ -38,9 +39,9 @@ public class HttpProtocolHandler {
 
     private int maxConnPerHost = 50; // 设置 每个路由最大连接数
     private int maxTotalConn = 300; // 设置最大连接数
-    // private static final int CONNECTION_TIMEOUT = 2 * 1000; //设置请求超时2秒钟
+    private int requestSocketTimeout = 2 * 1000; //设置请求超时2秒钟
     // 根据业务调整
-    // private static final int SO_TIMEOUT = 2 * 1000; //设置等待数据超时时间2秒钟 根据业务调整
+    private int requsetTimeout = 2 * 1000; //设置等待数据超时时间2秒钟 根据业务调整
 
     private CloseableHttpClient defaultHttpclient = null;
 
@@ -147,7 +148,13 @@ public class HttpProtocolHandler {
             cm.setMaxTotal(maxTotalConn);
             cm.setDefaultMaxPerRoute(maxConnPerHost);
 
-            httpclient = HttpClients.custom().setConnectionManager(cm)
+            httpclient = HttpClients.
+                    custom()
+                    .setDefaultRequestConfig(
+                            RequestConfig.custom()
+                                    .setSocketTimeout(requestSocketTimeout)
+                                    .setConnectTimeout(requsetTimeout).build())
+                    .setConnectionManager(cm)
                     .setRetryHandler(new RetryHandler()).build();
 
             IdleConnectionMonitorThread idleConnectionMonitor = new IdleConnectionMonitorThread(
