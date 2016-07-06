@@ -1,6 +1,7 @@
-package org.cheetah.commons.httpclient;
+package org.cheetah.commons.httpclient.transport;
 
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.cheetah.commons.httpclient.ChunkHttpTransport;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -8,25 +9,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 基础httpclient访问器
+ * httpclient门面
  * 
  * @author Max
  * @email max@tagsdata.com
  * @date 2014-12-11 下午1:49:01
  * @version 1.0
  */
-public class GenericHttpClient {
+public class HttpClientFacade {
 	private CloseableHttpClient httpclient;
 	private BinaryHttpTransport binaryHttpTransport;
 	private RestfulHttpTransport restfulHttpTransport;
 	private ChunkHttpTransport chunkHttpTransport;
 
-	public GenericHttpClient() {
-		HttpTransportBuilder builder = HttpTransportBuilder.newBuilder();
-		httpclient = builder.buildhttpclient();
-		binaryHttpTransport = builder.buildBinaryHttpTransport();
-		restfulHttpTransport = builder.buildRestfulHttpTransport();
-		chunkHttpTransport = builder.buildChunkHttpTransport();
+	public HttpClientFacade() {
+	}
+
+	public HttpClientFacade(HttpClientFacadeBuilder builder) {
+		this.httpclient = builder.httpclient;
+		this.binaryHttpTransport = builder.binaryHttpTransport;
+		this.restfulHttpTransport = builder.restfulHttpTransport;
+		this.chunkHttpTransport = builder.chunkHttpTransport;
 	}
 
 	public CloseableHttpClient httpclient() {

@@ -7,6 +7,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
+import org.cheetah.commons.httpclient.transport.HttpClientFacade;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class HttpClientTest {
             .build();
     @Test
     public void test() {
-        GenericHttpClient httpClient = new GenericHttpClient();
+        HttpClientFacade httpClient = new HttpClientFacade();
         ExecutorService executorService = Executors.newFixedThreadPool(10);
         Runnable run = () -> {
             while (true) {
@@ -67,7 +68,7 @@ public class HttpClientTest {
 
     protected String get(URI url) throws IOException {
 
-        GenericHttpClient httpClient = new GenericHttpClient();
+        HttpClientFacade httpClient = new HttpClientFacade();
         HttpGet get = new HttpGet(url);
         get.setConfig(RequestConfig.custom().setConnectTimeout(2000).setSocketTimeout(2000).build());
         try {

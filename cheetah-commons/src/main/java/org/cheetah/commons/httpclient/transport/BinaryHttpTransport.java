@@ -1,4 +1,4 @@
-package org.cheetah.commons.httpclient;
+package org.cheetah.commons.httpclient.transport;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
@@ -7,6 +7,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.cheetah.commons.httpclient.HttpClientUtils;
+import org.cheetah.commons.httpclient.HttpGetException;
+import org.cheetah.commons.httpclient.HttpPostException;
+import org.cheetah.commons.httpclient.HttpTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package org.cheetah.commons.httpclient;
+package org.cheetah.commons.httpclient.transport;
 
 import org.apache.http.*;
 import org.apache.http.client.entity.GzipDecompressingEntity;

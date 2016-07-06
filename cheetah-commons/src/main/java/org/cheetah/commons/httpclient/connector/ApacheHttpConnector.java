@@ -1,43 +1,42 @@
-package org.cheetah.commons.httpclient;
+package org.cheetah.commons.httpclient.connector;
 
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContexts;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.ssl.SSLContexts;
+import org.cheetah.commons.httpclient.HttpClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import java.io.File;
 import java.io.FileInputStream;
 import java.security.KeyStore;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * httpclien工具类。
+ * httpclien工厂。
  *
  * @author Max
  * @version 1.0
  * @email max@tagsdata.com
  * @date 2014-12-11 下午5:11:59
  */
-public class HttpProtocolHandler {
-    private final Logger logger = LoggerFactory.getLogger(HttpProtocolHandler.class);
+public class ApacheHttpConnector {
+    private final Logger logger = LoggerFactory.getLogger(ApacheHttpConnector.class);
 
-    private int maxConnPerHost = 50; // 设置 每个路由最大连接数
+    private int maxConnPerHost = 150; // 设置 每个路由最大连接数
     private int maxTotalConn = 300; // 设置最大连接数
     private int requestSocketTimeout = 2 * 1000; //设置请求超时2秒钟
     // 根据业务调整
@@ -45,37 +44,28 @@ public class HttpProtocolHandler {
 
     private CloseableHttpClient defaultHttpclient = null;
 
-    private CloseableHttpClient weixinPayHttpClient = null;
-    private CloseableHttpClient alipayHttpClient = null;
-
-    public HttpProtocolHandler() {
+    public ApacheHttpConnector() {
     }
 
     /**
-     * 获取一个httpclient对象，该对象是唯一的，如果需要重新创建请调用createHttpclientByPool方法
+     * 获取一个httpclient对象，该对象是唯一的，如果需要重新创建请调用createHttpClient方法
      *
      * @return
      */
-    public CloseableHttpClient getOrdinaryHttpClient() {
+    public CloseableHttpClient getDefaultHttpClient() {
         if (defaultHttpclient == null)
-            defaultHttpclient = createOrdinaryHttpClient();
+            defaultHttpclient = createHttpClient();
         return defaultHttpclient;
     }
 
-    public CloseableHttpClient getWeixinHttpClient() {
-        if (weixinPayHttpClient == null)
-            weixinPayHttpClient = createWeixinPayClient("", "");
-        return weixinPayHttpClient;
-    }
-
     /**
-     * 获取未支付httpclient
+     * 生成带证书httpclient
      *
      * @param keyPath  证书路径
      * @param password 证书密码
      * @return
      */
-    public CloseableHttpClient createWeixinPayClient(String keyPath,
+    public CloseableHttpClient createClientCertified(String keyPath,
                                                      String password) {
         try {
             KeyStore keyStore = KeyStore.getInstance("PKCS12");
@@ -93,82 +83,104 @@ public class HttpProtocolHandler {
                     sslContext,
                     new String[]{"TLSv1"},
                     null,
-                    SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+                    SSLConnectionSocketFactory.getDefaultHostnameVerifier());
 
-            PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
-            cm.setMaxTotal(maxTotalConn);
-            cm.setDefaultMaxPerRoute(maxConnPerHost);
-            // 将目标主机的最大连接数增加到50
-            // HttpHost localhost = new HttpHost("localhost", 80);
-            // cm.setMaxPerRoute(new HttpRoute(localhost), 50);
+            PoolingHttpClientConnectionManager clientConnectionManager = createConnectionManager(sslsf);
 
-            CloseableHttpClient httpclient = HttpClients.custom()
-                    .setConnectionManager(cm)
+            return HttpClients.custom()
+                    .setConnectionManager(clientConnectionManager)
                     .setRetryHandler(new RetryHandler())
                     .setSSLSocketFactory(sslsf).build();
 
-            IdleConnectionMonitorThread idleConnectionMonitor = new IdleConnectionMonitorThread(
-                    cm);
-            ScheduledExecutorService es = Executors
-                    .newSingleThreadScheduledExecutor();
-            es.scheduleWithFixedDelay(idleConnectionMonitor, 5, 5,
-                    TimeUnit.SECONDS);
-            return httpclient;
         } catch (Exception e) {
             e.printStackTrace();
+            throw new HttpClientException("create httpclient error occured ", e);
         }
-        return null;
     }
 
-    public CloseableHttpClient createOrdinaryHttpClient() {
-        CloseableHttpClient httpclient = null;
-        SSLContext sslContext = null;
+    /**
+     * 生成普通的httpclient
+     * @return
+     */
+    public CloseableHttpClient createHttpClient() {
         try {
-            ConnectionSocketFactory plainsf = new PlainConnectionSocketFactory();
-
             KeyStore trustStore = KeyStore.getInstance(KeyStore
                     .getDefaultType());
-            sslContext = SSLContexts.custom().useTLS()
-                    .loadTrustMaterial(trustStore, new TrustStrategy() {
-                        @Override
-                        public boolean isTrusted(X509Certificate[] chain,
-                                                 String authType) throws CertificateException {
-                            return true;
-                        }
-                    }).build();
-            LayeredConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
-                    sslContext,
-                    SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-            Registry<ConnectionSocketFactory> registry = RegistryBuilder
-                    .<ConnectionSocketFactory>create()
-                    .register("http", plainsf).register("https", sslsf).build();
-            // init pool
-            PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(
-                    registry);
-            cm.setMaxTotal(maxTotalConn);
-            cm.setDefaultMaxPerRoute(maxConnPerHost);
-
-            httpclient = HttpClients.
+            SSLContext sslContext = SSLContexts.custom()
+                    .loadTrustMaterial(trustStore, (TrustStrategy) (chain, authType) -> true).build();
+            PoolingHttpClientConnectionManager connectionManager = createConnectionManager(sslContext, SSLConnectionSocketFactory.getDefaultHostnameVerifier());
+            return HttpClients.
                     custom()
                     .setDefaultRequestConfig(
                             RequestConfig.custom()
                                     .setSocketTimeout(requestSocketTimeout)
                                     .setConnectTimeout(requsetTimeout).build())
-                    .setConnectionManager(cm)
+                    .setConnectionManager(connectionManager)
                     .setRetryHandler(new RetryHandler()).build();
-
-            IdleConnectionMonitorThread idleConnectionMonitor = new IdleConnectionMonitorThread(
-                    cm);
-            ScheduledExecutorService es = Executors
-                    .newSingleThreadScheduledExecutor();
-            es.scheduleWithFixedDelay(idleConnectionMonitor, 5, 5,
-                    TimeUnit.SECONDS);
-
-            logger.info("schedule status : " + es.isShutdown());
         } catch (Exception e) {
             e.printStackTrace();
+            throw new HttpClientException("create httpclient error occured ", e);
         }
-        return httpclient;
+    }
+
+    /**
+     * 创建连接管理器
+     * @param sslContext
+     * @param hostnameVerifier
+     * @return
+     */
+    public PoolingHttpClientConnectionManager createConnectionManager(SSLContext sslContext, HostnameVerifier hostnameVerifier) {
+        ConnectionSocketFactory plainsf = new PlainConnectionSocketFactory();
+
+        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext, hostnameVerifier);
+        Registry<ConnectionSocketFactory> registry = registry(plainsf, sslsf);
+        // init pool
+        PoolingHttpClientConnectionManager connectionManager = doCreateConnectionManager(registry);
+
+        connectionMonitor(connectionManager);
+
+        return connectionManager;
+    }
+    /**
+     * 创建连接管理器
+     * @param sslConnectionSocketFactory
+     * @return
+     */
+    public PoolingHttpClientConnectionManager createConnectionManager(SSLConnectionSocketFactory sslConnectionSocketFactory) {
+        ConnectionSocketFactory plainsf = new PlainConnectionSocketFactory();
+
+        Registry<ConnectionSocketFactory> registry = registry(plainsf, sslConnectionSocketFactory);
+        // init pool
+        PoolingHttpClientConnectionManager connectionManager = doCreateConnectionManager(registry);
+
+        connectionMonitor(connectionManager);
+
+        return connectionManager;
+    }
+
+    private Registry<ConnectionSocketFactory> registry(ConnectionSocketFactory plainsf, SSLConnectionSocketFactory sslsf) {
+        return RegistryBuilder
+                .<ConnectionSocketFactory>create()
+                .register("http", plainsf).register("https", sslsf).build();
+    }
+
+    private PoolingHttpClientConnectionManager doCreateConnectionManager(Registry<ConnectionSocketFactory> registry) {
+        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(
+                registry);
+        connectionManager.setMaxTotal(maxTotalConn);
+        connectionManager.setDefaultMaxPerRoute(maxConnPerHost);
+        return connectionManager;
+    }
+
+    private void connectionMonitor(PoolingHttpClientConnectionManager connectionManager) {
+        IdleConnectionMonitorThread idleConnectionMonitor = new IdleConnectionMonitorThread(
+                connectionManager);
+        ScheduledExecutorService es = Executors
+                .newSingleThreadScheduledExecutor();
+        es.scheduleWithFixedDelay(idleConnectionMonitor, 5, 5,
+                TimeUnit.SECONDS);
+
+        logger.info("schedule status : " + es.isShutdown());
     }
 
     public void setMaxConnPerHost(int maxConnPerHost) {
