@@ -1,6 +1,9 @@
 package org.cheetah.commons.httpclient.api;
 
 import com.google.common.collect.ImmutableMap;
+import org.apache.poi.ss.formula.functions.T;
+import org.cheetah.commons.httpclient.ResourceSerializer;
+import org.cheetah.commons.httpclient.serializer.Jackson2JsonSerializer;
 import org.cheetah.commons.utils.Assert;
 
 /**
@@ -8,23 +11,29 @@ import org.cheetah.commons.utils.Assert;
  */
 public class WebResource {
     private HttpClientFacade httpClientFacade = HttpClientFacadeBuilder.defaultHttpClientFacade();
+    private ResourceSerializer serializer = new Jackson2JsonSerializer();
     private String resource;
-    private String body;
+    private String entity;
     private ImmutableMap<String, String> parameters = ImmutableMap.of();
     private ImmutableMap<String, String> headers = ImmutableMap.of();
 
     public WebResource(String resource) {
-        this.resource = resource;
+        this(resource, null, null);
     }
 
     public WebResource(HttpClientFacade httpClientFacade, String resource) {
-        this.httpClientFacade = httpClientFacade;
-        this.resource = resource;
+        this(resource, null, httpClientFacade);
     }
 
-    WebResource(String resource, String body, ImmutableMap<String, String> headers, ImmutableMap<String, String> parameters) {
+    public WebResource(String resource, ResourceSerializer serializer, HttpClientFacade httpClientFacade) {
         this.resource = resource;
-        this.body = body;
+        this.httpClientFacade = httpClientFacade;
+        this.serializer = serializer;
+    }
+
+    WebResource(String resource, String entity, ImmutableMap<String, String> headers, ImmutableMap<String, String> parameters) {
+        this.resource = resource;
+        this.entity = entity;
         this.headers = headers;
         this.parameters = parameters;
     }
@@ -33,26 +42,41 @@ public class WebResource {
         Assert.notBlank(key, "key must not be null or empty");
         Assert.notBlank(value, "value must not be null or empty");
         ImmutableMap<String, String> newHeaders = ImmutableMap.<String, String>builder().putAll(headers).put(key, value).build();
-        return new WebResource(this.resource, this.body, newHeaders, this.parameters);
+        return new WebResource(this.resource, this.entity, newHeaders, this.parameters);
     }
 
     public WebResource parameter(String key, String value) {
         Assert.notBlank(key, "key must not be null or empty");
         Assert.notBlank(value, "value must not be null or empty");
         ImmutableMap<String, String> newparameters = ImmutableMap.<String, String>builder().putAll(parameters).put(key, value).build();
-        return new WebResource(this.resource, this.body, this.headers, newparameters);
+        return new WebResource(this.resource, this.entity, this.headers, newparameters);
     }
 
-    public WebResource body(String body) {
-        return new WebResource(this.resource, body, this.headers, this.parameters);
+    public WebResource entity(String entity) {
+        return new WebResource(this.resource, entity, this.headers, this.parameters);
+    }
+
+    public WebResource entity(Object entity) {
+        String entityJson = this.serializer.serialize(entity);
+        return new WebResource(this.resource, entityJson, this.headers, this.parameters);
     }
 
     public String post() {
         return  httpClientFacade.post(this.resource, this.parameters, this.headers);
     }
 
+    public T post(Class<T> entity) {
+        String result = httpClientFacade.post(this.resource, this.parameters, this.headers);
+        return serializer.deserialize(result, entity);
+    }
+
     public String get() {
        return  httpClientFacade.get(this.resource, this.parameters, this.headers);
+    }
+
+    public T get(Class<T> entity) {
+        String result = httpClientFacade.get(this.resource, this.parameters, this.headers);
+        return serializer.deserialize(result, entity);
     }
 
     /**
