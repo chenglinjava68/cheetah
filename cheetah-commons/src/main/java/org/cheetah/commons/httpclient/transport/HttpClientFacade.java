@@ -1,7 +1,7 @@
 package org.cheetah.commons.httpclient.transport;
 
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.cheetah.commons.httpclient.ChunkHttpTransport;
+import org.cheetah.commons.httpclient.ChunkTransport;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -18,9 +18,9 @@ import java.util.Map;
  */
 public class HttpClientFacade {
 	private CloseableHttpClient httpclient;
-	private BinaryHttpTransport binaryHttpTransport;
-	private RestfulHttpTransport restfulHttpTransport;
-	private ChunkHttpTransport chunkHttpTransport;
+	private BinaryTransport binaryHttpTransport;
+	private RestTransport restfulHttpTransport;
+	private ChunkTransport chunkHttpTransport;
 
 	public HttpClientFacade() {
 	}
@@ -200,27 +200,27 @@ public class HttpClientFacade {
 		this.httpclient = httpclient;
 	}
 
-	public BinaryHttpTransport getBinaryHttpTransport() {
+	public BinaryTransport getBinaryHttpTransport() {
 		return binaryHttpTransport;
 	}
 
-	public void setBinaryHttpTransport(BinaryHttpTransport binaryHttpTransport) {
+	public void setBinaryHttpTransport(BinaryTransport binaryHttpTransport) {
 		this.binaryHttpTransport = binaryHttpTransport;
 	}
 
-	public RestfulHttpTransport getRestfulHttpTransport() {
+	public RestTransport getRestfulHttpTransport() {
 		return restfulHttpTransport;
 	}
 
-	public void setRestfulHttpTransport(RestfulHttpTransport restfulHttpTransport) {
+	public void setRestfulHttpTransport(RestTransport restfulHttpTransport) {
 		this.restfulHttpTransport = restfulHttpTransport;
 	}
 
-	public ChunkHttpTransport getChunkHttpTransport() {
+	public ChunkTransport getChunkHttpTransport() {
 		return chunkHttpTransport;
 	}
 
-	public void setChunkHttpTransport(ChunkHttpTransport chunkHttpTransport) {
+	public void setChunkHttpTransport(ChunkTransport chunkHttpTransport) {
 		this.chunkHttpTransport = chunkHttpTransport;
 	}
 }

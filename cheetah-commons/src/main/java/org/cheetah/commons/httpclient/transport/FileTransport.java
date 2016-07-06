@@ -6,7 +6,7 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
-import org.cheetah.commons.httpclient.ChunkHttpTransport;
+import org.cheetah.commons.httpclient.ChunkTransport;
 import org.cheetah.commons.httpclient.HttpClientUtils;
 import org.cheetah.commons.httpclient.HttpPostException;
 import org.slf4j.Logger;
@@ -17,8 +17,8 @@ import java.io.*;
 /**
  * Created by Max on 2015/11/26.
  */
-public class FileHttpTransport implements ChunkHttpTransport {
-    private final Logger logger = LoggerFactory.getLogger(FileHttpTransport.class);
+public class FileTransport implements ChunkTransport {
+    private final Logger logger = LoggerFactory.getLogger(FileTransport.class);
 
     @Override
     public void download(HttpClient httpClient, String url, String toPath) {

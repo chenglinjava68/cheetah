@@ -15,8 +15,8 @@ import java.util.Map;
 /**
  * Created by Max on 2015/11/26.
  */
-public class RestfulHttpTransport extends TextHttpTransport {
-    protected final Logger logger = LoggerFactory.getLogger(RestfulHttpTransport.class);
+public class RestTransport extends TextTransport {
+    protected final Logger logger = LoggerFactory.getLogger(RestTransport.class);
     @Override
     String post(CloseableHttpClient httpClient, String url, String body, Map<String, String> headers) {
         String result = null;

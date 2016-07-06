@@ -8,7 +8,7 @@ import java.io.OutputStream;
 /**
  * Created by Max on 2015/11/26.
  */
-public interface ChunkHttpTransport {
+public interface ChunkTransport {
 
     void download(HttpClient httpClient, String url, String toPath);
 

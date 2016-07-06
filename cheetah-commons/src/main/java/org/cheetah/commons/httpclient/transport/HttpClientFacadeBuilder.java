@@ -1,7 +1,7 @@
 package org.cheetah.commons.httpclient.transport;
 
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.cheetah.commons.httpclient.ChunkHttpTransport;
+import org.cheetah.commons.httpclient.ChunkTransport;
 import org.cheetah.commons.httpclient.connector.ApacheHttpConnector;
 
 /**
@@ -12,9 +12,9 @@ public class HttpClientFacadeBuilder {
     private final static ApacheHttpConnector apacheHttpConnector = new ApacheHttpConnector();
 
     CloseableHttpClient httpclient;
-    BinaryHttpTransport binaryHttpTransport;
-    RestfulHttpTransport restfulHttpTransport;
-    ChunkHttpTransport chunkHttpTransport;
+    BinaryTransport binaryHttpTransport;
+    RestTransport restfulHttpTransport;
+    ChunkTransport chunkHttpTransport;
 
     public static HttpClientFacadeBuilder newBuilder() {
         return new HttpClientFacadeBuilder();
@@ -26,10 +26,10 @@ public class HttpClientFacadeBuilder {
 
     public static HttpClientFacade defaultClients() {
         return HttpClientFacadeBuilder.newBuilder()
-                .binaryHttpTransport(new BinaryHttpTransport())
-                .chunkHttpTransport(new FileHttpTransport())
+                .binaryHttpTransport(new BinaryTransport())
+                .chunkHttpTransport(new FileTransport())
                 .httpclient(defaultApacheHttpConnector().getDefaultHttpClient())
-                .restfulHttpTransport(new RestfulHttpTransport())
+                .restfulHttpTransport(new RestTransport())
                 .build();
     }
 
@@ -42,17 +42,17 @@ public class HttpClientFacadeBuilder {
         return this;
     }
 
-    public HttpClientFacadeBuilder binaryHttpTransport(BinaryHttpTransport binaryHttpTransport) {
+    public HttpClientFacadeBuilder binaryHttpTransport(BinaryTransport binaryHttpTransport) {
         this.binaryHttpTransport = binaryHttpTransport;
         return this;
     }
 
-    public HttpClientFacadeBuilder restfulHttpTransport(RestfulHttpTransport restfulHttpTransport) {
+    public HttpClientFacadeBuilder restfulHttpTransport(RestTransport restfulHttpTransport) {
         this.restfulHttpTransport = restfulHttpTransport;
         return this;
     }
 
-    public HttpClientFacadeBuilder chunkHttpTransport(ChunkHttpTransport chunkHttpTransport) {
+    public HttpClientFacadeBuilder chunkHttpTransport(ChunkTransport chunkHttpTransport) {
         this.chunkHttpTransport = chunkHttpTransport;
         return this;
     }
