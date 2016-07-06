@@ -1,20 +1,12 @@
 package org.cheetah.commons.httpclient;
 
-import org.apache.http.impl.client.CloseableHttpClient;
-
-import java.io.Serializable;
-import java.util.Map;
+import org.apache.poi.ss.formula.functions.T;
 
 /**
  * Created by Max on 2015/11/26.
  */
-public interface HttpTransport<T extends Serializable> {
+public interface HttpTransport {
 
-    T post(CloseableHttpClient httpClient, String url,
-           Map<String, String> params, Map<String, String> headers);
-
-    T get(CloseableHttpClient httpClient, String url,
-          Map<String, String> params, Map<String, String> headers);
-
+    T transport(Transporter transporter, ResponseCallback<T> callback);
 
 }
