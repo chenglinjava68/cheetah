@@ -36,6 +36,8 @@ public class ExcelTest {
 
     @Test
     public void test22() throws FileNotFoundException {
+        long start = System.currentTimeMillis();
+        System.out.println(start);
         ExcelTranslator<Anchor> translator = new ExcelTranslator<>();
         List<Anchor> anchors = new ExcelTranslator<Anchor>().translator("E:\\test.xlsx", Anchor.class);
         System.out.println(anchors);

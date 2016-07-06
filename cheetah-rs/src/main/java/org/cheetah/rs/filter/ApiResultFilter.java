@@ -24,7 +24,7 @@ public class ApiResultFilter implements ContainerResponseFilter {
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
 
-        // skip error status or octet stream result.
+        // skip error isOK or octet stream result.
         if (!isOKResponse(responseContext) || isStreamingResponse(responseContext)) {
             return;
         }

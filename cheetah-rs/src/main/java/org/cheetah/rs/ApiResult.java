@@ -64,7 +64,7 @@ public class ApiResult implements Serializable {
      * @return
      */
     public static Builder error(int status) {
-        Assert.isTrue(status != ApiConstants.OK, "status must ne 0.");
+        Assert.isTrue(status != ApiConstants.OK, "isOK must ne 0.");
         return new Builder(status);
     }
 
@@ -83,7 +83,7 @@ public class ApiResult implements Serializable {
         }
 
         public Builder result(Object result) {
-            Assert.isTrue(status == ApiConstants.OK, "status must eq 0.");
+            Assert.isTrue(status == ApiConstants.OK, "isOK must eq 0.");
             Assert.notNull(result, "result must not null.");
             this.result = result;
             return this;

@@ -1,12 +1,10 @@
 package org.cheetah.commons.httpclient;
 
-import org.apache.poi.ss.formula.functions.T;
-
 /**
  * Created by Max on 2015/11/26.
  */
-public interface HttpTransport {
+public interface HttpTransport<T> {
 
-    T transport(Transporter transporter, ResponseCallback<T> callback);
+    T execute(Transporter transporter);
 
 }

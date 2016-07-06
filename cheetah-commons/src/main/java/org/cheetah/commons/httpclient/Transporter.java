@@ -1,8 +1,9 @@
 package org.cheetah.commons.httpclient;
 
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.net.URI;
 import java.util.Map;
 
 import static org.cheetah.commons.httpclient.Transporter.METHOD.GET;
@@ -12,14 +13,14 @@ import static org.cheetah.commons.httpclient.Transporter.METHOD.GET;
  */
 public class Transporter {
 
-    enum METHOD {
-        GET, POST, PUT, DELETE
+    public enum METHOD {
+        GET, POST, PUT, DELETE, HEAD, TRACE, OPTIONS
     }
-    private URI url;
+    private String url;
     private String body;
     private METHOD method;
-    private Map<String, Object> headers = Maps.newHashMap();
-    private Map<String, Object> parameters = Maps.newHashMap();
+    private Map<String, String> headers = Maps.newHashMap();
+    private Map<String, String> parameters = Maps.newHashMap();
 
     Transporter() {
     }
@@ -32,7 +33,7 @@ public class Transporter {
         this.parameters = builder.parameters;
     }
 
-    public URI url() {
+    public String url() {
         return url;
     }
 
@@ -44,25 +45,69 @@ public class Transporter {
         return body;
     }
 
-    public Map<String, Object> headers() {
+    public Map<String, String> headers() {
         return headers;
     }
 
-    public Map<String, Object> parameters() {
+    public Map<String, String> parameters() {
         return parameters;
     }
 
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static Builder POST() {
+        return new Builder(METHOD.POST);
+    }
+
+    public static Builder DELETE() {
+        return new Builder(METHOD.DELETE);
+    }
+
+    public static Builder GET() {
+        return new Builder(METHOD.GET);
+    }
+
+    public static Builder HEAD() {
+        return new Builder(METHOD.HEAD);
+    }
+
+    public static Builder OPTIONS() {
+        return new Builder(METHOD.OPTIONS);
+    }
+
+    public static Builder PUT() {
+        return new Builder(METHOD.PUT);
+    }
+
+    public static Builder TRACE() {
+        return new Builder(METHOD.TRACE);
+    }
+
     public static class Builder {
-        private URI url;
+        private String url;
         private String body;
         private METHOD method = GET;
-        private Map<String, Object> headers;
-        private Map<String, Object> parameters;
+        private Map<String, String> headers;
+        private Map<String, String> parameters;
+
+        public Builder() {
+        }
+
+        public Builder(METHOD method) {
+            this.method = method;
+        }
 
         public Transporter build() {
             return new Transporter(this);
         }
-        public Builder url(URI url) {
+        public Builder url(String url) {
             this.url = url;
             return this;
         }
@@ -77,12 +122,12 @@ public class Transporter {
             return this;
         }
 
-        public Builder headers(Map<String, Object> headers) {
+        public Builder headers(Map<String, String> headers) {
             this.headers = headers;
             return this;
         }
 
-        public Builder parameters(Map<String, Object> parameters) {
+        public Builder parameters(Map<String, String> parameters) {
             this.parameters = parameters;
             return this;
         }

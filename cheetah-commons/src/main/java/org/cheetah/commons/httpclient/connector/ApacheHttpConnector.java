@@ -36,8 +36,8 @@ import java.util.concurrent.TimeUnit;
 public class ApacheHttpConnector {
     private final Logger logger = LoggerFactory.getLogger(ApacheHttpConnector.class);
 
-    private int maxConnPerHost = 150; // 设置 每个路由最大连接数
-    private int maxTotalConn = 300; // 设置最大连接数
+    private int maxConnPerHost = 500; // 设置 每个路由最大连接数
+    private int maxTotalConn = 1000; // 设置最大连接数
     private int requestSocketTimeout = 2 * 1000; //设置请求超时2秒钟
     // 根据业务调整
     private int requsetTimeout = 2 * 1000; //设置等待数据超时时间2秒钟 根据业务调整

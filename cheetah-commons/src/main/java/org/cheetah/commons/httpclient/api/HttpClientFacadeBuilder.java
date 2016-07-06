@@ -1,8 +1,8 @@
-package org.cheetah.commons.httpclient.transport;
+package org.cheetah.commons.httpclient.api;
 
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.cheetah.commons.httpclient.ChunkTransport;
 import org.cheetah.commons.httpclient.connector.ApacheHttpConnector;
+import org.cheetah.commons.httpclient.transport.BinaryTransport;
+import org.cheetah.commons.httpclient.transport.RestTransport;
 
 /**
  * Created by Max on 2015/11/26.
@@ -11,10 +11,8 @@ public class HttpClientFacadeBuilder {
 
     private final static ApacheHttpConnector apacheHttpConnector = new ApacheHttpConnector();
 
-    CloseableHttpClient httpclient;
     BinaryTransport binaryHttpTransport;
     RestTransport restfulHttpTransport;
-    ChunkTransport chunkHttpTransport;
 
     public static HttpClientFacadeBuilder newBuilder() {
         return new HttpClientFacadeBuilder();
@@ -24,22 +22,15 @@ public class HttpClientFacadeBuilder {
         return new HttpClientFacade(this);
     }
 
-    public static HttpClientFacade defaultClients() {
+    public static HttpClientFacade defaultHttpClientFacade() {
         return HttpClientFacadeBuilder.newBuilder()
-                .binaryHttpTransport(new BinaryTransport())
-                .chunkHttpTransport(new FileTransport())
-                .httpclient(defaultApacheHttpConnector().getDefaultHttpClient())
-                .restfulHttpTransport(new RestTransport())
+                .binaryHttpTransport(new BinaryTransport(defaultApacheHttpConnector().getDefaultHttpClient()))
+                .restfulHttpTransport(new RestTransport(defaultApacheHttpConnector().getDefaultHttpClient()))
                 .build();
     }
 
     public static ApacheHttpConnector defaultApacheHttpConnector() {
         return apacheHttpConnector;
-    }
-
-    public HttpClientFacadeBuilder httpclient(CloseableHttpClient httpclient) {
-        this.httpclient = httpclient;
-        return this;
     }
 
     public HttpClientFacadeBuilder binaryHttpTransport(BinaryTransport binaryHttpTransport) {
@@ -52,8 +43,5 @@ public class HttpClientFacadeBuilder {
         return this;
     }
 
-    public HttpClientFacadeBuilder chunkHttpTransport(ChunkTransport chunkHttpTransport) {
-        this.chunkHttpTransport = chunkHttpTransport;
-        return this;
-    }
+
 }

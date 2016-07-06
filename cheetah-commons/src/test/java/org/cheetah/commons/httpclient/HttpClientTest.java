@@ -7,7 +7,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
-import org.cheetah.commons.httpclient.transport.HttpClientFacade;
+import org.cheetah.commons.httpclient.api.HttpClientFacade;
 import org.junit.Test;
 
 import java.io.IOException;
