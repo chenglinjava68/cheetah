@@ -28,7 +28,7 @@ public abstract class AbstractHttpTransport<T> {
         CloseableHttpResponse resp = null;
         HttpEntity httpEntity = null;
         try {
-            logger.info("transporter : " + transporter);
+            logger.info("transporter : {}", transporter);
 
             switch (transporter.method()) {
                 case POST:
