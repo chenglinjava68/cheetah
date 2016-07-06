@@ -65,26 +65,6 @@ public final class HttpClientUtils {
         requestBase.setURI(URI.create(uri.toString()));
     }
 
-    public static void close(HttpGet get, HttpEntity httpEntity,
-                             CloseableHttpResponse resp) {
-        try {
-            if (httpEntity != null)
-                EntityUtils.consume(httpEntity);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (get != null) {
-            get.abort();
-            get.releaseConnection();
-        }
-        try {
-            if (resp != null)
-                resp.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void setBody(String body, HttpEntityEnclosingRequestBase requestBase) {
         if (body != null) {
             StringEntity entity = new StringEntity(body, "UTF-8");
