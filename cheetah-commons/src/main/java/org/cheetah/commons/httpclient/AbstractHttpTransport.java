@@ -28,7 +28,7 @@ public abstract class AbstractHttpTransport<T> {
         CloseableHttpResponse resp = null;
         HttpEntity httpEntity = null;
         try {
-            logger.info("transporter : " + transporter );
+            logger.info("transporter : " + transporter);
 
             switch (transporter.method()) {
                 case POST:
@@ -69,7 +69,7 @@ public abstract class AbstractHttpTransport<T> {
                 httpEntity = resp.getEntity();
                 return callback.onResult(httpEntity);
             } else
-                throw new HttpClientException("Http get request error["+statusLine.getStatusCode()+"]-->url : " +  transporter.url());
+                throw new HttpClientException("Http get request error[" + statusLine.getStatusCode() + "]-->url : " + transporter.url());
         } catch (Exception e) {
             logger.info("request error!", e);
             throw new HttpClientException("Http post request error-->url : " + transporter.url(), e);
@@ -80,35 +80,44 @@ public abstract class AbstractHttpTransport<T> {
 
     private CloseableHttpResponse executeGet(HttpGet get, Transporter transporter) throws URISyntaxException, IOException {
         HttpClientUtils.setUriParameter(transporter.url(), transporter.parameters(), get);
+        HttpClientUtils.setHeader(transporter.headers(), get);
         return httpClient.execute(get);
     }
 
     private CloseableHttpResponse executePost(HttpPost post, Transporter transporter) throws IOException {
         HttpClientUtils.setBody(transporter.body(), post);
         HttpClientUtils.setFormParameter(transporter.parameters(), post);
+        HttpClientUtils.setHeader(transporter.headers(), post);
         return httpClient.execute(post);
     }
 
     private CloseableHttpResponse executePut(HttpPut put, Transporter transporter) throws IOException {
         HttpClientUtils.setBody(transporter.body(), put);
         HttpClientUtils.setFormParameter(transporter.parameters(), put);
+        HttpClientUtils.setHeader(transporter.headers(), put);
         return httpClient.execute(put);
     }
 
     private CloseableHttpResponse executeDelete(HttpDelete delete, Transporter transporter) throws URISyntaxException, IOException {
         HttpClientUtils.setUriParameter(transporter.url(), transporter.parameters(), delete);
+        HttpClientUtils.setHeader(transporter.headers(), delete);
         return httpClient.execute(delete);
     }
 
     private CloseableHttpResponse executeHead(HttpHead head, Transporter transporter) throws URISyntaxException, IOException {
         HttpClientUtils.setUriParameter(transporter.url(), transporter.parameters(), head);
+        HttpClientUtils.setHeader(transporter.headers(), head);
         return httpClient.execute(head);
     }
+
     private CloseableHttpResponse executeOptions(HttpOptions options, Transporter transporter) throws URISyntaxException, IOException {
         HttpClientUtils.setUriParameter(transporter.url(), transporter.parameters(), options);
+        HttpClientUtils.setHeader(transporter.headers(), options);
         return httpClient.execute(options);
     }
+
     private CloseableHttpResponse executeTrace(HttpTrace trace, Transporter transporter) throws URISyntaxException, IOException {
+        HttpClientUtils.setHeader(transporter.headers(), trace);
         HttpClientUtils.setUriParameter(transporter.url(), transporter.parameters(), trace);
         return httpClient.execute(trace);
     }

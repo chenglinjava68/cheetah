@@ -92,7 +92,7 @@ public final class HttpClientUtils {
         }
     }
 
-    public static void setHeader(Map<String, String> header, HttpEntityEnclosingRequestBase httpRequestBase) {
+    public static void setHeader(Map<String, String> header, HttpRequestBase httpRequestBase) {
         if (header != null)
             for (Map.Entry<String, String> map : header.entrySet()) {
                 httpRequestBase.setHeader(map.getKey(), map.getValue());
