@@ -40,17 +40,17 @@ public class WebResource {
         this.httpClientFacade = HttpClientFacadeBuilder.defaultHttpClientFacade();
     }
 
-    public WebResource type(String key, String value) {
-        Assert.notBlank(key, "key must not be null or empty");
+    public WebResource type(String name, String value) {
+        Assert.notBlank(name, "name must not be null or empty");
         Assert.notBlank(value, "value must not be null or empty");
-        ImmutableMap<String, String> newHeaders = ImmutableMap.<String, String>builder().putAll(headers).put(key, value).build();
+        ImmutableMap<String, String> newHeaders = ImmutableMap.<String, String>builder().putAll(headers).put(name, value).build();
         return new WebResource(this.resource, this.entity, newHeaders, this.parameters, serializer);
     }
 
-    public WebResource parameter(String key, String value) {
-        Assert.notBlank(key, "key must not be null or empty");
+    public WebResource parameter(String name, String value) {
+        Assert.notBlank(name, "name must not be null or empty");
         Assert.notBlank(value, "value must not be null or empty");
-        ImmutableMap<String, String> newparameters = ImmutableMap.<String, String>builder().putAll(parameters).put(key, value).build();
+        ImmutableMap<String, String> newparameters = ImmutableMap.<String, String>builder().putAll(parameters).put(name, value).build();
         return new WebResource(this.resource, this.entity, this.headers, newparameters, serializer);
     }
 
