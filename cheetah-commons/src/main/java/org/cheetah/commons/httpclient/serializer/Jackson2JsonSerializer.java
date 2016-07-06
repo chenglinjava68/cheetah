@@ -13,11 +13,6 @@ public class Jackson2JsonSerializer implements ResourceSerializer {
     }
 
     @Override
-    public <T> T deserialize(byte[] resource, Class<T> entity) {
-        return JsonSerializer.deserialize(resource, entity);
-    }
-
-    @Override
     public <T> T deserialize(String resource, Class<T> entity) {
         return JsonSerializer.deserialize(resource, entity);
     }

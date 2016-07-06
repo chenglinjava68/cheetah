@@ -6,8 +6,6 @@ package org.cheetah.commons.httpclient;
 public interface ResourceSerializer {
     String serialize(Object entity);
 
-    <T> T deserialize(byte[] resource, Class<T> entity);
-
     <T> T deserialize(String resource, Class<T> entity);
 
 }
