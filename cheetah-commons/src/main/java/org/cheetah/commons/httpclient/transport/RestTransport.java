@@ -26,7 +26,9 @@ public class RestTransport extends AbstractHttpTransport<String> implements Http
     public String execute(Transporter transporter) {
         return doExecute(transporter, entity -> {
             try {
-                return EntityUtils.toString(entity);
+                String resultEntity =  EntityUtils.toString(entity);
+                logger.info("result entity : {}", resultEntity);
+                return resultEntity;
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new HttpClientException("Http post request error-->url : " + transporter.url(), e);

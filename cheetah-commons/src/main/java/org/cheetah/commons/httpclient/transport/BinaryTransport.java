@@ -25,7 +25,9 @@ public class BinaryTransport extends AbstractHttpTransport<byte[]> implements Ht
     public byte[] execute(Transporter transporter) {
         return doExecute(transporter, entity -> {
             try {
-                return EntityUtils.toByteArray(entity);
+                byte[] result =  EntityUtils.toByteArray(entity);
+                logger.info("result byte length : {}", result.length);
+                return result;
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new HttpClientException("Http post request error-->url : " + transporter.url(), e);

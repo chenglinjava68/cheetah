@@ -10,19 +10,19 @@ import org.cheetah.commons.utils.Assert;
  * Created by maxhuang on 2016/7/5.
  */
 public class WebResource {
-    private HttpClientFacade httpClientFacade = HttpClientFacadeBuilder.defaultHttpClientFacade();
-    private ResourceSerializer serializer = new Jackson2JsonSerializer();
+    private HttpClientFacade httpClientFacade;
+    private ResourceSerializer serializer;
     private String resource;
     private String entity;
     private ImmutableMap<String, String> parameters = ImmutableMap.of();
     private ImmutableMap<String, String> headers = ImmutableMap.of();
 
     public WebResource(String resource) {
-        this(resource, null, null);
+        this(resource, new Jackson2JsonSerializer(), HttpClientFacadeBuilder.defaultHttpClientFacade());
     }
 
     public WebResource(HttpClientFacade httpClientFacade, String resource) {
-        this(resource, null, httpClientFacade);
+        this(resource, new Jackson2JsonSerializer(), httpClientFacade);
     }
 
     public WebResource(String resource, ResourceSerializer serializer, HttpClientFacade httpClientFacade) {
@@ -31,38 +31,40 @@ public class WebResource {
         this.serializer = serializer;
     }
 
-    WebResource(String resource, String entity, ImmutableMap<String, String> headers, ImmutableMap<String, String> parameters) {
+    WebResource(String resource, String entity, ImmutableMap<String, String> headers, ImmutableMap<String, String> parameters, ResourceSerializer serializer) {
         this.resource = resource;
         this.entity = entity;
         this.headers = headers;
         this.parameters = parameters;
+        this.serializer = serializer;
+        this.httpClientFacade = HttpClientFacadeBuilder.defaultHttpClientFacade();
     }
 
     public WebResource type(String key, String value) {
         Assert.notBlank(key, "key must not be null or empty");
         Assert.notBlank(value, "value must not be null or empty");
         ImmutableMap<String, String> newHeaders = ImmutableMap.<String, String>builder().putAll(headers).put(key, value).build();
-        return new WebResource(this.resource, this.entity, newHeaders, this.parameters);
+        return new WebResource(this.resource, this.entity, newHeaders, this.parameters, serializer);
     }
 
     public WebResource parameter(String key, String value) {
         Assert.notBlank(key, "key must not be null or empty");
         Assert.notBlank(value, "value must not be null or empty");
         ImmutableMap<String, String> newparameters = ImmutableMap.<String, String>builder().putAll(parameters).put(key, value).build();
-        return new WebResource(this.resource, this.entity, this.headers, newparameters);
+        return new WebResource(this.resource, this.entity, this.headers, newparameters, serializer);
     }
 
     public WebResource entity(String entity) {
-        return new WebResource(this.resource, entity, this.headers, this.parameters);
+        return new WebResource(this.resource, entity, this.headers, this.parameters, serializer);
     }
 
     public WebResource entity(Object entity) {
         String entityJson = this.serializer.serialize(entity);
-        return new WebResource(this.resource, entityJson, this.headers, this.parameters);
+        return new WebResource(this.resource, entityJson, this.headers, this.parameters, serializer);
     }
 
     public String post() {
-        return  httpClientFacade.post(this.resource, this.parameters, this.headers);
+        return httpClientFacade.post(this.resource, this.parameters, this.headers);
     }
 
     public T post(Class<T> entity) {
@@ -71,7 +73,7 @@ public class WebResource {
     }
 
     public String get() {
-       return  httpClientFacade.get(this.resource, this.parameters, this.headers);
+        return httpClientFacade.get(this.resource, this.parameters, this.headers);
     }
 
     public T get(Class<T> entity) {
@@ -81,13 +83,14 @@ public class WebResource {
 
     /**
      * 注意，这里使用的是POST
+     *
      * @return
      */
     public byte[] load() {
-        return  httpClientFacade.post(this.parameters, this.headers, this.resource);
+        return httpClientFacade.post(this.parameters, this.headers, this.resource);
     }
 
     public byte[] getBinary() {
-        return  httpClientFacade.getBinary(this.resource, this.parameters, this.headers);
+        return httpClientFacade.getBinary(this.resource, this.parameters, this.headers);
     }
 }
