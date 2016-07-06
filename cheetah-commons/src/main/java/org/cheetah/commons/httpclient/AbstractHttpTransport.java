@@ -85,14 +85,14 @@ public abstract class AbstractHttpTransport<T> {
     }
 
     private CloseableHttpResponse executePost(HttpPost post, Transporter transporter) throws IOException {
-        HttpClientUtils.setBody(transporter.body(), post);
+        HttpClientUtils.setBody(transporter.entity(), post);
         HttpClientUtils.setFormParameter(transporter.parameters(), post);
         HttpClientUtils.setHeader(transporter.headers(), post);
         return httpClient.execute(post);
     }
 
     private CloseableHttpResponse executePut(HttpPut put, Transporter transporter) throws IOException {
-        HttpClientUtils.setBody(transporter.body(), put);
+        HttpClientUtils.setBody(transporter.entity(), put);
         HttpClientUtils.setFormParameter(transporter.parameters(), put);
         HttpClientUtils.setHeader(transporter.headers(), put);
         return httpClient.execute(put);

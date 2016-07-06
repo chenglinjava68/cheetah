@@ -10,7 +10,7 @@ public class HttpClientTest {
 
     @Test
     public void test() {
-        Clients.resource("http://baidu.com").get();
+        Clients.resource("http://baidu.com").post();
     }
 
 

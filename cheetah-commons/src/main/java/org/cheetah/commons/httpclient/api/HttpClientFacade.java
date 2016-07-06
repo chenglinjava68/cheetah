@@ -1,14 +1,10 @@
 package org.cheetah.commons.httpclient.api;
 
 import com.google.common.collect.Maps;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.cheetah.commons.httpclient.Transporter;
 import org.cheetah.commons.httpclient.transport.BinaryTransport;
 import org.cheetah.commons.httpclient.transport.RestTransport;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -98,37 +94,37 @@ public class HttpClientFacade {
 	}
 
 	/**
-	 * http post body形式传输数据
+	 * http post entity形式传输数据
 	 * 
 	 * @param url
-	 * @param body
+	 * @param entity
 	 *            传输数据
 	 * @param headers
 	 *            头信息
 	 * @return
 	 */
-	public String post(String url, String body, Map<String, String> headers) {
+	public String post(String url, String entity, Map<String, String> headers) {
 		return restfulTransport.execute(
 				Transporter.POST().url(url)
-						.body(body)
+						.entity(entity)
 						.headers(headers)
 						.build()
 		);
 	}
 
 	/**
-	 * 模拟http post body形式传输数据
+	 * 模拟http post entity形式传输数据
 	 * 
 	 * @param url
-	 * @param body
+	 * @param entity
 	 *            传输数据
 	 * @return
 	 */
-	public String post(String url, String body) {
+	public String post(String url, String entity) {
 		Map<String, String> headers = Maps.newHashMap();
 		headers.put("Content-Type", "application/json");
 		headers.put("Accept", "application/json");
-		return post(url, body, headers);
+		return post(url, entity, headers);
 	}
 
 	/**

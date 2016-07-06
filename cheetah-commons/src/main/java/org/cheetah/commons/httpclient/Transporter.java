@@ -17,7 +17,7 @@ public class Transporter {
         GET, POST, PUT, DELETE, HEAD, TRACE, OPTIONS
     }
     private String url;
-    private String body;
+    private String entity;
     private METHOD method;
     private Map<String, String> headers = Maps.newHashMap();
     private Map<String, String> parameters = Maps.newHashMap();
@@ -27,7 +27,7 @@ public class Transporter {
 
     Transporter(Builder builder) {
         this.url = builder.url;
-        this.body = builder.body;
+        this.entity = builder.entity;
         this.method = builder.method;
         this.headers = builder.headers;
         this.parameters = builder.parameters;
@@ -41,8 +41,8 @@ public class Transporter {
         return method;
     }
 
-    public String body() {
-        return body;
+    public String entity() {
+        return entity;
     }
 
     public Map<String, String> headers() {
@@ -92,7 +92,7 @@ public class Transporter {
 
     public static class Builder {
         private String url;
-        private String body;
+        private String entity;
         private METHOD method = GET;
         private Map<String, String> headers;
         private Map<String, String> parameters;
@@ -112,8 +112,8 @@ public class Transporter {
             return this;
         }
 
-        public Builder body(String body) {
-            this.body = body;
+        public Builder entity(String entity) {
+            this.entity = entity;
             return this;
         }
 
