@@ -13,9 +13,9 @@ import java.net.URISyntaxException;
  * Created by Max on 2016/7/6.
  */
 public abstract class AbstractHttpTransport<T> {
-    protected final Logger logger = LoggerFactory.getLogger(AbstractHttpTransport.class);
+    private final Logger logger = LoggerFactory.getLogger(AbstractHttpTransport.class);
 
-    protected CloseableHttpClient httpClient;
+    private CloseableHttpClient httpClient;
 
     public AbstractHttpTransport(CloseableHttpClient httpClient) {
         this.httpClient = httpClient;
