@@ -70,7 +70,7 @@ public class Translation<T> {
         List<E> data;
         Class<E> entity;
         boolean isXssf;
-        boolean hasTemplate;
+        boolean hasTemplate = false;
         InputStream templateStream;
         OutputStream toStream;
 
@@ -105,13 +105,9 @@ public class Translation<T> {
             return this;
         }
 
-        public Builder hasTemplate(boolean hasTemplate) {
-            this.hasTemplate = hasTemplate;
-            return this;
-        }
-
         public Builder templateStream(InputStream templateStream) {
             this.templateStream = templateStream;
+            this.hasTemplate = true;
             return this;
         }
 
