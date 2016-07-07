@@ -107,7 +107,7 @@ public class EventPublisherTest {
         latch.await();
     }
 
-    public static class ApplicationEventTest extends ApplicationEvent {
+    public static class ApplicationEventTest extends Event<Object> {
 
         /**
          * Constructs a prototypical Event.
@@ -120,7 +120,7 @@ public class EventPublisherTest {
         }
     }
 
-    public static class ApplicationEventTest2 extends ApplicationEvent {
+    public static class ApplicationEventTest2 extends Event<Object> {
 
         /**
          * Constructs a prototypical Event.

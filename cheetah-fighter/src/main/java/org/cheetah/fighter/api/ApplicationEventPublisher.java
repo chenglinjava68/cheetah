@@ -1,7 +1,7 @@
 package org.cheetah.fighter.api;
 
-import org.cheetah.fighter.event.ApplicationEvent;
 import org.cheetah.fighter.event.Callback;
+import org.cheetah.fighter.event.Event;
 import org.cheetah.fighter.event.EventCollector;
 import org.cheetah.ioc.BeanFactory;
 
@@ -14,11 +14,11 @@ public abstract class ApplicationEventPublisher {
     private ApplicationEventPublisher() {
     }
 
-    public static <E extends ApplicationEvent> void publish(E event) {
+    public static <E extends Event<Object>> void publish(E event) {
         collector.collect(event);
     }
 
-    public static <E extends ApplicationEvent> void publish(E event, Callback callback) {
+    public static <E extends Event<Object>> void publish(E event, Callback callback) {
         collector.collect(event, callback);
     }
 

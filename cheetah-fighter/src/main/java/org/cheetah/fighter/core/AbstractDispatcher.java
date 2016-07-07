@@ -12,11 +12,16 @@ import org.cheetah.commons.utils.StringUtils;
 import org.cheetah.fighter.engine.Engine;
 import org.cheetah.fighter.engine.EngineDirector;
 import org.cheetah.fighter.engine.support.EnginePolicy;
-import org.cheetah.fighter.event.*;
+import org.cheetah.fighter.event.DomainEvent;
+import org.cheetah.fighter.event.DomainEventListener;
+import org.cheetah.fighter.event.Event;
+import org.cheetah.fighter.event.SmartDomainEventListener;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.mapping.HandlerMapping;
 import org.cheetah.fighter.plugin.Plugin;
 import org.cheetah.fighter.plugin.PluginChain;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.event.SmartApplicationListener;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -137,15 +142,6 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
                     });*/
                     Collection<EventListener> listeners = getNotSmartListener(event, DomainEventListener.class);
                     return setDomainEventListenerMapper(mapperKey, Lists.newArrayList(listeners));
-                }
-            } else if (ApplicationEvent.class.isAssignableFrom(event.getClass())) {
-                Info.log(this.getClass(), "event is ApplicationEvent");
-                List<EventListener> smartAppEventListeners = getSmartApplicationEventListener((ApplicationEvent) event);
-                if (!smartAppEventListeners.isEmpty()) {
-                    return setAppEventListenerMapper(mapperKey, smartAppEventListeners);
-                } else {
-                    Collection<EventListener> listeners = getNotSmartListener(event, ApplicationListener.class);
-                    return setAppEventListenerMapper(mapperKey, Lists.newArrayList(listeners));
                 }
             } else throw new ErrorEventTypeException();
         } finally {
