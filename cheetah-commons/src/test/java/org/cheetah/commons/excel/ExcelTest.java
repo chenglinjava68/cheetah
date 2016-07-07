@@ -1,16 +1,20 @@
 package org.cheetah.commons.excel;
 
+import com.google.common.collect.Lists;
 import org.cheetah.commons.excel.client.ExcelTranslator;
 import org.cheetah.commons.excel.client.Translation;
 import org.junit.Test;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.List;
 
 /**
  * Created by maxhuang on 2016/6/24.
  */
+@SuppressWarnings("unchecked")
 public class ExcelTest {
 
     @Test
@@ -49,5 +53,25 @@ public class ExcelTest {
                 .build();
 
         translator.translator(t);
+    }
+
+    @Test
+    public void templateTest() throws FileNotFoundException {
+        InputStream stream = new FileInputStream("E:\\excel_template_v2.xlsx");
+        ExcelTranslator<Anchor> translator = new ExcelTranslator<>();
+
+        List<Anchor> anchors = Lists.newArrayList();
+        Anchor anchor = new Anchor();
+        anchor.setFxId(123);
+        anchor.setLiveRoom(123);
+        anchor.setName("name");
+        anchors.add(anchor);
+
+        translator.translator(Translation.newBuilder().toStream(new FileOutputStream("d:/test.xlsx"))
+                .entity(Anchor.class)
+                .templateStream(stream)
+                .data(anchors)
+                .build()
+        );
     }
 }
