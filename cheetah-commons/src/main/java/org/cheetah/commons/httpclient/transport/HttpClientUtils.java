@@ -106,14 +106,9 @@ public final class HttpClientUtils {
         }
     }
 
-    public static void close(CloseableHttpResponse httpResponse, HttpEntity entity) {
+    public static void close(HttpEntity entity) {
         try {
             EntityUtils.consume(entity);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            Closeables.close(httpResponse, true);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -27,7 +27,7 @@ public interface ResponseProcessor<T> {
                 onFailure(statusLine);
             return null;
         } finally {
-            HttpClientUtils.close(response, entity);
+            HttpClientUtils.close(entity);
         }
     }
 
