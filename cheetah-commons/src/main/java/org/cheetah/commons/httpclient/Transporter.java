@@ -3,6 +3,7 @@ package org.cheetah.commons.httpclient;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.http.client.config.RequestConfig;
 
 import java.util.Map;
 
@@ -12,7 +13,6 @@ import static org.cheetah.commons.httpclient.Transporter.METHOD.GET;
  * Created by maxhuang on 2016/7/6.
  */
 public class Transporter {
-
     public enum METHOD {
         GET, POST, PUT, DELETE, HEAD, TRACE, OPTIONS
     }
@@ -21,6 +21,7 @@ public class Transporter {
     private METHOD method;
     private Map<String, String> headers = Maps.newHashMap();
     private Map<String, String> parameters = Maps.newHashMap();
+    private RequestConfig requestConfig;
 
     Transporter() {
     }
@@ -31,6 +32,7 @@ public class Transporter {
         this.method = builder.method;
         this.headers = builder.headers;
         this.parameters = builder.parameters;
+        this.requestConfig = builder.requestConfig;
     }
 
     public String url() {
@@ -51,6 +53,10 @@ public class Transporter {
 
     public Map<String, String> parameters() {
         return parameters;
+    }
+
+    public RequestConfig requestConfig() {
+        return requestConfig;
     }
 
     @Override
@@ -87,11 +93,12 @@ public class Transporter {
     }
 
     public static class Builder {
-        private String url;
-        private String entity;
-        private METHOD method = GET;
-        private Map<String, String> headers;
-        private Map<String, String> parameters;
+        String url;
+        String entity;
+        METHOD method = GET;
+        Map<String, String> headers;
+        Map<String, String> parameters;
+        RequestConfig requestConfig;
 
         Builder(METHOD method) {
             this.method = method;
@@ -123,6 +130,11 @@ public class Transporter {
 
         public Builder parameters(Map<String, String> parameters) {
             this.parameters = parameters;
+            return this;
+        }
+
+        public Builder requestConfig(RequestConfig requestConfig) {
+            this.requestConfig = requestConfig;
             return this;
         }
     }

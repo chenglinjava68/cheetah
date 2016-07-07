@@ -1,6 +1,5 @@
 package org.cheetah.commons.httpclient.connector;
 
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.HttpClientConnectionManager;
@@ -38,9 +37,6 @@ public class ApacheHttpConnector {
 
     private int maxConnPerHost = 500; // 设置 每个路由最大连接数
     private int maxTotalConn = 1000; // 设置最大连接数
-    private int requestSocketTimeout = 2 * 1000; //设置请求超时2秒钟
-    // 根据业务调整
-    private int requsetTimeout = 2 * 1000; //设置等待数据超时时间2秒钟 根据业务调整
 
     private CloseableHttpClient defaultHttpclient = null;
 
@@ -111,10 +107,6 @@ public class ApacheHttpConnector {
             PoolingHttpClientConnectionManager connectionManager = createConnectionManager(sslContext, SSLConnectionSocketFactory.getDefaultHostnameVerifier());
             return HttpClients.
                     custom()
-                    .setDefaultRequestConfig(
-                            RequestConfig.custom()
-                                    .setSocketTimeout(requestSocketTimeout)
-                                    .setConnectTimeout(requsetTimeout).build())
                     .setConnectionManager(connectionManager)
                     .setRetryHandler(new RetryHandler()).build();
         } catch (Exception e) {
@@ -189,14 +181,6 @@ public class ApacheHttpConnector {
 
     public void setMaxTotalConn(int maxTotalConn) {
         this.maxTotalConn = maxTotalConn;
-    }
-
-    public void setRequsetTimeout(int requsetTimeout) {
-        this.requsetTimeout = requsetTimeout;
-    }
-
-    public void setRequestSocketTimeout(int requestSocketTimeout) {
-        this.requestSocketTimeout = requestSocketTimeout;
     }
 
     private class IdleConnectionMonitorThread extends Thread {

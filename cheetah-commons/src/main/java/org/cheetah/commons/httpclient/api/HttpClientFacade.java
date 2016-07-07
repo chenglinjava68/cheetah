@@ -1,5 +1,6 @@
 package org.cheetah.commons.httpclient.api;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import org.cheetah.commons.httpclient.ResponseHandler;
 import org.cheetah.commons.httpclient.Transporter;
@@ -17,6 +18,7 @@ import java.util.Map;
  * @date 2014-12-11 下午1:49:01
  */
 public class HttpClientFacade {
+    public static final Map<String, String> RESET_TYPE = ImmutableMap.of("Content-Type", "application/json", "Accept", "application/json");
     private BinaryTransport binaryTransport;
     private RestTransport restfulTransport;
 
@@ -328,6 +330,7 @@ public class HttpClientFacade {
                             Map<String, String> headers) {
         return binaryTransport.execute(Transporter
                 .GET()
+                .url(url)
                 .parameters(params)
                 .headers(headers)
                 .build());
@@ -366,6 +369,7 @@ public class HttpClientFacade {
                             Map<String, String> headers, ResponseHandler<byte[]> handler) {
         return binaryTransport.doExecute(Transporter
                 .GET()
+                .url(url)
                 .parameters(params)
                 .headers(headers)
                 .build(), handler);

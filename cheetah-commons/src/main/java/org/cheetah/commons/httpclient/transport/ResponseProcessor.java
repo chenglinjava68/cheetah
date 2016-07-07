@@ -35,7 +35,5 @@ public interface ResponseProcessor<T> {
         throw new HttpClientException(String.format("request 1 failed with a %d response ", statusLine.getStatusCode()));
     }
 
-    default T onSuccess(HttpEntity entity) {
-        return null;
-    }
+    T onSuccess(HttpEntity entity);
 }

@@ -1,11 +1,15 @@
 package org.cheetah.commons.httpclient.api;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.poi.ss.formula.functions.T;
 import org.cheetah.commons.httpclient.ResourceSerializer;
+import org.cheetah.commons.httpclient.Transporter;
 import org.cheetah.commons.httpclient.serializer.Jackson2JsonSerializer;
 import org.cheetah.commons.utils.Assert;
-import org.cheetah.commons.utils.StringUtils;
+
+import java.util.Map;
 
 /**
  * 注意事项：post发出post请求时entity和parameters不能同时作为数据传输给服务方
@@ -13,12 +17,15 @@ import org.cheetah.commons.utils.StringUtils;
  * Created by maxhuang on 2016/7/5.
  */
 public class WebResource {
+    public static final int GENERIC_TIMEOUT = 2000;
+
     private HttpClientFacade httpClientFacade;
     private ResourceSerializer serializer;
     private String resource;
     private String entity;
     private ImmutableMap<String, String> parameters = ImmutableMap.of();
     private ImmutableMap<String, String> headers = ImmutableMap.of();
+    private int timeout = -1;
 
     public WebResource(String resource) {
         this(resource, new Jackson2JsonSerializer(), HttpClientFacadeBuilder.defaultHttpClientFacade());
@@ -67,11 +74,19 @@ public class WebResource {
     }
 
     public String post() {
-        if (StringUtils.isNotBlank(entity))
-            return httpClientFacade.post(this.resource, this.entity, this.headers);
-        else {
-            return httpClientFacade.post(this.resource, parameters, headers);
-        }
+        Map<String, String> newHeaders = Maps.newHashMap(HttpClientFacade.RESET_TYPE);
+        newHeaders.putAll(this.headers);
+        RequestConfig requestConfig = timeout == -1 ? RequestConfig.DEFAULT :
+                RequestConfig.custom().setConnectTimeout(timeout).setSocketTimeout(GENERIC_TIMEOUT).build();
+        return httpClientFacade.getRestfulTransport().execute(Transporter.POST()
+                .url(this.resource)
+                .entity(this.entity)
+                .headers(newHeaders)
+                .parameters(this.parameters)
+                .requestConfig(requestConfig)
+                .build()
+        );
+
     }
 
     public T post(Class<T> entity) {
@@ -80,7 +95,19 @@ public class WebResource {
     }
 
     public String get() {
-        return httpClientFacade.get(this.resource, this.parameters, this.headers);
+        RequestConfig requestConfig = timeout == -1 ? RequestConfig.DEFAULT :
+                RequestConfig.custom()
+                        .setConnectionRequestTimeout(GENERIC_TIMEOUT)
+                        .setConnectTimeout(GENERIC_TIMEOUT)
+                        .setSocketTimeout(timeout)
+                        .build();
+        return httpClientFacade.getRestfulTransport().execute(Transporter.GET()
+                .url(this.resource)
+                .headers(this.headers)
+                .parameters(this.parameters)
+                .requestConfig(requestConfig)
+                .build()
+        );
     }
 
     public T get(Class<T> entity) {
@@ -99,5 +126,20 @@ public class WebResource {
 
     public byte[] getBinary() {
         return httpClientFacade.getBinary(this.resource, this.parameters, this.headers);
+    }
+
+    public byte[] download() {
+        RequestConfig requestConfig = timeout == -1 ? RequestConfig.DEFAULT :
+                RequestConfig.custom()
+                        .setConnectionRequestTimeout(GENERIC_TIMEOUT)
+                        .setConnectTimeout(GENERIC_TIMEOUT)
+                        .setSocketTimeout(timeout)
+                        .build();
+        return httpClientFacade.getBinaryTransport().execute(Transporter.GET()
+                .url(this.resource)
+                .headers(this.headers)
+                .parameters(this.parameters)
+                .requestConfig(requestConfig)
+                .build());
     }
 }
