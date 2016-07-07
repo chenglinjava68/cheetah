@@ -87,7 +87,7 @@ public class WebResource {
      * @return
      */
     public byte[] load() {
-        return httpClientFacade.post(this.parameters, this.headers, this.resource);
+        return httpClientFacade.load(this.parameters, this.headers, this.resource);
     }
 
     public byte[] getBinary() {

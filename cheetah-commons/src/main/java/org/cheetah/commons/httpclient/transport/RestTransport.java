@@ -1,5 +1,7 @@
 package org.cheetah.commons.httpclient.transport;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.StatusLine;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.cheetah.commons.httpclient.AbstractHttpTransport;
@@ -24,15 +26,29 @@ public class RestTransport extends AbstractHttpTransport<String> implements Http
 
     @Override
     public String execute(Transporter transporter) {
-        return doExecute(transporter, entity -> {
-            try {
-                String resultEntity =  EntityUtils.toString(entity);
-                logger.info("result entity : {}", resultEntity);
-                return resultEntity;
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new HttpClientException("Http post request error-->url : " + transporter.url(), e);
-            }
+        return doExecute(transporter, response -> {
+            ResponseProcessor<String> processor = new ResponseProcessor<String>() {
+                @Override
+                public void onFailure(StatusLine statusLine) {
+                    logger.error("request 1 failed with a {} response url : {}", statusLine.getStatusCode(), transporter.url());
+                    throw new HttpClientException("request 1 failed with a response");
+                }
+
+                @Override
+                public String onSuccess(HttpEntity entity) {
+                    try {
+                        String entityJson = EntityUtils.toString(entity);
+                        logger.info("http request success, content: \n{}", entityJson);
+                        return entityJson;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        throw new HttpClientException("entity to bytes error", e);
+                    }
+                }
+            };
+
+            return processor.process(response);
         });
     }
+
 }

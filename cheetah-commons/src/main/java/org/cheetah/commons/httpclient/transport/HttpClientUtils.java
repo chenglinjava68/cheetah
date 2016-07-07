@@ -1,9 +1,12 @@
 package org.cheetah.commons.httpclient.transport;
 
+import com.google.common.io.Closeables;
 import org.apache.http.*;
 import org.apache.http.client.entity.GzipDecompressingEntity;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicNameValuePair;
@@ -91,22 +94,26 @@ public final class HttpClientUtils {
         }
     }
 
-    public static void close(HttpRequestBase requestBase, CloseableHttpResponse resp,
-                      HttpEntity httpEntity) {
-        try {
-            if (httpEntity != null)
-                EntityUtils.consume(httpEntity);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public static void close(HttpRequestBase requestBase, CloseableHttpResponse resp) {
         if (requestBase != null) {
             requestBase.abort();
             requestBase.releaseConnection();
         }
         try {
-            if (resp != null)
-                resp.close();
+            Closeables.close(resp, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void close(CloseableHttpResponse httpResponse, HttpEntity entity) {
+        try {
+            EntityUtils.consume(entity);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            Closeables.close(httpResponse, true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -118,6 +125,7 @@ public final class HttpClientUtils {
 
     /**
      * restful成功状态
+     *
      * @param statusLine
      * @return
      */

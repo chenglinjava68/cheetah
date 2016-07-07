@@ -58,10 +58,6 @@ public class Transporter {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     public static Builder POST() {
         return new Builder(METHOD.POST);
     }
@@ -97,16 +93,14 @@ public class Transporter {
         private Map<String, String> headers;
         private Map<String, String> parameters;
 
-        public Builder() {
-        }
-
-        public Builder(METHOD method) {
+        Builder(METHOD method) {
             this.method = method;
         }
 
         public Transporter build() {
             return new Transporter(this);
         }
+
         public Builder url(String url) {
             this.url = url;
             return this;

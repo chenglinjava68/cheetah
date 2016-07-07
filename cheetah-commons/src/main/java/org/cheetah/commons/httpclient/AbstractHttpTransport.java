@@ -1,7 +1,5 @@
 package org.cheetah.commons.httpclient;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.StatusLine;
 import org.apache.http.client.methods.*;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.cheetah.commons.httpclient.transport.HttpClientUtils;
@@ -23,12 +21,11 @@ public abstract class AbstractHttpTransport<T> {
         this.httpClient = httpClient;
     }
 
-    public T doExecute(Transporter transporter, ResponseCallback<T> callback) {
+    public T doExecute(Transporter transporter, ResponseHandler<T> handler) {
         HttpRequestBase requestBase = null;
         CloseableHttpResponse resp = null;
-        HttpEntity httpEntity = null;
         try {
-            logger.info("transporter : {}", transporter);
+            logger.info("request data : {}", transporter);
 
             switch (transporter.method()) {
                 case POST:
@@ -58,23 +55,13 @@ public abstract class AbstractHttpTransport<T> {
                 default:
                     requestBase = new HttpGet(transporter.url());
                     resp = executeGet((HttpGet) requestBase, transporter);
-                    break;
             }
 
-            StatusLine statusLine = resp.getStatusLine();
-
-            if (HttpClientUtils.resetSuccessStatus(statusLine)) {
-                logger.info("request ok!");
-                HttpClientUtils.gzipDecompression(resp);
-                httpEntity = resp.getEntity();
-                return callback.onResult(httpEntity);
-            } else
-                throw new HttpClientException("Http get request error[" + statusLine.getStatusCode() + "]-->url : " + transporter.url());
+            return handler.handle(resp);
         } catch (Exception e) {
-            logger.info("request error!", e);
-            throw new HttpClientException("Http post request error-->url : " + transporter.url(), e);
+            throw new HttpClientException("The HTTP request an exception occurs, url : " + transporter.url(), e);
         } finally {
-            HttpClientUtils.close(requestBase, resp, httpEntity);
+            HttpClientUtils.close(requestBase, resp);
         }
     }
 
@@ -121,5 +108,6 @@ public abstract class AbstractHttpTransport<T> {
         HttpClientUtils.setUriParameter(transporter.url(), transporter.parameters(), trace);
         return httpClient.execute(trace);
     }
+
 
 }
