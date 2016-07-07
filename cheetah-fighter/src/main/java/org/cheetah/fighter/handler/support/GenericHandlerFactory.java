@@ -14,11 +14,6 @@ public class GenericHandlerFactory implements HandlerFactory {
     }
 
     @Override
-    public Handler createApplicationEventHandler() {
-        return new ApplicationEventHandler();
-    }
-
-    @Override
     public Handler createDomainEventHandler() {
         return new DomainEventHandler();
     }
