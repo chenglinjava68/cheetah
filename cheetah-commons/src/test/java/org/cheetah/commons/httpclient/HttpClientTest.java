@@ -10,7 +10,14 @@ public class HttpClientTest {
 
     @Test
     public void test() {
-        Clients.resource("http://baidu.com").post();
+        String result  = Clients.resource("http://baidu.com")
+                .type("content-type", "application/json")
+                .type("accept", "application/json")
+                .parameter("a", "a")
+                .entity("entity")
+                .parameter("b", "b")
+                .post();
+        System.out.println(result);
     }
 
 

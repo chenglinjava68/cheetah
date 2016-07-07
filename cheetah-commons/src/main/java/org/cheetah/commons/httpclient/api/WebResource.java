@@ -64,11 +64,11 @@ public class WebResource {
     }
 
     public String post() {
-        return httpClientFacade.post(this.resource, this.parameters, this.headers);
+        return httpClientFacade.post(this.resource, this.entity, this.parameters, this.headers);
     }
 
     public T post(Class<T> entity) {
-        String result = httpClientFacade.post(this.resource, this.parameters, this.headers);
+        String result = post();
         return serializer.deserialize(result, entity);
     }
 
@@ -77,7 +77,7 @@ public class WebResource {
     }
 
     public T get(Class<T> entity) {
-        String result = httpClientFacade.get(this.resource, this.parameters, this.headers);
+        String result = get();
         return serializer.deserialize(result, entity);
     }
 
