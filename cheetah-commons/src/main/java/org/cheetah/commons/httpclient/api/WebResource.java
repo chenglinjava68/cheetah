@@ -8,6 +8,8 @@ import org.cheetah.commons.utils.Assert;
 import org.cheetah.commons.utils.StringUtils;
 
 /**
+ * 注意事项：post发出post请求时entity和parameters不能同时作为数据传输给服务方
+ * 当两个同时存在的时候，会优先使用entity而抛弃parameters
  * Created by maxhuang on 2016/7/5.
  */
 public class WebResource {
