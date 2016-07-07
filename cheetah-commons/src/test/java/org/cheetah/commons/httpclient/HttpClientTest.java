@@ -11,13 +11,11 @@ public class HttpClientTest {
     @Test
     public void test() {
         String result  = Clients.resource("http://baidu.com")
-                .type("content-type", "application/json")
-                .type("accept", "application/json")
                 .parameter("a", "a")
                 .entity("entity")
                 .parameter("b", "b")
+                .timeout(2000)
                 .post();
-        System.out.println(result);
     }
 
 
