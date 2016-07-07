@@ -158,23 +158,7 @@ public class HttpClientFacade {
                         .headers(header)
                         .build());
     }
-    /**
-     * http post entity形式传输数据
-     *
-     * @param url
-     * @param entity  传输数据
-     * @param headers 头信息
-     * @return
-     */
-    public String post(String url, String entity, Map<String, String> params, Map<String, String> headers) {
-        return restfulTransport.execute(
-                Transporter.POST().url(url)
-                        .entity(entity)
-                        .headers(headers)
-                        .parameters(params)
-                        .build()
-        );
-    }
+
     /**
      * http post entity形式传输数据
      *

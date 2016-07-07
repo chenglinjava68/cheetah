@@ -5,6 +5,7 @@ import org.apache.poi.ss.formula.functions.T;
 import org.cheetah.commons.httpclient.ResourceSerializer;
 import org.cheetah.commons.httpclient.serializer.Jackson2JsonSerializer;
 import org.cheetah.commons.utils.Assert;
+import org.cheetah.commons.utils.StringUtils;
 
 /**
  * Created by maxhuang on 2016/7/5.
@@ -64,7 +65,11 @@ public class WebResource {
     }
 
     public String post() {
-        return httpClientFacade.post(this.resource, this.entity, this.parameters, this.headers);
+        if (StringUtils.isNotBlank(entity))
+            return httpClientFacade.post(this.resource, this.entity, this.headers);
+        else {
+            return httpClientFacade.post(this.resource, parameters, headers);
+        }
     }
 
     public T post(Class<T> entity) {
