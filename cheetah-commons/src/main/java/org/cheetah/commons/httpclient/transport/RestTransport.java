@@ -42,7 +42,7 @@ public class RestTransport extends AbstractHttpTransport<String> implements Http
                         return entityJson;
                     } catch (IOException e) {
                         e.printStackTrace();
-                        throw new HttpClientException("entity to bytes error", e);
+                        throw new HttpClientException("entity to string error", e);
                     }
                 }
             };
