@@ -16,10 +16,11 @@ public class HttpClientTest {
      */
     @Test
     public void post1() {
-        Clients.resource("http://localhost:8080/test")
+        User user = Clients.resource("http://localhost:8080/test")
                 .entity(new User("user", "pass"))
                 .timeout(2000)
-                .post();
+                .post(User.class);
+        System.out.println(user);
     }
 
     /**

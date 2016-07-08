@@ -2,7 +2,6 @@ package org.cheetah.commons.httpclient.api;
 
 import com.google.common.collect.ImmutableMap;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.poi.ss.formula.functions.T;
 import org.cheetah.commons.httpclient.Requester;
 import org.cheetah.commons.httpclient.ResourceSerializer;
 import org.cheetah.commons.httpclient.serializer.Jackson2JsonSerializer;
@@ -104,7 +103,7 @@ public class WebResource {
         );
     }
 
-    public T post(Class<T> entity) {
+    public <T> T post(Class<T> entity) {
         String result = post();
         return serializer.deserialize(result, entity);
     }
@@ -122,7 +121,7 @@ public class WebResource {
         );
     }
 
-    public T put(Class<T> entity) {
+    public <T> T put(Class<T> entity) {
         String result = put();
         return serializer.deserialize(result, entity);
     }
@@ -143,7 +142,7 @@ public class WebResource {
         );
     }
 
-    public T get(Class<T> entity) {
+    public <T> T get(Class<T> entity) {
         String result = get();
         return serializer.deserialize(result, entity);
     }
@@ -164,7 +163,7 @@ public class WebResource {
         );
     }
 
-    public T delete(Class<T> entity) {
+    public <T> T delete(Class<T> entity) {
         String result = delete();
         return serializer.deserialize(result, entity);
     }
