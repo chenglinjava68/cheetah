@@ -16,7 +16,7 @@ public class HttpClientTest {
      */
     @Test
     public void post1() {
-        String result = Clients.resource("http://localhost:8080/test")
+        Clients.resource("http://localhost:8080/test")
                 .entity(new User("user", "pass"))
                 .timeout(2000)
                 .post();
@@ -30,7 +30,7 @@ public class HttpClientTest {
         Form form = Form.create().
                 parameter("username", "user")
                 .parameter("password", "pass");
-        String result = Clients.resource("http://localhost:8080/test/form")
+        Clients.resource("http://localhost:8080/test/form")
                 .form(form)
                 .timeout(2000)
                 .post();
@@ -44,7 +44,7 @@ public class HttpClientTest {
         Map<String, String> params = new HashMap<String, String>();
         params.put("user", "user");
         params.put("pass", "pass");
-        String result = Clients.resource("http://localhost:8080/test/on")
+        Clients.resource("http://localhost:8080/test/on")
                 .parameters(params)
                 .get();
     }
