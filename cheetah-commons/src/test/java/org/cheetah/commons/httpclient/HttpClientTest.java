@@ -1,7 +1,6 @@
 package org.cheetah.commons.httpclient;
 
 import org.cheetah.commons.httpclient.api.Clients;
-import org.cheetah.commons.httpclient.api.Form;
 import org.junit.Test;
 
 import java.util.HashMap;

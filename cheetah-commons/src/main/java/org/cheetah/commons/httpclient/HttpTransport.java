@@ -5,6 +5,6 @@ package org.cheetah.commons.httpclient;
  */
 public interface HttpTransport<T> {
 
-    T execute(Requester requester);
+    T execute(Requester requester, ResponseHandler<T> handler);
 
 }

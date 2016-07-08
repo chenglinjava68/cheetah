@@ -1,9 +1,11 @@
 package org.cheetah.commons.httpclient;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.*;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.cheetah.commons.httpclient.transport.HttpClientUtils;
+import org.cheetah.commons.httpclient.transport.ResponseProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +15,7 @@ import java.net.URISyntaxException;
 /**
  * Created by Max on 2016/7/6.
  */
-public abstract class AbstractHttpTransport<T> {
+public abstract class AbstractHttpTransport<T> implements HttpTransport<T> {
     private final Logger logger = LoggerFactory.getLogger(AbstractHttpTransport.class);
 
     private CloseableHttpClient httpClient;
@@ -22,7 +24,21 @@ public abstract class AbstractHttpTransport<T> {
         this.httpClient = httpClient;
     }
 
-    public T doExecute(Requester requester, ResponseHandler<T> handler) {
+    protected abstract T translate(HttpEntity entity);
+
+    public T execute(Requester requester) {
+        return doExecute(requester, response -> {
+            HttpEntity httpEntity = response.getEntity();
+            ResponseProcessor<T> processor = entity -> translate(httpEntity);
+            return processor.process(response);
+        });
+    }
+
+    public T execute(Requester requester, ResponseHandler<T> handler) {
+        return doExecute(requester, handler);
+    }
+
+    private T doExecute(Requester requester, ResponseHandler<T> handler) {
         HttpRequestBase requestBase = null;
         CloseableHttpResponse resp = null;
         try {
@@ -82,7 +98,7 @@ public abstract class AbstractHttpTransport<T> {
         return httpClient.execute(requestBase);
     }
 
-    public void requestConfig(Requester requester, HttpRequestBase requestBase) {
+    private void requestConfig(Requester requester, HttpRequestBase requestBase) {
         if (requester.requestConfig() != null)
             requestBase.setConfig(requester.requestConfig());
         else

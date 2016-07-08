@@ -1,4 +1,4 @@
-package org.cheetah.commons.httpclient.api;
+package org.cheetah.commons.httpclient;
 
 import com.google.common.collect.ImmutableMap;
 import org.cheetah.commons.utils.Assert;

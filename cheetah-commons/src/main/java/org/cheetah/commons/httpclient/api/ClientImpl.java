@@ -1,33 +1,25 @@
 package org.cheetah.commons.httpclient.api;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import org.cheetah.commons.httpclient.ResponseHandler;
+import org.cheetah.commons.httpclient.Client;
 import org.cheetah.commons.httpclient.Requester;
+import org.cheetah.commons.httpclient.ResponseHandler;
 import org.cheetah.commons.httpclient.transport.BinaryTransport;
 import org.cheetah.commons.httpclient.transport.RestTransport;
 
 import java.util.Map;
 
 /**
- * httpclient门面
- *
- * @author Max
- * @version 1.0
- * @email max@tagsdata.com
- * @date 2014-12-11 下午1:49:01
+ * Created by maxhuang on 2016/7/8.
  */
-public class Client {
-    public static final Map<String, String> RESET_TYPE = ImmutableMap.of("Content-Type", "application/json", "Accept", "application/json");
-    private BinaryTransport binaryTransport;
-    private RestTransport restfulTransport;
+public class ClientImpl implements Client {
 
-    public Client() {
-    }
+    protected BinaryTransport binaryTransport;
+    protected RestTransport restfulTransport;
 
-    public Client(ClientBuilder builder) {
-        this.binaryTransport = builder.binaryTransport;
-        this.restfulTransport = builder.restTransport;
+    public ClientImpl(BinaryTransport binaryTransport, RestTransport restfulTransport) {
+        this.binaryTransport = binaryTransport;
+        this.restfulTransport = restfulTransport;
     }
 
     /**
@@ -36,6 +28,7 @@ public class Client {
      * @param url
      * @return
      */
+    @Override
     public String post(String url) {
         return post(url, Maps.newHashMap());
     }
@@ -47,6 +40,7 @@ public class Client {
      * @param params 请求参数
      * @return
      */
+    @Override
     public String post(String url, Map<String, String> params) {
         return post(url, params, Maps.newHashMap());
     }
@@ -59,6 +53,7 @@ public class Client {
      * @param header 头信息
      * @return
      */
+    @Override
     public String post(String url, Map<String, String> params,
                        Map<String, String> header) {
         return restfulTransport.execute(
@@ -68,10 +63,12 @@ public class Client {
                         .build());
     }
 
+    @Override
     public String post(String url, ResponseHandler<String> handler) {
         return post(url, Maps.newHashMap(), handler);
     }
 
+    @Override
     public String post(String url, Map<String, String> params, ResponseHandler<String> handler) {
         return post(url, params, null, handler);
     }
@@ -85,9 +82,10 @@ public class Client {
      * @param handler
      * @return
      */
+    @Override
     public String post(String url, Map<String, String> params,
                        Map<String, String> header, ResponseHandler<String> handler) {
-        return restfulTransport.doExecute(
+        return restfulTransport.execute(
                 Requester.POST().url(url)
                         .parameters(params)
                         .headers(header)
@@ -98,6 +96,7 @@ public class Client {
      * @param url
      * @return
      */
+    @Override
     public byte[] load(String url, ResponseHandler<byte[]> handler) {
         return load(Maps.newHashMap(), url, handler);
     }
@@ -107,6 +106,7 @@ public class Client {
      * @param url
      * @return
      */
+    @Override
     public byte[] load(Map<String, String> params, String url, ResponseHandler<byte[]> handler) {
         return load(params, Maps.newHashMap(), url, handler);
     }
@@ -117,8 +117,9 @@ public class Client {
      * @param url
      * @return
      */
+    @Override
     public byte[] load(Map<String, String> params, Map<String, String> header, String url, ResponseHandler<byte[]> handler) {
-        return binaryTransport.doExecute(
+        return binaryTransport.execute(
                 Requester.POST().url(url)
                         .parameters(params)
                         .headers(header)
@@ -132,6 +133,7 @@ public class Client {
      * @param url    请求地址
      * @return
      */
+    @Override
     public byte[] load(Map<String, String> params, String url) {
         return load(Maps.newHashMap(), params, url);
     }
@@ -143,6 +145,7 @@ public class Client {
      * @param url 请求地址
      * @return
      */
+    @Override
     public byte[] load(String url) {
         return load(Maps.newHashMap(), url);
     }
@@ -153,6 +156,7 @@ public class Client {
      * @param url
      * @return
      */
+    @Override
     public byte[] load(Map<String, String> params, Map<String, String> header, String url) {
         return binaryTransport.execute(
                 Requester.POST().url(url)
@@ -169,6 +173,7 @@ public class Client {
      * @param headers 头信息
      * @return
      */
+    @Override
     public String post(String url, String entity, Map<String, String> headers) {
         return restfulTransport.execute(
                 Requester.POST().url(url)
@@ -185,6 +190,7 @@ public class Client {
      * @param entity 传输数据
      * @return
      */
+    @Override
     public String post(String url, String entity) {
         Map<String, String> headers = Maps.newHashMap();
         headers.put("Content-Type", "application/json");
@@ -199,6 +205,7 @@ public class Client {
      * @param entity 传输数据
      * @return
      */
+    @Override
     public String post(String url, String entity, ResponseHandler<String> handler) {
         return post(url, entity, null, handler);
     }
@@ -211,6 +218,7 @@ public class Client {
      * @param headers 头信息
      * @return
      */
+    @Override
     public String post(String url, String entity, Map<String, String> headers, ResponseHandler<String> handler) {
         return post(url, entity, null, headers, handler);
     }
@@ -223,8 +231,9 @@ public class Client {
      * @param headers 头信息
      * @return
      */
+    @Override
     public String post(String url, String entity, Map<String, String> params, Map<String, String> headers, ResponseHandler<String> handler) {
-        return restfulTransport.doExecute(
+        return restfulTransport.execute(
                 Requester.POST().url(url)
                         .entity(entity)
                         .headers(headers)
@@ -239,6 +248,7 @@ public class Client {
      * @param url
      * @return
      */
+    @Override
     public String get(String url) {
         return get(url, Maps.newHashMap());
     }
@@ -250,6 +260,7 @@ public class Client {
      * @param params 请求参数
      * @return
      */
+    @Override
     public String get(String url, Map<String, String> params) {
         return get(url, params, Maps.newHashMap());
     }
@@ -262,6 +273,7 @@ public class Client {
      * @param headers 头信息
      * @return
      */
+    @Override
     public String get(String url, Map<String, String> params,
                       Map<String, String> headers) {
         return restfulTransport.execute(Requester.GET()
@@ -277,6 +289,7 @@ public class Client {
      * @param url
      * @return
      */
+    @Override
     public String get(String url, ResponseHandler<String> handler) {
         return get(url, null, handler);
     }
@@ -288,6 +301,7 @@ public class Client {
      * @param params 请求参数
      * @return
      */
+    @Override
     public String get(String url, Map<String, String> params, ResponseHandler<String> handler) {
         return get(url, params, null, handler);
     }
@@ -300,20 +314,22 @@ public class Client {
      * @param headers 头信息
      * @return
      */
+    @Override
     public String get(String url, Map<String, String> params,
                       Map<String, String> headers, ResponseHandler<String> handler) {
-        return restfulTransport.doExecute(Requester.GET()
+        return restfulTransport.execute(Requester.GET()
                 .url(url)
                 .parameters(params)
                 .headers(headers)
                 .build(), handler);
     }
 
-
+    @Override
     public byte[] getBinary(String url) {
         return getBinary(url, Maps.newHashMap());
     }
 
+    @Override
     public byte[] getBinary(String url, Map<String, String> params) {
         return getBinary(url, params, Maps.newHashMap());
     }
@@ -326,6 +342,7 @@ public class Client {
      * @param headers
      * @return
      */
+    @Override
     public byte[] getBinary(String url, Map<String, String> params,
                             Map<String, String> headers) {
         return binaryTransport.execute(Requester
@@ -342,6 +359,7 @@ public class Client {
      * @param url
      * @return
      */
+    @Override
     public byte[] getBinary(String url, ResponseHandler<byte[]> handler) {
         return getBinary(url, null, handler);
     }
@@ -353,6 +371,7 @@ public class Client {
      * @param params
      * @return
      */
+    @Override
     public byte[] getBinary(String url, Map<String, String> params, ResponseHandler<byte[]> handler) {
         return getBinary(url, params, null, handler);
     }
@@ -365,9 +384,10 @@ public class Client {
      * @param headers
      * @return
      */
+    @Override
     public byte[] getBinary(String url, Map<String, String> params,
                             Map<String, String> headers, ResponseHandler<byte[]> handler) {
-        return binaryTransport.doExecute(Requester
+        return binaryTransport.execute(Requester
                 .GET()
                 .url(url)
                 .parameters(params)
@@ -375,12 +395,13 @@ public class Client {
                 .build(), handler);
     }
 
+    @Override
     public BinaryTransport getBinaryTransport() {
         return binaryTransport;
     }
 
+    @Override
     public RestTransport getRestfulTransport() {
         return restfulTransport;
     }
-
 }

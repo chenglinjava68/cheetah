@@ -1,5 +1,6 @@
 package org.cheetah.commons.httpclient.api;
 
+import org.cheetah.commons.httpclient.Client;
 import org.cheetah.commons.httpclient.transport.BinaryTransport;
 import org.cheetah.commons.httpclient.transport.RestTransport;
 
@@ -9,7 +10,6 @@ import static org.cheetah.commons.httpclient.connector.ApacheHttpConnector.defau
  * Created by Max on 2015/11/26.
  */
 public class ClientBuilder {
-
     BinaryTransport binaryTransport;
     RestTransport restTransport;
 
@@ -18,7 +18,7 @@ public class ClientBuilder {
     }
 
     public Client build() {
-        return new Client(this);
+        return new ClientImpl(binaryTransport, restTransport);
     }
 
     public static Client buildDefaultClient() {

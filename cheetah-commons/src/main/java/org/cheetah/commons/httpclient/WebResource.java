@@ -1,9 +1,8 @@
-package org.cheetah.commons.httpclient.api;
+package org.cheetah.commons.httpclient;
 
 import com.google.common.collect.ImmutableMap;
 import org.apache.http.client.config.RequestConfig;
-import org.cheetah.commons.httpclient.Requester;
-import org.cheetah.commons.httpclient.EntitySerializer;
+import org.cheetah.commons.httpclient.api.ClientBuilder;
 import org.cheetah.commons.httpclient.serializer.Jackson2JsonSerializer;
 import org.cheetah.commons.utils.Assert;
 
