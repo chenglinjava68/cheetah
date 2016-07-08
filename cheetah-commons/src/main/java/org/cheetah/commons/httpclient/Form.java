@@ -6,6 +6,7 @@ import org.cheetah.commons.utils.Assert;
 import java.util.Map;
 
 /**
+ * form表单模型
  * Created by maxhuang on 2016/7/8.
  */
 public class Form {

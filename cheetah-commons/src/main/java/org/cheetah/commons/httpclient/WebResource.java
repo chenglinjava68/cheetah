@@ -9,6 +9,12 @@ import org.cheetah.commons.utils.Assert;
 import java.util.Map;
 
 /**
+ * 一次请求产生一个资源
+ *
+ * 模型数据为http请求所需
+ * client http客户端
+ * serializer 为entity数据序列化器，目前只有jackson对json的操作
+ *
  * 注意事项：post发出post请求时entity和parameters不能同时作为数据传输给服务方
  * 当两个同时存在的时候，会优先使用entity而抛弃parameters
  * Created by maxhuang on 2016/7/5.

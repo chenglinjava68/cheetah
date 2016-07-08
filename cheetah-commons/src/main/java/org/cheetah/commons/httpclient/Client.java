@@ -7,6 +7,7 @@ import org.cheetah.commons.httpclient.transport.StringTransport;
 import java.util.Map;
 
 /**
+ * http客户端接口
  * Created by Max on 2016/7/8.
  */
 public interface Client {

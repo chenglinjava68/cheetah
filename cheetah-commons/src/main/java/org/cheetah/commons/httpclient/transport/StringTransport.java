@@ -22,9 +22,9 @@ public class StringTransport extends AbstractHttpTransport<String> {
     @Override
     protected String translate(HttpEntity entity) {
         try {
-            String entityJson = EntityUtils.toString(entity);
-            logger.info("http request success, content: \n{}", entityJson);
-            return entityJson;
+            String result = EntityUtils.toString(entity);
+            logger.info("http request success, content: \n{}", result);
+            return result;
         } catch (IOException e) {
             e.printStackTrace();
             throw new HttpClientException("entity to string error", e);

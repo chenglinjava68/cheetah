@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 /**
+ * http运输抽象类
+ * 实现方法选择，参数设置，头部信息设置，数据解压，http请求执行
+ *
  * Created by Max on 2016/7/6.
  */
 public abstract class AbstractHttpTransport<T> implements HttpTransport<T> {
@@ -40,6 +43,12 @@ public abstract class AbstractHttpTransport<T> implements HttpTransport<T> {
         return doExecute(requester, handler);
     }
 
+    /**
+     *
+     * @param requester
+     * @param handler
+     * @return
+     */
     private T doExecute(Requester requester, ResponseHandler<T> handler) {
         HttpRequestBase requestBase = null;
         CloseableHttpResponse resp = null;
@@ -85,6 +94,14 @@ public abstract class AbstractHttpTransport<T> implements HttpTransport<T> {
         }
     }
 
+    /**
+     *
+     * @param requestBase
+     * @param requester
+     * @return
+     * @throws URISyntaxException
+     * @throws IOException
+     */
     private CloseableHttpResponse executeBase(HttpRequestBase requestBase, Requester requester) throws URISyntaxException, IOException {
         HttpClientUtils.setUriParameter(requester.url(), requester.parameters(), requestBase);
         HttpClientUtils.setHeader(requester.headers(), requestBase);
@@ -92,6 +109,13 @@ public abstract class AbstractHttpTransport<T> implements HttpTransport<T> {
         return httpClient.execute(requestBase);
     }
 
+    /**
+     *
+     * @param requestBase
+     * @param requester
+     * @return
+     * @throws IOException
+     */
     private CloseableHttpResponse executeBase(HttpEntityEnclosingRequestBase requestBase, Requester requester) throws IOException {
         HttpClientUtils.setFormParameter(requester.parameters(), requestBase);
         HttpClientUtils.setBody(requester.entity(), requestBase);
@@ -100,6 +124,11 @@ public abstract class AbstractHttpTransport<T> implements HttpTransport<T> {
         return httpClient.execute(requestBase);
     }
 
+    /**
+     *
+     * @param requester
+     * @param requestBase
+     */
     private void requestConfig(Requester requester, HttpRequestBase requestBase) {
         if (requester.requestConfig() != null)
             requestBase.setConfig(requester.requestConfig());
