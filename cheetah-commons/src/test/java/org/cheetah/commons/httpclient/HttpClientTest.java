@@ -7,19 +7,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by maxhuang on 2016/7/5.
  */
 public class HttpClientTest {
+    AtomicLong atomicLong = new AtomicLong();
+    AtomicLong erratomicLong = new AtomicLong();
+
     /**
      * 基于实体的post请求
      */
     @Test
     public void post1() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(50);
-        while(true) {
-            while(Thread.activeCount() < 10) {
+        while (true) {
+            while (Thread.activeCount() < 10) {
                 executorService.submit(() -> {
                     while (true) {
                         try {
@@ -27,14 +31,16 @@ public class HttpClientTest {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        long start = System.currentTimeMillis();
                         try {
                             User user = Clients.resource("http://localhost:8080/test")
                                     .entity(new User("user", "pass"))
                                     .timeout(500)
                                     .post(User.class);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            erratomicLong.incrementAndGet();
                         }
+                        System.out.println(System.currentTimeMillis() - start + "--------" + atomicLong.incrementAndGet()+"------------"+erratomicLong.get());
                     }
 
                 });
