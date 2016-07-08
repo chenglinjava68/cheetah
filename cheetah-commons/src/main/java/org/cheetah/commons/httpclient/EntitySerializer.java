@@ -1,7 +1,7 @@
 package org.cheetah.commons.httpclient;
 
 /**
- * 加=
+ * 请求实体和表述的序列化接口
  *
  * Created by Max on 2016/7/6.
  */

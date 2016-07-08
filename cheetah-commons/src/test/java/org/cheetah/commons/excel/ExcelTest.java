@@ -14,7 +14,6 @@ import java.util.List;
 /**
  * Created by maxhuang on 2016/6/24.
  */
-@SuppressWarnings("unchecked")
 public class ExcelTest {
 
     @Test
@@ -46,18 +45,17 @@ public class ExcelTest {
     public void test22() throws FileNotFoundException {
         long start = System.currentTimeMillis();
         System.out.println(start);
-        ExcelTranslator<Anchor> translator = new ExcelTranslator<>();
-        List<Anchor> anchors = new ExcelTranslator<Anchor>().translator("D:\\test.xls", Anchor.class);
+        ExcelTranslator translator = ExcelTranslator.create();
+        List<Anchor> anchors = new ExcelTranslator().translator("D:\\test.xls", Anchor.class);
         for (Anchor anchor : anchors) {
             System.out.println(anchor);
         }
 
-        Translation<Anchor> t = Translation.newBuilder()
+        Translation<Anchor> t = Translation.<Anchor>newBuilder()
                 .toStream(new FileOutputStream("d:/test2.xls"))
                 .data(anchors)
                 .entity(Anchor.class)
                 .build();
-
         translator.translator(t);
     }
 
@@ -68,7 +66,7 @@ public class ExcelTest {
     @Test
     public void templateTest() throws FileNotFoundException {
         InputStream stream = new FileInputStream("D:\\excel_template_v2.xlsx");
-        ExcelTranslator<Anchor> translator = new ExcelTranslator<>();
+        ExcelTranslator translator = ExcelTranslator.create();
 
         List<Anchor> anchors = Lists.newArrayList();
         Anchor anchor = new Anchor();
@@ -77,7 +75,7 @@ public class ExcelTest {
         anchor.setName("name");
         anchors.add(anchor);
 
-        translator.translator(Translation.newBuilder().toStream(new FileOutputStream("d:/test_template.xlsx"))
+        translator.translator(Translation.<Anchor>newBuilder().toStream(new FileOutputStream("d:/test_template.xlsx"))
                 .entity(Anchor.class)
                 .templateStream(stream)
                 .data(anchors)

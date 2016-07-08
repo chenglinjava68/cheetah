@@ -1,5 +1,6 @@
 package org.cheetah.commons.httpclient;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -10,6 +11,8 @@ import java.util.Map;
 import static org.cheetah.commons.httpclient.Requester.METHOD.GET;
 
 /**
+ * 请求者，携带URL、entity、method、headers、parameters、requestConfig到HttpTransport
+ * 该对象为不可变
  * Created by maxhuang on 2016/7/6.
  */
 public class Requester {
@@ -124,12 +127,12 @@ public class Requester {
         }
 
         public Builder headers(Map<String, String> headers) {
-            this.headers = headers;
+            this.headers = ImmutableMap.<String, String>builder().putAll(headers).build();
             return this;
         }
 
         public Builder parameters(Map<String, String> parameters) {
-            this.parameters = parameters;
+            this.parameters = ImmutableMap.<String, String>builder().putAll(parameters).build();
             return this;
         }
 

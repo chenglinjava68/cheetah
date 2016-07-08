@@ -61,14 +61,14 @@ public class Translation<T> {
         return isXssf;
     }
 
-    public static Builder newBuilder() {
+    public static <T> Builder<T> newBuilder() {
         return new Builder<>();
     }
 
-    public static class Builder<E> {
+    public static class Builder<T> {
         Map<String, String> basicData;
-        List<E> data;
-        Class<E> entity;
+        List<T> data;
+        Class<T> entity;
         boolean isXssf;
         boolean hasTemplate = false;
         InputStream templateStream;
@@ -77,41 +77,41 @@ public class Translation<T> {
         Builder() {
         }
 
-        Builder(Class<E> entity) {
+        Builder(Class<T> entity) {
             this.entity = entity;
         }
 
-        public Translation<E> build() {
-            return new Translation<E>(this);
+        public Translation<T> build() {
+            return new Translation<>(this);
         }
 
-        public Builder basicData(Map<String, String> basicData) {
+        public Builder<T> basicData(Map<String, String> basicData) {
             this.basicData = basicData;
             return this;
         }
 
-        public Builder data(List<E> data) {
+        public Builder<T> data(List<T> data) {
             this.data = data;
             return this;
         }
 
-        public Builder entity(Class<E> entity) {
+        public Builder<T> entity(Class<T> entity) {
             this.entity = entity;
             return this;
         }
 
-        public Builder xssf(boolean xssf) {
+        public Builder<T> xssf(boolean xssf) {
             isXssf = xssf;
             return this;
         }
 
-        public Builder templateStream(InputStream templateStream) {
+        public Builder<T> templateStream(InputStream templateStream) {
             this.templateStream = templateStream;
             this.hasTemplate = true;
             return this;
         }
 
-        public Builder toStream(OutputStream toStream) {
+        public Builder<T> toStream(OutputStream toStream) {
             this.toStream = toStream;
             return this;
         }

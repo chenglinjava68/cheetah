@@ -15,8 +15,11 @@ import java.util.List;
  * excel转换器
  * Created by Max on 2016/6/25.
  */
-public class ExcelTranslator<T> {
-    private SimpleExcelProcessor<T> readProcessor = new SimpleExcelProcessor<>();
+public class ExcelTranslator {
+
+    public static ExcelTranslator create() {
+        return new ExcelTranslator();
+    }
 
     /**
      * 将excel转为数据
@@ -25,7 +28,7 @@ public class ExcelTranslator<T> {
      * @param clz
      * @return
      */
-    public List<T> translator(InputStream inputStream, Class<T> clz) {
+    public <T> List<T> translator(InputStream inputStream, Class<T> clz) {
         return translator(inputStream, clz, 0);
     }
 
@@ -37,7 +40,7 @@ public class ExcelTranslator<T> {
      * @param sheetIndex
      * @return
      */
-    public List<T> translator(InputStream inputStream, Class<T> clz, int sheetIndex) {
+    public <T> List<T> translator(InputStream inputStream, Class<T> clz, int sheetIndex) {
         return translator(inputStream, clz, sheetIndex, 0, 0);
     }
 
@@ -51,8 +54,9 @@ public class ExcelTranslator<T> {
      * @param tailLine    是否有标志行尾不需要读取
      * @return
      */
-    public List<T> translator(InputStream inputStream, Class<T> clz, int sheetIndex,
+    public <T> List<T> translator(InputStream inputStream, Class<T> clz, int sheetIndex,
                               int readLine, int tailLine) {
+        SimpleExcelProcessor<T> readProcessor = new SimpleExcelProcessor<>();
         return readProcessor.read(inputStream, clz, sheetIndex, readLine, tailLine);
     }
 
@@ -63,7 +67,7 @@ public class ExcelTranslator<T> {
      * @param clz
      * @return
      */
-    public List<T> translator(String srcPath, Class<T> clz) {
+    public <T> List<T> translator(String srcPath, Class<T> clz) {
         return translator(srcPath, clz, 0);
     }
 
@@ -75,7 +79,7 @@ public class ExcelTranslator<T> {
      * @param sheetIndex
      * @return
      */
-    public List<T> translator(String srcPath, Class<T> clz, int sheetIndex) {
+    public <T> List<T> translator(String srcPath, Class<T> clz, int sheetIndex) {
         return translator(srcPath, clz, sheetIndex, 0, 0);
     }
 
@@ -89,8 +93,9 @@ public class ExcelTranslator<T> {
      * @param tailLine   是否有标志行尾不需要读取
      * @return
      */
-    public List<T> translator(String srcPath, Class<T> clz, int sheetIndex,
+    public <T> List<T> translator(String srcPath, Class<T> clz, int sheetIndex,
                               int readLine, int tailLine) {
+        SimpleExcelProcessor<T> readProcessor = new SimpleExcelProcessor<>();
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(srcPath);
@@ -105,7 +110,6 @@ public class ExcelTranslator<T> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -114,7 +118,7 @@ public class ExcelTranslator<T> {
      *
      * @param translation
      */
-    public void translator(Translation<T> translation) {
+    public <T> void translator(Translation<T> translation) {
         ExcelProcessor<T> processor;
         if (translation.hasTemplate()) {
             try {
