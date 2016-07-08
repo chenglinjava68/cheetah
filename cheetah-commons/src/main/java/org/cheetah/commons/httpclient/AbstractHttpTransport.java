@@ -26,6 +26,7 @@ public abstract class AbstractHttpTransport<T> implements HttpTransport<T> {
 
     protected abstract T translate(HttpEntity entity);
 
+    @Override
     public T execute(Requester requester) {
         return doExecute(requester, response -> {
             HttpEntity httpEntity = response.getEntity();
@@ -34,6 +35,7 @@ public abstract class AbstractHttpTransport<T> implements HttpTransport<T> {
         });
     }
 
+    @Override
     public T execute(Requester requester, ResponseHandler<T> handler) {
         return doExecute(requester, handler);
     }
