@@ -46,7 +46,7 @@ public class ExcelTest {
         long start = System.currentTimeMillis();
         System.out.println(start);
         ExcelTranslator translator = ExcelTranslator.create();
-        List<Anchor> anchors = translator.translator("D:\\test.xls", Anchor.class);
+        List<Anchor> anchors = translator.translate("D:\\test.xls", Anchor.class);
         for (Anchor anchor : anchors) {
             System.out.println(anchor);
         }
@@ -56,7 +56,7 @@ public class ExcelTest {
                 .data(anchors)
                 .entity(Anchor.class)
                 .build();
-        translator.translator(t);
+        translator.translate(t);
     }
 
     /**
@@ -81,7 +81,7 @@ public class ExcelTest {
         anchors.add(anchor);
         anchors.add(anchor2);
 
-        translator.translator(Translation.<Anchor>newBuilder().toStream(new FileOutputStream("d:/test_template.xlsx"))
+        translator.translate(Translation.<Anchor>newBuilder().toStream(new FileOutputStream("d:/test_template.xlsx"))
                 .entity(Anchor.class)
                 .templateStream(stream)
                 .data(anchors)
