@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by maxhuang on 2016/7/5.
@@ -14,12 +16,31 @@ public class HttpClientTest {
      * 基于实体的post请求
      */
     @Test
-    public void post1() {
-        User user = Clients.resource("http://localhost:8080/test")
-                .entity(new User("user", "pass"))
-                .timeout(2000)
-                .post(User.class);
-        System.out.println(user);
+    public void post1() throws InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(50);
+        while(true) {
+            while(Thread.activeCount() < 10) {
+                executorService.submit(() -> {
+                    while (true) {
+                        try {
+                            Thread.sleep(1);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            User user = Clients.resource("http://localhost:8080/test")
+                                    .entity(new User("user", "pass"))
+                                    .timeout(500)
+                                    .post(User.class);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                });
+
+            }
+        }
     }
 
     /**

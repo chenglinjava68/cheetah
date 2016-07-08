@@ -91,7 +91,7 @@ public class WebResource {
 
     public String post() {
         RequestConfig requestConfig = timeout == -1 ? RequestConfig.DEFAULT :
-                RequestConfig.custom().setConnectTimeout(timeout).setSocketTimeout(GENERIC_TIMEOUT).build();
+                RequestConfig.custom().setConnectTimeout(GENERIC_TIMEOUT).setSocketTimeout(timeout).build();
         return client.getRestfulTransport().execute(Requester.POST()
                 .url(this.resource)
                 .entity(this.entity)
@@ -109,7 +109,7 @@ public class WebResource {
 
     public String put() {
         RequestConfig requestConfig = timeout == -1 ? RequestConfig.DEFAULT :
-                RequestConfig.custom().setConnectTimeout(timeout).setSocketTimeout(GENERIC_TIMEOUT).build();
+                RequestConfig.custom().setConnectTimeout(GENERIC_TIMEOUT).setSocketTimeout(timeout).build();
         return client.getRestfulTransport().execute(Requester.PUT()
                 .url(this.resource)
                 .entity(this.entity)
@@ -128,7 +128,6 @@ public class WebResource {
     public String get() {
         RequestConfig requestConfig = timeout == -1 ? RequestConfig.DEFAULT :
                 RequestConfig.custom()
-                        .setConnectionRequestTimeout(GENERIC_TIMEOUT)
                         .setConnectTimeout(GENERIC_TIMEOUT)
                         .setSocketTimeout(timeout)
                         .build();
@@ -149,7 +148,6 @@ public class WebResource {
     public String delete() {
         RequestConfig requestConfig = timeout == -1 ? RequestConfig.DEFAULT :
                 RequestConfig.custom()
-                        .setConnectionRequestTimeout(GENERIC_TIMEOUT)
                         .setConnectTimeout(GENERIC_TIMEOUT)
                         .setSocketTimeout(timeout)
                         .build();
