@@ -6,6 +6,8 @@ import org.cheetah.commons.httpclient.AbstractHttpTransport;
 import org.cheetah.commons.httpclient.HttpClientException;
 import org.cheetah.commons.httpclient.HttpTransport;
 import org.cheetah.commons.httpclient.Requester;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -13,7 +15,7 @@ import java.io.IOException;
  * Created by Max on 2015/11/26.
  */
 public class RestTransport extends AbstractHttpTransport<String> implements HttpTransport<String> {
-
+    private final Logger logger = LoggerFactory.getLogger(RestTransport.class);
     private ResponseProcessor<String> processor;
 
     public RestTransport(CloseableHttpClient httpClient) {
@@ -30,7 +32,7 @@ public class RestTransport extends AbstractHttpTransport<String> implements Http
         this.processor = entity -> {
             try {
                 String entityJson = EntityUtils.toString(entity);
-                ResponseProcessor.logger.info("http request success, content: \n{}", entityJson);
+                logger.info("http request success, content: \n{}", entityJson);
                 return entityJson;
             } catch (IOException e) {
                 e.printStackTrace();

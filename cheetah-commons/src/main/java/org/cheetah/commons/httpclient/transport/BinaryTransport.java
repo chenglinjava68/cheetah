@@ -6,6 +6,8 @@ import org.cheetah.commons.httpclient.AbstractHttpTransport;
 import org.cheetah.commons.httpclient.HttpClientException;
 import org.cheetah.commons.httpclient.HttpTransport;
 import org.cheetah.commons.httpclient.Requester;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -13,7 +15,7 @@ import java.io.IOException;
  * Created by Max on 2015/11/26.
  */
 public class BinaryTransport extends AbstractHttpTransport<byte[]> implements HttpTransport<byte[]> {
-
+    private final Logger logger = LoggerFactory.getLogger(BinaryTransport.class);
     private ResponseProcessor<byte[]> processor;
 
     public BinaryTransport(CloseableHttpClient httpClient) {
@@ -30,7 +32,7 @@ public class BinaryTransport extends AbstractHttpTransport<byte[]> implements Ht
         this.processor = entity -> {
             try {
                 byte[] result = EntityUtils.toByteArray(entity);
-                ResponseProcessor.logger.info("http request success, result type is bytes, length {}", result.length);
+                logger.info("http request success, result type is bytes, length {}", result.length);
                 return result;
             } catch (IOException e) {
                 e.printStackTrace();
