@@ -32,7 +32,8 @@ public interface ResponseProcessor<T> {
     }
 
     default void onFailure(StatusLine statusLine) {
-        throw new HttpClientException(String.format("request 1 failed with a %d response ", statusLine.getStatusCode()));
+        logger.error("request 1 failed with a {} response", statusLine.getStatusCode());
+        throw new HttpClientException("request 1 failed with a response");
     }
 
     T onSuccess(HttpEntity entity);

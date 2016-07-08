@@ -83,7 +83,7 @@ public abstract class AbstractHttpTransport<T> {
     }
 
     public void requestConfig(Requester requester, HttpRequestBase requestBase) {
-        if(requester.requestConfig() != null)
+        if (requester.requestConfig() != null)
             requestBase.setConfig(requester.requestConfig());
         else
             requestBase.setConfig(RequestConfig.DEFAULT);
