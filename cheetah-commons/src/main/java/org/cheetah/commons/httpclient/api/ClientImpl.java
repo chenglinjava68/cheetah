@@ -5,7 +5,7 @@ import org.cheetah.commons.httpclient.Client;
 import org.cheetah.commons.httpclient.Requester;
 import org.cheetah.commons.httpclient.ResponseHandler;
 import org.cheetah.commons.httpclient.transport.BinaryTransport;
-import org.cheetah.commons.httpclient.transport.RestTransport;
+import org.cheetah.commons.httpclient.transport.StringTransport;
 
 import java.util.Map;
 
@@ -14,12 +14,12 @@ import java.util.Map;
  */
 public class ClientImpl implements Client {
 
-    protected BinaryTransport binaryTransport;
-    protected RestTransport restfulTransport;
+    private BinaryTransport binaryTransport;
+    private StringTransport stringTransport;
 
-    public ClientImpl(BinaryTransport binaryTransport, RestTransport restfulTransport) {
+    public ClientImpl(BinaryTransport binaryTransport, StringTransport stringTransport) {
         this.binaryTransport = binaryTransport;
-        this.restfulTransport = restfulTransport;
+        this.stringTransport = stringTransport;
     }
 
     /**
@@ -56,7 +56,7 @@ public class ClientImpl implements Client {
     @Override
     public String post(String url, Map<String, String> params,
                        Map<String, String> header) {
-        return restfulTransport.execute(
+        return stringTransport.execute(
                 Requester.POST().url(url)
                         .parameters(params)
                         .headers(header)
@@ -85,7 +85,7 @@ public class ClientImpl implements Client {
     @Override
     public String post(String url, Map<String, String> params,
                        Map<String, String> header, ResponseHandler<String> handler) {
-        return restfulTransport.execute(
+        return stringTransport.execute(
                 Requester.POST().url(url)
                         .parameters(params)
                         .headers(header)
@@ -175,7 +175,7 @@ public class ClientImpl implements Client {
      */
     @Override
     public String post(String url, String entity, Map<String, String> headers) {
-        return restfulTransport.execute(
+        return stringTransport.execute(
                 Requester.POST().url(url)
                         .entity(entity)
                         .headers(headers)
@@ -233,7 +233,7 @@ public class ClientImpl implements Client {
      */
     @Override
     public String post(String url, String entity, Map<String, String> params, Map<String, String> headers, ResponseHandler<String> handler) {
-        return restfulTransport.execute(
+        return stringTransport.execute(
                 Requester.POST().url(url)
                         .entity(entity)
                         .headers(headers)
@@ -276,7 +276,7 @@ public class ClientImpl implements Client {
     @Override
     public String get(String url, Map<String, String> params,
                       Map<String, String> headers) {
-        return restfulTransport.execute(Requester.GET()
+        return stringTransport.execute(Requester.GET()
                 .url(url)
                 .parameters(params)
                 .headers(headers)
@@ -317,7 +317,7 @@ public class ClientImpl implements Client {
     @Override
     public String get(String url, Map<String, String> params,
                       Map<String, String> headers, ResponseHandler<String> handler) {
-        return restfulTransport.execute(Requester.GET()
+        return stringTransport.execute(Requester.GET()
                 .url(url)
                 .parameters(params)
                 .headers(headers)
@@ -401,7 +401,7 @@ public class ClientImpl implements Client {
     }
 
     @Override
-    public RestTransport getRestfulTransport() {
-        return restfulTransport;
+    public StringTransport getStringTransport() {
+        return stringTransport;
     }
 }

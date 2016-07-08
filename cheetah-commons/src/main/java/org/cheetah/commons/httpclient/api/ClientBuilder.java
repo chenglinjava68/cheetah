@@ -2,7 +2,7 @@ package org.cheetah.commons.httpclient.api;
 
 import org.cheetah.commons.httpclient.Client;
 import org.cheetah.commons.httpclient.transport.BinaryTransport;
-import org.cheetah.commons.httpclient.transport.RestTransport;
+import org.cheetah.commons.httpclient.transport.StringTransport;
 
 import static org.cheetah.commons.httpclient.connector.ApacheHttpConnector.defaultApacheHttpConnector;
 
@@ -10,21 +10,21 @@ import static org.cheetah.commons.httpclient.connector.ApacheHttpConnector.defau
  * Created by Max on 2015/11/26.
  */
 public class ClientBuilder {
-    BinaryTransport binaryTransport;
-    RestTransport restTransport;
+    private BinaryTransport binaryTransport;
+    private StringTransport stringTransport;
 
     public static ClientBuilder newBuilder() {
         return new ClientBuilder();
     }
 
     public Client build() {
-        return new ClientImpl(binaryTransport, restTransport);
+        return new ClientImpl(binaryTransport, stringTransport);
     }
 
     public static Client buildDefaultClient() {
         return ClientBuilder.newBuilder()
                 .binaryTransport(new BinaryTransport(defaultApacheHttpConnector().getDefaultHttpClient()))
-                .restTransport(new RestTransport(defaultApacheHttpConnector().getDefaultHttpClient()))
+                .stringTransport(new StringTransport(defaultApacheHttpConnector().getDefaultHttpClient()))
                 .build();
     }
 
@@ -33,8 +33,8 @@ public class ClientBuilder {
         return this;
     }
 
-    public ClientBuilder restTransport(RestTransport restTransport) {
-        this.restTransport = restTransport;
+    public ClientBuilder stringTransport(StringTransport restTransport) {
+        this.stringTransport = restTransport;
         return this;
     }
 

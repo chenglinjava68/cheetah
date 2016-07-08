@@ -2,7 +2,7 @@ package org.cheetah.commons.httpclient;
 
 import com.google.common.collect.ImmutableMap;
 import org.cheetah.commons.httpclient.transport.BinaryTransport;
-import org.cheetah.commons.httpclient.transport.RestTransport;
+import org.cheetah.commons.httpclient.transport.StringTransport;
 
 import java.util.Map;
 
@@ -14,7 +14,7 @@ public interface Client {
 
     BinaryTransport getBinaryTransport();
 
-    RestTransport getRestfulTransport();
+    StringTransport getStringTransport();
 
     String post(String url);
 

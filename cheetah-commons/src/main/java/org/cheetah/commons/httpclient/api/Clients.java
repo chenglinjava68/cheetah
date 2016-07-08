@@ -6,7 +6,7 @@ import org.cheetah.commons.httpclient.Client;
 import org.cheetah.commons.httpclient.WebResource;
 import org.cheetah.commons.httpclient.connector.ApacheHttpConnector;
 import org.cheetah.commons.httpclient.transport.BinaryTransport;
-import org.cheetah.commons.httpclient.transport.RestTransport;
+import org.cheetah.commons.httpclient.transport.StringTransport;
 
 /**
  * Created by Max on 2016/7/6.
@@ -30,7 +30,7 @@ public class Clients {
                 .createClientCertified(keyPath, password);
         return ClientBuilder.newBuilder()
                 .binaryTransport(new BinaryTransport(httpClient))
-                .restTransport(new RestTransport(httpClient))
+                .stringTransport(new StringTransport(httpClient))
                 .build();
     }
 

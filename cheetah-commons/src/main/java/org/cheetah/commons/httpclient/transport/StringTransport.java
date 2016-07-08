@@ -12,10 +12,10 @@ import java.io.IOException;
 /**
  * Created by Max on 2015/11/26.
  */
-public class RestTransport extends AbstractHttpTransport<String> {
-    private final Logger logger = LoggerFactory.getLogger(RestTransport.class);
+public class StringTransport extends AbstractHttpTransport<String> {
+    private final Logger logger = LoggerFactory.getLogger(StringTransport.class);
 
-    public RestTransport(CloseableHttpClient httpClient) {
+    public StringTransport(CloseableHttpClient httpClient) {
         super(httpClient);
     }
 
