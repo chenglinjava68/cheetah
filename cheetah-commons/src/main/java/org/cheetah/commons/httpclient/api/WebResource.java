@@ -3,7 +3,7 @@ package org.cheetah.commons.httpclient.api;
 import com.google.common.collect.ImmutableMap;
 import org.apache.http.client.config.RequestConfig;
 import org.cheetah.commons.httpclient.Requester;
-import org.cheetah.commons.httpclient.ResourceSerializer;
+import org.cheetah.commons.httpclient.EntitySerializer;
 import org.cheetah.commons.httpclient.serializer.Jackson2JsonSerializer;
 import org.cheetah.commons.utils.Assert;
 
@@ -18,7 +18,7 @@ public class WebResource {
     public static final int GENERIC_TIMEOUT = 2000;
 
     private Client client;
-    private ResourceSerializer serializer;
+    private EntitySerializer serializer;
     private String resource;
     private String entity;
     private ImmutableMap<String, String> parameters = ImmutableMap.of();
@@ -33,13 +33,13 @@ public class WebResource {
         this(resource, new Jackson2JsonSerializer(), client);
     }
 
-    public WebResource(String resource, ResourceSerializer serializer, Client client) {
+    public WebResource(String resource, EntitySerializer serializer, Client client) {
         this.resource = resource;
         this.client = client;
         this.serializer = serializer;
     }
 
-    WebResource(String resource, String entity, ImmutableMap<String, String> headers, ImmutableMap<String, String> parameters, ResourceSerializer serializer, int timeout, Client client) {
+    WebResource(String resource, String entity, ImmutableMap<String, String> headers, ImmutableMap<String, String> parameters, EntitySerializer serializer, int timeout, Client client) {
         this.resource = resource;
         this.entity = entity;
         this.headers = headers;
