@@ -7,12 +7,12 @@ import org.apache.http.client.config.RequestConfig;
 
 import java.util.Map;
 
-import static org.cheetah.commons.httpclient.Transporter.METHOD.GET;
+import static org.cheetah.commons.httpclient.Requester.METHOD.GET;
 
 /**
  * Created by maxhuang on 2016/7/6.
  */
-public class Transporter {
+public class Requester {
     public enum METHOD {
         GET, POST, PUT, DELETE, HEAD, TRACE, OPTIONS
     }
@@ -23,10 +23,10 @@ public class Transporter {
     private Map<String, String> parameters = Maps.newHashMap();
     private RequestConfig requestConfig;
 
-    Transporter() {
+    Requester() {
     }
 
-    Transporter(Builder builder) {
+    Requester(Builder builder) {
         this.url = builder.url;
         this.entity = builder.entity;
         this.method = builder.method;
@@ -104,8 +104,8 @@ public class Transporter {
             this.method = method;
         }
 
-        public Transporter build() {
-            return new Transporter(this);
+        public Requester build() {
+            return new Requester(this);
         }
 
         public Builder url(String url) {

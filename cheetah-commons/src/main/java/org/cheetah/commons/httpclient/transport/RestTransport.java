@@ -7,7 +7,7 @@ import org.apache.http.util.EntityUtils;
 import org.cheetah.commons.httpclient.AbstractHttpTransport;
 import org.cheetah.commons.httpclient.HttpClientException;
 import org.cheetah.commons.httpclient.HttpTransport;
-import org.cheetah.commons.httpclient.Transporter;
+import org.cheetah.commons.httpclient.Requester;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,12 +25,12 @@ public class RestTransport extends AbstractHttpTransport<String> implements Http
     }
 
     @Override
-    public String execute(Transporter transporter) {
-        return doExecute(transporter, response -> {
+    public String execute(Requester requester) {
+        return doExecute(requester, response -> {
             ResponseProcessor<String> processor = new ResponseProcessor<String>() {
                 @Override
                 public void onFailure(StatusLine statusLine) {
-                    logger.error("request 1 failed with a {} response url : {}", statusLine.getStatusCode(), transporter.url());
+                    logger.error("request 1 failed with a {} response url : {}", statusLine.getStatusCode(), requester.url());
                     throw new HttpClientException("request 1 failed with a response");
                 }
 

@@ -38,6 +38,7 @@ public class ApacheHttpConnector {
     private int maxConnPerHost = 500; // 设置 每个路由最大连接数
     private int maxTotalConn = 1000; // 设置最大连接数
 
+    private final static ApacheHttpConnector apacheHttpConnector = new ApacheHttpConnector();
     private CloseableHttpClient defaultHttpclient = null;
 
     public ApacheHttpConnector() {
@@ -52,6 +53,10 @@ public class ApacheHttpConnector {
         if (defaultHttpclient == null)
             defaultHttpclient = createHttpClient();
         return defaultHttpclient;
+    }
+
+    public static ApacheHttpConnector defaultApacheHttpConnector() {
+        return apacheHttpConnector;
     }
 
     /**

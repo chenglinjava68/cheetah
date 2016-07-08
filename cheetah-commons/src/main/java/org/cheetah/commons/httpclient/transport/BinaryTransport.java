@@ -7,7 +7,7 @@ import org.apache.http.util.EntityUtils;
 import org.cheetah.commons.httpclient.AbstractHttpTransport;
 import org.cheetah.commons.httpclient.HttpClientException;
 import org.cheetah.commons.httpclient.HttpTransport;
-import org.cheetah.commons.httpclient.Transporter;
+import org.cheetah.commons.httpclient.Requester;
 
 import java.io.IOException;
 
@@ -21,12 +21,12 @@ public class BinaryTransport extends AbstractHttpTransport<byte[]> implements Ht
     }
 
     @Override
-    public byte[] execute(Transporter transporter) {
-        return doExecute(transporter, response -> {
+    public byte[] execute(Requester requester) {
+        return doExecute(requester, response -> {
             ResponseProcessor<byte[]> processor = new ResponseProcessor<byte[]>() {
                 @Override
                 public void onFailure(StatusLine statusLine) {
-                    logger.error("request 1 failed with a {} response url : {}", statusLine.getStatusCode(), transporter.url());
+                    logger.error("request 1 failed with a {} response url : {}", statusLine.getStatusCode(), requester.url());
                     throw new HttpClientException("request 1 failed with a response");
                 }
 

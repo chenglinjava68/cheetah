@@ -1,6 +1,10 @@
 package org.cheetah.commons.httpclient.api;
 
+
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.cheetah.commons.httpclient.connector.ApacheHttpConnector;
+import org.cheetah.commons.httpclient.transport.BinaryTransport;
+import org.cheetah.commons.httpclient.transport.RestTransport;
 
 /**
  * Created by Max on 2016/7/6.
@@ -10,11 +14,22 @@ public class Clients {
         return new WebResource(url);
     }
 
-    public static HttpClientFacade getDefaultHttpClientFacade() {
-        return HttpClientFacadeBuilder.defaultHttpClientFacade();
+    public static WebResource resource(String url, Client client) {
+        return new WebResource(client, url);
     }
 
-    public static CloseableHttpClient getDefaultHttpClient() {
-        return HttpClientFacadeBuilder.defaultApacheHttpConnector().getDefaultHttpClient();
+    public static Client getDefaultClient() {
+        return ClientBuilder.buildDefaultClient();
     }
+
+    public static Client getSafeClient(String keyPath, String password) {
+        CloseableHttpClient httpClient = ApacheHttpConnector
+                .defaultApacheHttpConnector()
+                .createClientCertified(keyPath, password);
+        return ClientBuilder.newBuilder()
+                .binaryTransport(new BinaryTransport(httpClient))
+                .restTransport(new RestTransport(httpClient))
+                .build();
+    }
+
 }

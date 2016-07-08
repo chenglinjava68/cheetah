@@ -3,10 +3,12 @@ package org.cheetah.commons.httpclient.api;
 import com.google.common.collect.ImmutableMap;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.poi.ss.formula.functions.T;
+import org.cheetah.commons.httpclient.Requester;
 import org.cheetah.commons.httpclient.ResourceSerializer;
-import org.cheetah.commons.httpclient.Transporter;
 import org.cheetah.commons.httpclient.serializer.Jackson2JsonSerializer;
 import org.cheetah.commons.utils.Assert;
+
+import java.util.Map;
 
 /**
  * 注意事项：post发出post请求时entity和parameters不能同时作为数据传输给服务方
@@ -16,7 +18,7 @@ import org.cheetah.commons.utils.Assert;
 public class WebResource {
     public static final int GENERIC_TIMEOUT = 2000;
 
-    private HttpClientFacade httpClientFacade;
+    private Client client;
     private ResourceSerializer serializer;
     private String resource;
     private String entity;
@@ -25,62 +27,74 @@ public class WebResource {
     private int timeout = -1;
 
     public WebResource(String resource) {
-        this(resource, new Jackson2JsonSerializer(), HttpClientFacadeBuilder.defaultHttpClientFacade());
+        this(resource, new Jackson2JsonSerializer(), ClientBuilder.buildDefaultClient());
     }
 
-    public WebResource(HttpClientFacade httpClientFacade, String resource) {
-        this(resource, new Jackson2JsonSerializer(), httpClientFacade);
+    public WebResource(Client client, String resource) {
+        this(resource, new Jackson2JsonSerializer(), client);
     }
 
-    public WebResource(String resource, ResourceSerializer serializer, HttpClientFacade httpClientFacade) {
+    public WebResource(String resource, ResourceSerializer serializer, Client client) {
         this.resource = resource;
-        this.httpClientFacade = httpClientFacade;
+        this.client = client;
         this.serializer = serializer;
     }
 
-    WebResource(String resource, String entity, ImmutableMap<String, String> headers, ImmutableMap<String, String> parameters, ResourceSerializer serializer, int timeout) {
+    WebResource(String resource, String entity, ImmutableMap<String, String> headers, ImmutableMap<String, String> parameters, ResourceSerializer serializer, int timeout, Client client) {
         this.resource = resource;
         this.entity = entity;
         this.headers = headers;
         this.parameters = parameters;
         this.serializer = serializer;
         this.timeout = timeout;
-        this.httpClientFacade = HttpClientFacadeBuilder.defaultHttpClientFacade();
+        this.client = client;
     }
 
     public WebResource type(String name, String value) {
         Assert.notBlank(name, "name must not be null or empty");
         Assert.notBlank(value, "value must not be null or empty");
         ImmutableMap<String, String> newHeaders = ImmutableMap.<String, String>builder().putAll(headers).put(name, value).build();
-        return new WebResource(this.resource, this.entity, newHeaders, this.parameters, serializer, this.timeout);
+        return new WebResource(this.resource, this.entity, newHeaders, this.parameters, serializer, this.timeout, this.client);
     }
 
     public WebResource parameter(String name, String value) {
         Assert.notBlank(name, "name must not be null or empty");
         Assert.notBlank(value, "value must not be null or empty");
         ImmutableMap<String, String> newparameters = ImmutableMap.<String, String>builder().putAll(parameters).put(name, value).build();
-        return new WebResource(this.resource, this.entity, this.headers, newparameters, serializer, this.timeout);
+        return new WebResource(this.resource, this.entity, this.headers, newparameters, serializer, this.timeout, this.client);
+    }
+
+    public WebResource form(Form form) {
+        Assert.notNull(form, "form must not be null");
+        ImmutableMap<String, String> newparameters = ImmutableMap.<String, String>builder().putAll(parameters).putAll(form.parameters()).build();
+        return new WebResource(this.resource, this.entity, this.headers, newparameters, serializer, this.timeout, this.client);
+    }
+
+    public WebResource parameters(Map<String, String> $parameters) {
+        Assert.notNull($parameters, "$parameters must not be null");
+        ImmutableMap<String, String> newparameters = ImmutableMap.<String, String>builder().putAll(this.parameters).putAll($parameters).build();
+        return new WebResource(this.resource, this.entity, this.headers, newparameters, serializer, this.timeout, this.client);
     }
 
     public WebResource entity(String entity) {
-        ImmutableMap<String, String> newHeaders = ImmutableMap.<String, String>builder().putAll(HttpClientFacade.RESET_TYPE).putAll(headers).build();
-        return new WebResource(this.resource, entity, newHeaders, this.parameters, serializer, this.timeout);
+        ImmutableMap<String, String> newHeaders = ImmutableMap.<String, String>builder().putAll(Client.RESET_TYPE).putAll(headers).build();
+        return new WebResource(this.resource, entity, newHeaders, this.parameters, serializer, this.timeout, this.client);
     }
 
     public WebResource entity(Object entity) {
-        ImmutableMap<String, String> newHeaders = ImmutableMap.<String, String>builder().putAll(HttpClientFacade.RESET_TYPE).putAll(headers).build();
+        ImmutableMap<String, String> newHeaders = ImmutableMap.<String, String>builder().putAll(Client.RESET_TYPE).putAll(headers).build();
         String entityJson = this.serializer.serialize(entity);
-        return new WebResource(this.resource, entityJson, newHeaders, this.parameters, serializer, this.timeout);
+        return new WebResource(this.resource, entityJson, newHeaders, this.parameters, serializer, this.timeout, this.client);
     }
 
     public WebResource timeout(int timeout) {
-        return new WebResource(this.resource, this.entity, this.headers, this.parameters, serializer, timeout);
+        return new WebResource(this.resource, this.entity, this.headers, this.parameters, serializer, timeout, this.client);
     }
 
     public String post() {
         RequestConfig requestConfig = timeout == -1 ? RequestConfig.DEFAULT :
                 RequestConfig.custom().setConnectTimeout(timeout).setSocketTimeout(GENERIC_TIMEOUT).build();
-        return httpClientFacade.getRestfulTransport().execute(Transporter.POST()
+        return client.getRestfulTransport().execute(Requester.POST()
                 .url(this.resource)
                 .entity(this.entity)
                 .headers(this.headers)
@@ -95,6 +109,24 @@ public class WebResource {
         return serializer.deserialize(result, entity);
     }
 
+    public String put() {
+        RequestConfig requestConfig = timeout == -1 ? RequestConfig.DEFAULT :
+                RequestConfig.custom().setConnectTimeout(timeout).setSocketTimeout(GENERIC_TIMEOUT).build();
+        return client.getRestfulTransport().execute(Requester.PUT()
+                .url(this.resource)
+                .entity(this.entity)
+                .headers(this.headers)
+                .parameters(this.parameters)
+                .requestConfig(requestConfig)
+                .build()
+        );
+    }
+
+    public T put(Class<T> entity) {
+        String result = put();
+        return serializer.deserialize(result, entity);
+    }
+
     public String get() {
         RequestConfig requestConfig = timeout == -1 ? RequestConfig.DEFAULT :
                 RequestConfig.custom()
@@ -102,7 +134,7 @@ public class WebResource {
                         .setConnectTimeout(GENERIC_TIMEOUT)
                         .setSocketTimeout(timeout)
                         .build();
-        return httpClientFacade.getRestfulTransport().execute(Transporter.GET()
+        return client.getRestfulTransport().execute(Requester.GET()
                 .url(this.resource)
                 .headers(this.headers)
                 .parameters(this.parameters)
@@ -116,17 +148,38 @@ public class WebResource {
         return serializer.deserialize(result, entity);
     }
 
+    public String delete() {
+        RequestConfig requestConfig = timeout == -1 ? RequestConfig.DEFAULT :
+                RequestConfig.custom()
+                        .setConnectionRequestTimeout(GENERIC_TIMEOUT)
+                        .setConnectTimeout(GENERIC_TIMEOUT)
+                        .setSocketTimeout(timeout)
+                        .build();
+        return client.getRestfulTransport().execute(Requester.DELETE()
+                .url(this.resource)
+                .headers(this.headers)
+                .parameters(this.parameters)
+                .requestConfig(requestConfig)
+                .build()
+        );
+    }
+
+    public T delete(Class<T> entity) {
+        String result = delete();
+        return serializer.deserialize(result, entity);
+    }
+
     /**
      * 注意，这里使用的是POST
      *
      * @return
      */
     public byte[] load() {
-        return httpClientFacade.load(this.parameters, this.headers, this.resource);
+        return client.load(this.parameters, this.headers, this.resource);
     }
 
     public byte[] getBinary() {
-        return httpClientFacade.getBinary(this.resource, this.parameters, this.headers);
+        return client.getBinary(this.resource, this.parameters, this.headers);
     }
 
     public byte[] download() {
@@ -136,7 +189,7 @@ public class WebResource {
                         .setConnectTimeout(GENERIC_TIMEOUT)
                         .setSocketTimeout(timeout)
                         .build();
-        return httpClientFacade.getBinaryTransport().execute(Transporter.GET()
+        return client.getBinaryTransport().execute(Requester.GET()
                 .url(this.resource)
                 .headers(this.headers)
                 .parameters(this.parameters)

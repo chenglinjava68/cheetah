@@ -22,69 +22,69 @@ public abstract class AbstractHttpTransport<T> {
         this.httpClient = httpClient;
     }
 
-    public T doExecute(Transporter transporter, ResponseHandler<T> handler) {
+    public T doExecute(Requester requester, ResponseHandler<T> handler) {
         HttpRequestBase requestBase = null;
         CloseableHttpResponse resp = null;
         try {
-            logger.info("request data : {}", transporter);
+            logger.info("request data : {}", requester);
 
-            switch (transporter.method()) {
+            switch (requester.method()) {
                 case POST:
-                    requestBase = new HttpPost(transporter.url());
-                    resp = executeBase((HttpPost) requestBase, transporter);
+                    requestBase = new HttpPost(requester.url());
+                    resp = executeBase((HttpPost) requestBase, requester);
                     break;
                 case PUT:
-                    requestBase = new HttpPut(transporter.url());
-                    resp = executeBase((HttpPut) requestBase, transporter);
+                    requestBase = new HttpPut(requester.url());
+                    resp = executeBase((HttpPut) requestBase, requester);
                     break;
                 case DELETE:
-                    requestBase = new HttpDelete(transporter.url());
-                    resp = executeBase(requestBase, transporter);
+                    requestBase = new HttpDelete(requester.url());
+                    resp = executeBase(requestBase, requester);
                     break;
                 case HEAD:
-                    requestBase = new HttpHead(transporter.url());
-                    resp = executeBase(requestBase, transporter);
+                    requestBase = new HttpHead(requester.url());
+                    resp = executeBase(requestBase, requester);
                     break;
                 case TRACE:
-                    requestBase = new HttpTrace(transporter.url());
-                    resp = executeBase(requestBase, transporter);
+                    requestBase = new HttpTrace(requester.url());
+                    resp = executeBase(requestBase, requester);
                     break;
                 case OPTIONS:
-                    requestBase = new HttpOptions(transporter.url());
-                    resp = executeBase(requestBase, transporter);
+                    requestBase = new HttpOptions(requester.url());
+                    resp = executeBase(requestBase, requester);
                     break;
                 default:
-                    requestBase = new HttpGet(transporter.url());
-                    resp = executeBase(requestBase, transporter);
+                    requestBase = new HttpGet(requester.url());
+                    resp = executeBase(requestBase, requester);
             }
 
             return handler.handle(resp);
         } catch (Exception e) {
-            logger.error("The HTTP request an exception occurs, url :{}", transporter.url(), e);
-            throw new HttpClientException("The HTTP request an exception occurs, url : " + transporter.url(), e);
+            logger.error("The HTTP request an exception occurs, url :{}", requester.url(), e);
+            throw new HttpClientException("The HTTP request an exception occurs, url : " + requester.url(), e);
         } finally {
             HttpClientUtils.close(requestBase, resp);
         }
     }
 
-    private CloseableHttpResponse executeBase(HttpRequestBase requestBase, Transporter transporter) throws URISyntaxException, IOException {
-        HttpClientUtils.setUriParameter(transporter.url(), transporter.parameters(), requestBase);
-        HttpClientUtils.setHeader(transporter.headers(), requestBase);
-        requestConfig(transporter, requestBase);
+    private CloseableHttpResponse executeBase(HttpRequestBase requestBase, Requester requester) throws URISyntaxException, IOException {
+        HttpClientUtils.setUriParameter(requester.url(), requester.parameters(), requestBase);
+        HttpClientUtils.setHeader(requester.headers(), requestBase);
+        requestConfig(requester, requestBase);
         return httpClient.execute(requestBase);
     }
 
-    private CloseableHttpResponse executeBase(HttpEntityEnclosingRequestBase requestBase, Transporter transporter) throws IOException {
-        HttpClientUtils.setFormParameter(transporter.parameters(), requestBase);
-        HttpClientUtils.setBody(transporter.entity(), requestBase);
-        HttpClientUtils.setHeader(transporter.headers(), requestBase);
-        requestConfig(transporter, requestBase);
+    private CloseableHttpResponse executeBase(HttpEntityEnclosingRequestBase requestBase, Requester requester) throws IOException {
+        HttpClientUtils.setFormParameter(requester.parameters(), requestBase);
+        HttpClientUtils.setBody(requester.entity(), requestBase);
+        HttpClientUtils.setHeader(requester.headers(), requestBase);
+        requestConfig(requester, requestBase);
         return httpClient.execute(requestBase);
     }
 
-    public void requestConfig(Transporter transporter, HttpRequestBase requestBase) {
-        if(transporter.requestConfig() != null)
-            requestBase.setConfig(transporter.requestConfig());
+    public void requestConfig(Requester requester, HttpRequestBase requestBase) {
+        if(requester.requestConfig() != null)
+            requestBase.setConfig(requester.requestConfig());
         else
             requestBase.setConfig(RequestConfig.DEFAULT);
     }

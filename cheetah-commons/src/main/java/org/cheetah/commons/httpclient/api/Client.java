@@ -3,7 +3,7 @@ package org.cheetah.commons.httpclient.api;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import org.cheetah.commons.httpclient.ResponseHandler;
-import org.cheetah.commons.httpclient.Transporter;
+import org.cheetah.commons.httpclient.Requester;
 import org.cheetah.commons.httpclient.transport.BinaryTransport;
 import org.cheetah.commons.httpclient.transport.RestTransport;
 
@@ -17,17 +17,17 @@ import java.util.Map;
  * @email max@tagsdata.com
  * @date 2014-12-11 下午1:49:01
  */
-public class HttpClientFacade {
+public class Client {
     public static final Map<String, String> RESET_TYPE = ImmutableMap.of("Content-Type", "application/json", "Accept", "application/json");
     private BinaryTransport binaryTransport;
     private RestTransport restfulTransport;
 
-    public HttpClientFacade() {
+    public Client() {
     }
 
-    public HttpClientFacade(HttpClientFacadeBuilder builder) {
-        this.binaryTransport = builder.binaryHttpTransport;
-        this.restfulTransport = builder.restfulHttpTransport;
+    public Client(ClientBuilder builder) {
+        this.binaryTransport = builder.binaryTransport;
+        this.restfulTransport = builder.restTransport;
     }
 
     /**
@@ -62,7 +62,7 @@ public class HttpClientFacade {
     public String post(String url, Map<String, String> params,
                        Map<String, String> header) {
         return restfulTransport.execute(
-                Transporter.POST().url(url)
+                Requester.POST().url(url)
                         .parameters(params)
                         .headers(header)
                         .build());
@@ -88,7 +88,7 @@ public class HttpClientFacade {
     public String post(String url, Map<String, String> params,
                        Map<String, String> header, ResponseHandler<String> handler) {
         return restfulTransport.doExecute(
-                Transporter.POST().url(url)
+                Requester.POST().url(url)
                         .parameters(params)
                         .headers(header)
                         .build(), handler);
@@ -119,7 +119,7 @@ public class HttpClientFacade {
      */
     public byte[] load(Map<String, String> params, Map<String, String> header, String url, ResponseHandler<byte[]> handler) {
         return binaryTransport.doExecute(
-                Transporter.POST().url(url)
+                Requester.POST().url(url)
                         .parameters(params)
                         .headers(header)
                         .build(), handler);
@@ -155,7 +155,7 @@ public class HttpClientFacade {
      */
     public byte[] load(Map<String, String> params, Map<String, String> header, String url) {
         return binaryTransport.execute(
-                Transporter.POST().url(url)
+                Requester.POST().url(url)
                         .parameters(params)
                         .headers(header)
                         .build());
@@ -171,7 +171,7 @@ public class HttpClientFacade {
      */
     public String post(String url, String entity, Map<String, String> headers) {
         return restfulTransport.execute(
-                Transporter.POST().url(url)
+                Requester.POST().url(url)
                         .entity(entity)
                         .headers(headers)
                         .build()
@@ -225,7 +225,7 @@ public class HttpClientFacade {
      */
     public String post(String url, String entity, Map<String, String> params, Map<String, String> headers, ResponseHandler<String> handler) {
         return restfulTransport.doExecute(
-                Transporter.POST().url(url)
+                Requester.POST().url(url)
                         .entity(entity)
                         .headers(headers)
                         .parameters(params)
@@ -264,7 +264,7 @@ public class HttpClientFacade {
      */
     public String get(String url, Map<String, String> params,
                       Map<String, String> headers) {
-        return restfulTransport.execute(Transporter.GET()
+        return restfulTransport.execute(Requester.GET()
                 .url(url)
                 .parameters(params)
                 .headers(headers)
@@ -302,7 +302,7 @@ public class HttpClientFacade {
      */
     public String get(String url, Map<String, String> params,
                       Map<String, String> headers, ResponseHandler<String> handler) {
-        return restfulTransport.doExecute(Transporter.GET()
+        return restfulTransport.doExecute(Requester.GET()
                 .url(url)
                 .parameters(params)
                 .headers(headers)
@@ -328,7 +328,7 @@ public class HttpClientFacade {
      */
     public byte[] getBinary(String url, Map<String, String> params,
                             Map<String, String> headers) {
-        return binaryTransport.execute(Transporter
+        return binaryTransport.execute(Requester
                 .GET()
                 .url(url)
                 .parameters(params)
@@ -367,7 +367,7 @@ public class HttpClientFacade {
      */
     public byte[] getBinary(String url, Map<String, String> params,
                             Map<String, String> headers, ResponseHandler<byte[]> handler) {
-        return binaryTransport.doExecute(Transporter
+        return binaryTransport.doExecute(Requester
                 .GET()
                 .url(url)
                 .parameters(params)
