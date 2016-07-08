@@ -46,7 +46,7 @@ public class ExcelTest {
         long start = System.currentTimeMillis();
         System.out.println(start);
         ExcelTranslator translator = ExcelTranslator.create();
-        List<Anchor> anchors = new ExcelTranslator().translator("D:\\test.xls", Anchor.class);
+        List<Anchor> anchors = translator.translator("D:\\test.xls", Anchor.class);
         for (Anchor anchor : anchors) {
             System.out.println(anchor);
         }
@@ -73,7 +73,13 @@ public class ExcelTest {
         anchor.setFxId(123);
         anchor.setLiveRoom(123);
         anchor.setName("name");
+        Anchor anchor2 = new Anchor();
+        anchor2.setFxId(123);
+        anchor2.setLiveRoom(123);
+        anchor2.setName("name");
         anchors.add(anchor);
+        anchors.add(anchor);
+        anchors.add(anchor2);
 
         translator.translator(Translation.<Anchor>newBuilder().toStream(new FileOutputStream("d:/test_template.xlsx"))
                 .entity(Anchor.class)

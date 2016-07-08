@@ -122,7 +122,7 @@ public class ExcelTranslator {
         ExcelProcessor<T> processor;
         if (translation.hasTemplate()) {
             try {
-                processor = new TemplateExcelProcessor<>(translation.templateStream(), translation.basicData());
+                processor = new TemplateExcelProcessor<>(translation.templateStream(), translation.placeholder());
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new ExcelException("创建模板异常", e);

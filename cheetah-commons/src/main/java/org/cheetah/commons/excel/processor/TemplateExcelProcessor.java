@@ -22,23 +22,23 @@ import java.util.Map;
  */
 public class TemplateExcelProcessor<T> extends AbstractExcelProcessor<T> {
     private ExcelTemplate excelTemplate;
-    private Map<String, String> templateBasicData;
+    private Map<String, String> templatePlaceholder;
 
     TemplateExcelProcessor() {
         super(true);
     }
 
-    public TemplateExcelProcessor(File templateFile, Map<String, String> basicData) throws IOException, InvalidFormatException {
+    public TemplateExcelProcessor(File templateFile, Map<String, String> templatePlaceholder) throws IOException, InvalidFormatException {
         this();
-        this.templateBasicData = basicData;
+        this.templatePlaceholder = templatePlaceholder;
         workbook = WorkbookFactory.create(templateFile);
         sheet = workbook.getSheetAt(0);
         createOrFlushExcelTemplate();
     }
 
-    public TemplateExcelProcessor(InputStream templateInputStream, Map<String, String> basicData) throws IOException, InvalidFormatException {
+    public TemplateExcelProcessor(InputStream templateInputStream, Map<String, String> templatePlaceholder) throws IOException, InvalidFormatException {
         this();
-        this.templateBasicData = basicData;
+        this.templatePlaceholder = templatePlaceholder;
         workbook = WorkbookFactory.create(templateInputStream);
         sheet = workbook.getSheetAt(0);
         createOrFlushExcelTemplate();
@@ -81,7 +81,7 @@ public class TemplateExcelProcessor<T> extends AbstractExcelProcessor<T> {
                 for (ExcelHeader eh : headers)
                     excelTemplate.createCell(BeanUtils.getProperty(obj, ExcelResourcesHelper.getTargetName(eh)));
             }
-            excelTemplate.replaceFinalData(templateBasicData);
+            excelTemplate.replaceFinalData(templatePlaceholder);
         } catch (Exception e) {
             throw new ExcelException(e);
         }

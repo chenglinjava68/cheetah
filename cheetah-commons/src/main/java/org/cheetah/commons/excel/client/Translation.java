@@ -12,7 +12,7 @@ import java.util.Map;
  * Created by Max on 2016/6/25.
  */
 public class Translation<T> {
-    private Map<String, String> basicData;
+    private Map<String, String> placeholder;
     private List<T> data;
     private Class<T> entity;
     private boolean hasTemplate;
@@ -24,7 +24,7 @@ public class Translation<T> {
         Assert.notNull(builder.toStream, "toStream must not be null.");
         Assert.notNull(builder.data, "data must not be null.");
         Assert.notNull(builder.entity, "entity must not be null.");
-        this.basicData = builder.basicData;
+        this.placeholder = builder.placeholder;
         this.isXssf = builder.isXssf;
         this.data = builder.data;
         this.entity = builder.entity;
@@ -33,8 +33,8 @@ public class Translation<T> {
         this.toStream = builder.toStream;
     }
 
-    public Map<String, String> basicData() {
-        return basicData;
+    public Map<String, String> placeholder() {
+        return placeholder;
     }
 
     public List<T> data() {
@@ -66,7 +66,7 @@ public class Translation<T> {
     }
 
     public static class Builder<T> {
-        Map<String, String> basicData;
+        Map<String, String> placeholder;
         List<T> data;
         Class<T> entity;
         boolean isXssf;
@@ -85,8 +85,8 @@ public class Translation<T> {
             return new Translation<>(this);
         }
 
-        public Builder<T> basicData(Map<String, String> basicData) {
-            this.basicData = basicData;
+        public Builder<T> placeholder(Map<String, String> placeholder) {
+            this.placeholder = placeholder;
             return this;
         }
 
