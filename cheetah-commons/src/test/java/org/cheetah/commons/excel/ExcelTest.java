@@ -38,16 +38,22 @@ public class ExcelTest {
 
     }
 
+    /**
+     * 复制文档
+     * @throws FileNotFoundException
+     */
     @Test
     public void test22() throws FileNotFoundException {
         long start = System.currentTimeMillis();
         System.out.println(start);
         ExcelTranslator<Anchor> translator = new ExcelTranslator<>();
-        List<Anchor> anchors = new ExcelTranslator<Anchor>().translator("E:\\test.xlsx", Anchor.class);
-        System.out.println(anchors);
+        List<Anchor> anchors = new ExcelTranslator<Anchor>().translator("D:\\test.xls", Anchor.class);
+        for (Anchor anchor : anchors) {
+            System.out.println(anchor);
+        }
 
         Translation<Anchor> t = Translation.newBuilder()
-                .toStream(new FileOutputStream("E:/test2.xls"))
+                .toStream(new FileOutputStream("d:/test2.xls"))
                 .data(anchors)
                 .entity(Anchor.class)
                 .build();
@@ -55,9 +61,13 @@ public class ExcelTest {
         translator.translator(t);
     }
 
+    /**
+     * 基于模板的导出
+     * @throws FileNotFoundException
+     */
     @Test
     public void templateTest() throws FileNotFoundException {
-        InputStream stream = new FileInputStream("E:\\excel_template_v2.xlsx");
+        InputStream stream = new FileInputStream("D:\\excel_template_v2.xlsx");
         ExcelTranslator<Anchor> translator = new ExcelTranslator<>();
 
         List<Anchor> anchors = Lists.newArrayList();
@@ -67,7 +77,7 @@ public class ExcelTest {
         anchor.setName("name");
         anchors.add(anchor);
 
-        translator.translator(Translation.newBuilder().toStream(new FileOutputStream("d:/test.xlsx"))
+        translator.translator(Translation.newBuilder().toStream(new FileOutputStream("d:/test_template.xlsx"))
                 .entity(Anchor.class)
                 .templateStream(stream)
                 .data(anchors)
