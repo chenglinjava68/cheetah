@@ -7,9 +7,9 @@ import org.cheetah.commons.httpclient.AbstractHttpTransport;
 /**
  * Created by Max on 2016/7/9.
  */
-public class CustomHttpTransport<T> extends AbstractHttpTransport<T> {
+public class CustomTransport<T> extends AbstractHttpTransport<T> {
 
-    public CustomHttpTransport(CloseableHttpClient httpClient) {
+    public CustomTransport(CloseableHttpClient httpClient) {
         super(httpClient);
     }
 

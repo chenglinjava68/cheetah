@@ -5,7 +5,7 @@ import org.cheetah.commons.httpclient.Client;
 import org.cheetah.commons.httpclient.Requester;
 import org.cheetah.commons.httpclient.ResponseHandler;
 import org.cheetah.commons.httpclient.transport.BinaryTransport;
-import org.cheetah.commons.httpclient.transport.CustomHttpTransport;
+import org.cheetah.commons.httpclient.transport.CustomTransport;
 import org.cheetah.commons.httpclient.transport.StringTransport;
 
 import java.util.Map;
@@ -25,7 +25,7 @@ public class ClientImpl implements Client {
 
     @Override
     public <T> T execute(Requester requester, ResponseHandler<T> handler) {
-        CustomHttpTransport<T> transport = new CustomHttpTransport<>(stringTransport.getHttpClient());
+        CustomTransport<T> transport = new CustomTransport<>(stringTransport.getHttpClient());
         return transport.execute(requester, handler);
     }
 
