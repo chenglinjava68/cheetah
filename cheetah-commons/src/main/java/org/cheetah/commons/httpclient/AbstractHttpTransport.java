@@ -136,4 +136,7 @@ public abstract class AbstractHttpTransport<T> implements HttpTransport<T> {
             requestBase.setConfig(RequestConfig.DEFAULT);
     }
 
+    public CloseableHttpClient getHttpClient() {
+        return httpClient;
+    }
 }

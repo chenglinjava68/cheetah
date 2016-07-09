@@ -5,6 +5,7 @@ import org.cheetah.commons.httpclient.Client;
 import org.cheetah.commons.httpclient.Requester;
 import org.cheetah.commons.httpclient.ResponseHandler;
 import org.cheetah.commons.httpclient.transport.BinaryTransport;
+import org.cheetah.commons.httpclient.transport.CustomHttpTransport;
 import org.cheetah.commons.httpclient.transport.StringTransport;
 
 import java.util.Map;
@@ -20,6 +21,11 @@ public class ClientImpl implements Client {
     public ClientImpl(BinaryTransport binaryTransport, StringTransport stringTransport) {
         this.binaryTransport = binaryTransport;
         this.stringTransport = stringTransport;
+    }
+
+    public <T> T execute(Requester requester, ResponseHandler<T> handler) {
+        CustomHttpTransport<T> transport = new CustomHttpTransport<>(stringTransport.getHttpClient());
+        return transport.execute(requester, handler);
     }
 
     /**
