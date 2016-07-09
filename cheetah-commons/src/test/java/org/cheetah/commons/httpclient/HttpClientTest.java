@@ -40,7 +40,7 @@ public class HttpClientTest {
                         } catch (Exception e) {
                             erratomicLong.incrementAndGet();
                         }
-                        System.out.println(System.currentTimeMillis() - start + "--------" + atomicLong.incrementAndGet()+"------------"+erratomicLong.get());
+                        System.out.println(System.currentTimeMillis() - start + "--------" + atomicLong.incrementAndGet() + "------------" + erratomicLong.get());
                     }
 
                 });
@@ -74,6 +74,20 @@ public class HttpClientTest {
         Clients.resource("http://localhost:8080/test/on")
                 .parameters(params)
                 .get();
+    }
+
+    /**
+     * 基于get查询参数
+     */
+    @Test
+    public void custom() {
+        Map<String, String> params = new HashMap<>();
+        params.put("user", "user");
+        params.put("pass", "pass");
+
+        String s = Clients.getDefaultClient().execute(Requester.POST()
+                .parameters(params)
+                .build(), response -> null);
     }
 
 }

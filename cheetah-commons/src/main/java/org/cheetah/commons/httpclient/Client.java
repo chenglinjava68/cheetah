@@ -17,6 +17,8 @@ public interface Client {
 
     StringTransport getStringTransport();
 
+    <T> T execute(Requester requester, ResponseHandler<T> handler);
+
     String post(String url);
 
     /**

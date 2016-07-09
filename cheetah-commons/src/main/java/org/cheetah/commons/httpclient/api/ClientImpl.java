@@ -23,6 +23,7 @@ public class ClientImpl implements Client {
         this.stringTransport = stringTransport;
     }
 
+    @Override
     public <T> T execute(Requester requester, ResponseHandler<T> handler) {
         CustomHttpTransport<T> transport = new CustomHttpTransport<>(stringTransport.getHttpClient());
         return transport.execute(requester, handler);
