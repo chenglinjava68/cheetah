@@ -43,7 +43,9 @@ final class ExcelResourcesHelper {
                 if (m.isAnnotationPresent(ExcelResources.class)) {
                     ExcelResources er = m.getAnnotation(ExcelResources.class);
                     Type type = m.getGenericReturnType();
-                    headers.add(new ExcelHeader(er.title(), er.order(), mn, type));
+                    ExcelHeader header = new ExcelHeader(er.title(), er.order(), mn, type);
+                    if(!headers.contains(header))
+                        headers.add(header);
                 }
             }
         }
@@ -53,7 +55,9 @@ final class ExcelResourcesHelper {
             if (f.isAnnotationPresent(ExcelResources.class)) {
                 ExcelResources er = f.getAnnotation(ExcelResources.class);
                 Type type = f.getGenericType();
-                headers.add(new ExcelHeader(er.title(), er.order(), f.getName(), type));
+                ExcelHeader header = new ExcelHeader(er.title(), er.order(), f.getName(), type);
+                if(!headers.contains(header))
+                    headers.add(header);
             }
         }
         return headers;
