@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cheetah.commons.httpclient.EntitySerializer;
+import org.cheetah.commons.httpclient.HttpClientException;
 
 import java.io.IOException;
 
@@ -28,8 +29,8 @@ public class Jackson2JsonSerializer implements EntitySerializer {
             return objectMapper.writeValueAsString(entity);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+            throw new HttpClientException("jackson2JsonSerializer serialize failed.");
         }
-        return null;
     }
 
     @Override
@@ -38,7 +39,7 @@ public class Jackson2JsonSerializer implements EntitySerializer {
             return objectMapper.readValue(representation, entity);
         } catch (IOException e) {
             e.printStackTrace();
+            throw new HttpClientException("jackson2JsonSerializer deserialize failed.");
         }
-        return null;
     }
 }
