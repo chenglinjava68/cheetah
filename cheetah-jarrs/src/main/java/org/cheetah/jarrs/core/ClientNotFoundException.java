@@ -8,7 +8,7 @@ import org.cheetah.jarrs.ApiExceptionMetadata;
 /**
  * @author Max
  */
-@ApiExceptionMetadata(code = ApiConstants.CLIENT_NOT_FOUND_ERROR, message = "client not found.")
+@ApiExceptionMetadata(code = ApiConstants.CLIENT_NOT_FOUND_ERROR, message = "api not found.")
 public class ClientNotFoundException extends ApiException {
     private static final long serialVersionUID = -186841720189592369L;
 }

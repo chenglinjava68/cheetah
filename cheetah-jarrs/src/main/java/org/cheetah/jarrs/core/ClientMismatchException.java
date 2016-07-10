@@ -7,7 +7,7 @@ import org.cheetah.jarrs.ApiExceptionMetadata;
 /**
  * @author Max
  */
-@ApiExceptionMetadata(code = ApiConstants.CLIENT_MISMATCH_ERROR, message = "api client mismatch.")
+@ApiExceptionMetadata(code = ApiConstants.CLIENT_MISMATCH_ERROR, message = "api api mismatch.")
 public class ClientMismatchException extends ApiException {
     private static final long serialVersionUID = -1219891681594115044L;
 }
