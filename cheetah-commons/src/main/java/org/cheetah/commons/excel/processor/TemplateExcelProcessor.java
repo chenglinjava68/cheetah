@@ -83,11 +83,11 @@ public class TemplateExcelProcessor<T> extends AbstractExcelProcessor<T> {
             for (int i = 0; i < datas.size(); i++) {
                 Info.log(this.getClass(), "row {}", i);
                 excelTemplate.createNewRow();
-                long start = System.currentTimeMillis();
+//                long start = System.currentTimeMillis();
                 for (ExcelHeader eh : headers) {
                     excelTemplate.createCell(datas.get(i), eh);
                 }
-                Info.log(this.getClass(), "每写一行数据需要{}毫秒", System.currentTimeMillis() - start);
+//                Info.log(this.getClass(), "每写一行数据需要{}毫秒", System.currentTimeMillis() - start);
             }
             excelTemplate.replaceFinalData(templatePlaceholder);
         } catch (Exception e) {
