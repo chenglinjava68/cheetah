@@ -1,6 +1,5 @@
 package org.cheetah.commons.excel.processor;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.cheetah.commons.excel.ExcelException;
@@ -78,8 +77,9 @@ public class TemplateExcelProcessor<T> extends AbstractExcelProcessor<T> {
             Collections.sort(headers);
             for (T obj : datas) {
                 excelTemplate.createNewRow();
-                for (ExcelHeader eh : headers)
-                    excelTemplate.createCell(BeanUtils.getProperty(obj, ExcelResourcesHelper.getTargetName(eh)));
+                for (ExcelHeader eh : headers) {
+                    excelTemplate.createCell(obj, eh);
+                }
             }
             excelTemplate.replaceFinalData(templatePlaceholder);
         } catch (Exception e) {

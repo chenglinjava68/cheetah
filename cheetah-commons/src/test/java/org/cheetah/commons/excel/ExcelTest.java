@@ -46,7 +46,7 @@ public class ExcelTest {
         long start = System.currentTimeMillis();
         System.out.println(start);
         ExcelTranslator translator = ExcelTranslator.create();
-        List<Anchor> anchors = translator.translate("D:\\test.xls", Anchor.class);
+        List<Anchor> anchors = translator.translate("D:\\test.xlsx", Anchor.class);
         for (Anchor anchor : anchors) {
             System.out.println(anchor);
         }

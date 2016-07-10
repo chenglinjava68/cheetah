@@ -5,10 +5,13 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.*;
 import org.cheetah.commons.excel.ExcelException;
+import org.cheetah.commons.excel.ExcelHeader;
 import org.cheetah.commons.excel.ExcelProcessor;
 import org.cheetah.commons.excel.StyleHandler;
+import org.cheetah.commons.logger.Info;
 
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -51,7 +54,7 @@ public abstract class AbstractExcelProcessor<T> implements ExcelProcessor<T> {
                     if (!maps.containsKey(ci))
                         break;
                     String value = maps.get(ci);
-                    if(!value.startsWith("set"))//如果是字段名称
+                    if(!value.startsWith("setValue"))//如果是字段名称
                         BeanUtils.copyProperty(obj, value, this.getCellValue(c));
                     else { //方法名称
                         String mn = value.substring(3);
@@ -107,4 +110,5 @@ public abstract class AbstractExcelProcessor<T> implements ExcelProcessor<T> {
         }
         return o;
     }
+
 }

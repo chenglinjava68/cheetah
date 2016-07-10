@@ -1,6 +1,5 @@
 package org.cheetah.commons.excel.processor;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -89,9 +88,10 @@ public class SimpleExcelProcessor<T> extends AbstractExcelProcessor<T> {
                     Cell cell = r.createCell(j);
                     final int rowIndex = i + 1;
                     this.styleHandlers.forEach(o -> o.handle(cell, rowIndex));
-                    cell.setCellValue(
-                            BeanUtils.getProperty(obj,
-                                    ExcelResourcesHelper.getTargetName(headers.get(j))));
+//                    cell.setCellValue(
+//                            BeanUtils.getProperty(obj,
+//                                    ExcelResourcesHelper.getTargetName(headers.get(j))));
+                    CellValueConverter.setValue(cell, obj, headers.get(j));
                 }
             }
         } catch (Exception e) {
@@ -99,5 +99,4 @@ public class SimpleExcelProcessor<T> extends AbstractExcelProcessor<T> {
             throw new ExcelException(e);
         }
     }
-
 }
