@@ -3,7 +3,6 @@ package org.cheetah.commons.excel.processor;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.cheetah.commons.excel.ExcelHeader;
-import org.cheetah.commons.logger.Info;
 import org.cheetah.commons.utils.Assert;
 
 import java.lang.reflect.Field;
@@ -18,7 +17,6 @@ import static org.cheetah.commons.excel.processor.ExcelResourcesHelper.getTarget
 public final class CellValueConverter {
 
     public static void setValue(Cell cell, Object obj, ExcelHeader header) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        Info.log(CellValueConverter.class, "setValue value type : {}", header.getType().getTypeName());
 
         if (header.getType().equals(int.class) || header.getType().equals(Integer.class)) {
             int value = getInt(obj, getTargetName(header));

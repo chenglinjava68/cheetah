@@ -74,18 +74,13 @@ public class ExcelTest {
         ExcelTranslator translator = ExcelTranslator.create();
         long start = System.currentTimeMillis();
         List<Anchor> anchors = Lists.newArrayList();
-        for(int i = 0; i< 10000; i++) {
+        for(int i = 0; i< 5000; i++) {
             Anchor anchor = new Anchor();
             anchor.setFxId(123);
             anchor.setLiveRoom(123);
             anchor.setName("name");
-            Anchor anchor2 = new Anchor();
-            anchor2.setFxId(123);
-            anchor2.setLiveRoom(123);
-            anchor2.setName("name");
+
             anchors.add(anchor);
-            anchors.add(anchor);
-            anchors.add(anchor2);
 
         }
         System.out.println(System.currentTimeMillis() - start);

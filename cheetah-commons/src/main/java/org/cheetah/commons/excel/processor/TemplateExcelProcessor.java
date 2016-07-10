@@ -81,13 +81,14 @@ public class TemplateExcelProcessor<T> extends AbstractExcelProcessor<T> {
             List<ExcelHeader> headers = ExcelResourcesHelper.getHeaderList(clz);
             Collections.sort(headers);
             for (int i = 0; i < datas.size(); i++) {
+                long start = System.currentTimeMillis();
                 Info.log(this.getClass(), "row {}", i);
                 excelTemplate.createNewRow();
-//                long start = System.currentTimeMillis();
+                long createRowTime = System.currentTimeMillis();
                 for (ExcelHeader eh : headers) {
                     excelTemplate.createCell(datas.get(i), eh);
                 }
-//                Info.log(this.getClass(), "每写一行数据需要{}毫秒", System.currentTimeMillis() - start);
+                Info.log(this.getClass(), "创建行使用时间{}，每写一行数据需要{}毫秒",createRowTime - start, System.currentTimeMillis() - createRowTime);
             }
             excelTemplate.replaceFinalData(templatePlaceholder);
         } catch (Exception e) {
