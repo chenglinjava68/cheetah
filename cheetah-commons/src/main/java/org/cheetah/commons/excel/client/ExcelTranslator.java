@@ -116,6 +116,8 @@ public class ExcelTranslator {
     /**
      * 将数据转为excel文件流
      *
+     * 建议：
+     *  当使用模板导出时，如果数据行超过5000行以上的，建议使用SimpleExcelProssor处理，否则会非常缓慢
      * @param translation
      */
     public <T> void translate(Translation<T> translation) {

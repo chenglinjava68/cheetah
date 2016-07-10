@@ -18,7 +18,7 @@ import static org.cheetah.commons.excel.processor.ExcelResourcesHelper.getTarget
 public final class CellValueConverter {
 
     public static void setValue(Cell cell, Object obj, ExcelHeader header) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        Info.log(ExcelResourcesHelper.class, "setValue value type : {}", header.getType().getTypeName());
+        Info.log(CellValueConverter.class, "setValue value type : {}", header.getType().getTypeName());
 
         if (header.getType().equals(int.class) || header.getType().equals(Integer.class)) {
             int value = getInt(obj, getTargetName(header));

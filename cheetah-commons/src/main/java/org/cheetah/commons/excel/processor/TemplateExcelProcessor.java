@@ -4,6 +4,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.cheetah.commons.excel.ExcelException;
 import org.cheetah.commons.excel.ExcelHeader;
+import org.cheetah.commons.logger.Info;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +17,9 @@ import java.util.Map;
 /**
  * 该类实现了将一组对象转换为Excel表格，并且可以从Excel表格中读取到一组List对象中 该类利用了BeanUtils框架中的反射完成
  * 使用该类的前提，在相应的实体对象上通过ExcelReources来完成相应的注解
+ *
+ * 建议：
+ *  如果数据行超过5000行以上的，建议使用SimpleExcelProssor处理，否则会非常缓慢
  *
  * @author Max
  */
@@ -72,14 +76,18 @@ public class TemplateExcelProcessor<T> extends AbstractExcelProcessor<T> {
      */
     @Override
     public void write(List<T> datas, Class<T> clz) {
+        Info.log(this.getClass(), "write datas size :{}, entity {}", datas.size(), clz);
         try {
             List<ExcelHeader> headers = ExcelResourcesHelper.getHeaderList(clz);
             Collections.sort(headers);
-            for (T obj : datas) {
+            for (int i = 0; i < datas.size(); i++) {
+                Info.log(this.getClass(), "row {}", i);
                 excelTemplate.createNewRow();
+                long start = System.currentTimeMillis();
                 for (ExcelHeader eh : headers) {
-                    excelTemplate.createCell(obj, eh);
+                    excelTemplate.createCell(datas.get(i), eh);
                 }
+                Info.log(this.getClass(), "每写一行数据需要{}毫秒", System.currentTimeMillis() - start);
             }
             excelTemplate.replaceFinalData(templatePlaceholder);
         } catch (Exception e) {

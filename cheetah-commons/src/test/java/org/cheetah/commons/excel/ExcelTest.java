@@ -51,9 +51,14 @@ public class ExcelTest {
             System.out.println(anchor);
         }
 
+        List<Anchor> na = Lists.newArrayList();
+        for(int i =0; i< 50000; i++) {
+            na.addAll(anchors);
+        }
+
         Translation<Anchor> t = Translation.<Anchor>newBuilder()
                 .toStream(new FileOutputStream("d:/test2.xls"))
-                .data(anchors)
+                .data(na)
                 .entity(Anchor.class)
                 .build();
         translator.translate(t);
@@ -67,25 +72,29 @@ public class ExcelTest {
     public void templateTest() throws FileNotFoundException {
         InputStream stream = new FileInputStream("D:\\excel_template_v2.xlsx");
         ExcelTranslator translator = ExcelTranslator.create();
-
+        long start = System.currentTimeMillis();
         List<Anchor> anchors = Lists.newArrayList();
-        Anchor anchor = new Anchor();
-        anchor.setFxId(123);
-        anchor.setLiveRoom(123);
-        anchor.setName("name");
-        Anchor anchor2 = new Anchor();
-        anchor2.setFxId(123);
-        anchor2.setLiveRoom(123);
-        anchor2.setName("name");
-        anchors.add(anchor);
-        anchors.add(anchor);
-        anchors.add(anchor2);
+        for(int i = 0; i< 10000; i++) {
+            Anchor anchor = new Anchor();
+            anchor.setFxId(123);
+            anchor.setLiveRoom(123);
+            anchor.setName("name");
+            Anchor anchor2 = new Anchor();
+            anchor2.setFxId(123);
+            anchor2.setLiveRoom(123);
+            anchor2.setName("name");
+            anchors.add(anchor);
+            anchors.add(anchor);
+            anchors.add(anchor2);
 
+        }
+        System.out.println(System.currentTimeMillis() - start);
         translator.translate(Translation.<Anchor>newBuilder().toStream(new FileOutputStream("d:/test_template.xlsx"))
                 .entity(Anchor.class)
                 .templateStream(stream)
                 .data(anchors)
                 .build()
         );
+        System.out.println(System.currentTimeMillis() - start);
     }
 }

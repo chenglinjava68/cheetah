@@ -5,13 +5,11 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.*;
 import org.cheetah.commons.excel.ExcelException;
-import org.cheetah.commons.excel.ExcelHeader;
 import org.cheetah.commons.excel.ExcelProcessor;
 import org.cheetah.commons.excel.StyleHandler;
 import org.cheetah.commons.logger.Info;
 
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,6 +35,7 @@ public abstract class AbstractExcelProcessor<T> implements ExcelProcessor<T> {
     @Override
     public List<T> read(InputStream inputStream, Class<T> clz, int sheetIndex,
                         int readLine, int tailLine) {
+        Info.log(this.getClass(), "read excel begin, entity {} sheetIndex {} readLine {} tailLIne {}", clz, sheetIndex, readLine, tailLine);
         List<T> datas = Lists.newArrayList();
         try {
             Workbook wb = WorkbookFactory.create(inputStream);
