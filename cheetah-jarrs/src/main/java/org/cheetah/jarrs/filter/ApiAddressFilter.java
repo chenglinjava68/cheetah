@@ -20,7 +20,7 @@ public class ApiAddressFilter extends ApiAccessFilter {
     @Override
     protected void preRequest(ContainerRequestContext requestContext) throws IOException {
         String clientAddr = getIpAddr(request);
-        Loggers.me().info(this.getClass(), "api address: [{}]", clientAddr);
+        Loggers.me().info(this.getClass(), "client address: [{}]", clientAddr);
 
         if (allowAddress.size() > 0 && !allowAddress.contains(clientAddr))
             throw new IllegalVisitorAddressException();

@@ -1,4 +1,4 @@
-package org.cheetah.commons.excel.api;
+package org.cheetah.commons.excel.client;
 
 import org.cheetah.commons.excel.ExcelException;
 import org.cheetah.commons.excel.ExcelProcessor;
