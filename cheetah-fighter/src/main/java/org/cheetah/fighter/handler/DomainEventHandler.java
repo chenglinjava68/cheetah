@@ -1,5 +1,6 @@
 package org.cheetah.fighter.handler;
 
+import org.cheetah.commons.logger.Info;
 import org.cheetah.fighter.core.event.DomainEvent;
 import org.cheetah.fighter.core.event.DomainEventListener;
 import org.cheetah.fighter.core.event.Event;
@@ -20,6 +21,7 @@ public class DomainEventHandler extends AbstractHandler {
     }
 
     protected void doExecute(Event event) {
+        Info.log(this.getClass(), "DomainEventHandler do Execute event {}", event);
         DomainEvent $event = (DomainEvent) event;
         DomainEventListener<DomainEvent> listener = (DomainEventListener<DomainEvent>) getEventListener();
         listener.onDomainEvent($event);
