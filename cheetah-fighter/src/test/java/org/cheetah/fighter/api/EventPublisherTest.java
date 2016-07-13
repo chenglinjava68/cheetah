@@ -1,15 +1,20 @@
 package org.cheetah.fighter.api;
 
 import org.cheetah.commons.utils.ArithUtils;
-import org.cheetah.domain.Entity;
 import org.cheetah.domain.UUIDKeyEntity;
-import org.cheetah.fighter.event.*;
+import org.cheetah.fighter.core.event.DomainEvent;
+import org.cheetah.fighter.core.event.DomainEventListener;
+import org.cheetah.fighter.core.event.SmartDomainEventListener;
+import org.cheetah.ioc.BeanFactory;
+import org.cheetah.ioc.spring.SpringBeanFactoryProvider;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.concurrent.*;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -22,7 +27,13 @@ public class EventPublisherTest {
     public static final AtomicLong atomicLong = new AtomicLong();
     public static final AtomicLong atomicLong2 = new AtomicLong();
     public static final AtomicLong atomicLong3 = new AtomicLong();
+    @Autowired
+    SpringBeanFactoryProvider springBeanFactoryProvider;
 
+    @Before
+    public void before() {
+        BeanFactory.setBeanFactoryProvider(springBeanFactoryProvider);
+    }
 
     @Test
     public void launch() throws InterruptedException {
@@ -35,7 +46,6 @@ public class EventPublisherTest {
                         ApplicationEventPublisher.publish(
                                 new ApplicationEventTest("213")
                         );
-//                    listenerTest.onApplicationEvent(event);
                     }
                 }
             }).start();
@@ -107,7 +117,7 @@ public class EventPublisherTest {
         latch.await();
     }
 
-    public static class ApplicationEventTest extends Event<Object> {
+    public static class ApplicationEventTest extends DomainEvent {
 
         /**
          * Constructs a prototypical Event.
@@ -120,7 +130,7 @@ public class EventPublisherTest {
         }
     }
 
-    public static class ApplicationEventTest2 extends Event<Object> {
+    public static class ApplicationEventTest2 extends DomainEvent {
 
         /**
          * Constructs a prototypical Event.
@@ -133,7 +143,7 @@ public class EventPublisherTest {
         }
     }
 
-    public static class DomainEventTest extends DomainEvent {
+    public static class DomainEventTest extends DomainEvent<User> {
 
         /**
          * Constructs a prototypical Event.
@@ -141,107 +151,11 @@ public class EventPublisherTest {
          * @param source The object on which the Event initially occurred.
          * @throws IllegalArgumentException if source is null.
          */
-        public DomainEventTest(Entity source) {
+        public DomainEventTest(User source) {
             super(source);
         }
 
 
-    }
-
-    public static class ApplicationListenerTest implements ApplicationListener<ApplicationEventTest> {
-        @Override
-        public void onApplicationEvent(ApplicationEventTest event) {
-//            double v = ArithUtils.round(Math.random() * 100, 0);
-//            long i = ArithUtils.convertsToLong(v);
-//            try {
-//                Thread.sleep(i);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-            System.out.println("ApplicationListenerTest----" + atomicLong.incrementAndGet());
-//            System.out.println(System.currentTimeMillis());
-        }
-
-        @Override
-        public void onFinish() {
-
-        }
-    }
-
-    public static class SmartApplicationListenerTest implements SmartApplicationListener {
-        @Override
-        public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
-            return ApplicationEventTest.class == eventType;
-        }
-
-        @Override
-        public boolean supportsSourceType(Class<?> sourceType) {
-            return String.class == sourceType;
-        }
-
-        @Override
-        public int getOrder() {
-            return 0;
-        }
-
-        @Override
-        public void onApplicationEvent(ApplicationEvent event) {
-            double v = ArithUtils.round(Math.random() * 100, 0);
-            long i = ArithUtils.convertsToLong(v);
-//            try {
-//                Thread.sleep(i);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-            int k = 100000;
-            while (k > 0) {
-                k--;
-            }
-            System.out.println("SmartApplicationListenerTest -- " + atomicLong.incrementAndGet());
-        }
-
-        @Override
-        public void onFinish() {
-
-        }
-    }
-
-    public static class SmartApplicationListenerTest2 implements SmartApplicationListener {
-        @Override
-        public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
-            return ApplicationEventTest2.class == eventType;
-        }
-
-        @Override
-        public boolean supportsSourceType(Class<?> sourceType) {
-            return String.class == sourceType;
-        }
-
-        @Override
-        public int getOrder() {
-            return 0;
-        }
-
-        @Override
-        public void onApplicationEvent(ApplicationEvent event) {
-            double v = ArithUtils.round(Math.random() * 100, 0);
-            long i = ArithUtils.convertsToLong(v);
-//            try {
-//                Thread.sleep(i);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-            int k = 100000;
-            while (k > 0) {
-                k--;
-            }
-            System.out.println("SmartApplicationListenerTest2 -- " + atomicLong2.incrementAndGet());
-        }
-
-        @Override
-        public void onFinish() {
-
-        }
     }
 
     public static class SmartDomainListenerTest implements SmartDomainEventListener {
@@ -252,17 +166,37 @@ public class EventPublisherTest {
         }
 
         @Override
-        public boolean supportsSourceType(Class<? extends Entity> sourceType) {
+        public boolean supportsSourceType(Class<?> sourceType) {
             return User.class == sourceType;
         }
 
         @Override
-        public int getOrder() {
-            return 0;
+        public void onDomainEvent(DomainEvent event) {
+            double v = ArithUtils.round(Math.random() * 100, 0);
+            long i = ArithUtils.convertsToLong(v);
+//            try {
+//                Thread.sleep(i);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+            int k = 100000;
+            while (k > 0) {
+                k--;
+            }
+            System.out.println("DomainEventTest -- " + atomicLong3.incrementAndGet());
         }
 
         @Override
-        public void onDomainEvent(DomainEvent event) {
+        public void onFinish() {
+
+        }
+
+    }
+
+    public static class DomainListenerTest implements DomainEventListener<ApplicationEventTest> {
+
+        @Override
+        public void onDomainEvent(ApplicationEventTest event) {
             double v = ArithUtils.round(Math.random() * 100, 0);
             long i = ArithUtils.convertsToLong(v);
 //            try {

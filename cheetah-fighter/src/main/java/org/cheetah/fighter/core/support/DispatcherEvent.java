@@ -4,9 +4,9 @@ import org.cheetah.fighter.core.AbstractDispatcher;
 import org.cheetah.fighter.core.EventMessage;
 import org.cheetah.fighter.core.EventResult;
 import org.cheetah.fighter.core.NoMapperException;
-import org.cheetah.fighter.handler.Feedback;
-import org.cheetah.fighter.handler.Handler;
-import org.cheetah.fighter.governor.Governor;
+import org.cheetah.fighter.core.governor.Governor;
+import org.cheetah.fighter.core.handler.Feedback;
+import org.cheetah.fighter.core.handler.Handler;
 
 import java.util.EventListener;
 import java.util.Map;

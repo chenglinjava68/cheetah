@@ -4,8 +4,8 @@ import org.cheetah.fighter.async.AsynchronousFactory;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.core.EventContext;
 import org.cheetah.fighter.core.NoMapperException;
-import org.cheetah.fighter.event.DomainEvent;
-import org.cheetah.fighter.mapping.HandlerMapping;
+import org.cheetah.fighter.core.event.DomainEvent;
+import org.cheetah.fighter.core.HandlerMapping;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 

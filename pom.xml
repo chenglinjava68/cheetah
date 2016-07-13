@@ -12,7 +12,7 @@
         <module>cheetah-fighter</module>
         <module>cheetah-commons</module>
         <module>cheetah-domain</module>
-        <module>cheetah-configuration</module>
+        <module>cheetah-fighterConfig</module>
         <module>cheetah-repository</module>
         <module>cheetah-bootstrap</module>
         <module>cheetah-ioc</module>
@@ -331,14 +331,14 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.3</version>
-                    <configuration>
+                    <fighterConfig>
                         <source>1.8</source>
                         <target>1.8</target>
                         <encoding>UTF-8</encoding>
                         <fork>true</fork>
                         <meminitial>128m</meminitial>
                         <maxmem>768m</maxmem>
-                    </configuration>
+                    </fighterConfig>
                 </plugin>
             </plugins>
         </pluginManagement>

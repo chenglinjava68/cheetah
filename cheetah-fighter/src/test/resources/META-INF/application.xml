@@ -18,16 +18,15 @@ http://www.springframework.org/schema/aop
     <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
     <aop:aspectj-autoproxy/>
 
-    <bean id="beanFactoryProvider" class="org.cheetah.ioc.spring.SpringAplicationContextProvider"/>
+    <bean id="beanFactoryProvider" class="org.cheetah.ioc.spring.SpringBeanFactoryProvider"/>
 
     <bean id="dispatcher" class="org.cheetah.fighter.core.support.DispatcherEvent" init-method="start" destroy-method="stop">
-        <property name="configuration">
-            <bean class="org.cheetah.fighter.core.Configuration">
+        <property name="fighterConfig">
+            <bean class="org.cheetah.fighter.core.FighterConfig">
                 <property name="eventListeners">
                     <list>
-                        <bean class="org.cheetah.fighter.api.EventPublisherTest.ApplicationListenerTest"/>
-                        <bean class="org.cheetah.fighter.api.EventPublisherTest.SmartApplicationListenerTest2"/>
                         <bean class="org.cheetah.fighter.api.EventPublisherTest.SmartDomainListenerTest"/>
+                        <bean class="org.cheetah.fighter.api.EventPublisherTest.DomainListenerTest"/>
                     </list>
                 </property>
                 <!--<property name="interceptors">-->
@@ -43,39 +42,5 @@ http://www.springframework.org/schema/aop
     <bean id="collector" class="org.cheetah.fighter.api.GenericEventCollector">
         <constructor-arg index="0" ref="dispatcher"/>
     </bean>
-
-
-    <!--<jpa:repositories base-package="cheetah.repository"  repository-impl-postfix="Impl" entity-manager-factory-ref="em"-->
-                      <!--transaction-manager-ref="transactionManager"/>-->
-<!--
-
-    <bean id="em" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="cheetah.domain"/>
-        <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="database" value="${jdbc.dialet}"/>
-                <property name="showSql" value="${jdbc.showSql}"/>
-            </bean>
-        </property>
-
-        <property name="jpaProperties">
-            <props>
-                <prop key="hibernate.hbm2ddl.auto">${jdbc.ddl}</prop>
-            </props>
-        </property>
-    </bean>
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="em"/>
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-    <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="${jdbc.driver}"/>
-        <property name="jdbcUrl" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-    </bean>
--->
-
 
 </beans>

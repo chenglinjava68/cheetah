@@ -1,9 +1,9 @@
 package org.cheetah.fighter.core.support;
 
-import org.cheetah.commons.utils.CollectionUtils;
 import org.cheetah.commons.logger.Error;
+import org.cheetah.commons.utils.CollectionUtils;
 import org.cheetah.fighter.core.Interceptor;
-import org.cheetah.fighter.worker.Command;
+import org.cheetah.fighter.core.worker.Command;
 
 import java.util.ArrayList;
 import java.util.List;

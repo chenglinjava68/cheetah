@@ -2,9 +2,9 @@ package org.cheetah.fighter.api;
 
 import org.cheetah.fighter.core.EventMessage;
 import org.cheetah.fighter.core.support.DispatcherEvent;
-import org.cheetah.fighter.event.AbstractCollector;
-import org.cheetah.fighter.event.Callback;
-import org.cheetah.fighter.event.Event;
+import org.cheetah.fighter.core.event.AbstractCollector;
+import org.cheetah.fighter.core.event.Callback;
+import org.cheetah.fighter.core.event.Event;
 
 /**
  * Created by Max on 2016/2/3.

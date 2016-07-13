@@ -4,10 +4,10 @@ import akka.actor.ActorRef;
 import org.cheetah.fighter.async.AsynchronousFactory;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.core.EventContext;
+import org.cheetah.fighter.core.HandlerMapping;
 import org.cheetah.fighter.core.NoMapperException;
-import org.cheetah.fighter.event.Event;
-import org.cheetah.fighter.mapping.HandlerMapping;
-import org.cheetah.fighter.handler.Handler;
+import org.cheetah.fighter.core.event.Event;
+import org.cheetah.fighter.core.handler.Handler;
 
 import java.util.EventListener;
 import java.util.Map;

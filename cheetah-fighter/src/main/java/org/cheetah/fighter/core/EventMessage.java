@@ -1,7 +1,7 @@
 package org.cheetah.fighter.core;
 
-import org.cheetah.fighter.event.Callback;
-import org.cheetah.fighter.event.Event;
+import org.cheetah.fighter.core.event.Callback;
+import org.cheetah.fighter.core.event.Event;
 
 /**
  * Created by Max on 2016/2/21.
