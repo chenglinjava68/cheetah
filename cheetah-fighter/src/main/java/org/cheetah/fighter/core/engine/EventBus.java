@@ -1,7 +1,5 @@
 package org.cheetah.fighter.core.engine;
 
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.cheetah.commons.Startable;
 import org.cheetah.commons.logger.Info;
@@ -26,8 +24,7 @@ import java.lang.reflect.Type;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
-
-import static com.google.common.collect.Collections2.filter;
+import java.util.stream.Collectors;
 
 /**
  * Created by Max on 2016/1/29.
@@ -64,7 +61,7 @@ public class EventBus implements Dispatcher, Startable {
                 context.setHandlers(handlerMap);
                 return dispatch();
             }
-            Map<Class<? extends EventListener>, Handler> handlerMap = convertMapper(event, key);
+            Map<Class<? extends EventListener>, Handler> handlerMap = eventResolve(event, key);
             context.setHandlers(handlerMap);
             return dispatch();
         } finally {
@@ -130,18 +127,15 @@ public class EventBus implements Dispatcher, Startable {
      *
      * @param event
      */
-    private Map<Class<? extends EventListener>, Handler> convertMapper(final Event event, HandlerMapping.HandlerMapperKey mapperKey) {
+    private Map<Class<? extends EventListener>, Handler> eventResolve(final Event event, HandlerMapping.HandlerMapperKey mapperKey) {
         lock.lock();
         try {
             if (DomainEvent.class.isAssignableFrom(event.getClass())) {
-                Info.log(this.getClass(), "event is DomainEvent");
-                List<EventListener> smartDomainEventListeners = getSmartDomainEventListener((DomainEvent) event);
-                if (!smartDomainEventListeners.isEmpty()) {
-                    return setDomainEventListenerMapper(mapperKey, smartDomainEventListeners);
-                } else {
-                    Collection<EventListener> listeners = getNotSmartListener(event, DomainEventListener.class);
-                    return setDomainEventListenerMapper(mapperKey, Lists.newArrayList(listeners));
+                List<EventListener> eventListeners = supportsSmartListener((DomainEvent) event);
+                if (eventListeners.isEmpty()) {
+                     eventListeners = supportsUniversalListener(event);
                 }
+                return assembleEventHandlerMapping(mapperKey, eventListeners);
             } else
                 Loggers.me().error(this.getClass(), "The incident no listener corresponding processing.");
         } finally {
@@ -150,29 +144,34 @@ public class EventBus implements Dispatcher, Startable {
         return Maps.newHashMap();
     }
 
-    private Collection<EventListener> getNotSmartListener(final Event event, final Class<? extends EventListener> Listeners$class) {
-        return Collections2.filter(this.fighterConfig.eventListeners(), eventListener -> {
-            boolean include = CollectionUtils.arrayToList(eventListener.getClass().getInterfaces())
-                    .contains(Listeners$class);
-            if (!include)
+    @SuppressWarnings("unchecked")
+    private List<EventListener> supportsUniversalListener(final Event event) {
+        List<EventListener> eventListeners = this.fighterConfig.eventListeners();
+
+        return eventListeners.stream().filter(o ->{
+            List classes = CollectionUtils.arrayToList(o.getClass().getInterfaces());
+            Optional<Class> classOptional = classes.stream().filter(it -> it.equals(DomainEventListener.class)).findFirst();
+            if(!classOptional.isPresent())
                 return false;
-            Type[] parameterizedType = ((ParameterizedType) eventListener.getClass().getGenericInterfaces()[0])
+            Type[] parameterizedType = ((ParameterizedType) o.getClass().getGenericInterfaces()[0])
                     .getActualTypeArguments();
+            if(parameterizedType.length < 1)
+                return true;
             return event.getClass().equals(parameterizedType[0]);
-        });
+        }).collect(Collectors.toList());
     }
 
-    private Map<Class<? extends EventListener>, Handler> setDomainEventListenerMapper(HandlerMapping.HandlerMapperKey mapperKey,
-                                                                                      List<EventListener> listeners) {
-        Map<Class<? extends EventListener>, Handler> machines = Maps.newHashMap();
+    private Map<Class<? extends EventListener>, Handler> assembleEventHandlerMapping(HandlerMapping.HandlerMapperKey mapperKey,
+                                                                                     List<EventListener> listeners) {
+        Map<Class<? extends EventListener>, Handler> handlers = Maps.newHashMap();
         for (EventListener listener : listeners) {
             Handler handler = engine.assignDomainEventHandler();
             handler.setEventListener(listener);
-            machines.put(listener.getClass(), handler);
+            handlers.put(listener.getClass(), handler);
         }
 
-        engine.getMapping().put(mapperKey, machines);
-        return machines;
+        engine.getMapping().put(mapperKey, handlers);
+        return handlers;
     }
 
     /**
@@ -180,33 +179,25 @@ public class EventBus implements Dispatcher, Startable {
      * @param event
      * @return
      */
-    private List<EventListener> getSmartDomainEventListener(final DomainEvent event) {
+    private List<EventListener> supportsSmartListener(final DomainEvent event) {
         List<EventListener> list = this.fighterConfig.eventListeners();
 
-        Collection<EventListener> result = filter(list, eventListener -> {
-            if (!SmartDomainEventListener.class.isAssignableFrom(eventListener.getClass()))
-                return false;
-            else {
-                SmartDomainEventListener listener = (SmartDomainEventListener) eventListener;
-                boolean supportsEventType = listener.supportsEventType(event.getClass());
-                boolean supportsSourceType = listener.supportsSourceType(event.getSource().getClass());
-                if (supportsEventType && supportsSourceType)
-                    return true;
-                return false;
-            }
-        });
-
-        return Lists.newArrayList(result);
+        return list.stream().filter(o -> SmartDomainEventListener.class.isAssignableFrom(o.getClass()))
+                .map(o -> ((SmartDomainEventListener) o))
+                .filter(o -> o.supportsEventType(event.getClass()))
+                .filter(o -> o.supportsSourceType(event.getSource().getClass()))
+                .collect(Collectors.toList());
     }
 
     private List<Interceptor> findInterceptor(final Event event) {
+        List<Interceptor> interceptors = this.fighterConfig.interceptors();
         if (this.fighterConfig == null ||
-                CollectionUtils.isEmpty(this.fighterConfig.interceptors()))
+                CollectionUtils.isEmpty(interceptors))
             return Collections.emptyList();
         InterceptorCacheKey key = new InterceptorCacheKey(event.getClass());
         List<Interceptor> $interceptors = interceptorCache.get(key);
         if (CollectionUtils.isEmpty($interceptors)) {
-            $interceptors = (List<Interceptor>) filter(this.fighterConfig.interceptors(), interceptor -> interceptor.supportsType(event.getClass()));
+            $interceptors = interceptors.stream().filter(o -> o.supportsType(event.getClass())).collect(Collectors.toList());
             interceptorCache.put(key, $interceptors);
         }
         return $interceptors;

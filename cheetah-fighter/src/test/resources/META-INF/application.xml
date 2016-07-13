@@ -27,6 +27,8 @@ http://www.springframework.org/schema/aop
                     <list>
                         <bean class="org.cheetah.fighter.api.EventPublisherTest.SmartDomainListenerTest"/>
                         <bean class="org.cheetah.fighter.api.EventPublisherTest.DomainListenerTest"/>
+                        <bean class="org.cheetah.fighter.api.EventPublisherTest.DomainListenerTest2"/>
+                        <bean class="org.cheetah.fighter.api.EventPublisherTest.SmartDomainListenerTest2"/>
                     </list>
                 </property>
                 <!--<property name="interceptors">-->

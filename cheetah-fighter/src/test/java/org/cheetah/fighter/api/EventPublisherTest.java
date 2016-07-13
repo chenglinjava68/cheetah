@@ -43,20 +43,7 @@ public class EventPublisherTest {
                 @Override
                 public void run() {
                     while (true) {
-                        ApplicationEventPublisher.publish(
-                                new ApplicationEventTest("213")
-                        );
-                    }
-                }
-            }).start();
-
-        }
-        for (int i = 0; i < 10; i++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        DomainEvenPublisher.publish(
+                        DomainEventPublisher.publish(
                                 new DomainEventTest(new User("huahng"))
                         );
 //                    listenerTest.onApplicationEvent(event);
@@ -64,32 +51,20 @@ public class EventPublisherTest {
                 }
             }).start();
         }
-        for (int i = 0; i < 10; i++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        ApplicationEventPublisher.publish(
-                                new ApplicationEventTest2("123")
-                        );
-//                    listenerTest.onApplicationEvent(event);
-                    }
-                }
-            }).start();
-        }
+
         latch.await();
     }
 
 
     @Test
     public void launch2() throws InterruptedException {
-        while (true) {
+//        while (true) {
 //            Thread.sleep(1);
 
             FighterContext.publish(
                     new DomainEventTest(new User("hzf"))
             );
-        }
+//        }
     }
 
 
@@ -100,8 +75,8 @@ public class EventPublisherTest {
         int i = 0;
         while (true) {
             i++;
-            ApplicationEventPublisher.publish(
-                    new ApplicationEventTest("123")
+            DomainEventPublisher.publish(
+                    new ApplicationEventTest(new User("hzf"))
             );
             if (i == 1000000) {
                 break;
@@ -119,7 +94,7 @@ public class EventPublisherTest {
          * @param source The object on which the Event initially occurred.
          * @throws IllegalArgumentException if source is null.
          */
-        public ApplicationEventTest(Object source) {
+        public ApplicationEventTest(User source) {
             super(source);
         }
     }
@@ -152,6 +127,21 @@ public class EventPublisherTest {
 
     }
 
+    public static class DomainEventTest2 extends DomainEvent<User> {
+
+        /**
+         * Constructs a prototypical Event.
+         *
+         * @param source The object on which the Event initially occurred.
+         * @throws IllegalArgumentException if source is null.
+         */
+        public DomainEventTest2(User source) {
+            super(source);
+        }
+
+
+    }
+
     public static class SmartDomainListenerTest implements SmartDomainEventListener {
 
         @Override
@@ -177,7 +167,7 @@ public class EventPublisherTest {
             while (k > 0) {
                 k--;
             }
-            System.out.println("DomainEventTest -- " + atomicLong3.incrementAndGet());
+            System.out.println("SmartDomainListenerTest -- " + atomicLong3.incrementAndGet());
         }
 
         @Override
@@ -186,6 +176,32 @@ public class EventPublisherTest {
         }
 
     }
+
+    public static class SmartDomainListenerTest2 implements SmartDomainEventListener {
+
+        @Override
+        public boolean supportsEventType(Class<? extends DomainEvent> eventType) {
+            return eventType == DomainEventTest2.class;
+        }
+
+        @Override
+        public boolean supportsSourceType(Class<?> sourceType) {
+            return User.class == sourceType;
+        }
+
+        @Override
+        public void onDomainEvent(DomainEvent event) {
+
+            System.out.println("SmartDomainListenerTest2 -- " + atomicLong3.incrementAndGet());
+        }
+
+        @Override
+        public void onFinish() {
+
+        }
+
+    }
+
 
     public static class DomainListenerTest implements DomainEventListener<ApplicationEventTest> {
 
@@ -202,7 +218,22 @@ public class EventPublisherTest {
             while (k > 0) {
                 k--;
             }
-            System.out.println("DomainEventTest -- " + atomicLong3.incrementAndGet());
+            System.out.println("DomainListenerTest -- " + atomicLong3.incrementAndGet());
+        }
+
+        @Override
+        public void onFinish() {
+
+        }
+
+    }
+
+    public static class DomainListenerTest2 implements DomainEventListener<ApplicationEventTest2> {
+
+        @Override
+        public void onDomainEvent(ApplicationEventTest2 event) {
+
+            System.out.println("DomainListenerTest2 -- " + atomicLong3.incrementAndGet());
         }
 
         @Override
