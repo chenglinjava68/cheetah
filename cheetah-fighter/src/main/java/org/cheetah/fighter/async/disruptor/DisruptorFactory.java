@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  * Created by Max on 2016/2/29.
  */
 public class DisruptorFactory extends AbstractAsynchronousFactory<Disruptor<DisruptorEvent>> {
-    private int ringbufferSize = 8;
+    private int ringbufferSize = 1024;
 
     public Disruptor<DisruptorEvent> createMultiDisruptor() {
         WaitStrategy waitStrategy = new TimeoutBlockingWaitStrategy(3, TimeUnit.SECONDS);
