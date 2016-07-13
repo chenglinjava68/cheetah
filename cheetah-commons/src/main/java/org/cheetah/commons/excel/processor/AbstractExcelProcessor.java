@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.cheetah.commons.excel.ExcelException;
 import org.cheetah.commons.excel.ExcelProcessor;
 import org.cheetah.commons.excel.StyleHandler;
+import org.cheetah.commons.logger.Info;
 
 import java.io.InputStream;
 import java.text.NumberFormat;
@@ -34,6 +35,7 @@ public abstract class AbstractExcelProcessor<T> implements ExcelProcessor<T> {
     @Override
     public List<T> read(InputStream inputStream, Class<T> clz, int sheetIndex,
                         int readLine, int tailLine) {
+        Info.log(this.getClass(), "read excel begin, entity {} sheetIndex {} readLine {} tailLIne {}", clz, sheetIndex, readLine, tailLine);
         List<T> datas = Lists.newArrayList();
         try {
             Workbook wb = WorkbookFactory.create(inputStream);
@@ -51,7 +53,7 @@ public abstract class AbstractExcelProcessor<T> implements ExcelProcessor<T> {
                     if (!maps.containsKey(ci))
                         break;
                     String value = maps.get(ci);
-                    if(!value.startsWith("set"))//如果是字段名称
+                    if(!value.startsWith("setValue"))//如果是字段名称
                         BeanUtils.copyProperty(obj, value, this.getCellValue(c));
                     else { //方法名称
                         String mn = value.substring(3);
@@ -107,4 +109,5 @@ public abstract class AbstractExcelProcessor<T> implements ExcelProcessor<T> {
         }
         return o;
     }
+
 }

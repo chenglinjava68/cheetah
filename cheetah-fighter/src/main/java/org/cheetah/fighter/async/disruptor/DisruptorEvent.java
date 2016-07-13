@@ -1,6 +1,6 @@
 package org.cheetah.fighter.async.disruptor;
 
-import org.cheetah.fighter.worker.Command;
+import org.cheetah.fighter.core.worker.Command;
 
 /**
  * Created by Max on 2016/2/29.

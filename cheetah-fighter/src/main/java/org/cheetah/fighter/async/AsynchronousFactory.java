@@ -2,7 +2,7 @@ package org.cheetah.fighter.async;
 
 import org.cheetah.commons.Startable;
 import org.cheetah.fighter.core.Interceptor;
-import org.cheetah.fighter.handler.Handler;
+import org.cheetah.fighter.core.handler.Handler;
 
 import java.util.EventListener;
 import java.util.List;

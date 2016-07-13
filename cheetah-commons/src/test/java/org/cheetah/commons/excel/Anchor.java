@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import org.cheetah.commons.excel.annotation.CellStyle;
 import org.cheetah.commons.excel.annotation.ExcelResources;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 
 /**
@@ -38,6 +39,8 @@ public class Anchor {
     private String name;
     @ExcelResources(order = 5, title = "手机号")
     private long phoneNumber;
+    @ExcelResources(order = 6, title = "time")
+    private Date date = new Date();
 
     public Anchor() {
 

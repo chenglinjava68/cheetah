@@ -108,7 +108,7 @@ public class JettyBootstrap extends BootstrapSupport {
                 .timeout(timeout)
                 .webappPath(webappPath)
                 .build();
-        Info.log(this.getClass(), "jetty server config: {}", serverConfig.toString());
+        Info.log(this.getClass(), "jetty server config initialize: {}", serverConfig.toString());
     }
 
     @Override

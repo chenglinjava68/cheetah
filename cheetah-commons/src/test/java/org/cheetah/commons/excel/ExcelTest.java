@@ -1,11 +1,14 @@
 package org.cheetah.commons.excel;
 
-import org.cheetah.commons.excel.client.ExcelTranslator;
-import org.cheetah.commons.excel.client.Translation;
+import com.google.common.collect.Lists;
+import org.cheetah.commons.excel.api.Assembly;
+import org.cheetah.commons.excel.api.ExcelTranslator;
 import org.junit.Test;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -34,18 +37,59 @@ public class ExcelTest {
 
     }
 
+    /**
+     * 复制文档
+     * @throws FileNotFoundException
+     */
     @Test
     public void test22() throws FileNotFoundException {
-        ExcelTranslator<Anchor> translator = new ExcelTranslator<>();
-        List<Anchor> anchors = new ExcelTranslator<Anchor>().translator("E:\\test.xlsx", Anchor.class);
-        System.out.println(anchors);
+        long start = System.currentTimeMillis();
+        System.out.println(start);
+        ExcelTranslator translator = ExcelTranslator.create();
+        List<Anchor> anchors = translator.translate("D:\\test.xlsx", Anchor.class);
+        for (Anchor anchor : anchors) {
+            System.out.println(anchor);
+        }
 
-        Translation<Anchor> t = Translation.newBuilder()
-                .toStream(new FileOutputStream("E:/test2.xls"))
-                .data(anchors)
+        List<Anchor> na = Lists.newArrayList();
+        for(int i =0; i< 50000; i++) {
+            na.addAll(anchors);
+        }
+
+        Assembly<Anchor> t = Assembly.<Anchor>newBuilder()
+                .toStream(new FileOutputStream("d:/test2.xls"))
+                .data(na)
                 .entity(Anchor.class)
                 .build();
+        translator.translate(t);
+    }
 
-        translator.translator(t);
+    /**
+     * 基于模板的导出
+     * @throws FileNotFoundException
+     */
+    @Test
+    public void templateTest() throws FileNotFoundException {
+        InputStream stream = new FileInputStream("D:\\excel_template_v2.xlsx");
+        ExcelTranslator translator = ExcelTranslator.create();
+        long start = System.currentTimeMillis();
+        List<Anchor> anchors = Lists.newArrayList();
+        for(int i = 0; i< 5000; i++) {
+            Anchor anchor = new Anchor();
+            anchor.setFxId(123);
+            anchor.setLiveRoom(123);
+            anchor.setName("name");
+
+            anchors.add(anchor);
+
+        }
+        System.out.println(System.currentTimeMillis() - start);
+        translator.translate(Assembly.<Anchor>newBuilder().toStream(new FileOutputStream("d:/test_template.xlsx"))
+                .entity(Anchor.class)
+                .templateStream(stream)
+                .data(anchors)
+                .build()
+        );
+        System.out.println(System.currentTimeMillis() - start);
     }
 }

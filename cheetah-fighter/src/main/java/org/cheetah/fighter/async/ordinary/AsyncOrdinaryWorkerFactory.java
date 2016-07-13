@@ -2,8 +2,8 @@ package org.cheetah.fighter.async.ordinary;
 
 import org.cheetah.fighter.async.AbstractAsynchronousFactory;
 import org.cheetah.fighter.core.Interceptor;
-import org.cheetah.fighter.handler.Handler;
-import org.cheetah.fighter.worker.support.OrdinaryWorker;
+import org.cheetah.fighter.core.handler.Handler;
+import org.cheetah.fighter.worker.OrdinaryWorker;
 
 import java.util.EventListener;
 import java.util.List;

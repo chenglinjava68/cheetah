@@ -1,15 +1,14 @@
 package org.cheetah.bootstraps.spring;
 
-import org.cheetah.bootstraps.Bootstrap;
-import org.cheetah.commons.logger.Loggers;
+import org.cheetah.bootstraps.BootstrapSupport;
+import org.cheetah.ioc.BeanFactory;
+import org.cheetah.ioc.spring.SpringBeanFactoryProvider;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.util.concurrent.CountDownLatch;
 
 /**
  * @author Max
  */
-public class SpringBootstrap implements Bootstrap {
+public class SpringBootstrap extends BootstrapSupport {
 
     private final String[] configLocations;
     private ClassPathXmlApplicationContext applicationContext;
@@ -19,40 +18,20 @@ public class SpringBootstrap implements Bootstrap {
     }
 
     @Override
-    public void bootstrap() {
-
-        Loggers.me().warn(getClass(), "start bootstrap...");
-        start();
-        final CountDownLatch signal = new CountDownLatch(1);
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                signal.countDown();
-                SpringBootstrap.this.stop();
-            }
-        });
-
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    signal.await();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    Loggers.me().error(getClass(), "signal await occurs error.", e);
-                }
-            }
-        }.start();
-        Loggers.me().warn(getClass(), "start bootstrap finished.");
-    }
-
-    private void start() {
+    protected void startup() throws Exception {
         applicationContext = new ClassPathXmlApplicationContext(configLocations);
         applicationContext.start();
+        SpringBeanFactoryProvider springBeanFactoryProvider = new SpringBeanFactoryProvider(applicationContext);
+        BeanFactory.setBeanFactoryProvider(springBeanFactoryProvider);
     }
 
-    private void stop() {
-        applicationContext.stop();
-        applicationContext.close();
+    @Override
+    protected void shutdown() {
+        super.shutdown();
+        if (applicationContext != null) {
+            applicationContext.stop();
+            applicationContext.close();
+        }
     }
+
 }

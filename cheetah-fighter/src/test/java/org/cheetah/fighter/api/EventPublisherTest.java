@@ -1,15 +1,20 @@
 package org.cheetah.fighter.api;
 
 import org.cheetah.commons.utils.ArithUtils;
-import org.cheetah.domain.Entity;
 import org.cheetah.domain.UUIDKeyEntity;
-import org.cheetah.fighter.event.*;
+import org.cheetah.fighter.core.event.DomainEvent;
+import org.cheetah.fighter.core.event.DomainEventListener;
+import org.cheetah.fighter.core.event.SmartDomainEventListener;
+import org.cheetah.ioc.BeanFactory;
+import org.cheetah.ioc.spring.SpringBeanFactoryProvider;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.concurrent.*;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -22,7 +27,13 @@ public class EventPublisherTest {
     public static final AtomicLong atomicLong = new AtomicLong();
     public static final AtomicLong atomicLong2 = new AtomicLong();
     public static final AtomicLong atomicLong3 = new AtomicLong();
+    @Autowired
+    SpringBeanFactoryProvider springBeanFactoryProvider;
 
+    @Before
+    public void before() {
+        BeanFactory.setBeanFactoryProvider(springBeanFactoryProvider);
+    }
 
     @Test
     public void launch() throws InterruptedException {
@@ -32,21 +43,7 @@ public class EventPublisherTest {
                 @Override
                 public void run() {
                     while (true) {
-                        ApplicationEventPublisher.publish(
-                                new ApplicationEventTest("213")
-                        );
-//                    listenerTest.onApplicationEvent(event);
-                    }
-                }
-            }).start();
-
-        }
-        for (int i = 0; i < 10; i++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        DomainEvenPublisher.publish(
+                        DomainEventPublisher.publish(
                                 new DomainEventTest(new User("huahng"))
                         );
 //                    listenerTest.onApplicationEvent(event);
@@ -54,38 +51,20 @@ public class EventPublisherTest {
                 }
             }).start();
         }
-        for (int i = 0; i < 10; i++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        ApplicationEventPublisher.publish(
-                                new ApplicationEventTest2("123")
-                        );
-//                    listenerTest.onApplicationEvent(event);
-                    }
-                }
-            }).start();
-        }
+
         latch.await();
     }
 
 
     @Test
     public void launch2() throws InterruptedException {
-        while (true) {
-            Thread.sleep(1);
-            FighterContext.publish(
-                    new ApplicationEventTest2("213")
-            );
-            FighterContext.publish(
-                    new ApplicationEventTest("213")
-            );
+//        while (true) {
+//            Thread.sleep(1);
+
             FighterContext.publish(
                     new DomainEventTest(new User("hzf"))
             );
-//            listenerTest.onApplicationEvent(event);
-        }
+//        }
     }
 
 
@@ -96,8 +75,8 @@ public class EventPublisherTest {
         int i = 0;
         while (true) {
             i++;
-            ApplicationEventPublisher.publish(
-                    new ApplicationEventTest("123")
+            DomainEventPublisher.publish(
+                    new ApplicationEventTest(new User("hzf"))
             );
             if (i == 1000000) {
                 break;
@@ -107,7 +86,7 @@ public class EventPublisherTest {
         latch.await();
     }
 
-    public static class ApplicationEventTest extends ApplicationEvent {
+    public static class ApplicationEventTest extends DomainEvent {
 
         /**
          * Constructs a prototypical Event.
@@ -115,12 +94,12 @@ public class EventPublisherTest {
          * @param source The object on which the Event initially occurred.
          * @throws IllegalArgumentException if source is null.
          */
-        public ApplicationEventTest(Object source) {
+        public ApplicationEventTest(User source) {
             super(source);
         }
     }
 
-    public static class ApplicationEventTest2 extends ApplicationEvent {
+    public static class ApplicationEventTest2 extends DomainEvent {
 
         /**
          * Constructs a prototypical Event.
@@ -133,7 +112,7 @@ public class EventPublisherTest {
         }
     }
 
-    public static class DomainEventTest extends DomainEvent {
+    public static class DomainEventTest extends DomainEvent<User> {
 
         /**
          * Constructs a prototypical Event.
@@ -141,107 +120,26 @@ public class EventPublisherTest {
          * @param source The object on which the Event initially occurred.
          * @throws IllegalArgumentException if source is null.
          */
-        public DomainEventTest(Entity source) {
+        public DomainEventTest(User source) {
             super(source);
         }
 
 
     }
 
-    public static class ApplicationListenerTest implements ApplicationListener<ApplicationEventTest> {
-        @Override
-        public void onApplicationEvent(ApplicationEventTest event) {
-//            double v = ArithUtils.round(Math.random() * 100, 0);
-//            long i = ArithUtils.convertsToLong(v);
-//            try {
-//                Thread.sleep(i);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-            System.out.println("ApplicationListenerTest----" + atomicLong.incrementAndGet());
-//            System.out.println(System.currentTimeMillis());
+    public static class DomainEventTest2 extends DomainEvent<User> {
+
+        /**
+         * Constructs a prototypical Event.
+         *
+         * @param source The object on which the Event initially occurred.
+         * @throws IllegalArgumentException if source is null.
+         */
+        public DomainEventTest2(User source) {
+            super(source);
         }
 
-        @Override
-        public void onFinish() {
 
-        }
-    }
-
-    public static class SmartApplicationListenerTest implements SmartApplicationListener {
-        @Override
-        public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
-            return ApplicationEventTest.class == eventType;
-        }
-
-        @Override
-        public boolean supportsSourceType(Class<?> sourceType) {
-            return String.class == sourceType;
-        }
-
-        @Override
-        public int getOrder() {
-            return 0;
-        }
-
-        @Override
-        public void onApplicationEvent(ApplicationEvent event) {
-            double v = ArithUtils.round(Math.random() * 100, 0);
-            long i = ArithUtils.convertsToLong(v);
-//            try {
-//                Thread.sleep(i);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-            int k = 100000;
-            while (k > 0) {
-                k--;
-            }
-            System.out.println("SmartApplicationListenerTest -- " + atomicLong.incrementAndGet());
-        }
-
-        @Override
-        public void onFinish() {
-
-        }
-    }
-
-    public static class SmartApplicationListenerTest2 implements SmartApplicationListener {
-        @Override
-        public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
-            return ApplicationEventTest2.class == eventType;
-        }
-
-        @Override
-        public boolean supportsSourceType(Class<?> sourceType) {
-            return String.class == sourceType;
-        }
-
-        @Override
-        public int getOrder() {
-            return 0;
-        }
-
-        @Override
-        public void onApplicationEvent(ApplicationEvent event) {
-            double v = ArithUtils.round(Math.random() * 100, 0);
-            long i = ArithUtils.convertsToLong(v);
-//            try {
-//                Thread.sleep(i);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-            int k = 100000;
-            while (k > 0) {
-                k--;
-            }
-            System.out.println("SmartApplicationListenerTest2 -- " + atomicLong2.incrementAndGet());
-        }
-
-        @Override
-        public void onFinish() {
-
-        }
     }
 
     public static class SmartDomainListenerTest implements SmartDomainEventListener {
@@ -252,13 +150,8 @@ public class EventPublisherTest {
         }
 
         @Override
-        public boolean supportsSourceType(Class<? extends Entity> sourceType) {
+        public boolean supportsSourceType(Class<?> sourceType) {
             return User.class == sourceType;
-        }
-
-        @Override
-        public int getOrder() {
-            return 0;
         }
 
         @Override
@@ -274,7 +167,73 @@ public class EventPublisherTest {
             while (k > 0) {
                 k--;
             }
-            System.out.println("DomainEventTest -- " + atomicLong3.incrementAndGet());
+            System.out.println("SmartDomainListenerTest -- " + atomicLong3.incrementAndGet());
+        }
+
+        @Override
+        public void onFinish() {
+
+        }
+
+    }
+
+    public static class SmartDomainListenerTest2 implements SmartDomainEventListener {
+
+        @Override
+        public boolean supportsEventType(Class<? extends DomainEvent> eventType) {
+            return eventType == DomainEventTest2.class;
+        }
+
+        @Override
+        public boolean supportsSourceType(Class<?> sourceType) {
+            return User.class == sourceType;
+        }
+
+        @Override
+        public void onDomainEvent(DomainEvent event) {
+
+            System.out.println("SmartDomainListenerTest2 -- " + atomicLong3.incrementAndGet());
+        }
+
+        @Override
+        public void onFinish() {
+
+        }
+
+    }
+
+
+    public static class DomainListenerTest implements DomainEventListener<ApplicationEventTest> {
+
+        @Override
+        public void onDomainEvent(ApplicationEventTest event) {
+            double v = ArithUtils.round(Math.random() * 100, 0);
+            long i = ArithUtils.convertsToLong(v);
+//            try {
+//                Thread.sleep(i);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+            int k = 100000;
+            while (k > 0) {
+                k--;
+            }
+            System.out.println("DomainListenerTest -- " + atomicLong3.incrementAndGet());
+        }
+
+        @Override
+        public void onFinish() {
+
+        }
+
+    }
+
+    public static class DomainListenerTest2 implements DomainEventListener<ApplicationEventTest2> {
+
+        @Override
+        public void onDomainEvent(ApplicationEventTest2 event) {
+
+            System.out.println("DomainListenerTest2 -- " + atomicLong3.incrementAndGet());
         }
 
         @Override

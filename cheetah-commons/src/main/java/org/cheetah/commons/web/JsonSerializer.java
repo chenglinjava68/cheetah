@@ -2,14 +2,10 @@ package org.cheetah.commons.web;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 
 /**
  * @author Max
@@ -41,7 +37,7 @@ public abstract class JsonSerializer {
         return null;
     }
 
-    public static <T> T deserialization(String json,Class<T> clz) {
+    public static <T> T deserialize(String json, Class<T> clz) {
         try {
             return objectMapper.readValue(json, clz);
         } catch (IOException e) {
@@ -49,5 +45,15 @@ public abstract class JsonSerializer {
         }
         return null;
     }
+
+    public static <T> T deserialize(byte[] json, Class<T> clz) {
+        try {
+            return objectMapper.readValue(json, clz);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

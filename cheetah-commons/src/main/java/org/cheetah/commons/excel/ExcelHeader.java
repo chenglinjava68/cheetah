@@ -1,5 +1,7 @@
 package org.cheetah.commons.excel;
 
+import java.lang.reflect.Type;
+
 /**
  * 用来存储Excel标题的对象，通过该对象可以获取标题和方法的对应关系
  *
@@ -20,8 +22,10 @@ public class ExcelHeader implements Comparable<ExcelHeader> {
      */
     private String targetName;
 
+    private Type type;
+
     public boolean targetNameisField() {
-        return !targetName.startsWith("get") && !targetName.startsWith("set");
+        return !targetName.startsWith("get") && !targetName.startsWith("setValue");
     }
 
     public String getTitle()
@@ -54,12 +58,21 @@ public class ExcelHeader implements Comparable<ExcelHeader> {
         this.targetName = targetName;
     }
 
-    public ExcelHeader(String title, int order, String targetName)
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public ExcelHeader(String title, int order, String targetName, Type type)
     {
         super();
         this.title = title;
         this.order = order;
         this.targetName = targetName;
+        this.type = type;
     }
 
     @Override
@@ -71,7 +84,7 @@ public class ExcelHeader implements Comparable<ExcelHeader> {
     @Override
     public String toString()
     {
-        return order + "," + title + "," + targetName;
+        return order + "," + title + "," + targetName + "," + type;
     }
 
     @Override
@@ -82,13 +95,16 @@ public class ExcelHeader implements Comparable<ExcelHeader> {
         ExcelHeader that = (ExcelHeader) o;
 
         if (order != that.order) return false;
-        return title != null ? title.equals(that.title) : that.title == null;
+        if (title != null ? !title.equals(that.title) : that.title != null) return false;
+        return type != null ? type.equals(that.type) : that.type == null;
+
     }
 
     @Override
     public int hashCode() {
         int result = title != null ? title.hashCode() : 0;
         result = 31 * result + order;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
     }
 }

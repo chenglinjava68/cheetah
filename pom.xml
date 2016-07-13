@@ -16,7 +16,7 @@
         <module>cheetah-repository</module>
         <module>cheetah-bootstrap</module>
         <module>cheetah-ioc</module>
-        <module>cheetah-rs</module>
+        <module>cheetah-jarrs</module>
     </modules>
 
     <developers>
@@ -182,7 +182,7 @@
                 <version>3.1.0</version>
             </dependency>
 
-            <!-- jar-rs -->
+            <!-- jar-jarrs -->
             <dependency>
                 <groupId>com.fasterxml.jackson.jaxrs</groupId>
                 <artifactId>jackson-jaxrs-json-provider</artifactId>
@@ -230,22 +230,28 @@
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
-                <version>4.3.5</version>
+                <version>4.5.1</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpmime</artifactId>
-                <version>4.3.5</version>
+                <version>4.5.1</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient-cache</artifactId>
-                <version>4.3.5</version>
+                <version>4.5.1</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.connectors/jersey-apache-connector -->
+            <dependency>
+                <groupId>org.glassfish.jersey.connectors</groupId>
+                <artifactId>jersey-apache-connector</artifactId>
+                <version>2.19</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpcore</artifactId>
-                <version>4.3.2</version>
+                <artifactId>httpasyncclient</artifactId>
+                <version>4.1.1</version>
             </dependency>
 
             <!-- poi -->
@@ -325,14 +331,14 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.3</version>
-                    <configuration>
+                    <fighterConfig>
                         <source>1.8</source>
                         <target>1.8</target>
                         <encoding>UTF-8</encoding>
                         <fork>true</fork>
                         <meminitial>128m</meminitial>
                         <maxmem>768m</maxmem>
-                    </configuration>
+                    </fighterConfig>
                 </plugin>
             </plugins>
         </pluginManagement>

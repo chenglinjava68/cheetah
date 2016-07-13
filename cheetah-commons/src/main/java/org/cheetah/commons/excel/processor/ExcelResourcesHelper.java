@@ -7,6 +7,7 @@ import org.cheetah.commons.excel.annotation.ExcelResources;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +26,7 @@ final class ExcelResourcesHelper {
             for (ExcelHeader eh : headers) {
                 if (eh.getTitle().trim().equals(title.trim())) {
                     maps.put(c.getColumnIndex(),
-                            eh.getTargetName().replace("get", "set"));
+                            eh.getTargetName().replace("get", "setValue"));
                     break;
                 }
             }
@@ -41,7 +42,10 @@ final class ExcelResourcesHelper {
             if (mn.startsWith("get")) {
                 if (m.isAnnotationPresent(ExcelResources.class)) {
                     ExcelResources er = m.getAnnotation(ExcelResources.class);
-                    headers.add(new ExcelHeader(er.title(), er.order(), mn));
+                    Type type = m.getGenericReturnType();
+                    ExcelHeader header = new ExcelHeader(er.title(), er.order(), mn, type);
+                    if(!headers.contains(header))
+                        headers.add(header);
                 }
             }
         }
@@ -50,7 +54,10 @@ final class ExcelResourcesHelper {
         for (Field f : fs) {
             if (f.isAnnotationPresent(ExcelResources.class)) {
                 ExcelResources er = f.getAnnotation(ExcelResources.class);
-                headers.add(new ExcelHeader(er.title(), er.order(), f.getName()));
+                Type type = f.getGenericType();
+                ExcelHeader header = new ExcelHeader(er.title(), er.order(), f.getName(), type);
+                if(!headers.contains(header))
+                    headers.add(header);
             }
         }
         return headers;
@@ -69,5 +76,6 @@ final class ExcelResourcesHelper {
         mn = mn.substring(0, 1).toLowerCase() + mn.substring(1);
         return mn;
     }
+
 
 }

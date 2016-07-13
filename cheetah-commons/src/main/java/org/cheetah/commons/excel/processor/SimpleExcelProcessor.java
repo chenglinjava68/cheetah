@@ -1,6 +1,5 @@
 package org.cheetah.commons.excel.processor;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -8,6 +7,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.cheetah.commons.excel.ExcelException;
 import org.cheetah.commons.excel.ExcelHeader;
+import org.cheetah.commons.logger.Info;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -69,6 +69,7 @@ public class SimpleExcelProcessor<T> extends AbstractExcelProcessor<T> {
      */
     @Override
     public void write(List<T> datas, Class<T> clz) {
+        Info.log(this.getClass(), "write datas size :{}, entity {}", datas.size(), clz);
         try {
             Sheet sheet = workbook.createSheet();
             Row r = sheet.createRow(0);
@@ -85,13 +86,12 @@ public class SimpleExcelProcessor<T> extends AbstractExcelProcessor<T> {
             for (int i = 0; i < datas.size(); i++) {
                 r = sheet.createRow(i + 1);
                 obj = datas.get(i);
+                Info.log(this.getClass(), "row {}", i);
                 for (int j = 0; j < headers.size(); j++) {
                     Cell cell = r.createCell(j);
                     final int rowIndex = i + 1;
                     this.styleHandlers.forEach(o -> o.handle(cell, rowIndex));
-                    cell.setCellValue(
-                            BeanUtils.getProperty(obj,
-                                    ExcelResourcesHelper.getTargetName(headers.get(j))));
+                    CellValueConverter.setValue(cell, obj, headers.get(j));
                 }
             }
         } catch (Exception e) {
@@ -99,5 +99,4 @@ public class SimpleExcelProcessor<T> extends AbstractExcelProcessor<T> {
             throw new ExcelException(e);
         }
     }
-
 }

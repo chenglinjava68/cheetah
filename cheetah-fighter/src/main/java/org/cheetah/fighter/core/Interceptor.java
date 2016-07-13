@@ -1,7 +1,7 @@
 package org.cheetah.fighter.core;
 
-import org.cheetah.fighter.event.Event;
-import org.cheetah.fighter.worker.Command;
+import org.cheetah.fighter.core.event.Event;
+import org.cheetah.fighter.core.worker.Command;
 
 /**
  * @author Max

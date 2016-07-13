@@ -2,11 +2,13 @@ package org.cheetah.commons.excel.processor;
 
 import org.apache.poi.ss.usermodel.*;
 import org.cheetah.commons.excel.ExcelException;
+import org.cheetah.commons.excel.ExcelHeader;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -135,6 +137,13 @@ public class ExcelTemplate {
             e.printStackTrace();
             throw new ExcelException("写入流失败！" + e.getMessage());
         }
+    }
+
+    public void createCell(Object obj, ExcelHeader eh) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        Cell c = curRow.createCell(curColIndex);
+        CellValueConverter.setValue(c, obj, eh);
+        setCellStyle(c);
+        curColIndex++;
     }
 
     /**
@@ -364,4 +373,5 @@ public class ExcelTemplate {
         this.serColIndex = 0;
         this.styles = null;
     }
+
 }

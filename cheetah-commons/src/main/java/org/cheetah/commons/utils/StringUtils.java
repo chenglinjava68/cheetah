@@ -435,7 +435,7 @@ public abstract class StringUtils {
      * Delete any character in a given String.
      *
      * @param inString      the original String
-     * @param charsToDelete a set of characters to delete.
+     * @param charsToDelete a setValue of characters to delete.
      *                      E.g. "az\n" will delete 'a's, 'z's and new lines.
      * @return the resulting String
      */
@@ -1079,7 +1079,7 @@ public abstract class StringUtils {
      * @param str           the input String
      * @param delimiter     the delimiter between elements (this is a single delimiter,
      *                      rather than a bunch individual delimiter characters)
-     * @param charsToDelete a set of characters to delete. Useful for deleting unwanted
+     * @param charsToDelete a setValue of characters to delete. Useful for deleting unwanted
      *                      line breaks: e.g. "\r\n\f" will delete all new lines and line feeds in a String.
      * @return an array of the tokens in the list
      * @see #tokenizeToStringArray
@@ -1122,7 +1122,7 @@ public abstract class StringUtils {
     }
 
     /**
-     * Convenience method to convert a CSV string list to a set.
+     * Convenience method to convert a CSV string list to a setValue.
      * Note that this will suppress duplicates.
      *
      * @param str the input String
