@@ -7,7 +7,11 @@ import org.cheetah.commons.utils.Assert;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Objects;
 
 import static org.cheetah.commons.excel.processor.ExcelResourcesHelper.getTargetName;
 
@@ -41,7 +45,11 @@ public final class CellValueConverter {
             cell.setCellValue(value);
         } else if (header.getType().equals(Date.class)) {
             Date value = getDate(obj, getTargetName(header));
-            cell.setCellValue(value);
+            if(Objects.isNull(value))
+                return;
+            String dateTime = LocalDateTime.ofInstant(value.toInstant(), ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            cell.setCellValue(dateTime);
         } else {
             cell.setCellValue(getString(obj, getTargetName(header)));
         }

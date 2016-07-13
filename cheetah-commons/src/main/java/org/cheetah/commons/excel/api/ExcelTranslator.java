@@ -118,20 +118,20 @@ public class ExcelTranslator {
      *
      * 建议：
      *  当使用模板导出时，如果数据行超过5000行以上的，建议使用SimpleExcelProssor处理，否则会非常缓慢
-     * @param translation
+     * @param assembly
      */
-    public <T> void translate(Translation<T> translation) {
+    public <T> void translate(Assembly<T> assembly) {
         ExcelProcessor<T> processor;
-        if (translation.hasTemplate()) {
+        if (assembly.hasTemplate()) {
             try {
-                processor = new TemplateExcelProcessor<>(translation.templateStream(), translation.placeholder());
+                processor = new TemplateExcelProcessor<>(assembly.templateStream(), assembly.placeholder());
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new ExcelException("创建模板异常", e);
             }
         } else
-            processor = new SimpleExcelProcessor<>(translation.xssf());
-        processor.write(translation.data(), translation.entity());
-        processor.export(translation.toStream());
+            processor = new SimpleExcelProcessor<>(assembly.xssf());
+        processor.write(assembly.data(), assembly.entity());
+        processor.export(assembly.toStream());
     }
 }

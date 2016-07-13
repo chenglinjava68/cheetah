@@ -27,8 +27,18 @@ public abstract class AbstractHttpTransport<T> implements HttpTransport<T> {
         this.httpClient = httpClient;
     }
 
+    /**
+     *
+     * @param entity
+     * @return
+     */
     protected abstract T translate(HttpEntity entity);
 
+    /**
+     *
+     * @param requester 请求者
+     * @return
+     */
     @Override
     public T execute(Requester requester) {
         return doExecute(requester, response -> {

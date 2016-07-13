@@ -11,7 +11,7 @@ import java.util.Map;
  * excel转换参数
  * Created by Max on 2016/6/25.
  */
-public class Translation<T> {
+public class Assembly<T> {
     private Map<String, String> placeholder;
     private List<T> data;
     private Class<T> entity;
@@ -20,7 +20,7 @@ public class Translation<T> {
     private InputStream templateStream;
     private OutputStream toStream;
 
-    public Translation(Builder<T> builder) {
+    public Assembly(Builder<T> builder) {
         Assert.notNull(builder.toStream, "toStream must not be null.");
         Assert.notNull(builder.data, "data must not be null.");
         Assert.notNull(builder.entity, "entity must not be null.");
@@ -81,8 +81,8 @@ public class Translation<T> {
             this.entity = entity;
         }
 
-        public Translation<T> build() {
-            return new Translation<>(this);
+        public Assembly<T> build() {
+            return new Assembly<>(this);
         }
 
         public Builder<T> placeholder(Map<String, String> placeholder) {
