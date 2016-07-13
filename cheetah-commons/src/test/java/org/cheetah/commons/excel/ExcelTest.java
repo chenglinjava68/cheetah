@@ -1,6 +1,7 @@
 package org.cheetah.commons.excel;
 
 import com.google.common.collect.Lists;
+import org.cheetah.commons.excel.api.Assembly;
 import org.cheetah.commons.excel.api.ExcelTranslator;
 import org.junit.Test;
 
@@ -55,7 +56,7 @@ public class ExcelTest {
             na.addAll(anchors);
         }
 
-        Translation<Anchor> t = Translation.<Anchor>newBuilder()
+        Assembly<Anchor> t = Assembly.<Anchor>newBuilder()
                 .toStream(new FileOutputStream("d:/test2.xls"))
                 .data(na)
                 .entity(Anchor.class)
@@ -83,7 +84,7 @@ public class ExcelTest {
 
         }
         System.out.println(System.currentTimeMillis() - start);
-        translator.translate(Translation.<Anchor>newBuilder().toStream(new FileOutputStream("d:/test_template.xlsx"))
+        translator.translate(Assembly.<Anchor>newBuilder().toStream(new FileOutputStream("d:/test_template.xlsx"))
                 .entity(Anchor.class)
                 .templateStream(stream)
                 .data(anchors)
