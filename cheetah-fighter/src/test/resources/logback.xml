@@ -1,4 +1,4 @@
-<fighterConfig>
+<configuration>
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the ofType
            ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
@@ -6,8 +6,8 @@
             <pattern>%d [%thread] %-5level %logger{24} - %msg%n</pattern>
         </encoder>
     </appender>
-    <logger name="org.cheetah.fighter" level="warn" />
-    <root level="warn">
+    <logger name="org.cheetah" level="info" />
+    <root level="info">
         <appender-ref ref="console" />
     </root>
-</fighterConfig>
+</configuration>

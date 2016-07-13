@@ -1,13 +1,12 @@
 package org.cheetah.fighter.async.disruptor;
 
-import org.cheetah.fighter.async.AsynchronousFactory;
-import org.cheetah.fighter.async.AsynchronousPoolFactory;
-import org.cheetah.fighter.core.engine.EventContext;
-import org.cheetah.fighter.core.NoMapperException;
-import org.cheetah.fighter.core.event.DomainEvent;
-import org.cheetah.fighter.core.HandlerMapping;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+import org.cheetah.fighter.async.AsynchronousFactory;
+import org.cheetah.fighter.async.AsynchronousPoolFactory;
+import org.cheetah.fighter.core.HandlerMapping;
+import org.cheetah.fighter.core.NoMapperException;
+import org.cheetah.fighter.core.engine.EventContext;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,10 +30,7 @@ public class DisruptorPoolFactory implements AsynchronousPoolFactory<Disruptor<D
         Disruptor<DisruptorEvent> disruptor = this.disruptorPool.get(HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event()));
         if (Objects.nonNull(disruptor))
             return disruptor;
-        if (context.eventMessage().event() instanceof DomainEvent)
-            return this.disruptorFactory.createAsynchronous(ProducerType.SINGLE.name(), context.handlers(), context.interceptors());
-        else
-            return this.disruptorFactory.createAsynchronous(ProducerType.MULTI.name(), context.handlers(),context.interceptors());
+        return this.disruptorFactory.createAsynchronous(ProducerType.MULTI.name(), context.handlers(),context.interceptors());
     }
 
     @Override

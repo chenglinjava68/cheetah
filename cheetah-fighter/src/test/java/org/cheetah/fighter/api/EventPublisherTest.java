@@ -58,13 +58,13 @@ public class EventPublisherTest {
 
     @Test
     public void launch2() throws InterruptedException {
-//        while (true) {
+        while (true) {
 //            Thread.sleep(1);
 
             FighterContext.publish(
                     new DomainEventTest(new User("hzf"))
             );
-//        }
+        }
     }
 
 
@@ -163,9 +163,10 @@ public class EventPublisherTest {
 //            } catch (InterruptedException e) {
 //                e.printStackTrace();
 //            }
-            int k = 100000;
-            while (k > 0) {
-                k--;
+            try {
+                Thread.sleep(222000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
             System.out.println("SmartDomainListenerTest -- " + atomicLong3.incrementAndGet());
         }

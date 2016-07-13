@@ -76,12 +76,16 @@ public class EventBus implements Dispatcher, Startable {
         EventMessage eventMessage = context().eventMessage();
         Map<Class<? extends EventListener>, Handler> handlerMap = context().handlers();
         if (!handlerMap.isEmpty()) {
-            Governor governor = engine().assignGovernor();
-            Feedback report = governor.initialize()
-                    .accept(eventMessage)
-                    .registerHandlerSquad(handlerMap)
-                    .command();
-            return new EventResult(eventMessage.event().getSource(), report.isFail());
+            try {
+                Governor governor = engine().assignGovernor();
+                Feedback report = governor.initialize()
+                        .accept(eventMessage)
+                        .registerHandlerSquad(handlerMap)
+                        .command();
+                return new EventResult(eventMessage.event().getSource(), report.isFail());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         throw new NoMapperException();
     }
@@ -105,6 +109,7 @@ public class EventBus implements Dispatcher, Startable {
         engine.setContext(this.context());
         engine.registerPluginChain(pluginChain);
         engine.start();
+        Info.log(this.getClass(), "EventBus start engine is {}", enginePolicy.name());
     }
 
     @Override
@@ -113,6 +118,7 @@ public class EventBus implements Dispatcher, Startable {
         this.engine = null;
         engineDirector = null;
         enginePolicy = null;
+        Info.log(this.getClass(), "EventBus stop...");
     }
 
     public PluginChain initializesPlugin(PluginChain chain) {

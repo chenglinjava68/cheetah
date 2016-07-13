@@ -1,6 +1,6 @@
 package org.cheetah.fighter.async.disruptor;
 
-import com.lmax.disruptor.TimeoutBlockingWaitStrategy;
+import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
@@ -12,7 +12,6 @@ import org.cheetah.fighter.worker.DisruptorWorker;
 import java.util.EventListener;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Max on 2016/2/29.
@@ -21,12 +20,12 @@ public class DisruptorFactory extends AbstractAsynchronousFactory<Disruptor<Disr
     private int ringbufferSize = 1024;
 
     public Disruptor<DisruptorEvent> createMultiDisruptor() {
-        WaitStrategy waitStrategy = new TimeoutBlockingWaitStrategy(3, TimeUnit.SECONDS);
+        WaitStrategy waitStrategy = new BlockingWaitStrategy();
         return new Disruptor<>(new DisruptorEventFactory(), ringbufferSize, executorService(), ProducerType.MULTI, waitStrategy);
     }
 
     public Disruptor<DisruptorEvent> createSingleDisruptor() {
-        WaitStrategy waitStrategy = new TimeoutBlockingWaitStrategy(3, TimeUnit.SECONDS);
+        WaitStrategy waitStrategy = new BlockingWaitStrategy();
         return new Disruptor<>(new DisruptorEventFactory(), ringbufferSize, executorService(), ProducerType.SINGLE, waitStrategy);
     }
 
