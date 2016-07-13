@@ -2,7 +2,7 @@ package org.cheetah.fighter.engine;
 
 import com.lmax.disruptor.dsl.Disruptor;
 import org.cheetah.fighter.async.disruptor.DisruptorEvent;
-import org.cheetah.fighter.core.eventbus.AbstractEngine;
+import org.cheetah.fighter.core.engine.AbstractEngine;
 import org.cheetah.fighter.core.governor.Governor;
 import org.cheetah.fighter.governor.DisruptorGovernor;
 import org.cheetah.fighter.governor.DisruptorGovernorAdapter;

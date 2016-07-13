@@ -1,4 +1,4 @@
-package org.cheetah.fighter.core.eventbus;
+package org.cheetah.fighter.core.engine;
 
 import org.cheetah.fighter.core.FighterConfig;
 
@@ -8,7 +8,7 @@ import org.cheetah.fighter.core.FighterConfig;
  */
 public interface EngineDirector {
 
-    EventBus directEngine();
+    Engine directEngine();
 
     void setFighterConfig(FighterConfig fighterConfig);
 

@@ -1,4 +1,4 @@
-package org.cheetah.fighter.core;
+package org.cheetah.fighter.core.engine;
 
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -9,12 +9,13 @@ import org.cheetah.commons.logger.Loggers;
 import org.cheetah.commons.utils.CollectionUtils;
 import org.cheetah.commons.utils.ObjectUtils;
 import org.cheetah.commons.utils.StringUtils;
-import org.cheetah.fighter.core.eventbus.EventBus;
-import org.cheetah.fighter.core.eventbus.EngineDirector;
+import org.cheetah.fighter.core.*;
 import org.cheetah.fighter.core.event.DomainEvent;
 import org.cheetah.fighter.core.event.DomainEventListener;
 import org.cheetah.fighter.core.event.Event;
 import org.cheetah.fighter.core.event.SmartDomainEventListener;
+import org.cheetah.fighter.core.governor.Governor;
+import org.cheetah.fighter.core.handler.Feedback;
 import org.cheetah.fighter.core.handler.Handler;
 import org.cheetah.fighter.engine.EnginePolicy;
 import org.cheetah.fighter.plugin.Plugin;
@@ -29,13 +30,13 @@ import java.util.concurrent.locks.ReentrantLock;
 import static com.google.common.collect.Collections2.filter;
 
 /**
- * Created by Max on 2016/2/23.
+ * Created by Max on 2016/1/29.
  */
-public abstract class AbstractDispatcher implements Dispatcher, Startable {
+public class EventBus implements Dispatcher, Startable {
 
     private FighterConfig fighterConfig; //框架配置
     private final PluginChain pluginChain = new PluginChain();
-    private EventBus engine;
+    private Engine engine;
     private EngineDirector engineDirector;
     private EnginePolicy enginePolicy;
     private final Map<InterceptorCacheKey, List<Interceptor>> interceptorCache = new ConcurrentHashMap<>();
@@ -73,6 +74,20 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         }
     }
 
+    @Override
+    public EventResult dispatch() {
+        EventMessage eventMessage = context().eventMessage();
+        Map<Class<? extends EventListener>, Handler> handlerMap = context().handlers();
+        if (!handlerMap.isEmpty()) {
+            Governor governor = engine().assignGovernor();
+            Feedback report = governor.initialize()
+                    .accept(eventMessage)
+                    .registerHandlerSquad(handlerMap)
+                    .command();
+            return new EventResult(eventMessage.event().getSource(), report.isFail());
+        }
+        throw new NoMapperException();
+    }
 
     @Override
     public void start() {
@@ -216,7 +231,7 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
         return context;
     }
 
-    protected EventBus engine() {
+    protected Engine engine() {
         return engine;
     }
 
@@ -250,4 +265,5 @@ public abstract class AbstractDispatcher implements Dispatcher, Startable {
             return ObjectUtils.nullSafeHashCode(this.eventClz) * 29;
         }
     }
+
 }

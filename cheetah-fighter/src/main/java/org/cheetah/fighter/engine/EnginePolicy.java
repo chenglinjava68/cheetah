@@ -1,6 +1,6 @@
 package org.cheetah.fighter.engine;
 
-import org.cheetah.fighter.core.eventbus.EngineDirector;
+import org.cheetah.fighter.core.engine.EngineDirector;
 
 import java.util.Map;
 import java.util.Objects;

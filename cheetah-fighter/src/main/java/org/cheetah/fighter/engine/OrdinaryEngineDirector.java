@@ -1,9 +1,9 @@
 package org.cheetah.fighter.engine;
 
 import org.cheetah.fighter.core.FighterConfig;
-import org.cheetah.fighter.core.eventbus.EventBus;
-import org.cheetah.fighter.core.eventbus.EngineBuilder;
-import org.cheetah.fighter.core.eventbus.EngineDirector;
+import org.cheetah.fighter.core.engine.Engine;
+import org.cheetah.fighter.core.engine.EngineBuilder;
+import org.cheetah.fighter.core.engine.EngineDirector;
 
 /**
  * Created by Max on 2016/3/2.
@@ -17,8 +17,8 @@ public class OrdinaryEngineDirector implements EngineDirector {
     }
 
     @Override
-    public EventBus directEngine() {
-        EventBus engine = new OrdinaryEngine();
+    public Engine directEngine() {
+        Engine engine = new OrdinaryEngine();
         engine.setWorkerFactory(builder.buildWorkerFactory());
         engine.setHandlerFactory(builder.buildHandlerFactory());
         engine.setGovernorFactory(builder.buildGovernorFactory());

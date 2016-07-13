@@ -1,8 +1,7 @@
-package org.cheetah.fighter.core.eventbus;
+package org.cheetah.fighter.core.engine;
 
 import org.cheetah.commons.logger.Info;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
-import org.cheetah.fighter.core.EventContext;
 import org.cheetah.fighter.core.HandlerMapping;
 import org.cheetah.fighter.core.governor.Governor;
 import org.cheetah.fighter.core.governor.GovernorFactory;
@@ -15,7 +14,7 @@ import org.cheetah.fighter.plugin.PluginChain;
 /**
  * Created by Max on 2016/3/2.
  */
-public abstract class AbstractEngine implements EventBus {
+public abstract class AbstractEngine implements Engine {
     private WorkerFactory workerFactory;
     private HandlerFactory handlerFactory;
     private GovernorFactory governorFactory;

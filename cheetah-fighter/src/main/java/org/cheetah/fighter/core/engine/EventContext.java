@@ -1,5 +1,7 @@
-package org.cheetah.fighter.core;
+package org.cheetah.fighter.core.engine;
 
+import org.cheetah.fighter.core.EventMessage;
+import org.cheetah.fighter.core.Interceptor;
 import org.cheetah.fighter.core.handler.Handler;
 
 import java.util.EventListener;

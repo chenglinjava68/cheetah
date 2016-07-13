@@ -1,27 +1,27 @@
 package org.cheetah.fighter.core.event;
 
 
-import org.cheetah.fighter.core.support.DispatcherEvent;
+import org.cheetah.fighter.core.engine.EventBus;
 
 /**
  * 事件收集器的抽象类
  * Created by Max on 2016/2/3.
  */
 public abstract class AbstractCollector implements EventCollector {
-    private DispatcherEvent dispatcher;
+    private EventBus eventBus;
 
     public AbstractCollector() {
     }
 
-    public AbstractCollector(DispatcherEvent dispatcher) {
-        this.dispatcher = dispatcher;
+    public AbstractCollector(EventBus eventBus) {
+        this.eventBus = eventBus;
     }
 
-    public DispatcherEvent getDispatcher() {
-        return dispatcher;
+    public EventBus getEventBus() {
+        return eventBus;
     }
 
-    public void setDispatcher(DispatcherEvent dispatcher) {
-        this.dispatcher = dispatcher;
+    public void setEventBus(EventBus eventBus) {
+        this.eventBus = eventBus;
     }
 }

@@ -1,8 +1,7 @@
-package org.cheetah.fighter.core.eventbus;
+package org.cheetah.fighter.core.engine;
 
 import org.cheetah.commons.Startable;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
-import org.cheetah.fighter.core.EventContext;
 import org.cheetah.fighter.core.HandlerMapping;
 import org.cheetah.fighter.core.governor.Governor;
 import org.cheetah.fighter.core.governor.GovernorFactory;
@@ -17,7 +16,7 @@ import org.cheetah.fighter.plugin.PluginChain;
  * 事件处理引擎
  * Created by Max on 2016/2/19.
  */
-public interface EventBus extends Startable {
+public interface Engine extends Startable {
 
     /**
      * 分配领域事件的工作处理器

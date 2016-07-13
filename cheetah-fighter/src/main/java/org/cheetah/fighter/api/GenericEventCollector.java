@@ -1,7 +1,7 @@
 package org.cheetah.fighter.api;
 
 import org.cheetah.fighter.core.EventMessage;
-import org.cheetah.fighter.core.support.DispatcherEvent;
+import org.cheetah.fighter.core.engine.EventBus;
 import org.cheetah.fighter.core.event.AbstractCollector;
 import org.cheetah.fighter.core.event.Callback;
 import org.cheetah.fighter.core.event.Event;
@@ -13,18 +13,18 @@ public class GenericEventCollector extends AbstractCollector {
     public GenericEventCollector() {
     }
 
-    public GenericEventCollector(DispatcherEvent dispatcher) {
+    public GenericEventCollector(EventBus dispatcher) {
         super(dispatcher);
     }
 
     @Override
     public void collect(Event event) {
-        getDispatcher().receive(new EventMessage(event));
+        getEventBus().receive(new EventMessage(event));
     }
 
     @Override
     public void collect(Event event, Callback callback) {
-        getDispatcher().receive(new EventMessage(event, callback));
+        getEventBus().receive(new EventMessage(event, callback));
     }
 
 

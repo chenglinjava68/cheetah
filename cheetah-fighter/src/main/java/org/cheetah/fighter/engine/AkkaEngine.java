@@ -1,7 +1,7 @@
 package org.cheetah.fighter.engine;
 
 import akka.actor.ActorRef;
-import org.cheetah.fighter.core.eventbus.AbstractEngine;
+import org.cheetah.fighter.core.engine.AbstractEngine;
 import org.cheetah.fighter.core.governor.Governor;
 import org.cheetah.fighter.governor.AkkaGovernor;
 import org.cheetah.fighter.governor.AkkaGovernorAdapter;

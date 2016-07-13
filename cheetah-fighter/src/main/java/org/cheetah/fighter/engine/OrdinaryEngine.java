@@ -1,6 +1,6 @@
 package org.cheetah.fighter.engine;
 
-import org.cheetah.fighter.core.eventbus.AbstractEngine;
+import org.cheetah.fighter.core.engine.AbstractEngine;
 import org.cheetah.fighter.core.governor.Governor;
 import org.cheetah.fighter.core.worker.Worker;
 import org.cheetah.fighter.governor.OrdinaryGovernor;

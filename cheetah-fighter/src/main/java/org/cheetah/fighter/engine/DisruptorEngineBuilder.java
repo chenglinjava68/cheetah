@@ -5,7 +5,7 @@ import org.cheetah.fighter.async.disruptor.DisruptorFactory;
 import org.cheetah.fighter.async.disruptor.DisruptorPoolFactory;
 import org.cheetah.fighter.core.FighterConfig;
 import org.cheetah.fighter.core.HandlerMapping;
-import org.cheetah.fighter.core.eventbus.EngineBuilder;
+import org.cheetah.fighter.core.engine.EngineBuilder;
 import org.cheetah.fighter.core.governor.GovernorFactory;
 import org.cheetah.fighter.core.handler.HandlerFactory;
 import org.cheetah.fighter.core.worker.WorkerFactory;
