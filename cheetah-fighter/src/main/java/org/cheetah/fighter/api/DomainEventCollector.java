@@ -9,11 +9,11 @@ import org.cheetah.fighter.core.event.Event;
 /**
  * Created by Max on 2016/2/3.
  */
-public class GenericEventCollector extends AbstractCollector {
-    public GenericEventCollector() {
+public class DomainEventCollector extends AbstractCollector {
+    public DomainEventCollector() {
     }
 
-    public GenericEventCollector(EventBus dispatcher) {
+    public DomainEventCollector(EventBus dispatcher) {
         super(dispatcher);
     }
 

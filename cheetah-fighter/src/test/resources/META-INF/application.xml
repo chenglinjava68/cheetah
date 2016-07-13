@@ -41,7 +41,7 @@ http://www.springframework.org/schema/aop
         </property>
     </bean>
 
-    <bean id="collector" class="org.cheetah.fighter.api.GenericEventCollector">
+    <bean id="collector" class="org.cheetah.fighter.api.DomainEventCollector">
         <constructor-arg index="0" ref="eventBus"/>
     </bean>
 

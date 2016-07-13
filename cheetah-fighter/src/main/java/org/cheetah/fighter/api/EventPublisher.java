@@ -8,11 +8,11 @@ import org.cheetah.ioc.BeanFactory;
 /**
  * Created by Max on 2016/1/10.
  */
-public abstract class DomainEventPublisher {
+public abstract class EventPublisher {
 
     private static EventCollector collector = BeanFactory.getBean(EventCollector.class);
 
-    private DomainEventPublisher() {
+    private EventPublisher() {
     }
 
     public static <E extends DomainEvent> void publish(E event) {

@@ -43,7 +43,7 @@ public class EventPublisherTest {
                 @Override
                 public void run() {
                     while (true) {
-                        DomainEventPublisher.publish(
+                        EventPublisher.publish(
                                 new DomainEventTest(new User("huahng"))
                         );
 //                    listenerTest.onApplicationEvent(event);
@@ -75,7 +75,7 @@ public class EventPublisherTest {
         int i = 0;
         while (true) {
             i++;
-            DomainEventPublisher.publish(
+            EventPublisher.publish(
                     new ApplicationEventTest(new User("hzf"))
             );
             if (i == 1000000) {
