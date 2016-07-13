@@ -84,17 +84,11 @@ public class EventPublisherTest {
     @Test
     public void launch2() throws InterruptedException {
         while (true) {
-            Thread.sleep(1);
-            FighterContext.publish(
-                    new ApplicationEventTest2("213")
-            );
-            FighterContext.publish(
-                    new ApplicationEventTest("213")
-            );
+//            Thread.sleep(1);
+
             FighterContext.publish(
                     new DomainEventTest(new User("hzf"))
             );
-//            listenerTest.onApplicationEvent(event);
         }
     }
 

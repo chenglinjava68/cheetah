@@ -12,7 +12,7 @@
         <module>cheetah-fighter</module>
         <module>cheetah-commons</module>
         <module>cheetah-domain</module>
-        <module>cheetah-fighterConfig</module>
+        <module>cheetah-configuration</module>
         <module>cheetah-repository</module>
         <module>cheetah-bootstrap</module>
         <module>cheetah-ioc</module>
