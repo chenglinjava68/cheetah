@@ -8,7 +8,7 @@ import org.cheetah.fighter.core.event.Event;
 /**
  * Created by Max on 2016/2/3.
  */
-public class DomainEventCollector extends AbstractCollector {
+class DomainEventCollector extends AbstractCollector {
     public DomainEventCollector() {
     }
 
