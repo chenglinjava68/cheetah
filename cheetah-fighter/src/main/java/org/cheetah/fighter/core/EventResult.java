@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class EventResult {
     private Object source;
-    private boolean fail;
+    private boolean success;
     private List<Class<? extends EventListener>> exceptionListeners;
 
     public EventResult(Object source) {
@@ -17,21 +17,21 @@ public class EventResult {
 
     public EventResult(Object source, boolean fail, List<Class<? extends EventListener>> exceptionListeners) {
         this.source = source;
-        this.fail = fail;
+        this.success = fail;
         this.exceptionListeners = exceptionListeners;
     }
 
     public EventResult(Object source, boolean fail) {
         this.source = source;
-        this.fail = fail;
+        this.success = fail;
     }
 
     public Object source() {
         return source;
     }
 
-    public boolean isFail() {
-        return fail;
+    public boolean isSuccess() {
+        return success;
     }
 
     public List<Class<? extends EventListener>> exceptionListeners() {
