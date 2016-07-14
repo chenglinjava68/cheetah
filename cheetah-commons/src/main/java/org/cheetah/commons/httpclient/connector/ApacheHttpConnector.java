@@ -94,7 +94,6 @@ public class ApacheHttpConnector {
                     .setSSLSocketFactory(sslsf).build();
 
         } catch (Exception e) {
-            logger.error("create httpclient error occured ", e);
             throw new HttpClientException("create httpclient error occured ", e);
         }
     }
@@ -115,7 +114,6 @@ public class ApacheHttpConnector {
                     .setConnectionManager(connectionManager)
                     .setRetryHandler(new RetryHandler()).build();
         } catch (Exception e) {
-            logger.error("create httpclient error occured ", e);
             throw new HttpClientException("create httpclient error occured ", e);
         }
     }
@@ -209,7 +207,7 @@ public class ApacheHttpConnector {
                     connMgr.closeIdleConnections(30, TimeUnit.SECONDS);
                 }
             } catch (Exception ex) {
-                logger.error("IdleConnectionMonitorThread error occured ", ex);
+                logger.warn("IdleConnectionMonitorThread error occured ", ex);
             }
         }
 

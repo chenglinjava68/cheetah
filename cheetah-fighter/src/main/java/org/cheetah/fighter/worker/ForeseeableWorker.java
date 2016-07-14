@@ -1,6 +1,7 @@
 package org.cheetah.fighter.worker;
 
-import com.google.common.util.concurrent.*;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 import org.cheetah.commons.logger.Loggers;
 import org.cheetah.fighter.core.Interceptor;
 import org.cheetah.fighter.core.handler.Directive;
@@ -17,11 +18,10 @@ import java.util.concurrent.*;
 /**
  * Created by Max on 2016/3/2.
  */
-public class OrdinaryWorker extends AbstractWorker {
+public class ForeseeableWorker extends AbstractWorker {
     private Map<Class<? extends EventListener>, Handler> handlerMap;
     private ListeningExecutorService executor;
     private List<Interceptor> interceptors;
-
 
     @Override
     public void doWork(Command command) {
@@ -29,38 +29,26 @@ public class OrdinaryWorker extends AbstractWorker {
 
         final Directive directive = new Directive(command.event(), command.callback(), command.needResult());
 
-        ListenableFuture future = executor.submit(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
+        try {
+            CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
                 Feedback feedback = handler.handle(directive);
                 if (feedback.isFail()) {
                     return false;
                 } else return true;
-            }
-        });
-
-        Futures.addCallback(future, new FutureCallback() {
-            @Override
-            public void onSuccess(Object o) {
-
-            }
-
-            @Override
-            public void onFailure(Throwable throwable) {
-                handler.onFailure(directive);
-            }
-        });
-        try {
+            }, executor);
             future.get(3, TimeUnit.SECONDS);
+        } catch (RejectedExecutionException e) {
+            e.printStackTrace();
+            Loggers.me().warn(getClass(), "task rejected execute.", e);
         } catch (InterruptedException e) {
             e.printStackTrace();
-            Loggers.me().error(this.getClass(), "OrdinaryWorker work fail.", e);
+            Loggers.me().warn(getClass(), "task interrupted execute.", e);
         } catch (ExecutionException e) {
             e.printStackTrace();
-            Loggers.me().error(this.getClass(), "OrdinaryWorker work fail.", e);
+            Loggers.me().warn(getClass(), "task rejected execute.", e);
         } catch (TimeoutException e) {
             e.printStackTrace();
-            Loggers.me().error(this.getClass(), "OrdinaryWorker work fail.", e);
+            Loggers.me().warn(getClass(), "task timeout execute.", e);
         }
     }
 

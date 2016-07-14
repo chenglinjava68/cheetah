@@ -45,7 +45,7 @@ public class AkkaGovernor extends AbstractGovernor {
 //                }
                 worker.tell(command, ActorRef.noSender());
             } catch (Exception e) {
-                Loggers.me().error(this.getClass(), "notify Worker error", e);
+                Loggers.me().warn(this.getClass(), "notify Worker error", e);
                 feedbackMap.put(clz, Feedback.FAILURE);
             }
         }

@@ -7,13 +7,13 @@ import org.cheetah.fighter.plugin.PluginChain;
 /**
  * Created by Max on 2016/3/7.
  */
-public class OrdinaryGovernorAdapter extends AbstractGovernorAdapter {
+public class ForeseeableGovernorAdapter extends AbstractGovernorAdapter {
 
-    public OrdinaryGovernorAdapter(OrdinaryGovernor governor, PluginChain pluginChain) {
+    public ForeseeableGovernorAdapter(ForeseeableGovernor governor, PluginChain pluginChain) {
         super(governor, pluginChain);
     }
 
     public void setWorker(Worker worker) {
-        ((OrdinaryGovernor) adaptee()).setWorker(worker);
+        ((ForeseeableGovernor) adaptee()).setWorker(worker);
     }
 }

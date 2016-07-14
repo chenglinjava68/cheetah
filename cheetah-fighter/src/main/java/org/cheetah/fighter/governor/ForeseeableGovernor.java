@@ -11,7 +11,7 @@ import java.util.EventListener;
 /**
  * Created by Max on 2016/2/29.
  */
-public class OrdinaryGovernor extends AbstractGovernor {
+public class ForeseeableGovernor extends AbstractGovernor {
     private Worker worker;
 
     @Override

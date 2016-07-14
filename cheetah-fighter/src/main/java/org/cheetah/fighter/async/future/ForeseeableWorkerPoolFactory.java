@@ -1,11 +1,11 @@
-package org.cheetah.fighter.async.ordinary;
+package org.cheetah.fighter.async.future;
 
 import org.cheetah.fighter.async.AsynchronousFactory;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.core.EventContext;
 import org.cheetah.fighter.core.NoMapperException;
 import org.cheetah.fighter.core.HandlerMapping;
-import org.cheetah.fighter.worker.OrdinaryWorker;
+import org.cheetah.fighter.worker.ForeseeableWorker;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,17 +14,17 @@ import java.util.Objects;
 /**
  * Created by Max on 2016/2/29.
  */
-public class OrdinaryWorkerPoolFactory implements AsynchronousPoolFactory<OrdinaryWorker> {
-    private AsynchronousFactory<OrdinaryWorker> asynchronousFactory;
-    private final Map<HandlerMapping.HandlerMapperKey, OrdinaryWorker> workerPool;
+public class ForeseeableWorkerPoolFactory implements AsynchronousPoolFactory<ForeseeableWorker> {
+    private AsynchronousFactory<ForeseeableWorker> asynchronousFactory;
+    private final Map<HandlerMapping.HandlerMapperKey, ForeseeableWorker> workerPool;
     private EventContext context;
 
-    public OrdinaryWorkerPoolFactory() {
+    public ForeseeableWorkerPoolFactory() {
         this.workerPool = new HashMap<>();
     }
 
-    public OrdinaryWorker createWorker() {
-        OrdinaryWorker worker = this.workerPool.get(HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event()));
+    public ForeseeableWorker createWorker() {
+        ForeseeableWorker worker = this.workerPool.get(HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event()));
         if(Objects.nonNull(worker))
             return worker;
         return  this.asynchronousFactory.createAsynchronous(context.eventMessage().event().getClass().getName(),
@@ -32,8 +32,8 @@ public class OrdinaryWorkerPoolFactory implements AsynchronousPoolFactory<Ordina
     }
 
     @Override
-    public OrdinaryWorker getAsynchronous() {
-        OrdinaryWorker worker = this.workerPool.get(HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event()));
+    public ForeseeableWorker getAsynchronous() {
+        ForeseeableWorker worker = this.workerPool.get(HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event()));
         if (Objects.nonNull(worker)) {
             return worker;
         } else {

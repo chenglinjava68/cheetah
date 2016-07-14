@@ -101,7 +101,6 @@ public abstract class AbstractHttpTransport<T> implements HttpTransport<T> {
 
             return handler.handle(resp);
         } catch (Exception e) {
-            e.printStackTrace();
             logger.error("The HTTP request an exception occurs, url :{}", requester.url(), e);
             throw new HttpClientException("The HTTP request an exception occurs, url : " + requester.url(), e);
         } finally {

@@ -35,14 +35,14 @@ public enum EnginePolicy {
             return engineDirector;
         }
     },
-    ORDINARY {
+    FUTURE {
         @Override
         public EngineDirector getEngineDirector() {
             EngineDirector engineDirector = engineDirectorMap.get(this.name());
             if (Objects.nonNull(engineDirector)) {
                 return engineDirector;
             }
-            engineDirector = new OrdinaryEngineDirector(new OrdinaryEngineBuilder());
+            engineDirector = new ForeseeableEngineDirector(new ForeseeableEngineBuilder());
             engineDirectorMap.put(this.name(), engineDirector);
             return engineDirector;
         }

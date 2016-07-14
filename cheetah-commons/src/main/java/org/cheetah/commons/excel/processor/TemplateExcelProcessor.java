@@ -93,8 +93,7 @@ public class TemplateExcelProcessor<T> extends AbstractExcelProcessor<T> {
             }
             excelTemplate.replaceFinalData(templatePlaceholder);
         } catch (Exception e) {
-            Loggers.me().error(this.getClass(), "往excel写入数据失败！", e);
-            throw new ExcelException(e);
+            throw new ExcelException("往excel写入数据失败！", e);
         }
     }
 

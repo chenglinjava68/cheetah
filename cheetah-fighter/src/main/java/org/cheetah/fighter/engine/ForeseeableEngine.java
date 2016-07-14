@@ -3,17 +3,17 @@ package org.cheetah.fighter.engine;
 import org.cheetah.fighter.core.engine.AbstractEngine;
 import org.cheetah.fighter.core.governor.Governor;
 import org.cheetah.fighter.core.worker.Worker;
-import org.cheetah.fighter.governor.OrdinaryGovernor;
-import org.cheetah.fighter.governor.OrdinaryGovernorAdapter;
+import org.cheetah.fighter.governor.ForeseeableGovernor;
+import org.cheetah.fighter.governor.ForeseeableGovernorAdapter;
 
 import java.util.Objects;
 
 /**
  * Created by Max on 2016/2/1.
  */
-public class OrdinaryEngine extends AbstractEngine {
+public class ForeseeableEngine extends AbstractEngine {
 
-    public OrdinaryEngine() {
+    public ForeseeableEngine() {
         this.state = State.NEW;
     }
 
@@ -21,8 +21,8 @@ public class OrdinaryEngine extends AbstractEngine {
     public Governor assignGovernor() {
         if (Objects.isNull(governor())) {
             Governor governor = governorFactory().createGovernor();
-            governor = new OrdinaryGovernorAdapter((OrdinaryGovernor) governor, pluginChain());
-            ((OrdinaryGovernorAdapter) governor).setWorker((Worker) asynchronousPoolFactory().getAsynchronous());
+            governor = new ForeseeableGovernorAdapter((ForeseeableGovernor) governor, pluginChain());
+            ((ForeseeableGovernorAdapter) governor).setWorker((Worker) asynchronousPoolFactory().getAsynchronous());
             governor.registerHandlerSquad(context().handlers());
             setGovernor(governor);
             return governor;
@@ -31,12 +31,12 @@ public class OrdinaryEngine extends AbstractEngine {
                 Governor clone = governor().kagebunsin();
                 clone.reset();
                 Worker worker = (Worker) asynchronousPoolFactory().getAsynchronous();
-                ((OrdinaryGovernorAdapter) clone).setWorker(worker);
+                ((ForeseeableGovernorAdapter) clone).setWorker(worker);
                 return clone;
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
                 Governor governor = governorFactory().createGovernor();
-                ((OrdinaryGovernorAdapter) governor).setWorker((Worker) asynchronousPoolFactory().getAsynchronous());
+                ((ForeseeableGovernorAdapter) governor).setWorker((Worker) asynchronousPoolFactory().getAsynchronous());
                 return governor;
             }
         }

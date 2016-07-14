@@ -8,7 +8,6 @@ import org.cheetah.commons.excel.ExcelException;
 import org.cheetah.commons.excel.ExcelProcessor;
 import org.cheetah.commons.excel.StyleHandler;
 import org.cheetah.commons.logger.Info;
-import org.cheetah.commons.logger.Loggers;
 
 import java.io.InputStream;
 import java.text.NumberFormat;
@@ -44,7 +43,6 @@ public abstract class AbstractExcelProcessor<T> implements ExcelProcessor<T> {
             Row row = sheet.getRow(readLine);
             Map<Integer, String> maps = ExcelResourcesHelper.getHeaderMap(row, clz);
             if (maps == null || maps.size() <= 0) {
-                Loggers.me().error(this.getClass(), "要读取的Excel的格式不正确，检查是否设定了合适的行");
                 throw new ExcelException("要读取的Excel的格式不正确，检查是否设定了合适的行");
             }
             for (int i = readLine + 1; i <= sheet.getLastRowNum() - tailLine; i++) {
@@ -67,8 +65,7 @@ public abstract class AbstractExcelProcessor<T> implements ExcelProcessor<T> {
                 datas.add(obj);
             }
         } catch (Exception e) {
-            Loggers.me().error(this.getClass(), "读取的Excel失败", e);
-            throw new ExcelException(e);
+            throw new ExcelException("读取的Excel失败", e);
         }
         return datas;
     }

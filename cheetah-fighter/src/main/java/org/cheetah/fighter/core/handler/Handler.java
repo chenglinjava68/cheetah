@@ -1,7 +1,5 @@
 package org.cheetah.fighter.core.handler;
 
-import org.cheetah.fighter.core.event.Event;
-
 import java.util.EventListener;
 
 /**
@@ -31,21 +29,6 @@ public interface Handler extends Cloneable {
      * @param directive
      */
     void onSuccess(Directive directive);
-
-    /**
-     * 无工作反馈的执行方式
-     *
-     * @param event
-     */
-    void execute(Event event);
-
-    /**
-     * 有反馈的执行方式
-     *
-     * @param event
-     * @return
-     */
-    Feedback completeExecute(Event event);
 
     void setEventListener(EventListener eventListener);
 

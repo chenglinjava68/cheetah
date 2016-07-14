@@ -186,7 +186,7 @@ public class EventPublisherTest {
 
         @Override
         public void onDomainEvent(DomainEvent event) {
-//            System.out.println("SmartDomainListenerTest2 -- " + atomicLong3.incrementAndGet());
+            System.out.println("SmartDomainListenerTest2 -- " + atomicLong3.incrementAndGet());
         }
 
         @Override

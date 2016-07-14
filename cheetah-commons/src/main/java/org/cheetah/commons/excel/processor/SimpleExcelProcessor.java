@@ -8,7 +8,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.cheetah.commons.excel.ExcelException;
 import org.cheetah.commons.excel.ExcelHeader;
 import org.cheetah.commons.logger.Info;
-import org.cheetah.commons.logger.Loggers;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -96,7 +95,6 @@ public class SimpleExcelProcessor<T> extends AbstractExcelProcessor<T> {
                 }
             }
         } catch (Exception e) {
-            Loggers.me().error(this.getClass(), "往excel写入数据失败！", e);
             throw new ExcelException("往excel写入数据失败！", e);
         }
     }

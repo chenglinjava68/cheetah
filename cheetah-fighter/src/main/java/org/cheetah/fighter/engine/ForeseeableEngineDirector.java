@@ -8,17 +8,17 @@ import org.cheetah.fighter.core.engine.EngineDirector;
 /**
  * Created by Max on 2016/3/2.
  */
-public class OrdinaryEngineDirector implements EngineDirector {
+public class ForeseeableEngineDirector implements EngineDirector {
     private FighterConfig configuration;
     private EngineBuilder builder;
 
-    public OrdinaryEngineDirector(EngineBuilder builder) {
+    public ForeseeableEngineDirector(EngineBuilder builder) {
         this.builder = builder;
     }
 
     @Override
     public Engine directEngine() {
-        Engine engine = new OrdinaryEngine();
+        Engine engine = new ForeseeableEngine();
         engine.setWorkerFactory(builder.buildWorkerFactory());
         engine.setHandlerFactory(builder.buildHandlerFactory());
         engine.setGovernorFactory(builder.buildGovernorFactory());

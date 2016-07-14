@@ -27,7 +27,6 @@ public class BinaryTransport extends AbstractHttpTransport<byte[]> {
             logger.info("http request success, result type is bytes, length {}", result.length);
             return result;
         } catch (IOException e) {
-            logger.error("entity to bytes error", e);
             throw new HttpClientException("entity to bytes error", e);
         }
     }

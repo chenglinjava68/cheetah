@@ -9,8 +9,6 @@ import org.cheetah.commons.httpclient.HttpClientException;
 
 import java.io.IOException;
 
-import static org.cheetah.commons.httpclient.transport.ResponseProcessor.logger;
-
 /**
  * jackson序列化实现
  *
@@ -30,8 +28,7 @@ public class Jackson2JsonSerializer implements EntitySerializer {
         try {
             return objectMapper.writeValueAsString(entity);
         } catch (JsonProcessingException e) {
-            logger.error("jackson2JsonSerializer serialize failed.", e);
-            throw new HttpClientException("jackson2JsonSerializer serialize failed.");
+            throw new HttpClientException("jackson2JsonSerializer serialize failed.", e);
         }
     }
 
@@ -40,8 +37,7 @@ public class Jackson2JsonSerializer implements EntitySerializer {
         try {
             return objectMapper.readValue(representation, entity);
         } catch (IOException e) {
-            logger.error("jackson2JsonSerializer deserialize failed.", e);
-            throw new HttpClientException("jackson2JsonSerializer deserialize failed.");
+            throw new HttpClientException("jackson2JsonSerializer deserialize failed.", e);
         }
     }
 }

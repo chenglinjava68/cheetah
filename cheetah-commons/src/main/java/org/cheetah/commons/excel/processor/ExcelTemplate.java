@@ -110,11 +110,9 @@ public class ExcelTemplate {
             fos = new FileOutputStream(filePath);
             workbook.write(fos);
         } catch (FileNotFoundException e) {
-            Loggers.me().error(this.getClass(), "写入的文件不存在！", e);
             throw new ExcelException("写入的文件不存在！", e);
         } catch (IOException e) {
-            Loggers.me().error(this.getClass(), "写入数据失败！", e);
-            throw new ExcelException("写入数据失败！", e);
+            throw new ExcelException("写入文件失败！", e);
         } finally {
             if (fos != null) {
                 try {
@@ -135,7 +133,6 @@ public class ExcelTemplate {
         try {
             workbook.write(os);
         } catch (IOException e) {
-            Loggers.me().error(this.getClass(), "写入流失败！", e);
             throw new ExcelException("写入流失败！" + e.getMessage());
         }
     }

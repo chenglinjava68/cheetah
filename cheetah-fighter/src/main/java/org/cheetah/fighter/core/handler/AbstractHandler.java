@@ -28,7 +28,7 @@ public abstract class AbstractHandler implements Handler {
      */
     @Override
     public Feedback handle(Directive directive) {
-        Feedback feedback = Feedback.FAILURE;
+        Feedback feedback = Feedback.SUCCESS;
         if (directive.feedback()) {
             feedback = completeExecute(directive.event());
             if (feedback.isFail())
@@ -36,7 +36,6 @@ public abstract class AbstractHandler implements Handler {
             else
                 onSuccess(directive);
         } else execute(directive.event());
-
         return feedback;
     }
 
@@ -59,7 +58,6 @@ public abstract class AbstractHandler implements Handler {
      */
     @Override
     public void onSuccess(Directive directive) {
-        Info.log(this.getClass(), "handler execute success event");
         if (directive.callback() != null)
             directive.callback().call(true, directive.event().getSource());
     }
@@ -76,24 +74,20 @@ public abstract class AbstractHandler implements Handler {
         return handler;
     }
 
-    @Override
-    public void execute(Event event) {
-        doExecute(event);
-    }
+    /**
+     * 无工作反馈的执行方式
+     *
+     * @param event
+     */
+    protected abstract void execute(Event event);
 
-    @Override
-    public Feedback completeExecute(Event event) {
-        try {
-            doExecute(event);
-        } catch (Throwable e) {
-            e.printStackTrace();
-            Warn.log(this.getClass(), "event handler completeExecute error", e);
-            return Feedback.FAILURE;
-        }
-        return Feedback.SUCCESS;
-    }
-
-    protected abstract void doExecute(Event event);
+    /**
+     * 有反馈的执行方式
+     *
+     * @param event
+     * @return
+     */
+    protected abstract Feedback completeExecute(Event event);
 
     @Override
     public void setEventListener(EventListener eventListener) {
