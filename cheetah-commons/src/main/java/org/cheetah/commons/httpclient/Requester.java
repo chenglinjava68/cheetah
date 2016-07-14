@@ -8,7 +8,7 @@ import org.apache.http.client.config.RequestConfig;
 
 import java.util.Map;
 
-import static org.cheetah.commons.httpclient.Requester.METHOD.GET;
+import static org.cheetah.commons.httpclient.Requester.Method.GET;
 
 /**
  * 请求者，携带URL、entity、method、headers、parameters、requestConfig到HttpTransport
@@ -16,12 +16,12 @@ import static org.cheetah.commons.httpclient.Requester.METHOD.GET;
  * Created by maxhuang on 2016/7/6.
  */
 public class Requester {
-    public enum METHOD {
-        GET, POST, PUT, DELETE, HEAD, TRACE, OPTIONS
+    public enum Method {
+        GET, POST, PUT, DELETE, HEAD, TRACE, OPTIONS, PATCH
     }
     private String url;
     private String entity;
-    private METHOD method;
+    private Method method;
     private Map<String, String> headers = Maps.newHashMap();
     private Map<String, String> parameters = Maps.newHashMap();
     private RequestConfig requestConfig;
@@ -42,7 +42,7 @@ public class Requester {
         return url;
     }
 
-    public METHOD method() {
+    public Method method() {
         return method;
     }
 
@@ -68,42 +68,46 @@ public class Requester {
     }
 
     public static Builder POST() {
-        return new Builder(METHOD.POST);
+        return new Builder(Method.POST);
     }
 
     public static Builder DELETE() {
-        return new Builder(METHOD.DELETE);
+        return new Builder(Method.DELETE);
     }
 
     public static Builder GET() {
-        return new Builder(METHOD.GET);
+        return new Builder(Method.GET);
     }
 
     public static Builder HEAD() {
-        return new Builder(METHOD.HEAD);
+        return new Builder(Method.HEAD);
     }
 
     public static Builder OPTIONS() {
-        return new Builder(METHOD.OPTIONS);
+        return new Builder(Method.OPTIONS);
     }
 
     public static Builder PUT() {
-        return new Builder(METHOD.PUT);
+        return new Builder(Method.PUT);
     }
 
     public static Builder TRACE() {
-        return new Builder(METHOD.TRACE);
+        return new Builder(Method.TRACE);
+    }
+
+    public static Builder PATCH() {
+        return new Builder(Method.PATCH);
     }
 
     public static class Builder {
         String url;
         String entity;
-        METHOD method = GET;
+        Method method = GET;
         Map<String, String> headers;
         Map<String, String> parameters;
         RequestConfig requestConfig;
 
-        Builder(METHOD method) {
+        Builder(Method method) {
             this.method = method;
         }
 
@@ -121,7 +125,7 @@ public class Requester {
             return this;
         }
 
-        public Builder method(METHOD method) {
+        public Builder method(Method method) {
             this.method = method;
             return this;
         }

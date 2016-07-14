@@ -70,6 +70,10 @@ public abstract class AbstractHttpTransport<T> implements HttpTransport<T> {
                     requestBase = new HttpPost(requester.url());
                     resp = executeBase((HttpPost) requestBase, requester);
                     break;
+                case PATCH:
+                    requestBase = new HttpPatch(requester.url());
+                    resp = executeBase((HttpPatch) requestBase, requester);
+                    break;
                 case PUT:
                     requestBase = new HttpPut(requester.url());
                     resp = executeBase((HttpPut) requestBase, requester);
