@@ -58,13 +58,14 @@ public class EventPublisherTest {
 
     @Test
     public void launch2() throws InterruptedException {
-        while (true) {
+        CountDownLatch latch = new CountDownLatch(1);
+//        while (true) {
 //            Thread.sleep(1);
-
             FighterContext.publish(
                     new DomainEventTest(new User("hzf"))
             );
-        }
+//        }
+        latch.await();
     }
 
 
@@ -156,19 +157,12 @@ public class EventPublisherTest {
 
         @Override
         public void onDomainEvent(DomainEvent event) {
-            double v = ArithUtils.round(Math.random() * 100, 0);
-            long i = ArithUtils.convertsToLong(v);
+            System.out.println("SmartDomainListenerTest -- " + atomicLong3.incrementAndGet());
 //            try {
-//                Thread.sleep(i);
+//                Thread.sleep(222000);
 //            } catch (InterruptedException e) {
 //                e.printStackTrace();
 //            }
-            try {
-                Thread.sleep(222000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println("SmartDomainListenerTest -- " + atomicLong3.incrementAndGet());
         }
 
         @Override
