@@ -209,7 +209,7 @@ public class ApacheHttpConnector {
                     connMgr.closeIdleConnections(30, TimeUnit.SECONDS);
                 }
             } catch (Exception ex) {
-                logger.error("create httpclient error occured ", ex);
+                logger.error("IdleConnectionMonitorThread error occured ", ex);
             }
         }
 
