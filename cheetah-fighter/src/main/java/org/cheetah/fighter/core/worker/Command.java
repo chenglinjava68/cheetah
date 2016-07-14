@@ -1,6 +1,5 @@
 package org.cheetah.fighter.core.worker;
 
-import org.cheetah.fighter.core.event.Callback;
 import org.cheetah.fighter.core.event.Event;
 
 import java.io.Serializable;
@@ -14,16 +13,14 @@ public class Command implements Serializable {
     private static final long serialVersionUID = 2193959876727951577L;
 
     private Event event;
-    private Callback callback;
     private boolean needResult ;
     private Class<? extends EventListener> eventListener;
 
     Command() {
     }
 
-    public Command(Event event, Callback callback, boolean needResult, Class<? extends EventListener> eventListener) {
+    public Command(Event event, boolean needResult, Class<? extends EventListener> eventListener) {
         this.event = event;
-        this.callback = callback;
         this.needResult = needResult;
         this.eventListener = eventListener;
     }
@@ -36,20 +33,11 @@ public class Command implements Serializable {
         return needResult;
     }
 
-    public Callback callback() {
-        return callback;
-    }
-
     public Class<? extends EventListener> eventListener() {
         return eventListener;
     }
 
     public static Command of(Event event, Class<? extends EventListener> eventListener) {
-        return new Command(event, null, true, eventListener);
-    }
-
-
-    public static Command of(Event event, Callback callback, Class<? extends EventListener> eventListener) {
-        return new Command(event, callback, true, eventListener);
+        return new Command(event, true, eventListener);
     }
 }

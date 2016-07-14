@@ -4,7 +4,7 @@ import akka.actor.ActorRef;
 import org.cheetah.commons.logger.Loggers;
 import org.cheetah.fighter.core.governor.AbstractGovernor;
 import org.cheetah.fighter.core.governor.Governor;
-import org.cheetah.fighter.core.handler.Feedback;
+import org.cheetah.fighter.core.Feedback;
 import org.cheetah.fighter.core.worker.Command;
 
 import java.util.EventListener;
@@ -36,7 +36,7 @@ public class AkkaGovernor extends AbstractGovernor {
         Map<Class<? extends EventListener>, Feedback> feedbackMap = new HashMap<>();
         for (Class<? extends EventListener> clz : this.handlerMap().keySet()) {
             try {
-                Command command = Command.of(details().event(), details().callback(), clz);
+                Command command = Command.of(details().event(), clz);
 //                Future<Object> future = Patterns.ask(this.worker, command, 3000);
 //                Object result = Await.result(future, Duration.create(3000, TimeUnit.MILLISECONDS));
 //                if (result instanceof Feedback) {

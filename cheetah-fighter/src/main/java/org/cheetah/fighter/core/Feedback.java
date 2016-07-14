@@ -1,4 +1,4 @@
-package org.cheetah.fighter.core.handler;
+package org.cheetah.fighter.core;
 
 
 /**
@@ -6,18 +6,18 @@ package org.cheetah.fighter.core.handler;
  * Created by Max on 2016/2/21.
  */
 public class Feedback<T> {
-    public static Feedback EMPTY = new Feedback("empty", false);
-    public static Feedback FAILURE = new Feedback(null, true); //
-    public static Feedback SUCCESS = new Feedback(null, false); //
+    public static final Feedback<String> EMPTY = new Feedback<>("empty", false);
+    public static final Feedback<String> FAILURE = new Feedback<>(null, true); //
+    public static final Feedback<String> SUCCESS = new Feedback<>(null, false); //
     private T data;
-    private boolean fail;
+    private boolean success;
 
     private Feedback() {
     }
 
     private Feedback(T data, boolean fail) {
         this.data = data;
-        this.fail = fail;
+        this.success = fail;
     }
 
     public static <T> Feedback<T> success(T data) {
@@ -28,8 +28,8 @@ public class Feedback<T> {
         return new Feedback<>(data, Boolean.FALSE);
     }
 
-    public boolean isFail() {
-        return fail;
+    public boolean isSuccess() {
+        return success;
     }
 
     public T getData() {
@@ -43,7 +43,7 @@ public class Feedback<T> {
 
         Feedback<?> feedback = (Feedback<?>) o;
 
-        if (fail != feedback.fail) return false;
+        if (success != feedback.success) return false;
         return !(data != null ? !data.equals(feedback.data) : feedback.data != null);
 
     }
@@ -51,7 +51,7 @@ public class Feedback<T> {
     @Override
     public int hashCode() {
         int result = data != null ? data.hashCode() : 0;
-        result = 31 * result + (fail ? 1 : 0);
+        result = 31 * result + (success ? 1 : 0);
         return result;
     }
 }

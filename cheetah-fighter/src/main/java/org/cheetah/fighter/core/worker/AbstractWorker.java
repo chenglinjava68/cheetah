@@ -28,6 +28,10 @@ public abstract class AbstractWorker implements Worker {
         }
     }
 
+    /**
+     * 为每个工作者生成一个拦截器链
+     * @return
+     */
     HandlerInterceptorChain createInterceptorChain() {
         HandlerInterceptorChain chain;
         try {

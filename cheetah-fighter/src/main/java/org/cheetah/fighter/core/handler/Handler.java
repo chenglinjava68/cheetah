@@ -1,5 +1,7 @@
 package org.cheetah.fighter.core.handler;
 
+import org.cheetah.fighter.core.worker.Command;
+
 import java.util.EventListener;
 
 /**
@@ -11,26 +13,26 @@ public interface Handler extends Cloneable {
     /**
      * 给机器发送一个指令，让其工作
      *
-     * @param directive
+     * @param command
      * @return
      */
-    Feedback handle(Directive directive);
+    boolean handle(Command command);
 
     /**
      * 机器工作故障后的回调函数
      *
-     * @param directive
+     * @param command
      */
-    void onFailure(Directive directive);
+    void onFailure(Command command);
 
     /**
      * 机器工作故障后的回调函数
      *
-     * @param directive
+     * @param command
      */
-    void onSuccess(Directive directive);
+    void onSuccess(Command command);
 
-    void setEventListener(EventListener eventListener);
+    void registerEventListener(EventListener eventListener);
 
     EventListener getEventListener();
 

@@ -14,7 +14,6 @@ import org.cheetah.fighter.core.event.DomainEventListener;
 import org.cheetah.fighter.core.event.Event;
 import org.cheetah.fighter.core.event.SmartDomainEventListener;
 import org.cheetah.fighter.core.governor.Governor;
-import org.cheetah.fighter.core.handler.Feedback;
 import org.cheetah.fighter.core.handler.Handler;
 import org.cheetah.fighter.engine.EnginePolicy;
 import org.cheetah.fighter.plugin.Plugin;
@@ -76,7 +75,7 @@ public class EventBus implements Dispatcher, Startable {
         EventMessage eventMessage = context().eventMessage();
         Map<Class<? extends EventListener>, Handler> handlerMap = context().handlers();
         if (handlerMap.isEmpty()) {
-            Loggers.me().error(this.getClass(), "Couldn't find the corresponding mapping.");
+            Loggers.me().warn(this.getClass(), "Couldn't find the corresponding mapping.");
             throw new NoMapperException();
         } else {
             Governor governor = engine().assignGovernor();
@@ -84,7 +83,7 @@ public class EventBus implements Dispatcher, Startable {
                     .accept(eventMessage)
                     .registerHandlerSquad(handlerMap)
                     .command();
-            return new EventResult(eventMessage.event().getSource(), report.isFail());
+            return new EventResult(eventMessage.event().getSource(), report.isSuccess());
         }
 
     }
@@ -170,7 +169,7 @@ public class EventBus implements Dispatcher, Startable {
         Map<Class<? extends EventListener>, Handler> handlers = Maps.newHashMap();
         for (EventListener listener : listeners) {
             Handler handler = engine.assignDomainEventHandler();
-            handler.setEventListener(listener);
+            handler.registerEventListener(listener);
             handlers.put(listener.getClass(), handler);
         }
 

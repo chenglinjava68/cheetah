@@ -1,9 +1,11 @@
 package org.cheetah.fighter.core.handler;
 
-import org.cheetah.commons.logger.Info;
 import org.cheetah.commons.logger.Warn;
 import org.cheetah.commons.utils.ObjectUtils;
+import org.cheetah.fighter.core.event.DomainEvent;
+import org.cheetah.fighter.core.event.DomainEventListener;
 import org.cheetah.fighter.core.event.Event;
+import org.cheetah.fighter.core.worker.Command;
 
 import java.util.EventListener;
 
@@ -23,43 +25,35 @@ public abstract class AbstractHandler implements Handler {
     /**
      * 给机器发送一个指令，让其工作
      *
-     * @param directive
+     * @param command
      * @return
      */
     @Override
-    public Feedback handle(Directive directive) {
-        Feedback feedback = Feedback.SUCCESS;
-        if (directive.feedback()) {
-            feedback = completeExecute(directive.event());
-            if (feedback.isFail())
-                onFailure(directive);
-            else
-                onSuccess(directive);
-        } else execute(directive.event());
-        return feedback;
+    public boolean handle(Command command) {
+        return completeExecute(command.event());
     }
 
     /**
-     * 机器工作故障后的回调函数
+     * 某个消费者消费失败后的回调函数
      *
-     * @param directive
+     * @param command
      */
     @Override
-    public void onFailure(Directive directive) {
-        Warn.log(this.getClass(), "handler execute failure event is [" + directive.event() + "]");
-        if (directive.callback() != null)
-            directive.callback().call(false, directive.event().getSource());
+    public void onFailure(Command command) {
+        Warn.log(this.getClass(), "handler execute failure event is [" + command.event() + "]");
+        DomainEventListener<DomainEvent> listener = (DomainEventListener<DomainEvent>) getEventListener();
+        listener.onCancelled();
     }
 
     /**
-     * 机器工作故障后的回调函数
-     *
-     * @param directive
+     * 某个消费者消费成功后的回调函数
+     * @param command
      */
     @Override
-    public void onSuccess(Directive directive) {
-        if (directive.callback() != null)
-            directive.callback().call(true, directive.event().getSource());
+    public void onSuccess(Command command) {
+        Warn.log(this.getClass(), "handler execute failure event is [" + command.event() + "]");
+        DomainEventListener<DomainEvent> listener = (DomainEventListener<DomainEvent>) getEventListener();
+        listener.onFinish();
     }
 
     @Override
@@ -70,27 +64,19 @@ public abstract class AbstractHandler implements Handler {
     @Override
     public Handler kagebunsin(EventListener listener) throws CloneNotSupportedException {
         Handler handler = (Handler) super.clone();
-        handler.setEventListener(this.eventListener);
+        handler.registerEventListener(this.eventListener);
         return handler;
     }
-
-    /**
-     * 无工作反馈的执行方式
-     *
-     * @param event
-     */
-    protected abstract void execute(Event event);
-
     /**
      * 有反馈的执行方式
      *
      * @param event
      * @return
      */
-    protected abstract Feedback completeExecute(Event event);
+    protected abstract boolean completeExecute(Event event);
 
     @Override
-    public void setEventListener(EventListener eventListener) {
+    public void registerEventListener(EventListener eventListener) {
         this.eventListener = eventListener;
     }
 

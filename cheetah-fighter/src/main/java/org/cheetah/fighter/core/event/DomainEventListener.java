@@ -10,4 +10,6 @@ public interface DomainEventListener<E extends DomainEvent> extends EventListene
     void onDomainEvent(E event);
 
     void onFinish();
+
+    void onCancelled();
 }

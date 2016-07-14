@@ -3,7 +3,7 @@ package org.cheetah.fighter.core.governor;
 import org.cheetah.commons.utils.Assert;
 import org.cheetah.commons.utils.IDGenerator;
 import org.cheetah.fighter.core.EventMessage;
-import org.cheetah.fighter.core.handler.Feedback;
+import org.cheetah.fighter.core.Feedback;
 import org.cheetah.fighter.core.handler.Handler;
 
 import java.util.EventListener;
@@ -60,7 +60,7 @@ public abstract class AbstractGovernor implements Governor {
     }
 
     @Override
-    public void expelHandler(Handler handler) {
+    public void unRegisterHandler(Handler handler) {
         Assert.notNull(handler, "handler must not be null");
         handlerMap.remove(handler.getEventListener().getClass());
     }

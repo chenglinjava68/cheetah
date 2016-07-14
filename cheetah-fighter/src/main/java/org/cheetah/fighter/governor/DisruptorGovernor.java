@@ -5,7 +5,7 @@ import com.lmax.disruptor.RingBuffer;
 import org.cheetah.commons.logger.Info;
 import org.cheetah.fighter.async.disruptor.DisruptorEvent;
 import org.cheetah.fighter.core.governor.AbstractGovernor;
-import org.cheetah.fighter.core.handler.Feedback;
+import org.cheetah.fighter.core.Feedback;
 import org.cheetah.fighter.core.worker.Command;
 
 import java.util.EventListener;
@@ -25,7 +25,7 @@ public class DisruptorGovernor extends AbstractGovernor {
         Translator translator = new Translator();
         Set<Class<? extends EventListener>> keys = this.handlerMap().keySet();
         for (Class<? extends EventListener> c : keys) {
-            Command command = Command.of(details().event(), details().callback(), c);
+            Command command = Command.of(details().event(), c);
             ringBuffer.publishEvent(translator, command);
         }
 

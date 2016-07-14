@@ -3,7 +3,6 @@ package org.cheetah.fighter.worker;
 import org.cheetah.commons.logger.Loggers;
 import org.cheetah.commons.utils.Assert;
 import org.cheetah.fighter.core.Interceptor;
-import org.cheetah.fighter.core.handler.Directive;
 import org.cheetah.fighter.core.handler.Handler;
 import org.cheetah.fighter.core.worker.AbstractWorker;
 import org.cheetah.fighter.core.worker.Command;
@@ -32,7 +31,7 @@ public class AkkaWorker extends AbstractWorker {
         try {
             Assert.notNull(command, "order must not be null");
             Handler machine = eventlistenerMapper.get(command.eventListener());
-            machine.handle(new Directive(command.event(), command.callback(), command.needResult()));
+            machine.handle(command);
         } catch (Exception e) {
             Loggers.me().error(this.getClass(), "AkkaWorker work fail.", e);
         }

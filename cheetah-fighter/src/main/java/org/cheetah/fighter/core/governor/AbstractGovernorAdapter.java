@@ -2,7 +2,7 @@ package org.cheetah.fighter.core.governor;
 
 import org.cheetah.commons.utils.Assert;
 import org.cheetah.fighter.core.EventMessage;
-import org.cheetah.fighter.core.handler.Feedback;
+import org.cheetah.fighter.core.Feedback;
 import org.cheetah.fighter.core.handler.Handler;
 import org.cheetah.fighter.plugin.PluginChain;
 
@@ -56,8 +56,8 @@ public class AbstractGovernorAdapter implements Governor {
     }
 
     @Override
-    public void expelHandler(Handler handler) {
-        adaptee.expelHandler(handler);
+    public void unRegisterHandler(Handler handler) {
+        adaptee.unRegisterHandler(handler);
     }
 
     @Override

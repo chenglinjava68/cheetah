@@ -3,7 +3,6 @@ package org.cheetah.fighter.worker;
 import com.lmax.disruptor.EventHandler;
 import org.cheetah.fighter.async.disruptor.DisruptorEvent;
 import org.cheetah.fighter.core.Interceptor;
-import org.cheetah.fighter.core.handler.Directive;
 import org.cheetah.fighter.core.handler.Handler;
 import org.cheetah.fighter.core.worker.AbstractWorker;
 import org.cheetah.fighter.core.worker.Command;
@@ -27,7 +26,11 @@ public class DisruptorWorker extends AbstractWorker implements EventHandler<Disr
 
     @Override
     public void doWork(Command command) {
-        handlerMap.get(command.eventListener()).handle(new Directive(command.event(),command.callback(), command.needResult()));
+        Handler handler = handlerMap.get(command.eventListener());
+        boolean feedback = handler.handle(command);
+        if(feedback)
+            handler.onSuccess(command);
+        else handler.onFailure(command);
     }
 
     @Override

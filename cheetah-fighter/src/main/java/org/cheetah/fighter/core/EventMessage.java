@@ -1,6 +1,6 @@
 package org.cheetah.fighter.core;
 
-import org.cheetah.fighter.core.event.Callback;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.cheetah.fighter.core.event.Event;
 
 /**
@@ -10,17 +10,11 @@ public class EventMessage {
     private Event event;
     private boolean needResult;
     private boolean fisrtWin;
-    private Callback callback;
 
     public EventMessage(Event event) {
         this.event = event;
         this.needResult = false;
         this.fisrtWin = false;
-    }
-
-    public EventMessage(Event event, Callback callback) {
-        this.event = event;
-        this.callback = callback;
     }
 
     public EventMessage(boolean needResult, Event event) {
@@ -65,21 +59,9 @@ public class EventMessage {
         return fisrtWin;
     }
 
-    public Callback callback() {
-        return callback;
-    }
-
-    public void setCallback(Callback callback) {
-        this.callback = callback;
-    }
 
     @Override
     public String toString() {
-        return "EventMessage{" +
-                "event=" + event +
-                ", needResult=" + needResult +
-                ", fisrtWin=" + fisrtWin +
-                ", callback=" + callback +
-                '}';
+        return ToStringBuilder.reflectionToString(this);
     }
 }

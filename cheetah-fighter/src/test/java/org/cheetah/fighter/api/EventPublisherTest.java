@@ -39,15 +39,11 @@ public class EventPublisherTest {
     public void launch() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         for (int i = 0; i < 10; i++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        DomainEventPublisher.publish(
-                                new DomainEventTest2(new User("huahng"))
-                        );
-//                    listenerTest.onApplicationEvent(event);
-                    }
+            new Thread(() -> {
+                while (true) {
+                    DomainEventPublisher.publish(
+                            new DomainEventTest2(new User("huahng"))
+                    );
                 }
             }).start();
         }
@@ -59,12 +55,9 @@ public class EventPublisherTest {
     @Test
     public void launch2() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
-//        while (true) {
-//            Thread.sleep(1);
-            FighterContext.publish(
-                    new DomainEventTest(new User("hzf"))
-            );
-//        }
+        FighterContext.publish(
+                new DomainEventTest(new User("hzf"))
+        );
         latch.await();
     }
 
@@ -158,16 +151,17 @@ public class EventPublisherTest {
         @Override
         public void onDomainEvent(DomainEvent event) {
             System.out.println("SmartDomainListenerTest -- " + atomicLong3.incrementAndGet());
-//            try {
-//                Thread.sleep(222000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            throw new RuntimeException();
         }
 
         @Override
         public void onFinish() {
+            System.out.println("on finish");
+        }
 
+        @Override
+        public void onCancelled() {
+            System.out.println("on cancelled");
         }
 
     }
@@ -187,10 +181,16 @@ public class EventPublisherTest {
         @Override
         public void onDomainEvent(DomainEvent event) {
             System.out.println("SmartDomainListenerTest2 -- " + atomicLong3.incrementAndGet());
+
         }
 
         @Override
         public void onFinish() {
+
+        }
+
+        @Override
+        public void onCancelled() {
 
         }
 
@@ -220,6 +220,11 @@ public class EventPublisherTest {
 
         }
 
+        @Override
+        public void onCancelled() {
+
+        }
+
     }
 
     public static class DomainListenerTest2 implements DomainEventListener<ApplicationEventTest2> {
@@ -232,6 +237,11 @@ public class EventPublisherTest {
 
         @Override
         public void onFinish() {
+
+        }
+
+        @Override
+        public void onCancelled() {
 
         }
 

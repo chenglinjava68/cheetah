@@ -1,7 +1,7 @@
 package org.cheetah.fighter.core.governor;
 
 import org.cheetah.fighter.core.EventMessage;
-import org.cheetah.fighter.core.handler.Feedback;
+import org.cheetah.fighter.core.Feedback;
 import org.cheetah.fighter.core.handler.Handler;
 
 import java.util.EventListener;
@@ -43,17 +43,17 @@ public interface Governor extends Cloneable {
     String getId();
 
     /**
-     * 注册一组工作机器
+     * 注册工人需要处理器
      * @param handlerMap
      * @return
      */
     Governor registerHandlerSquad(Map<Class<? extends EventListener>, Handler> handlerMap);
 
     /**
-     * 开除一个工作机器
+     * 开除一个工作处理器
      * @param handler
      */
-    void expelHandler(Handler handler);
+    void unRegisterHandler(Handler handler);
 
     /**
      * 分身术-即拷贝一个管理者

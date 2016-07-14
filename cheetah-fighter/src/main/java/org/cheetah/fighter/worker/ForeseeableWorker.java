@@ -4,8 +4,6 @@ import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import org.cheetah.commons.logger.Loggers;
 import org.cheetah.fighter.core.Interceptor;
-import org.cheetah.fighter.core.handler.Directive;
-import org.cheetah.fighter.core.handler.Feedback;
 import org.cheetah.fighter.core.handler.Handler;
 import org.cheetah.fighter.core.worker.AbstractWorker;
 import org.cheetah.fighter.core.worker.Command;
@@ -13,7 +11,9 @@ import org.cheetah.fighter.core.worker.Command;
 import java.util.EventListener;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.RejectedExecutionException;
 
 /**
  * Created by Max on 2016/3/2.
@@ -27,28 +27,18 @@ public class ForeseeableWorker extends AbstractWorker {
     public void doWork(Command command) {
         final Handler handler = handlerMap.get(command.eventListener());
 
-        final Directive directive = new Directive(command.event(), command.callback(), command.needResult());
-
         try {
-            CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
-                Feedback feedback = handler.handle(directive);
-                if (feedback.isFail()) {
-                    return false;
-                } else return true;
-            }, executor);
-            future.get(3, TimeUnit.SECONDS);
+            CompletableFuture.supplyAsync(() ->
+                            handler.handle(command)
+                    , executor).whenComplete((r, e) -> {
+                if (r)
+                    handler.onSuccess(command);
+                else handler.onFailure(command);
+            });
         } catch (RejectedExecutionException e) {
             e.printStackTrace();
             Loggers.me().warn(getClass(), "task rejected execute.", e);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            Loggers.me().warn(getClass(), "task interrupted execute.", e);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-            Loggers.me().warn(getClass(), "task rejected execute.", e);
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-            Loggers.me().warn(getClass(), "task timeout execute.", e);
+            handler.onFailure(command);
         }
     }
 
