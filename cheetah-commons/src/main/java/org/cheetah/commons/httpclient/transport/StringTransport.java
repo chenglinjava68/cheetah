@@ -26,7 +26,7 @@ public class StringTransport extends AbstractHttpTransport<String> {
             logger.info("http request success, content: \n{}", result);
             return result;
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("entity to string error", e);
             throw new HttpClientException("entity to string error", e);
         }
     }

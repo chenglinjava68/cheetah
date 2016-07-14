@@ -1,7 +1,7 @@
 package org.cheetah.fighter.core.event;
 
 
-import org.cheetah.fighter.core.engine.EventBus;
+import org.cheetah.fighter.core.EventBus;
 
 /**
  * 事件收集器的抽象类

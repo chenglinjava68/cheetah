@@ -3,7 +3,7 @@ package org.cheetah.fighter.async.akka;
 import akka.actor.ActorRef;
 import org.cheetah.fighter.async.AsynchronousFactory;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
-import org.cheetah.fighter.core.engine.EventContext;
+import org.cheetah.fighter.core.EventContext;
 import org.cheetah.fighter.core.HandlerMapping;
 import org.cheetah.fighter.core.NoMapperException;
 import org.cheetah.fighter.core.event.Event;

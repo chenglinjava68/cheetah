@@ -1,14 +1,14 @@
-package org.cheetah.fighter.core.engine;
+package org.cheetah.fighter.core;
 
 import com.google.common.collect.Maps;
 import org.cheetah.commons.Startable;
 import org.cheetah.commons.logger.Info;
 import org.cheetah.commons.logger.Loggers;
-import org.cheetah.commons.logger.Warn;
 import org.cheetah.commons.utils.CollectionUtils;
 import org.cheetah.commons.utils.ObjectUtils;
 import org.cheetah.commons.utils.StringUtils;
-import org.cheetah.fighter.core.*;
+import org.cheetah.fighter.core.engine.Engine;
+import org.cheetah.fighter.core.engine.EngineDirector;
 import org.cheetah.fighter.core.event.DomainEvent;
 import org.cheetah.fighter.core.event.DomainEventListener;
 import org.cheetah.fighter.core.event.Event;
@@ -24,7 +24,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
@@ -88,6 +87,7 @@ public class EventBus implements Dispatcher, Startable {
                 e.printStackTrace();
             }
         }
+        Loggers.me().error(this.getClass(), "Couldn't find the corresponding mapping.");
         throw new NoMapperException();
     }
 

@@ -6,7 +6,7 @@ import org.cheetah.fighter.async.AsynchronousFactory;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.core.HandlerMapping;
 import org.cheetah.fighter.core.NoMapperException;
-import org.cheetah.fighter.core.engine.EventContext;
+import org.cheetah.fighter.core.EventContext;
 
 import java.util.HashMap;
 import java.util.Iterator;

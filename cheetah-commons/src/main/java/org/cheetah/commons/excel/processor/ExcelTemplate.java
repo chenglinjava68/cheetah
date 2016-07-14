@@ -3,6 +3,7 @@ package org.cheetah.commons.excel.processor;
 import org.apache.poi.ss.usermodel.*;
 import org.cheetah.commons.excel.ExcelException;
 import org.cheetah.commons.excel.ExcelHeader;
+import org.cheetah.commons.logger.Loggers;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -109,11 +110,11 @@ public class ExcelTemplate {
             fos = new FileOutputStream(filePath);
             workbook.write(fos);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            throw new ExcelException("写入的文件不存在！");
+            Loggers.me().error(this.getClass(), "写入的文件不存在！", e);
+            throw new ExcelException("写入的文件不存在！", e);
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new ExcelException("写入数据失败！" + e.getMessage());
+            Loggers.me().error(this.getClass(), "写入数据失败！", e);
+            throw new ExcelException("写入数据失败！", e);
         } finally {
             if (fos != null) {
                 try {
@@ -134,7 +135,7 @@ public class ExcelTemplate {
         try {
             workbook.write(os);
         } catch (IOException e) {
-            e.printStackTrace();
+            Loggers.me().error(this.getClass(), "写入流失败！", e);
             throw new ExcelException("写入流失败！" + e.getMessage());
         }
     }

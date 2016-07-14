@@ -1,6 +1,7 @@
 package org.cheetah.fighter.governor;
 
 import akka.actor.ActorRef;
+import org.cheetah.commons.logger.Loggers;
 import org.cheetah.fighter.core.governor.AbstractGovernor;
 import org.cheetah.fighter.core.governor.Governor;
 import org.cheetah.fighter.core.handler.Feedback;
@@ -44,7 +45,7 @@ public class AkkaGovernor extends AbstractGovernor {
 //                }
                 worker.tell(command, ActorRef.noSender());
             } catch (Exception e) {
-                e.printStackTrace();
+                Loggers.me().error(this.getClass(), "notify Worker error", e);
                 feedbackMap.put(clz, Feedback.FAILURE);
             }
         }

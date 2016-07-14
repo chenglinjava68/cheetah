@@ -20,7 +20,7 @@ http://www.springframework.org/schema/aop
 
     <bean id="beanFactoryProvider" class="org.cheetah.ioc.spring.SpringBeanFactoryProvider"/>
 
-    <bean id="eventBus" class="org.cheetah.fighter.core.engine.EventBus" init-method="start" destroy-method="stop">
+    <bean id="eventBus" class="org.cheetah.fighter.core.EventBus" init-method="start" destroy-method="stop">
         <property name="fighterConfig">
             <bean class="org.cheetah.fighter.core.FighterConfig">
                 <property name="eventListeners">

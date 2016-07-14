@@ -4,6 +4,7 @@ import org.cheetah.commons.excel.ExcelException;
 import org.cheetah.commons.excel.ExcelProcessor;
 import org.cheetah.commons.excel.processor.SimpleExcelProcessor;
 import org.cheetah.commons.excel.processor.TemplateExcelProcessor;
+import org.cheetah.commons.logger.Loggers;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -101,7 +102,7 @@ public class ExcelTranslator {
             fis = new FileInputStream(srcPath);
             return readProcessor.read(fis, clz, sheetIndex, readLine, tailLine);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Loggers.me().error(this.getClass(), "excel文件找不到！", e);
             throw new ExcelException("excel文件找不到！");
         } finally {
             try {
@@ -126,8 +127,8 @@ public class ExcelTranslator {
             try {
                 processor = new TemplateExcelProcessor<>(assembly.templateStream(), assembly.placeholder());
             } catch (Exception e) {
-                e.printStackTrace();
-                throw new ExcelException("创建模板异常", e);
+                Loggers.me().error(this.getClass(), "数据转为excel文件流失败！", e);
+                throw new ExcelException("excel导出异常", e);
             }
         } else
             processor = new SimpleExcelProcessor<>(assembly.xssf());

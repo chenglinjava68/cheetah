@@ -1,7 +1,6 @@
 package org.cheetah.fighter.core.support;
 
 import akka.serialization.JSerializer;
-import org.cheetah.commons.utils.JSerializeException;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -9,6 +8,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.cheetah.commons.logger.Loggers;
+import org.cheetah.commons.utils.JSerializeException;
 
 import java.io.IOException;
 
@@ -33,6 +34,7 @@ public class MyJsonSerializer extends JSerializer {
         try {
             return objectMapper.readValue(bytes, manifest);
         } catch (IOException e) {
+            Loggers.me().error(this.getClass(), "MyJsonSerializer fromBinaryJava fail", e);
             throw new JSerializeException(e);
         }
     }
@@ -47,7 +49,7 @@ public class MyJsonSerializer extends JSerializer {
         try {
             return objectMapper.writeValueAsBytes(o);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            Loggers.me().error(this.getClass(), "MyJsonSerializer toBinary fail", e);
             throw new JSerializeException(e);
         }
     }

@@ -1,6 +1,7 @@
 package org.cheetah.fighter.worker;
 
 import com.google.common.util.concurrent.*;
+import org.cheetah.commons.logger.Loggers;
 import org.cheetah.fighter.core.Interceptor;
 import org.cheetah.fighter.core.handler.Directive;
 import org.cheetah.fighter.core.handler.Feedback;
@@ -53,10 +54,13 @@ public class OrdinaryWorker extends AbstractWorker {
             future.get(3, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
+            Loggers.me().error(this.getClass(), "OrdinaryWorker work fail.", e);
         } catch (ExecutionException e) {
             e.printStackTrace();
+            Loggers.me().error(this.getClass(), "OrdinaryWorker work fail.", e);
         } catch (TimeoutException e) {
             e.printStackTrace();
+            Loggers.me().error(this.getClass(), "OrdinaryWorker work fail.", e);
         }
     }
 

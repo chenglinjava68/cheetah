@@ -1,5 +1,6 @@
 package org.cheetah.fighter.core.worker;
 
+import org.cheetah.commons.logger.Loggers;
 import org.cheetah.fighter.core.Interceptor;
 import org.cheetah.fighter.core.support.HandlerInterceptorChain;
 import org.cheetah.fighter.worker.InterceptorExecutionException;
@@ -22,6 +23,7 @@ public abstract class AbstractWorker implements Worker {
                 chain.afterHandle(command);
             }
         } catch (Exception e) {
+            Loggers.me().error(this.getClass(), "Worker work fail.", e);
             throw new InterceptorExecutionException(e);
         }
     }
