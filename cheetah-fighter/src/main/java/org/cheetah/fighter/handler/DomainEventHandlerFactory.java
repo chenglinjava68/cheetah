@@ -6,10 +6,10 @@ import org.cheetah.fighter.core.handler.HandlerFactory;
 /**
  * Created by Max on 2016/2/21.
  */
-public class GenericHandlerFactory implements HandlerFactory {
-    private static final HandlerFactory HANDLER_FACTORY = new GenericHandlerFactory();
+public class DomainEventHandlerFactory implements HandlerFactory {
+    private static final HandlerFactory HANDLER_FACTORY = new DomainEventHandlerFactory();
 
-    public static HandlerFactory getGenericHandlerFactory() {
+    public static HandlerFactory getDomainEventHandlerFactory() {
         return HANDLER_FACTORY;
     }
 

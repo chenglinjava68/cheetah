@@ -10,7 +10,7 @@ import org.cheetah.fighter.core.governor.GovernorFactory;
 import org.cheetah.fighter.core.handler.HandlerFactory;
 import org.cheetah.fighter.core.worker.WorkerFactory;
 import org.cheetah.fighter.governor.DisruptorGovernorFactory;
-import org.cheetah.fighter.handler.GenericHandlerFactory;
+import org.cheetah.fighter.handler.DomainEventHandlerFactory;
 import org.cheetah.fighter.mapping.EventHandlerMapping;
 import org.cheetah.fighter.worker.DisruptorWorkerFactory;
 
@@ -20,7 +20,7 @@ import org.cheetah.fighter.worker.DisruptorWorkerFactory;
 public class DisruptorEngineBuilder implements EngineBuilder {
     @Override
     public HandlerFactory buildHandlerFactory() {
-        return GenericHandlerFactory.getGenericHandlerFactory();
+        return DomainEventHandlerFactory.getDomainEventHandlerFactory();
     }
 
     @Override

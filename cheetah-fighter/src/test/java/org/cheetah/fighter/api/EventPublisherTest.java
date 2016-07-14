@@ -44,7 +44,7 @@ public class EventPublisherTest {
                 public void run() {
                     while (true) {
                         DomainEventPublisher.publish(
-                                new DomainEventTest(new User("huahng"))
+                                new DomainEventTest2(new User("huahng"))
                         );
 //                    listenerTest.onApplicationEvent(event);
                     }
@@ -192,8 +192,7 @@ public class EventPublisherTest {
 
         @Override
         public void onDomainEvent(DomainEvent event) {
-
-            System.out.println("SmartDomainListenerTest2 -- " + atomicLong3.incrementAndGet());
+//            System.out.println("SmartDomainListenerTest2 -- " + atomicLong3.incrementAndGet());
         }
 
         @Override

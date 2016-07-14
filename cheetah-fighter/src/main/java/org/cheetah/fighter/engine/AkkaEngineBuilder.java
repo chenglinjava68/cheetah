@@ -11,7 +11,7 @@ import org.cheetah.fighter.core.governor.GovernorFactory;
 import org.cheetah.fighter.core.handler.HandlerFactory;
 import org.cheetah.fighter.core.worker.WorkerFactory;
 import org.cheetah.fighter.governor.AkkaGovernorFactory;
-import org.cheetah.fighter.handler.GenericHandlerFactory;
+import org.cheetah.fighter.handler.DomainEventHandlerFactory;
 import org.cheetah.fighter.mapping.EventHandlerMapping;
 import org.cheetah.fighter.worker.AkkaWorkerFactory;
 
@@ -22,7 +22,7 @@ public class AkkaEngineBuilder implements EngineBuilder {
 
     @Override
     public HandlerFactory buildHandlerFactory() {
-        return GenericHandlerFactory.getGenericHandlerFactory();
+        return DomainEventHandlerFactory.getDomainEventHandlerFactory();
     }
 
     @Override

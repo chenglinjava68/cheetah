@@ -17,7 +17,7 @@ import java.util.Map;
  * Created by Max on 2016/2/29.
  */
 public class DisruptorFactory extends AbstractAsynchronousFactory<Disruptor<DisruptorEvent>> {
-    private int ringbufferSize = 1024;
+    private int ringbufferSize = 64;
 
     public Disruptor<DisruptorEvent> createMultiDisruptor() {
         WaitStrategy waitStrategy = new BlockingWaitStrategy();

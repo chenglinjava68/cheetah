@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import org.cheetah.commons.Startable;
 import org.cheetah.commons.logger.Info;
 import org.cheetah.commons.logger.Loggers;
+import org.cheetah.commons.logger.Warn;
 import org.cheetah.commons.utils.CollectionUtils;
 import org.cheetah.commons.utils.ObjectUtils;
 import org.cheetah.commons.utils.StringUtils;
@@ -23,6 +24,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
@@ -48,7 +50,6 @@ public class EventBus implements Dispatcher, Startable {
      */
     @Override
     public EventResult receive(final EventMessage eventMessage) {
-        Info.log(this.getClass(), "receive message: " + eventMessage);
         try {
             context().setEventMessage(eventMessage);
             Event event = eventMessage.event();
