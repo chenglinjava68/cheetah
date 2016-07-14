@@ -87,6 +87,7 @@ public abstract class AbstractHandler implements Handler {
             doExecute(event);
         } catch (Throwable e) {
             e.printStackTrace();
+            Warn.log(this.getClass(), "event handler completeExecute error", e);
             return Feedback.FAILURE;
         }
         return Feedback.SUCCESS;

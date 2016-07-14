@@ -75,20 +75,18 @@ public class EventBus implements Dispatcher, Startable {
     public EventResult dispatch() {
         EventMessage eventMessage = context().eventMessage();
         Map<Class<? extends EventListener>, Handler> handlerMap = context().handlers();
-        if (!handlerMap.isEmpty()) {
-            try {
-                Governor governor = engine().assignGovernor();
-                Feedback report = governor.initialize()
-                        .accept(eventMessage)
-                        .registerHandlerSquad(handlerMap)
-                        .command();
-                return new EventResult(eventMessage.event().getSource(), report.isFail());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (handlerMap.isEmpty()) {
+            Loggers.me().error(this.getClass(), "Couldn't find the corresponding mapping.");
+            throw new NoMapperException();
+        } else {
+            Governor governor = engine().assignGovernor();
+            Feedback report = governor.initialize()
+                    .accept(eventMessage)
+                    .registerHandlerSquad(handlerMap)
+                    .command();
+            return new EventResult(eventMessage.event().getSource(), report.isFail());
         }
-        Loggers.me().error(this.getClass(), "Couldn't find the corresponding mapping.");
-        throw new NoMapperException();
+
     }
 
     @Override
@@ -143,8 +141,7 @@ public class EventBus implements Dispatcher, Startable {
                      eventListeners = supportsUniversalListener(event);
                 }
                 return assembleEventHandlerMapping(mapperKey, eventListeners);
-            } else
-                Loggers.me().error(this.getClass(), "The incident no listener corresponding processing.");
+            }
         } finally {
             lock.unlock();
         }
