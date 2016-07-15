@@ -3,8 +3,10 @@ package org.cheetah.fighter.worker;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import org.cheetah.commons.logger.Loggers;
+import org.cheetah.commons.utils.Objects;
 import org.cheetah.fighter.core.Interceptor;
 import org.cheetah.fighter.core.handler.Handler;
+import org.cheetah.fighter.core.support.HandlerInterceptorChain;
 import org.cheetah.fighter.core.worker.AbstractWorker;
 import org.cheetah.fighter.core.worker.Command;
 
@@ -23,24 +25,47 @@ public class ForeseeableWorker extends AbstractWorker {
     private ListeningExecutorService executor;
     private List<Interceptor> interceptors;
 
+    /**
+     * 根据接受到命令开始工作
+     * @param command
+     */
     @Override
-    public void doWork(Command command) {
+    public void work(Command command) {
         final Handler handler = handlerMap.get(command.eventListener());
 
         try {
             CompletableFuture.supplyAsync(() ->
-                            handler.handle(command)
+                    doWork(command)
                     , executor).whenComplete((r, e) -> {
-                if (r)
+                if (Objects.nonNull(r) && r)
                     handler.onSuccess(command);
-                else handler.onFailure(command);
+                else handler.onFailure(command, e);
             });
         } catch (RejectedExecutionException e) {
             e.printStackTrace();
             Loggers.me().warn(getClass(), "task rejected execute.", e);
-            handler.onFailure(command);
+            handler.onFailure(command, e);
         }
     }
+
+    @Override
+    protected boolean doWork(Command command) {
+        boolean success = false;
+        final Handler handler = handlerMap.get(command.eventListener());
+        try {
+            HandlerInterceptorChain chain = createInterceptorChain();
+            boolean result = chain.beforeHandle(command);
+            if (result) {
+                success= handler.handle(command);
+                chain.afterHandle(command);
+            }
+        } catch (Exception e) {
+            Loggers.me().error(this.getClass(), "interceptor invoke Exception", e);
+            throw new InterceptorExecutionException(e);
+        }
+        return success;
+    }
+
 
     @Override
     public List<Interceptor> getInterceptors() {

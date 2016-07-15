@@ -25,12 +25,18 @@ public class DisruptorWorker extends AbstractWorker implements EventHandler<Disr
     }
 
     @Override
-    public void doWork(Command command) {
+    public void work(Command command) {
         Handler handler = handlerMap.get(command.eventListener());
-        boolean feedback = handler.handle(command);
-        if(feedback)
+        boolean success = invoke(command);
+        if(success)
             handler.onSuccess(command);
-        else handler.onFailure(command);
+        else handler.onFailure(command, null);
+    }
+
+    @Override
+    protected boolean doWork(Command command) {
+        Handler handler = handlerMap.get(command.eventListener());
+        return handler.handle(command);
     }
 
     @Override

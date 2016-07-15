@@ -31,11 +31,6 @@ public class AkkaWorkerAdaptor extends UntypedActor implements Worker {
     }
 
     @Override
-    public void doWork(Command command) {
-        worker.doWork(command);
-    }
-
-    @Override
     public List<Interceptor> getInterceptors() {
         return worker.getInterceptors();
     }

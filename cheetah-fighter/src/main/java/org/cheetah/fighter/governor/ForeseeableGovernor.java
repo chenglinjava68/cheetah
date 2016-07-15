@@ -1,9 +1,9 @@
 package org.cheetah.fighter.governor;
 
 import com.sun.java.accessibility.util.Translator;
-import org.cheetah.commons.logger.Info;
-import org.cheetah.fighter.core.governor.AbstractGovernor;
+import org.cheetah.commons.logger.Debug;
 import org.cheetah.fighter.core.Feedback;
+import org.cheetah.fighter.core.governor.AbstractGovernor;
 import org.cheetah.fighter.core.worker.Command;
 import org.cheetah.fighter.core.worker.Worker;
 
@@ -17,7 +17,7 @@ public class ForeseeableGovernor extends AbstractGovernor {
 
     @Override
     protected Feedback notifyAllWorker() {
-        Info.log(this.getClass(), "notify {} worker", handlerMap().size());
+        Debug.log(this.getClass(), "notify {} worker", handlerMap().size());
         if (handlerMap().isEmpty())
             return Feedback.EMPTY;
         Translator translator = new Translator();

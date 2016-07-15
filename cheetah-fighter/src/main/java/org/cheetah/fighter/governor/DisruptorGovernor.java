@@ -2,10 +2,10 @@ package org.cheetah.fighter.governor;
 
 import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.RingBuffer;
-import org.cheetah.commons.logger.Info;
+import org.cheetah.commons.logger.Debug;
 import org.cheetah.fighter.async.disruptor.DisruptorEvent;
-import org.cheetah.fighter.core.governor.AbstractGovernor;
 import org.cheetah.fighter.core.Feedback;
+import org.cheetah.fighter.core.governor.AbstractGovernor;
 import org.cheetah.fighter.core.worker.Command;
 
 import java.util.EventListener;
@@ -19,7 +19,7 @@ public class DisruptorGovernor extends AbstractGovernor {
 
     @Override
     protected Feedback notifyAllWorker() {
-        Info.log(this.getClass(), "notify {} worker", handlerMap().size());
+        Debug.log(this.getClass(), "notify {} worker", handlerMap().size());
         if (handlerMap().isEmpty())
             return Feedback.EMPTY;
         Translator translator = new Translator();

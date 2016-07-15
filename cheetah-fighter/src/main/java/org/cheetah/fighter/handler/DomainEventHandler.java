@@ -35,7 +35,7 @@ public class DomainEventHandler extends AbstractHandler {
      * @return
      */
     @Override
-    public boolean completeExecute(Event event) {
+    protected boolean completeExecute(Event event) {
         try {
             doExecute(event);
         } catch (Throwable e) {

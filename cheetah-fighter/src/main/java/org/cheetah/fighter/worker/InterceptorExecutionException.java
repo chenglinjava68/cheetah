@@ -8,7 +8,7 @@ import org.cheetah.fighter.core.FighterException;
  */
 public class InterceptorExecutionException extends FighterException {
     public InterceptorExecutionException() {
-        super("");
+        super("interceptor invoke Exception");
     }
 
     public InterceptorExecutionException(String message) {
@@ -20,7 +20,7 @@ public class InterceptorExecutionException extends FighterException {
     }
 
     public InterceptorExecutionException(Throwable cause) {
-        super("", cause);
+        super("interceptor invoke Exception", cause);
     }
 
     public InterceptorExecutionException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {

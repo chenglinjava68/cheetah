@@ -3,7 +3,6 @@ package org.cheetah.commons.httpclient.api;
 
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.cheetah.commons.httpclient.Client;
-import org.cheetah.commons.httpclient.WebResource;
 import org.cheetah.commons.httpclient.connector.ApacheHttpConnector;
 import org.cheetah.commons.httpclient.transport.BinaryTransport;
 import org.cheetah.commons.httpclient.transport.StringTransport;

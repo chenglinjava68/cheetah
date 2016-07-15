@@ -23,7 +23,7 @@ public interface Handler extends Cloneable {
      *
      * @param command
      */
-    void onFailure(Command command);
+    void onFailure(Command command, Throwable e);
 
     /**
      * 机器工作故障后的回调函数

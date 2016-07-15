@@ -15,7 +15,5 @@ public interface Worker extends Cloneable {
      */
     void work(Command command);
 
-    void doWork(Command command);
-
     List<Interceptor> getInterceptors();
 }

@@ -27,14 +27,20 @@ public class AkkaWorker extends AbstractWorker {
     }
 
     @Override
-    public void doWork(Command command) {
+    protected boolean doWork(Command command) {
         try {
             Assert.notNull(command, "order must not be null");
             Handler machine = eventlistenerMapper.get(command.eventListener());
-            machine.handle(command);
+            return machine.handle(command);
         } catch (Exception e) {
             Loggers.me().error(this.getClass(), "AkkaWorker work fail.", e);
         }
+        return false;
+    }
+
+    @Override
+    public void work(Command command) {
+
     }
 
     @Override
