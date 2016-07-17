@@ -50,6 +50,11 @@ public class ForeseeableWorker extends AbstractWorker {
 
     @Override
     protected boolean doWork(Command command) {
+        return invoke(command);
+    }
+
+    @Override
+    protected boolean invoke(Command command) {
         boolean success = false;
         final Handler handler = handlerMap.get(command.eventListener());
         try {
@@ -65,7 +70,6 @@ public class ForeseeableWorker extends AbstractWorker {
         }
         return success;
     }
-
 
     @Override
     public List<Interceptor> getInterceptors() {
