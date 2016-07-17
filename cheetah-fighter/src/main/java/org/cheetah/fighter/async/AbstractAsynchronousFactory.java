@@ -8,7 +8,7 @@ import java.util.concurrent.*;
  * Created by Max on 2016/5/3.
  */
 public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFactory<T> {
-    private int minThreads = Runtime.getRuntime().availableProcessors();
+    private int minThreads = Runtime.getRuntime().availableProcessors() * 2 + 16;
     private int maxThreads = Runtime.getRuntime().availableProcessors() * 2 + 16;
     private ExecutorService executorService;
 
@@ -47,7 +47,7 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
     protected synchronized ExecutorService buildExecutorService() {
         if(this.executorService == null)
             executorService =  new ThreadPoolExecutor(minThreads, maxThreads,
-                    3000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(100000),
+                    3000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(1000000),
                     new ThreadFactoryBuilder().setNameFormat("Cheetah-Fighter-%d").build());
         return executorService;
     }
