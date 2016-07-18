@@ -18,19 +18,19 @@ public class AkkaWorker extends AbstractWorker {
     private Map<Class<? extends EventListener>, Handler> eventlistenerMapper;
     private List<Interceptor> interceptors;
 
-    public AkkaWorker() {
+    public AkkaWorker(Map<Class<? extends EventListener>, Handler> eventlistenerMapper) {
+        this.eventlistenerMapper = eventlistenerMapper;
     }
 
-    public AkkaWorker(Map<Class<? extends EventListener>, Handler> eventlistenerMapper, List<Interceptor> interceptors) {
-        this.eventlistenerMapper = eventlistenerMapper;
-        this.interceptors = interceptors;
+    public AkkaWorker() {
+
     }
 
     @Override
     protected boolean doWork(Command command) {
         try {
             Assert.notNull(command, "order must not be null");
-            Handler machine = eventlistenerMapper.get(null);
+            Handler machine = eventlistenerMapper.get(command.eventListener());
             return machine.handle(command);
         } catch (Exception e) {
             Loggers.me().error(this.getClass(), "AkkaWorker work fail.", e);

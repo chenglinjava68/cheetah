@@ -1,5 +1,6 @@
 package org.cheetah.fighter.core.handler;
 
+import org.cheetah.commons.logger.Warn;
 import org.cheetah.commons.utils.ObjectUtils;
 import org.cheetah.fighter.core.event.DomainEvent;
 import org.cheetah.fighter.core.event.DomainEventListener;
@@ -12,12 +13,12 @@ import java.util.EventListener;
  * Created by Max on 2016/2/14.
  */
 public abstract class AbstractHandler implements Handler {
-    private DomainEventListener<DomainEvent> eventListener;
+    private EventListener eventListener;
 
     public AbstractHandler() {
     }
 
-    public AbstractHandler(DomainEventListener<DomainEvent> eventListener) {
+    public AbstractHandler(EventListener eventListener) {
         this.eventListener = eventListener;
     }
 
@@ -39,7 +40,8 @@ public abstract class AbstractHandler implements Handler {
      */
     @Override
     public void onFailure(Command command, Throwable e) {
-        DomainEventListener<DomainEvent> listener = getEventListener();
+        Warn.log(this.getClass(), "handler execute failure event is [{}]", command.event(), e);
+        DomainEventListener<DomainEvent> listener = (DomainEventListener<DomainEvent>) getEventListener();
         listener.onCancelled();
     }
 
@@ -49,7 +51,8 @@ public abstract class AbstractHandler implements Handler {
      */
     @Override
     public void onSuccess(Command command) {
-        DomainEventListener<? extends DomainEvent> listener = getEventListener();
+        Warn.log(this.getClass(), "handler execute failure event is [" + command.event() + "]");
+        DomainEventListener<DomainEvent> listener = (DomainEventListener<DomainEvent>) getEventListener();
         listener.onFinish();
     }
 
@@ -73,12 +76,12 @@ public abstract class AbstractHandler implements Handler {
     protected abstract boolean completeExecute(Event event);
 
     @Override
-    public void registerEventListener(DomainEventListener<DomainEvent> eventListener) {
+    public void registerEventListener(EventListener eventListener) {
         this.eventListener = eventListener;
     }
 
     @Override
-    public DomainEventListener<DomainEvent> getEventListener() {
+    public EventListener getEventListener() {
         return eventListener;
     }
 

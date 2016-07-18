@@ -2,7 +2,6 @@ package org.cheetah.fighter.core;
 
 
 import org.cheetah.commons.utils.CollectionUtils;
-import org.cheetah.fighter.core.event.DomainEventListener;
 import org.cheetah.fighter.plugin.Plugin;
 import com.google.common.collect.Lists;
 
@@ -16,9 +15,9 @@ import java.util.List;
 public class FighterConfig {
     private List<Plugin> plugins;
     private List<Interceptor> interceptors;
-    private List<DomainEventListener> eventListeners;
+    private List<EventListener> eventListeners;
     private int eventPerformerSize;
-    private int queueLength;
+    private int ringBufferSize;
     private int minThreads;
     private int maxThreads;
     private String policy;
@@ -29,7 +28,7 @@ public class FighterConfig {
         this.eventListeners = Collections.emptyList();
     }
 
-    public List<Plugin> getPlugins() {
+    public List<Plugin> plugins() {
         return Lists.newArrayList(plugins);
     }
 
@@ -37,7 +36,7 @@ public class FighterConfig {
         this.plugins = plugins;
     }
 
-    public List<Interceptor> getInterceptors() {
+    public List<Interceptor> interceptors() {
         return Lists.newArrayList(interceptors);
     }
 
@@ -45,15 +44,15 @@ public class FighterConfig {
         this.interceptors = interceptors;
     }
 
-    public List<DomainEventListener> getEventListeners() {
+    public List<EventListener> eventListeners() {
         return Lists.newArrayList(eventListeners);
     }
 
-    public void setEventListeners(List<DomainEventListener> eventListeners) {
+    public void setEventListeners(List<EventListener> eventListeners) {
         this.eventListeners = eventListeners;
     }
 
-    public int getEventPerformerSize() {
+    public int eventPerformerSize() {
         return eventPerformerSize;
     }
 
@@ -69,15 +68,15 @@ public class FighterConfig {
         return !CollectionUtils.isEmpty(this.eventListeners);
     }
 
-    public int getQueueLength() {
-        return queueLength;
+    public int ringBufferSize() {
+        return ringBufferSize;
     }
 
-    public void setQueueLength(int queueLength) {
-        this.queueLength = queueLength;
+    public void setRingBufferSize(int ringBufferSize) {
+        this.ringBufferSize = ringBufferSize;
     }
 
-    public String getPolicy() {
+    public String policy() {
         return policy;
     }
 
@@ -85,7 +84,7 @@ public class FighterConfig {
         this.policy = policy;
     }
 
-    public int getMinThreads() {
+    public int minThreads() {
         return minThreads;
     }
 
@@ -93,7 +92,7 @@ public class FighterConfig {
         this.minThreads = minThreads;
     }
 
-    public int getMaxThreads() {
+    public int maxThreads() {
         return maxThreads;
     }
 

@@ -37,4 +37,13 @@ public class EventResult {
     public List<Class<? extends EventListener>> exceptionListeners() {
         return exceptionListeners;
     }
+
+    @Override
+    public String toString() {
+        return "EventResult{" +
+                "source=" + source +
+                ", success=" + success +
+                ", exceptionListeners=" + exceptionListeners +
+                '}';
+    }
 }

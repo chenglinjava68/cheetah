@@ -7,7 +7,6 @@ import org.cheetah.fighter.core.Feedback;
 import org.cheetah.fighter.core.handler.Handler;
 
 import java.util.EventListener;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,11 +15,11 @@ import java.util.Map;
 public abstract class AbstractGovernor implements Governor {
     private String id;
     private EventMessage eventMessage;
-    private List<Handler> handlers;
+    private Map<Class<? extends EventListener>, Handler> handlerMap;
 
     @Override
     public Governor reset() {
-        this.handlers = null;
+        this.handlerMap = null;
         this.eventMessage = null;
         return this;
     }
@@ -55,15 +54,15 @@ public abstract class AbstractGovernor implements Governor {
     }
 
     @Override
-    public Governor registerHandlerSquad(List<Handler> handlers) {
-        this.handlers = handlers;
+    public Governor registerHandlerSquad(Map<Class<? extends EventListener>, Handler> handlerMap) {
+        this.handlerMap = handlerMap;
         return this;
     }
 
     @Override
     public void unRegisterHandler(Handler handler) {
         Assert.notNull(handler, "handler must not be null");
-        handlers.remove(handler);
+        handlerMap.remove(handler.getEventListener().getClass());
     }
 
     @Override
@@ -75,8 +74,8 @@ public abstract class AbstractGovernor implements Governor {
         return id;
     }
 
-    protected List<Handler> handlers() {
-        return handlers;
+    protected Map<Class<? extends EventListener>, Handler> handlerMap() {
+        return handlerMap;
     }
 
 }

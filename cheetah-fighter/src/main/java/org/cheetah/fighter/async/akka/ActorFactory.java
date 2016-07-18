@@ -35,10 +35,10 @@ public class ActorFactory implements AsynchronousFactory<ActorRef> {
     }
 
     @Override
-    public ActorRef createAsynchronous(String name,List<Handler> handlers,
+    public ActorRef createAsynchronous(String name, Map<Class<? extends EventListener>, Handler> handlerMap,
                                        List<Interceptor> interceptors) {
         SupervisorStrategy strategy = new OneForOneStrategy(3, Duration.create("1 minute"), Collections.<Class<? extends Throwable>>singletonList(Exception.class));
-        ActorRef actor = actorSystem.actorOf(Props.create(AkkaWorker.class, handlers)
+        ActorRef actor = actorSystem.actorOf(Props.create(AkkaWorker.class, handlerMap)
                 .withRouter(new SmallestMailboxPool(actorSize).withSupervisorStrategy(strategy)), name);
         Info.log(this.getClass(), "create actor for name [" + name + "]");
         ok(actor);

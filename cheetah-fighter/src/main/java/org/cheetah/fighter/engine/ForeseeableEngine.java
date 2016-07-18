@@ -22,7 +22,7 @@ public class ForeseeableEngine extends AbstractEngine {
         if (Objects.isNull(governor())) {
             Governor governor = governorFactory().createGovernor();
             governor = new ForeseeableGovernorAdapter((ForeseeableGovernor) governor, pluginChain());
-            ((ForeseeableGovernorAdapter) governor).setWorkers((Worker[]) asynchronousPoolFactory().getAsynchronous());
+            ((ForeseeableGovernorAdapter) governor).setWorker((Worker) asynchronousPoolFactory().getAsynchronous());
             governor.registerHandlerSquad(context().handlers());
             setGovernor(governor);
             return governor;
@@ -30,13 +30,13 @@ public class ForeseeableEngine extends AbstractEngine {
             try {
                 Governor clone = governor().kagebunsin();
                 clone.reset();
-                Worker[] workers = (Worker[]) asynchronousPoolFactory().getAsynchronous();
-                ((ForeseeableGovernorAdapter) clone).setWorkers(workers);
+                Worker worker = (Worker) asynchronousPoolFactory().getAsynchronous();
+                ((ForeseeableGovernorAdapter) clone).setWorker(worker);
                 return clone;
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
                 Governor governor = governorFactory().createGovernor();
-                ((ForeseeableGovernorAdapter) governor).setWorkers((Worker[]) asynchronousPoolFactory().getAsynchronous());
+                ((ForeseeableGovernorAdapter) governor).setWorker((Worker) asynchronousPoolFactory().getAsynchronous());
                 return governor;
             }
         }

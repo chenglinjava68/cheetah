@@ -1,6 +1,5 @@
 package org.cheetah.fighter.core.worker;
 
-import org.cheetah.fighter.core.event.DomainEvent;
 import org.cheetah.fighter.core.event.Event;
 
 import java.io.Serializable;
@@ -13,15 +12,17 @@ public class Command implements Serializable {
 
     private static final long serialVersionUID = 2193959876727951577L;
 
-    private DomainEvent event;
-    private boolean needResult;
+    private Event event;
+    private boolean needResult ;
+    private Class<? extends EventListener> eventListener;
 
     Command() {
     }
 
-    public Command(DomainEvent event, boolean needResult) {
+    public Command(Event event, boolean needResult, Class<? extends EventListener> eventListener) {
         this.event = event;
         this.needResult = needResult;
+        this.eventListener = eventListener;
     }
 
     public Event event() {
@@ -32,7 +33,11 @@ public class Command implements Serializable {
         return needResult;
     }
 
-    public static Command of(DomainEvent event, boolean needResult) {
-        return new Command(event, needResult);
+    public Class<? extends EventListener> eventListener() {
+        return eventListener;
+    }
+
+    public static Command of(Event event, Class<? extends EventListener> eventListener) {
+        return new Command(event, true, eventListener);
     }
 }

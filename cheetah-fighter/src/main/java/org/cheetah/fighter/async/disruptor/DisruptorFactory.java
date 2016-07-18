@@ -9,7 +9,9 @@ import org.cheetah.fighter.core.Interceptor;
 import org.cheetah.fighter.core.handler.Handler;
 import org.cheetah.fighter.worker.DisruptorWorker;
 
-import java.util.*;
+import java.util.EventListener;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Max on 2016/2/29.
@@ -32,19 +34,16 @@ public class DisruptorFactory extends AbstractAsynchronousFactory<Disruptor<Disr
     }
 
     @Override
-    public Disruptor<DisruptorEvent> createAsynchronous(String name, List<Handler> handlers, List<Interceptor> interceptors) {
+    public Disruptor<DisruptorEvent> createAsynchronous(String name, Map<Class<? extends EventListener>, Handler> handlerMap,
+                                                        List<Interceptor> interceptors) {
         Disruptor<DisruptorEvent> disruptor;
         if (name.equals(ProducerType.SINGLE.name()))
             disruptor = createSingleDisruptor();
         else disruptor = createMultiDisruptor();
-
-        DisruptorWorker[] workers = new DisruptorWorker[handlers.size()];
-        for (int i = 0; i < handlers.size(); i++) {
-            DisruptorWorker worker = (DisruptorWorker) getWorkerFactory().createWorker(handlers.get(i), interceptors);
-            workers[i] = worker;
-        }
-
-        disruptor.handleEventsWith(workers);
+        DisruptorWorker worker = new DisruptorWorker();
+        worker.setHandlerMap(handlerMap);
+        worker.setInterceptors(interceptors);
+        disruptor.handleEventsWith(worker);
         disruptor.start();
         return disruptor;
     }

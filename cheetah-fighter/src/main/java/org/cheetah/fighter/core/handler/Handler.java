@@ -1,7 +1,5 @@
 package org.cheetah.fighter.core.handler;
 
-import org.cheetah.fighter.core.event.DomainEvent;
-import org.cheetah.fighter.core.event.DomainEventListener;
 import org.cheetah.fighter.core.worker.Command;
 
 import java.util.EventListener;
@@ -34,9 +32,9 @@ public interface Handler extends Cloneable {
      */
     void onSuccess(Command command);
 
-    void registerEventListener(DomainEventListener<DomainEvent> eventListener);
+    void registerEventListener(EventListener eventListener);
 
-    DomainEventListener<DomainEvent> getEventListener();
+    EventListener getEventListener();
 
     Handler kagebunsin() throws CloneNotSupportedException;
 

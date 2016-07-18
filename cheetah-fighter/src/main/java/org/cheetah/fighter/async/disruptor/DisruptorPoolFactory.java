@@ -26,7 +26,7 @@ public class DisruptorPoolFactory implements AsynchronousPoolFactory<Disruptor<D
         this.disruptorPool = new ConcurrentHashMap<>();
     }
 
-    private Disruptor<DisruptorEvent> createDisruptor() {
+    public Disruptor<DisruptorEvent> createDisruptor() {
         Disruptor<DisruptorEvent> disruptor = this.disruptorPool.get(HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event()));
         if (Objects.nonNull(disruptor))
             return disruptor;

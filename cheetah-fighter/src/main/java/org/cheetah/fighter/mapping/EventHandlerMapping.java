@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Max on 2016/2/23.
  */
 public class EventHandlerMapping implements HandlerMapping {
-    private Map<HandlerMapperKey, List<Handler>> handlerMapper = new ConcurrentHashMap<>();
+    private Map<HandlerMapperKey, Map<Class<? extends EventListener>, Handler>> handlerMapper = new ConcurrentHashMap<>();
     private static final HandlerMapping genericMapping = new EventHandlerMapping();
 
     public static HandlerMapping getGenericMapping() {
@@ -21,16 +21,16 @@ public class EventHandlerMapping implements HandlerMapping {
     }
 
     @Override
-    public List<Handler> getHandlers(HandlerMapperKey mapperKey) {
-        return isExists(mapperKey) ? new ArrayList<>(handlerMapper.get(mapperKey)) : Collections.emptyList();
+    public Map<Class<? extends EventListener>, Handler> getHandlers(HandlerMapperKey mapperKey) {
+        return isExists(mapperKey) ? new HashMap<>(handlerMapper.get(mapperKey)) : Collections.EMPTY_MAP;
     }
 
     @Override
-    public void put(HandlerMapperKey mapperKey, List<Handler> handlers) {
-        if (handlers.isEmpty()) {
+    public void put(HandlerMapperKey mapperKey, Map<Class<? extends EventListener>, Handler> machines) {
+        if (machines.isEmpty()) {
             return;
         }
-        handlerMapper.putIfAbsent(mapperKey, handlers);
+        handlerMapper.put(mapperKey, machines);
     }
 
     @Override

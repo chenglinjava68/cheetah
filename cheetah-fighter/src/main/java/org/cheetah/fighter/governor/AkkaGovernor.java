@@ -5,7 +5,6 @@ import org.cheetah.commons.logger.Loggers;
 import org.cheetah.fighter.core.governor.AbstractGovernor;
 import org.cheetah.fighter.core.governor.Governor;
 import org.cheetah.fighter.core.Feedback;
-import org.cheetah.fighter.core.handler.Handler;
 import org.cheetah.fighter.core.worker.Command;
 
 import java.util.EventListener;
@@ -32,12 +31,12 @@ public class AkkaGovernor extends AbstractGovernor {
 
     @Override
     protected Feedback notifyAllWorker() {
-        if (handlers().isEmpty())
+        if (handlerMap().isEmpty())
             return Feedback.EMPTY;
         Map<Class<? extends EventListener>, Feedback> feedbackMap = new HashMap<>();
-        for (Handler handler : this.handlers()) {
+        for (Class<? extends EventListener> clz : this.handlerMap().keySet()) {
             try {
-                Command command = Command.of(details().event(), true);
+                Command command = Command.of(details().event(), clz);
 //                Future<Object> future = Patterns.ask(this.worker, command, 3000);
 //                Object result = Await.result(future, Duration.create(3000, TimeUnit.MILLISECONDS));
 //                if (result instanceof Feedback) {
@@ -47,7 +46,7 @@ public class AkkaGovernor extends AbstractGovernor {
                 worker.tell(command, ActorRef.noSender());
             } catch (Exception e) {
                 Loggers.me().warn(this.getClass(), "notify Worker error", e);
-//                feedbackMap.put(clz, Feedback.FAILURE);
+                feedbackMap.put(clz, Feedback.FAILURE);
             }
         }
 

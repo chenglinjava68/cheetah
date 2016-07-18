@@ -1,7 +1,6 @@
 package org.cheetah.fighter.worker;
 
 import com.lmax.disruptor.EventHandler;
-import org.cheetah.commons.logger.Loggers;
 import org.cheetah.fighter.async.disruptor.DisruptorEvent;
 import org.cheetah.fighter.core.Interceptor;
 import org.cheetah.fighter.core.handler.Handler;
@@ -16,24 +15,18 @@ import java.util.Map;
  * Created by Max on 2016/2/29.
  */
 public class DisruptorWorker extends AbstractWorker implements EventHandler<DisruptorEvent> {
-    private Handler handler;
+    private Map<Class<? extends EventListener>, Handler> handlerMap;
     private List<Interceptor> interceptors;
-
-    public DisruptorWorker(Handler handler, List<Interceptor> interceptors) {
-        this.handler = handler;
-        this.interceptors = interceptors;
-    }
 
     @Override
     public void onEvent(DisruptorEvent disruptorEvent, long sequence, boolean endOfBatch) throws Exception {
         Command command = disruptorEvent.get();
-        long start = System.currentTimeMillis();
         work(command);
-        Loggers.me().debugEnabled(this.getClass(), "work消耗了{}毫秒", System.currentTimeMillis() - start);
     }
 
     @Override
     public void work(Command command) {
+        Handler handler = handlerMap.get(command.eventListener());
         boolean success = invoke(command);
         if(success)
             handler.onSuccess(command);
@@ -42,12 +35,25 @@ public class DisruptorWorker extends AbstractWorker implements EventHandler<Disr
 
     @Override
     protected boolean doWork(Command command) {
+        Handler handler = handlerMap.get(command.eventListener());
         return handler.handle(command);
     }
 
     @Override
     public List<Interceptor> getInterceptors() {
         return interceptors;
+    }
+
+    public void setHandlerMap(Map<Class<? extends EventListener>, Handler> handlerMap) {
+        this.handlerMap = handlerMap;
+    }
+
+    public void setInterceptors(List<Interceptor> interceptors) {
+        this.interceptors = interceptors;
+    }
+
+    Map<Class<? extends EventListener>, Handler> getHandlerMap() {
+        return handlerMap;
     }
 
 }

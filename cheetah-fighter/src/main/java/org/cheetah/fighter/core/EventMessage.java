@@ -1,42 +1,41 @@
 package org.cheetah.fighter.core;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.cheetah.fighter.core.event.DomainEvent;
 import org.cheetah.fighter.core.event.Event;
 
 /**
  * Created by Max on 2016/2/21.
  */
 public class EventMessage {
-    private DomainEvent event;
+    private Event event;
     private boolean needResult;
     private boolean fisrtWin;
 
-    public EventMessage(DomainEvent event) {
+    public EventMessage(Event event) {
         this.event = event;
         this.needResult = false;
         this.fisrtWin = false;
     }
 
-    public EventMessage(boolean needResult, DomainEvent event) {
+    public EventMessage(boolean needResult, Event event) {
         this.event = event;
         this.needResult = needResult;
         this.fisrtWin = false;
     }
 
-    public EventMessage(DomainEvent event, boolean fisrtWin) {
+    public EventMessage(Event event, boolean fisrtWin) {
         this.event = event;
         this.fisrtWin = fisrtWin;
         this.needResult = false;
     }
 
-    public EventMessage(DomainEvent event, boolean needResult, boolean fisrtWin) {
+    public EventMessage(Event event, boolean needResult, boolean fisrtWin) {
         this.event = event;
         this.needResult = needResult;
         this.fisrtWin = fisrtWin;
     }
 
-    public void setEvent(DomainEvent event) {
+    public void setEvent(Event event) {
         this.event = event;
     }
 
@@ -48,7 +47,7 @@ public class EventMessage {
         this.fisrtWin = fisrtWin;
     }
 
-    public DomainEvent event() {
+    public Event event() {
         return event;
     }
 

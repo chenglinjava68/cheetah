@@ -19,6 +19,7 @@ public class AkkaEngineDirector implements EngineDirector {
     @Override
     public Engine directEngine() {
         Engine engine = new AkkaEngine();
+        engine.setWorkerFactory(builder.buildWorkerFactory());
         engine.setHandlerFactory(builder.buildHandlerFactory());
         engine.setGovernorFactory(builder.buildGovernorFactory());
         engine.setMapping(builder.buildMapping());

@@ -10,7 +10,6 @@ import org.cheetah.fighter.core.event.Event;
 import org.cheetah.fighter.core.handler.Handler;
 
 import java.util.EventListener;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,8 +34,8 @@ public class ActorPoolFactory implements AsynchronousPoolFactory<ActorRef> {
         HandlerMapping.HandlerMapperKey mapperKey = HandlerMapping.HandlerMapperKey.generate(event);
         if (actorPool.containsKey(mapperKey))
             return this.actorPool.get(mapperKey);
-        List<Handler> handlers = getMapperFrom();
-        return this.actorFactory.createAsynchronous(name, handlers, context.interceptors());
+        Map<Class<? extends EventListener>, Handler> handlerMap = getMapperFrom();
+        return this.actorFactory.createAsynchronous(name, handlerMap, context.interceptors());
     }
 
     @Override
@@ -66,11 +65,11 @@ public class ActorPoolFactory implements AsynchronousPoolFactory<ActorRef> {
         this.actorFactory = asynchronousFactory;
     }
 
-    private List<Handler> getMapperFrom() {
-        List<Handler> handlers = context.handlers();
-        if (handlers.isEmpty())
+    private Map<Class<? extends EventListener>, Handler> getMapperFrom() {
+        Map<Class<? extends EventListener>, Handler> handlerMap = context.handlers();
+        if (handlerMap.isEmpty())
             throw new NoMapperException();
-        return handlers;
+        return handlerMap;
     }
 
     @Override
