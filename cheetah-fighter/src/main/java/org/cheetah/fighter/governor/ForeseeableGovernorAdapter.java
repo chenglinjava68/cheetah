@@ -13,7 +13,7 @@ public class ForeseeableGovernorAdapter extends AbstractGovernorAdapter {
         super(governor, pluginChain);
     }
 
-    public void setWorker(Worker worker) {
-        ((ForeseeableGovernor) adaptee()).setWorker(worker);
+    public void setWorkers(Worker[] workers) {
+        ((ForeseeableGovernor) adaptee()).setWorkers(workers);
     }
 }

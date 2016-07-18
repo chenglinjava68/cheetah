@@ -7,6 +7,7 @@ import org.cheetah.fighter.core.handler.Handler;
 import org.cheetah.fighter.plugin.PluginChain;
 
 import java.util.EventListener;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,9 +52,10 @@ public class AbstractGovernorAdapter implements Governor {
     }
 
     @Override
-    public Governor registerHandlerSquad(Map<Class<? extends EventListener>, Handler> handlerMap) {
-        return adaptee.registerHandlerSquad(handlerMap);
+    public Governor registerHandlerSquad(List<Handler> handlers) {
+        return adaptee.registerHandlerSquad(handlers);
     }
+
 
     @Override
     public void unRegisterHandler(Handler handler) {

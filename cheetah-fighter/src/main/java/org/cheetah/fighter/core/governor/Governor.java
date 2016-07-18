@@ -5,6 +5,7 @@ import org.cheetah.fighter.core.Feedback;
 import org.cheetah.fighter.core.handler.Handler;
 
 import java.util.EventListener;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,10 +45,10 @@ public interface Governor extends Cloneable {
 
     /**
      * 注册工人需要处理器
-     * @param handlerMap
+     * @param handlers
      * @return
      */
-    Governor registerHandlerSquad(Map<Class<? extends EventListener>, Handler> handlerMap);
+    Governor registerHandlerSquad(List<Handler> handlers);
 
     /**
      * 开除一个工作处理器

@@ -1,6 +1,5 @@
 package org.cheetah.fighter.engine;
 
-import org.cheetah.fighter.async.AsynchronousFactory;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.async.future.AsyncForeseeableWorkerFactory;
 import org.cheetah.fighter.async.future.ForeseeableWorkerPoolFactory;
@@ -42,7 +41,8 @@ public class ForeseeableEngineBuilder implements EngineBuilder {
 
     @Override
     public AsynchronousPoolFactory buildAsynchronousPoolFactory(FighterConfig fighterConfig) {
-        AsynchronousFactory foreseeableWorkerFactory = new AsyncForeseeableWorkerFactory();
+        AsyncForeseeableWorkerFactory foreseeableWorkerFactory = new AsyncForeseeableWorkerFactory();
+        foreseeableWorkerFactory.setWorkerFactory(new ForeseeableWorkerFactory());
         ForeseeableWorkerPoolFactory factory = new ForeseeableWorkerPoolFactory();
         factory.setAsynchronousFactory(foreseeableWorkerFactory);
         return factory;

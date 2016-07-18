@@ -16,7 +16,6 @@ import org.cheetah.fighter.plugin.PluginChain;
  * Created by Max on 2016/3/2.
  */
 public abstract class AbstractEngine implements Engine {
-    private WorkerFactory workerFactory;
     private HandlerFactory handlerFactory;
     private GovernorFactory governorFactory;
     private PluginChain pluginChain = new PluginChain();
@@ -40,7 +39,6 @@ public abstract class AbstractEngine implements Engine {
 
     @Override
     public void stop() {
-        workerFactory = null;
         handlerFactory = null;
         governorFactory = null;
         pluginChain = null;
@@ -58,17 +56,6 @@ public abstract class AbstractEngine implements Engine {
     @Override
     public Handler assignDomainEventHandler() {
         return handlerFactory.createDomainEventHandler();
-    }
-
-    @Override
-    public Worker assignWorker() {
-        return workerFactory.createWorker();
-    }
-
-
-    @Override
-    public void setWorkerFactory(WorkerFactory workerFactory) {
-        this.workerFactory = workerFactory;
     }
 
     @Override
@@ -112,10 +99,6 @@ public abstract class AbstractEngine implements Engine {
 
     public void setPluginChain(PluginChain interceptorChain) {
         this.pluginChain = interceptorChain;
-    }
-
-    protected WorkerFactory workerFactory() {
-        return workerFactory;
     }
 
     protected HandlerFactory handlerFactory() {

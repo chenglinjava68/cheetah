@@ -17,8 +17,8 @@ public interface AsynchronousFactory<T> extends Startable {
     /**
      * 创建一个异步工作者
      * @param name
-     * @param handlerMap
+     * @param handlers
      * @return
      */
-    T createAsynchronous(String name, Map<Class<? extends EventListener>, Handler> handlerMap, List<Interceptor> interceptors);
+    T createAsynchronous(String name, List<Handler> handlers, List<Interceptor> interceptors);
 }

@@ -1,7 +1,5 @@
 package org.cheetah.fighter.worker;
 
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
 import org.cheetah.commons.logger.Loggers;
 import org.cheetah.commons.utils.Objects;
 import org.cheetah.fighter.core.Interceptor;
@@ -10,9 +8,7 @@ import org.cheetah.fighter.core.support.HandlerInterceptorChain;
 import org.cheetah.fighter.core.worker.AbstractWorker;
 import org.cheetah.fighter.core.worker.Command;
 
-import java.util.EventListener;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
@@ -21,9 +17,14 @@ import java.util.concurrent.RejectedExecutionException;
  * Created by Max on 2016/3/2.
  */
 public class ForeseeableWorker extends AbstractWorker {
-    private Map<Class<? extends EventListener>, Handler> handlerMap;
-    private ListeningExecutorService executor;
-    private List<Interceptor> interceptors;
+    private final Handler handler;
+    private ExecutorService executor;
+    private final List<Interceptor> interceptors;
+
+    public ForeseeableWorker(Handler handler, List<Interceptor> interceptors) {
+        this.handler = handler;
+        this.interceptors = interceptors;
+    }
 
     /**
      * 根据接受到命令开始工作
@@ -31,8 +32,6 @@ public class ForeseeableWorker extends AbstractWorker {
      */
     @Override
     public void work(Command command) {
-        final Handler handler = handlerMap.get(command.eventListener());
-
         try {
             CompletableFuture.supplyAsync(() ->
                     doWork(command)
@@ -51,7 +50,6 @@ public class ForeseeableWorker extends AbstractWorker {
     @Override
     protected boolean doWork(Command command) {
         boolean success = false;
-        final Handler handler = handlerMap.get(command.eventListener());
         try {
             HandlerInterceptorChain chain = createInterceptorChain();
             boolean result = chain.beforeHandle(command);
@@ -72,15 +70,7 @@ public class ForeseeableWorker extends AbstractWorker {
         return interceptors;
     }
 
-    public void setHandlerMap(Map<Class<? extends EventListener>, Handler> handlerMap) {
-        this.handlerMap = handlerMap;
-    }
-
     public void setExecutor(ExecutorService executor) {
-        this.executor = MoreExecutors.listeningDecorator(executor);
-    }
-
-    public void setInterceptors(List<Interceptor> interceptors) {
-        this.interceptors = interceptors;
+        this.executor = executor;
     }
 }

@@ -5,6 +5,7 @@ import org.cheetah.fighter.core.event.Event;
 import org.cheetah.fighter.core.handler.Handler;
 
 import java.util.EventListener;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,9 +14,9 @@ import java.util.Set;
  */
 public interface HandlerMapping extends Cloneable {
 
-    Map<Class<? extends EventListener>, Handler> getHandlers(HandlerMapperKey mapperKey);
+    List<Handler> getHandlers(HandlerMapperKey mapperKey);
 
-    void put(HandlerMapperKey mapperKey, Map<Class<? extends EventListener>, Handler> machines);
+    void put(HandlerMapperKey mapperKey,List<Handler> handlers);
 
     Set<HandlerMapperKey> mapperKeys();
 

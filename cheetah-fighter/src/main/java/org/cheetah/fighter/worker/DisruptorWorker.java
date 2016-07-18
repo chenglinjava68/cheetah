@@ -15,8 +15,13 @@ import java.util.Map;
  * Created by Max on 2016/2/29.
  */
 public class DisruptorWorker extends AbstractWorker implements EventHandler<DisruptorEvent> {
-    private Map<Class<? extends EventListener>, Handler> handlerMap;
+    private Handler handler;
     private List<Interceptor> interceptors;
+
+    public DisruptorWorker(Handler handler, List<Interceptor> interceptors) {
+        this.handler = handler;
+        this.interceptors = interceptors;
+    }
 
     @Override
     public void onEvent(DisruptorEvent disruptorEvent, long sequence, boolean endOfBatch) throws Exception {
@@ -26,7 +31,6 @@ public class DisruptorWorker extends AbstractWorker implements EventHandler<Disr
 
     @Override
     public void work(Command command) {
-        Handler handler = handlerMap.get(command.eventListener());
         boolean success = invoke(command);
         if(success)
             handler.onSuccess(command);
@@ -35,25 +39,12 @@ public class DisruptorWorker extends AbstractWorker implements EventHandler<Disr
 
     @Override
     protected boolean doWork(Command command) {
-        Handler handler = handlerMap.get(command.eventListener());
         return handler.handle(command);
     }
 
     @Override
     public List<Interceptor> getInterceptors() {
         return interceptors;
-    }
-
-    public void setHandlerMap(Map<Class<? extends EventListener>, Handler> handlerMap) {
-        this.handlerMap = handlerMap;
-    }
-
-    public void setInterceptors(List<Interceptor> interceptors) {
-        this.interceptors = interceptors;
-    }
-
-    Map<Class<? extends EventListener>, Handler> getHandlerMap() {
-        return handlerMap;
     }
 
 }

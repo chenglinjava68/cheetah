@@ -31,14 +31,6 @@ public interface Engine extends Startable {
      */
     Governor assignGovernor();
 
-    /**
-     * 分配应用事件的工作者
-     * @return
-     */
-    Worker assignWorker();
-
-    void setWorkerFactory(WorkerFactory workerFactory);
-
     void setHandlerFactory(HandlerFactory handlerFactory);
 
     void setGovernorFactory(GovernorFactory governorFactory);

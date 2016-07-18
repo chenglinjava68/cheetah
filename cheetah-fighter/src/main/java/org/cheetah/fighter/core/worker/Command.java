@@ -13,16 +13,14 @@ public class Command implements Serializable {
     private static final long serialVersionUID = 2193959876727951577L;
 
     private Event event;
-    private boolean needResult ;
-    private Class<? extends EventListener> eventListener;
+    private boolean needResult;
 
     Command() {
     }
 
-    public Command(Event event, boolean needResult, Class<? extends EventListener> eventListener) {
+    public Command(Event event, boolean needResult) {
         this.event = event;
         this.needResult = needResult;
-        this.eventListener = eventListener;
     }
 
     public Event event() {
@@ -33,11 +31,7 @@ public class Command implements Serializable {
         return needResult;
     }
 
-    public Class<? extends EventListener> eventListener() {
-        return eventListener;
-    }
-
-    public static Command of(Event event, Class<? extends EventListener> eventListener) {
-        return new Command(event, true, eventListener);
+    public static Command of(Event event, boolean needResult) {
+        return new Command(event, needResult);
     }
 }

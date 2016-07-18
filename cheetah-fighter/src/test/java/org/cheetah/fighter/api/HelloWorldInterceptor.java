@@ -11,7 +11,7 @@ public class HelloWorldInterceptor implements Interceptor {
     @Override
     public boolean preHandle(Command command) throws Exception {
         System.out.println("prehandle");
-        return true;
+        return false;
     }
 
     @Override

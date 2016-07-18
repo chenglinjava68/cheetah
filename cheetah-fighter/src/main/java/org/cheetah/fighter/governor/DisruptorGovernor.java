@@ -19,16 +19,12 @@ public class DisruptorGovernor extends AbstractGovernor {
 
     @Override
     protected Feedback notifyAllWorker() {
-        Debug.log(this.getClass(), "notify {} worker", handlerMap().size());
-        if (handlerMap().isEmpty())
+        Debug.log(this.getClass(), "notify {} worker", handlers().size());
+        if (handlers().isEmpty())
             return Feedback.EMPTY;
         Translator translator = new Translator();
-        Set<Class<? extends EventListener>> keys = this.handlerMap().keySet();
-        for (Class<? extends EventListener> c : keys) {
-            Command command = Command.of(details().event(), c);
-            ringBuffer.publishEvent(translator, command);
-        }
-
+        Command command = Command.of(details().event(), false);
+        ringBuffer.publishEvent(translator, command);
         return Feedback.SUCCESS;
     }
 

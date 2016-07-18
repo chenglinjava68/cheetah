@@ -10,7 +10,7 @@ import java.util.Map;
  * Created by Max on 2016/3/3.
  */
 public final class EventContext {
-    private static final ThreadLocal<Map<Class<? extends EventListener>, Handler>> handlers = new ThreadLocal<>();
+    private static final ThreadLocal<List<Handler>> handlers = new ThreadLocal<>();
     private static final ThreadLocal<EventMessage> eventMessage = new ThreadLocal<>();
     private static final ThreadLocal<List<Interceptor>> interceptors = new ThreadLocal<>();
 
@@ -21,11 +21,11 @@ public final class EventContext {
         return CONTEXT;
     }
 
-    public final void setHandlers(Map<Class<? extends EventListener>, Handler> $handlers) {
+    public final void setHandlers(List<Handler> $handlers) {
         EventContext.handlers.set($handlers);
     }
 
-    public final Map<Class<? extends EventListener>, Handler> handlers() {
+    public final List<Handler> handlers() {
         return EventContext.handlers.get();
     }
 

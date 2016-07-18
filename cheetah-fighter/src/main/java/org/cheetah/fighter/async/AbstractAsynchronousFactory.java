@@ -1,6 +1,7 @@
 package org.cheetah.fighter.async;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import org.cheetah.fighter.core.worker.WorkerFactory;
 
 import java.util.concurrent.*;
 
@@ -11,6 +12,7 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
     private int minThreads = Runtime.getRuntime().availableProcessors();
     private int maxThreads = Runtime.getRuntime().availableProcessors() * 2 + 16;
     private ExecutorService executorService;
+    private WorkerFactory workerFactory;
 
     @Override
     public void start() {
@@ -58,5 +60,13 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
 
     public void setExecutorService(ExecutorService executorService) {
         this.executorService = executorService;
+    }
+
+    public void setWorkerFactory(WorkerFactory workerFactory) {
+        this.workerFactory = workerFactory;
+    }
+
+    public WorkerFactory getWorkerFactory() {
+        return workerFactory;
     }
 }

@@ -1,5 +1,6 @@
 package org.cheetah.fighter.core;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.cheetah.commons.Startable;
 import org.cheetah.commons.logger.Info;
@@ -56,12 +57,12 @@ public class EventBus implements Dispatcher, Startable {
             context.setInterceptor(interceptors);
             boolean exists = engine.getMapping().isExists(key);
             if (exists) {
-                Map<Class<? extends EventListener>, Handler> handlerMap = engine.getMapping().getHandlers(key);
+                List<Handler> handlerMap = engine.getMapping().getHandlers(key);
                 context.setHandlers(handlerMap);
                 return dispatch();
             }
-            Map<Class<? extends EventListener>, Handler> handlerMap = eventResolve(event, key);
-            context.setHandlers(handlerMap);
+            List<Handler> handlers = eventResolve(event, key);
+            context.setHandlers(handlers);
             return dispatch();
         } finally {
             context.removeEventMessage();
@@ -73,15 +74,15 @@ public class EventBus implements Dispatcher, Startable {
     @Override
     public EventResult dispatch() {
         EventMessage eventMessage = context().eventMessage();
-        Map<Class<? extends EventListener>, Handler> handlerMap = context().handlers();
-        if (handlerMap.isEmpty()) {
+        List<Handler> handlers = context().handlers();
+        if (handlers.isEmpty()) {
             Loggers.me().warn(this.getClass(), "Couldn't find the corresponding mapping.");
             throw new NoMapperException();
         } else {
             Governor governor = engine().assignGovernor();
             Feedback report = governor.initialize()
                     .accept(eventMessage)
-                    .registerHandlerSquad(handlerMap)
+                    .registerHandlerSquad(handlers)
                     .command();
             return new EventResult(eventMessage.event().getSource(), report.isSuccess());
         }
@@ -131,7 +132,7 @@ public class EventBus implements Dispatcher, Startable {
      *
      * @param event
      */
-    private Map<Class<? extends EventListener>, Handler> eventResolve(final Event event, HandlerMapping.HandlerMapperKey mapperKey) {
+    private List<Handler> eventResolve(final Event event, HandlerMapping.HandlerMapperKey mapperKey) {
         lock.lock();
         try {
             if (DomainEvent.class.isAssignableFrom(event.getClass())) {
@@ -144,7 +145,7 @@ public class EventBus implements Dispatcher, Startable {
         } finally {
             lock.unlock();
         }
-        return Maps.newHashMap();
+        return Collections.emptyList();
     }
 
     @SuppressWarnings("unchecked")
@@ -164,13 +165,13 @@ public class EventBus implements Dispatcher, Startable {
         }).collect(Collectors.toList());
     }
 
-    private Map<Class<? extends EventListener>, Handler> assembleEventHandlerMapping(HandlerMapping.HandlerMapperKey mapperKey,
+    private List<Handler> assembleEventHandlerMapping(HandlerMapping.HandlerMapperKey mapperKey,
                                                                                      List<EventListener> listeners) {
-        Map<Class<? extends EventListener>, Handler> handlers = Maps.newHashMap();
+        List<Handler> handlers = Lists.newArrayList();
         for (EventListener listener : listeners) {
             Handler handler = engine.assignDomainEventHandler();
             handler.registerEventListener(listener);
-            handlers.put(listener.getClass(), handler);
+            handlers.add(handler);
         }
 
         engine.getMapping().put(mapperKey, handlers);
