@@ -49,6 +49,11 @@ public class ForeseeableWorker extends AbstractWorker {
 
     @Override
     protected boolean doWork(Command command) {
+        return invoke(command);
+    }
+
+    @Override
+    protected boolean invoke(Command command) {
         boolean success = false;
         try {
             HandlerInterceptorChain chain = createInterceptorChain();
@@ -63,7 +68,6 @@ public class ForeseeableWorker extends AbstractWorker {
         }
         return success;
     }
-
 
     @Override
     public List<Interceptor> getInterceptors() {

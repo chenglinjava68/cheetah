@@ -38,6 +38,7 @@ public abstract class AbstractWorker implements Worker {
                 chain.afterHandle(command);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             Loggers.me().error(this.getClass(), "interceptor invoke Exception", e);
         }
         return success;

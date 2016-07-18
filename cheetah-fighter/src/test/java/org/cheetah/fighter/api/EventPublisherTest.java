@@ -41,6 +41,12 @@ public class EventPublisherTest {
         for (int i = 0; i < 10; i++) {
             new Thread(() -> {
                 while (true) {
+//                    try {
+//                        Thread.sleep(1);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+                    System.out.println(atomicLong2.incrementAndGet());
                     DomainEventPublisher.publish(
                             new DomainEventTest2(new User("huahng"))
                     );
@@ -151,7 +157,6 @@ public class EventPublisherTest {
         @Override
         public void onDomainEvent(DomainEvent event) {
             System.out.println("SmartDomainListenerTest -- " + atomicLong3.incrementAndGet());
-            throw new RuntimeException();
         }
 
         @Override
@@ -181,7 +186,18 @@ public class EventPublisherTest {
         @Override
         public void onDomainEvent(DomainEvent event) {
             System.out.println("SmartDomainListenerTest2 -- " + atomicLong3.incrementAndGet());
-
+//            try {
+//                Thread.sleep(100000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+            double v = ArithUtils.round(Math.random() * 100, 0);
+            long i = ArithUtils.convertsToLong(v);
+            try {
+                Thread.sleep(i);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -231,7 +247,13 @@ public class EventPublisherTest {
 
         @Override
         public void onDomainEvent(ApplicationEventTest2 event) {
-
+            double v = ArithUtils.round(Math.random() * 500, 0);
+            long i = ArithUtils.convertsToLong(v);
+            try {
+                Thread.sleep(i);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             System.out.println("DomainListenerTest2 -- " + atomicLong3.incrementAndGet());
         }
 
