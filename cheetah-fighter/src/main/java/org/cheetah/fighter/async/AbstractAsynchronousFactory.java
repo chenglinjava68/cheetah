@@ -49,7 +49,7 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
     protected synchronized ExecutorService buildExecutorService() {
         if(this.executorService == null)
             executorService =  new ThreadPoolExecutor(minThreads, maxThreads,
-                    3000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(1000000),
+                    3000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(100000),
                     new ThreadFactoryBuilder().setNameFormat("Cheetah-Fighter-%d").build());
         return executorService;
     }

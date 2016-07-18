@@ -1,14 +1,13 @@
 package org.cheetah.fighter.core.governor;
 
+import org.cheetah.commons.logger.Loggers;
 import org.cheetah.commons.utils.Assert;
 import org.cheetah.fighter.core.EventMessage;
 import org.cheetah.fighter.core.Feedback;
 import org.cheetah.fighter.core.handler.Handler;
 import org.cheetah.fighter.plugin.PluginChain;
 
-import java.util.EventListener;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Max on 2016/3/7.
@@ -32,7 +31,10 @@ public class AbstractGovernorAdapter implements Governor {
 
     @Override
     public Feedback command() {
-        return adaptee.command();
+        long start = System.currentTimeMillis();
+        Feedback feedback =  adaptee.command();
+        Loggers.me().debugEnabled(this.getClass(), "消耗了{}毫秒", System.currentTimeMillis() - start);
+        return feedback;
     }
 
     @Override

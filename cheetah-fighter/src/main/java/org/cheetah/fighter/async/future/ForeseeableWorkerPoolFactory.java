@@ -10,6 +10,7 @@ import org.cheetah.fighter.worker.ForeseeableWorker;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Max on 2016/2/29.
@@ -20,7 +21,7 @@ public class ForeseeableWorkerPoolFactory implements AsynchronousPoolFactory<For
     private EventContext context;
 
     public ForeseeableWorkerPoolFactory() {
-        this.workerPool = new HashMap<>();
+        this.workerPool = new ConcurrentHashMap<>();
     }
 
     public ForeseeableWorker[] createWorkerTeam() {

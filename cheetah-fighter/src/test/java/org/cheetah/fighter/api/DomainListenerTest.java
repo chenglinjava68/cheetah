@@ -14,6 +14,8 @@ public class DomainListenerTest implements DomainEventListener {
 
     @Override
     public void onDomainEvent(DomainEvent event) {
+        if(!(event instanceof EventPublisherTest.DomainEventTest))
+            return ;
         double v = ArithUtils.round(Math.random() * 100, 0);
         long i = ArithUtils.convertsToLong(v);
 //            try {
@@ -29,12 +31,13 @@ public class DomainListenerTest implements DomainEventListener {
     }
 
     @Override
-    public void onFinish() {
-
+    public void onFinish(DomainEvent event) {
+        System.out.println(event);
     }
 
     @Override
-    public void onCancelled() {
-
+    public void onCancelled(DomainEvent event) {
+        System.out.println("oncacelled:" + event);
     }
+
 }

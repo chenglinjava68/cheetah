@@ -41,11 +41,11 @@ public class DisruptorEngineBuilder implements EngineBuilder {
     @Override
     public AsynchronousPoolFactory buildAsynchronousPoolFactory(FighterConfig fighterConfig) {
         DisruptorFactory disruptorFactory = new DisruptorFactory();
-        if(fighterConfig.ringBufferSize() > 0)
-            disruptorFactory.setRingbufferSize(fighterConfig.ringBufferSize());
-        if(fighterConfig.maxThreads() > 0 && fighterConfig.minThreads() > 0) {
-            disruptorFactory.setMinThreads(fighterConfig.minThreads());
-            disruptorFactory.setMaxThreads(fighterConfig.maxThreads());
+        if(fighterConfig.getQueueLength() > 0)
+            disruptorFactory.setRingbufferSize(fighterConfig.getQueueLength());
+        if(fighterConfig.getMaxThreads() > 0 && fighterConfig.getMinThreads() > 0) {
+            disruptorFactory.setMinThreads(fighterConfig.getMinThreads());
+            disruptorFactory.setMaxThreads(fighterConfig.getMaxThreads());
         }
         disruptorFactory.setWorkerFactory(new DisruptorWorkerFactory());
         DisruptorPoolFactory poolFactory = new DisruptorPoolFactory();

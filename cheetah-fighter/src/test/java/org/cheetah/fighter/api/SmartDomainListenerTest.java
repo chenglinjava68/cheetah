@@ -9,10 +9,10 @@ import java.util.concurrent.atomic.AtomicLong;
  * Created by maxhuang on 2016/7/18.
  */
 public class SmartDomainListenerTest implements SmartDomainEventListener {
-    public static final AtomicLong atomicLong3 = new AtomicLong();
+    public static final AtomicLong atomicLong1 = new AtomicLong();
     @Override
     public boolean supportsEventType(Class<? extends DomainEvent> eventType) {
-        return eventType == EventPublisherTest.DomainEventTest2.class;
+        return eventType == EventPublisherTest.DomainEventTest.class;
     }
 
     @Override
@@ -22,16 +22,17 @@ public class SmartDomainListenerTest implements SmartDomainEventListener {
 
     @Override
     public void onDomainEvent(DomainEvent event) {
-        System.out.println("SmartDomainListenerTest -- " + atomicLong3.incrementAndGet());
+        System.out.println("SmartDomainListenerTest -- " + atomicLong1.incrementAndGet());
     }
 
     @Override
-    public void onFinish() {
+    public void onFinish(DomainEvent event) {
         System.out.println("on finish");
     }
 
     @Override
-    public void onCancelled() {
+    public void onCancelled(DomainEvent event) {
         System.out.println("on cancelled");
     }
+
 }

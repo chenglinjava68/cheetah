@@ -44,7 +44,7 @@ public class EventPublisherTest {
 //                    } catch (InterruptedException e) {
 //                        e.printStackTrace();
 //                    }
-//                    System.out.println(atomicLong2.incrementAndGet());
+                    System.out.println(atomicLong2.incrementAndGet());
                     DomainEventPublisher.publish(
                             new DomainEventTest2(new User("huahng"))
                     );
@@ -60,8 +60,9 @@ public class EventPublisherTest {
     public void launch2() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         FighterContext.publish(
-                new ApplicationEventTest(new User("hzf"))
+                new DomainEventTest2(new User("hzf"))
         );
+
         latch.await();
     }
 

@@ -1,7 +1,6 @@
 package org.cheetah.fighter.core;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.cheetah.commons.Startable;
 import org.cheetah.commons.logger.Info;
 import org.cheetah.commons.logger.Loggers;
@@ -49,6 +48,7 @@ public class EventBus implements Dispatcher, Startable {
      */
     @Override
     public EventResult receive(final EventMessage eventMessage) {
+        System.out.println(System.currentTimeMillis());
         try {
             context().setEventMessage(eventMessage);
             Event event = eventMessage.event();
@@ -79,6 +79,7 @@ public class EventBus implements Dispatcher, Startable {
             Loggers.me().warn(this.getClass(), "Couldn't find the corresponding mapping.");
             throw new NoMapperException();
         } else {
+            System.out.println(System.currentTimeMillis());
             Governor governor = engine().assignGovernor();
             Feedback report = governor.initialize()
                     .accept(eventMessage)
@@ -96,11 +97,11 @@ public class EventBus implements Dispatcher, Startable {
                 initializesPlugin(pluginChain);
         } else
             fighterConfig = new FighterConfig();
-        if (StringUtils.isEmpty(fighterConfig.policy())) {
+        if (StringUtils.isEmpty(fighterConfig.getPolicy())) {
             enginePolicy = EnginePolicy.DISRUPTOR;
             engineDirector = enginePolicy.getEngineDirector();
         } else {
-            enginePolicy = EnginePolicy.formatFrom(fighterConfig.policy());
+            enginePolicy = EnginePolicy.formatFrom(fighterConfig.getPolicy());
             engineDirector = enginePolicy.getEngineDirector();
         }
         engineDirector.setFighterConfig(this.fighterConfig);
@@ -122,7 +123,7 @@ public class EventBus implements Dispatcher, Startable {
 
     public PluginChain initializesPlugin(PluginChain chain) {
         Objects.requireNonNull(chain, "chain must not be null");
-        for (Plugin plugin : fighterConfig.plugins())
+        for (Plugin plugin : fighterConfig.getPlugins())
             chain.register(plugin);
         return chain;
     }
@@ -150,7 +151,7 @@ public class EventBus implements Dispatcher, Startable {
 
     @SuppressWarnings("unchecked")
     private List<EventListener> supportsUniversalListener(final Event event) {
-        List<EventListener> eventListeners = this.fighterConfig.eventListeners();
+        List<EventListener> eventListeners = this.fighterConfig.getEventListeners();
 
         return eventListeners.stream().filter(o ->{
             List classes = CollectionUtils.arrayToList(o.getClass().getInterfaces());
@@ -186,7 +187,7 @@ public class EventBus implements Dispatcher, Startable {
      * @return
      */
     private List<EventListener> supportsSmartListener(final DomainEvent event) {
-        List<EventListener> list = this.fighterConfig.eventListeners();
+        List<EventListener> list = this.fighterConfig.getEventListeners();
 
         return list.stream().filter(o -> SmartDomainEventListener.class.isAssignableFrom(o.getClass()))
                 .map(o -> ((SmartDomainEventListener) o))
@@ -196,9 +197,8 @@ public class EventBus implements Dispatcher, Startable {
     }
 
     private List<Interceptor> findInterceptor(final Event event) {
-        List<Interceptor> interceptors = this.fighterConfig.interceptors();
-        if (this.fighterConfig == null ||
-                CollectionUtils.isEmpty(interceptors))
+        List<Interceptor> interceptors = this.fighterConfig.getInterceptors();
+        if (CollectionUtils.isEmpty(interceptors))
             return Collections.emptyList();
         InterceptorCacheKey key = new InterceptorCacheKey(event.getClass());
         List<Interceptor> $interceptors = interceptorCache.get(key);

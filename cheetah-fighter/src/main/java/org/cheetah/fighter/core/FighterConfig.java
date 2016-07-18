@@ -28,7 +28,7 @@ public class FighterConfig {
         this.eventListeners = Collections.emptyList();
     }
 
-    public List<Plugin> plugins() {
+    public List<Plugin> getPlugins() {
         return Lists.newArrayList(plugins);
     }
 
@@ -36,7 +36,7 @@ public class FighterConfig {
         this.plugins = plugins;
     }
 
-    public List<Interceptor> interceptors() {
+    public List<Interceptor> getInterceptors() {
         return Lists.newArrayList(interceptors);
     }
 
@@ -44,7 +44,7 @@ public class FighterConfig {
         this.interceptors = interceptors;
     }
 
-    public List<EventListener> eventListeners() {
+    public List<EventListener> getEventListeners() {
         return Lists.newArrayList(eventListeners);
     }
 
@@ -52,7 +52,7 @@ public class FighterConfig {
         this.eventListeners = eventListeners;
     }
 
-    public int eventPerformerSize() {
+    public int getEventPerformerSize() {
         return eventPerformerSize;
     }
 
@@ -68,7 +68,7 @@ public class FighterConfig {
         return !CollectionUtils.isEmpty(this.eventListeners);
     }
 
-    public int ringBufferSize() {
+    public int getQueueLength() {
         return queueLength;
     }
 
@@ -76,7 +76,7 @@ public class FighterConfig {
         this.queueLength = queueLength;
     }
 
-    public String policy() {
+    public String getPolicy() {
         return policy;
     }
 
@@ -84,7 +84,7 @@ public class FighterConfig {
         this.policy = policy;
     }
 
-    public int minThreads() {
+    public int getMinThreads() {
         return minThreads;
     }
 
@@ -92,7 +92,7 @@ public class FighterConfig {
         this.minThreads = minThreads;
     }
 
-    public int maxThreads() {
+    public int getMaxThreads() {
         return maxThreads;
     }
 

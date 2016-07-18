@@ -9,7 +9,7 @@ import java.util.EventListener;
 public interface DomainEventListener<E extends DomainEvent> extends EventListener, Serializable {
     void onDomainEvent(E event);
 
-    void onFinish();
+    void onFinish(E event);
 
-    void onCancelled();
+    void onCancelled(E event);
 }

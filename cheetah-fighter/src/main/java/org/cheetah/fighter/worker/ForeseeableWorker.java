@@ -33,6 +33,7 @@ public class ForeseeableWorker extends AbstractWorker {
     @Override
     public void work(Command command) {
         try {
+            long start = System.currentTimeMillis();
             CompletableFuture.supplyAsync(() ->
                     doWork(command)
                     , executor).whenComplete((r, e) -> {
@@ -40,6 +41,7 @@ public class ForeseeableWorker extends AbstractWorker {
                     handler.onSuccess(command);
                 else handler.onFailure(command, e);
             });
+            Loggers.me().debugEnabled(this.getClass(), "work消耗了{}毫秒", System.currentTimeMillis() - start);
         } catch (RejectedExecutionException e) {
             e.printStackTrace();
             Loggers.me().warn(getClass(), "task rejected execute.", e);

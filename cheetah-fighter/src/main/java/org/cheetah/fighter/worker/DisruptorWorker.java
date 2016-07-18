@@ -1,6 +1,7 @@
 package org.cheetah.fighter.worker;
 
 import com.lmax.disruptor.EventHandler;
+import org.cheetah.commons.logger.Loggers;
 import org.cheetah.fighter.async.disruptor.DisruptorEvent;
 import org.cheetah.fighter.core.Interceptor;
 import org.cheetah.fighter.core.handler.Handler;
@@ -26,7 +27,9 @@ public class DisruptorWorker extends AbstractWorker implements EventHandler<Disr
     @Override
     public void onEvent(DisruptorEvent disruptorEvent, long sequence, boolean endOfBatch) throws Exception {
         Command command = disruptorEvent.get();
+        long start = System.currentTimeMillis();
         work(command);
+        Loggers.me().debugEnabled(this.getClass(), "work消耗了{}毫秒", System.currentTimeMillis() - start);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package org.cheetah.fighter.api;
 
-import org.cheetah.commons.utils.ArithUtils;
 import org.cheetah.fighter.core.event.DomainEventListener;
 
 import java.util.concurrent.atomic.AtomicLong;
@@ -13,23 +12,19 @@ public class DomainListenerTest2 implements DomainEventListener<EventPublisherTe
 
     @Override
     public void onDomainEvent(EventPublisherTest.ApplicationEventTest event) {
-        double v = ArithUtils.round(Math.random() * 500, 0);
-        long i = ArithUtils.convertsToLong(v);
-        try {
-            Thread.sleep(i);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         System.out.println("DomainListenerTest2 -- " + atomicLong3.incrementAndGet());
+        throw new RuntimeException();
     }
 
     @Override
-    public void onFinish() {
-
+    public void onFinish(EventPublisherTest.ApplicationEventTest event) {
+        System.out.println("onfinish:" + event);
     }
 
     @Override
-    public void onCancelled() {
-
+    public void onCancelled(EventPublisherTest.ApplicationEventTest event) {
+        System.out.println("oncacelled:" + event);
     }
+
+
 }
