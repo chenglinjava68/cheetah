@@ -23,27 +23,27 @@ public class Warn {
         logger.warn(moduleName, msg, objs);
     }
 
-    public static void warnEnabled(Class<?> type, String msg, Throwable e) {
+    public static void logEnabled(Class<?> type, String msg, Throwable e) {
         logger.warnEnabled(type, msg, e);
     }
 
-    public static void warnEnabled(Class<?> type, String msg, Object... objs) {
+    public static void logEnabled(Class<?> type, String msg, Object... objs) {
         logger.warnEnabled(type, msg, objs);
     }
 
-    public static void warnEnabled(String moduleName, String msg, Throwable e) {
+    public static void logEnabled(String moduleName, String msg, Throwable e) {
         logger.warnEnabled(moduleName, msg, e);
     }
 
-    public static void warnEnabled(String moduleName, String msg, Object... objs) {
+    public static void logEnabled(String moduleName, String msg, Object... objs) {
         logger.warnEnabled(moduleName, msg, objs);
     }
 
-    public static boolean isWarnEnabled(Class<?> type) {
+    public static boolean isEnabled(Class<?> type) {
         return logger.isWarnEnabled(type);
     }
 
-    public static boolean isWarnEnabled(String moduleName) {
+    public static boolean isEnabled(String moduleName) {
         return logger.isWarnEnabled(moduleName);
     }
 

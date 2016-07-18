@@ -23,27 +23,27 @@ public class Info {
         logger.info(moduleName, msg, objs);
     }
 
-    public static void infoEnabled(Class<?> type, String msg, Throwable e) {
+    public static void logEnabled(Class<?> type, String msg, Throwable e) {
         logger.infoEnabled(type, msg, e);
     }
 
-    public static void infoEnabled(Class<?> type, String msg, Object... objs) {
+    public static void logEnabled(Class<?> type, String msg, Object... objs) {
         logger.infoEnabled(type, msg, objs);
     }
 
-    public static void infoEnabled(String moduleName, String msg, Throwable e) {
+    public static void logEnabled(String moduleName, String msg, Throwable e) {
         logger.infoEnabled(moduleName, msg, e);
     }
 
-    public static void infoEnabled(String moduleName, String msg, Object... objs) {
+    public static void logEnabled(String moduleName, String msg, Object... objs) {
         logger.infoEnabled(moduleName, msg, objs);
     }
 
-    public static boolean isInfoEnabled(Class<?> type) {
+    public static boolean isEnabled(Class<?> type) {
         return logger.isInfoEnabled(type);
     }
 
-    public static boolean isInfoEnabled(String moduleName) {
+    public static boolean isEnabled(String moduleName) {
         return logger.isInfoEnabled(moduleName);
     }
 }

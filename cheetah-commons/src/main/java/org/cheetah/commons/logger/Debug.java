@@ -21,27 +21,27 @@ public class Debug {
         logger.debug(moduleName, msg, objs);
     }
 
-    public static void debugEnabled(Class<?> type, String msg, Throwable e) {
+    public static void logEnabled(Class<?> type, String msg, Throwable e) {
         logger.debugEnabled(type, msg, e);
     }
 
-    public static void debugEnabled(Class<?> type, String msg, Object... objs) {
+    public static void logEnabled(Class<?> type, String msg, Object... objs) {
         logger.debugEnabled(type, msg, objs);
     }
 
-    public static void debugEnabled(String moduleName, String msg, Throwable e) {
+    public static void logEnabled(String moduleName, String msg, Throwable e) {
         logger.debugEnabled(moduleName, msg, e);
     }
 
-    public static void debugEnabled(String moduleName, String msg, Object... objs) {
+    public static void logEnabled(String moduleName, String msg, Object... objs) {
         logger.debugEnabled(moduleName, msg, objs);
     }
 
-    public static boolean isDebugEnabled(Class<?> type) {
+    public static boolean isEnabled(Class<?> type) {
         return logger.isDebugEnabled(type);
     }
 
-    public static boolean isDebugEnabled(String moduleName) {
+    public static boolean isEnabled(String moduleName) {
         return logger.isDebugEnabled(moduleName);
     }
 
