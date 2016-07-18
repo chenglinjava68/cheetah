@@ -24,9 +24,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class EventPublisherTest {
 
-    public static final AtomicLong atomicLong = new AtomicLong();
     public static final AtomicLong atomicLong2 = new AtomicLong();
-    public static final AtomicLong atomicLong3 = new AtomicLong();
     @Autowired
     SpringBeanFactoryProvider springBeanFactoryProvider;
 
@@ -46,7 +44,7 @@ public class EventPublisherTest {
 //                    } catch (InterruptedException e) {
 //                        e.printStackTrace();
 //                    }
-                    System.out.println(atomicLong2.incrementAndGet());
+//                    System.out.println(atomicLong2.incrementAndGet());
                     DomainEventPublisher.publish(
                             new DomainEventTest2(new User("huahng"))
                     );
@@ -62,7 +60,7 @@ public class EventPublisherTest {
     public void launch2() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         FighterContext.publish(
-                new DomainEventTest(new User("hzf"))
+                new DomainEventTest2(new User("hzf"))
         );
         latch.await();
     }
@@ -142,132 +140,6 @@ public class EventPublisherTest {
 
     }
 
-    public static class SmartDomainListenerTest implements SmartDomainEventListener {
-
-        @Override
-        public boolean supportsEventType(Class<? extends DomainEvent> eventType) {
-            return eventType == DomainEventTest.class;
-        }
-
-        @Override
-        public boolean supportsSourceType(Class<?> sourceType) {
-            return User.class == sourceType;
-        }
-
-        @Override
-        public void onDomainEvent(DomainEvent event) {
-            System.out.println("SmartDomainListenerTest -- " + atomicLong3.incrementAndGet());
-        }
-
-        @Override
-        public void onFinish() {
-            System.out.println("on finish");
-        }
-
-        @Override
-        public void onCancelled() {
-            System.out.println("on cancelled");
-        }
-
-    }
-
-    public static class SmartDomainListenerTest2 implements SmartDomainEventListener {
-
-        @Override
-        public boolean supportsEventType(Class<? extends DomainEvent> eventType) {
-            return eventType == DomainEventTest2.class;
-        }
-
-        @Override
-        public boolean supportsSourceType(Class<?> sourceType) {
-            return User.class == sourceType;
-        }
-
-        @Override
-        public void onDomainEvent(DomainEvent event) {
-            System.out.println("SmartDomainListenerTest2 -- " + atomicLong3.incrementAndGet());
-//            try {
-//                Thread.sleep(100000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-            double v = ArithUtils.round(Math.random() * 100, 0);
-            long i = ArithUtils.convertsToLong(v);
-            try {
-                Thread.sleep(i);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onFinish() {
-
-        }
-
-        @Override
-        public void onCancelled() {
-
-        }
-
-    }
-
-
-    public static class DomainListenerTest implements DomainEventListener<ApplicationEventTest> {
-
-        @Override
-        public void onDomainEvent(ApplicationEventTest event) {
-            double v = ArithUtils.round(Math.random() * 100, 0);
-            long i = ArithUtils.convertsToLong(v);
-//            try {
-//                Thread.sleep(i);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-            int k = 100000;
-            while (k > 0) {
-                k--;
-            }
-            System.out.println("DomainListenerTest -- " + atomicLong3.incrementAndGet());
-        }
-
-        @Override
-        public void onFinish() {
-
-        }
-
-        @Override
-        public void onCancelled() {
-
-        }
-
-    }
-
-    public static class DomainListenerTest2 implements DomainEventListener<ApplicationEventTest2> {
-
-        @Override
-        public void onDomainEvent(ApplicationEventTest2 event) {
-            double v = ArithUtils.round(Math.random() * 500, 0);
-            long i = ArithUtils.convertsToLong(v);
-            try {
-                Thread.sleep(i);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println("DomainListenerTest2 -- " + atomicLong3.incrementAndGet());
-        }
-
-        @Override
-        public void onFinish() {
-
-        }
-
-        @Override
-        public void onCancelled() {
-
-        }
-
-    }
 
     public static class User extends UUIDKeyEntity {
 

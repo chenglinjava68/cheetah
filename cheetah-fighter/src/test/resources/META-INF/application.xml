@@ -25,16 +25,16 @@ http://www.springframework.org/schema/aop
             <bean class="org.cheetah.fighter.core.FighterConfig">
                 <property name="eventListeners">
                     <list>
-                        <bean class="org.cheetah.fighter.api.EventPublisherTest.SmartDomainListenerTest"/>
-                        <bean class="org.cheetah.fighter.api.EventPublisherTest.DomainListenerTest"/>
-                        <bean class="org.cheetah.fighter.api.EventPublisherTest.DomainListenerTest2"/>
-                        <bean class="org.cheetah.fighter.api.EventPublisherTest.SmartDomainListenerTest2"/>
+                        <bean class="org.cheetah.fighter.api.SmartDomainListenerTest"/>
+                        <bean class="org.cheetah.fighter.api.DomainListenerTest"/>
+                        <bean class="org.cheetah.fighter.api.DomainListenerTest2"/>
+                        <bean class="org.cheetah.fighter.api.SmartDomainListenerTest2"/>
                     </list>
                 </property>
                 <property name="interceptors">
                     <bean class="org.cheetah.fighter.api.HelloWorldInterceptor"/>
                 </property>
-                <property name="policy" value="future"/>
+                <!--<property name="policy" value="future"/>-->
                 <property name="ringBufferSize" value="1024"/>
 
             </bean>
