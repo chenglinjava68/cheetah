@@ -60,7 +60,7 @@ public class EventPublisherTest {
     public void launch2() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         FighterContext.publish(
-                new DomainEventTest2(new User("hzf"))
+                new ApplicationEventTest(new User("hzf"))
         );
         latch.await();
     }

@@ -157,8 +157,10 @@ public class EventBus implements Dispatcher, Startable {
             Optional<Class> classOptional = classes.stream().filter(it -> it.equals(DomainEventListener.class)).findFirst();
             if(!classOptional.isPresent())
                 return false;
-            Type[] parameterizedType = ((ParameterizedType) o.getClass().getGenericInterfaces()[0])
-                    .getActualTypeArguments();
+            Type type = o.getClass().getGenericInterfaces()[0];
+            if(!(type instanceof ParameterizedType))
+                return true;
+            Type[] parameterizedType = ((ParameterizedType)type).getActualTypeArguments();
             if(parameterizedType.length < 1)
                 return true;
             return event.getClass().equals(parameterizedType[0]);

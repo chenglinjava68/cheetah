@@ -1,6 +1,7 @@
 package org.cheetah.fighter.api;
 
 import org.cheetah.commons.utils.ArithUtils;
+import org.cheetah.fighter.core.event.DomainEvent;
 import org.cheetah.fighter.core.event.DomainEventListener;
 
 import java.util.concurrent.atomic.AtomicLong;
@@ -8,11 +9,11 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Created by maxhuang on 2016/7/18.
  */
-public class DomainListenerTest implements DomainEventListener<EventPublisherTest.ApplicationEventTest> {
+public class DomainListenerTest implements DomainEventListener {
     public static final AtomicLong atomicLong3 = new AtomicLong();
 
     @Override
-    public void onDomainEvent(EventPublisherTest.ApplicationEventTest event) {
+    public void onDomainEvent(DomainEvent event) {
         double v = ArithUtils.round(Math.random() * 100, 0);
         long i = ArithUtils.convertsToLong(v);
 //            try {

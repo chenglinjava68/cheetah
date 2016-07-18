@@ -8,11 +8,11 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Created by maxhuang on 2016/7/18.
  */
-public class DomainListenerTest2 implements DomainEventListener<EventPublisherTest.ApplicationEventTest2> {
+public class DomainListenerTest2 implements DomainEventListener<EventPublisherTest.ApplicationEventTest> {
     public static final AtomicLong atomicLong3 = new AtomicLong();
 
     @Override
-    public void onDomainEvent(EventPublisherTest.ApplicationEventTest2 event) {
+    public void onDomainEvent(EventPublisherTest.ApplicationEventTest event) {
         double v = ArithUtils.round(Math.random() * 500, 0);
         long i = ArithUtils.convertsToLong(v);
         try {

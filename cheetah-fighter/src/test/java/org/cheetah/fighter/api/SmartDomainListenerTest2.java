@@ -31,7 +31,7 @@ public class SmartDomainListenerTest2 implements SmartDomainEventListener {
         double v = ArithUtils.round(Math.random() * 100, 0);
         long i = ArithUtils.convertsToLong(v);
         try {
-            Thread.sleep(111111111);
+            Thread.sleep(i);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
