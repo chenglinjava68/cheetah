@@ -40,9 +40,8 @@ public abstract class AbstractHandler implements Handler {
      */
     @Override
     public void onFailure(Command command, Throwable e) {
-        Warn.log(this.getClass(), "handler execute failure event is [{}]", command.event(), e);
         DomainEventListener<DomainEvent> listener = (DomainEventListener<DomainEvent>) getEventListener();
-        listener.onCancelled((DomainEvent)command.event());
+        listener.onCancelled();
     }
 
     /**
@@ -51,9 +50,8 @@ public abstract class AbstractHandler implements Handler {
      */
     @Override
     public void onSuccess(Command command) {
-        Warn.log(this.getClass(), "handler execute failure event is [" + command.event() + "]");
         DomainEventListener<DomainEvent> listener = (DomainEventListener<DomainEvent>) getEventListener();
-        listener.onFinish((DomainEvent)command.event());
+        listener.onFinish();
     }
 
     @Override

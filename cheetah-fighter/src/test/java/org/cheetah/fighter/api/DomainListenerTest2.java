@@ -17,13 +17,13 @@ public class DomainListenerTest2 implements DomainEventListener<EventPublisherTe
     }
 
     @Override
-    public void onFinish(EventPublisherTest.ApplicationEventTest event) {
-        System.out.println("onfinish:" + event);
+    public void onFinish() {
+        System.out.println("onfinish:" );
     }
 
     @Override
-    public void onCancelled(EventPublisherTest.ApplicationEventTest event) {
-        System.out.println("oncacelled:" + event);
+    public void onCancelled() {
+        System.out.println("oncacelled:");
     }
 
 

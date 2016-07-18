@@ -26,12 +26,12 @@ public class SmartDomainListenerTest implements SmartDomainEventListener {
     }
 
     @Override
-    public void onFinish(DomainEvent event) {
+    public void onFinish() {
         System.out.println("on finish");
     }
 
     @Override
-    public void onCancelled(DomainEvent event) {
+    public void onCancelled() {
         System.out.println("on cancelled");
     }
 

@@ -31,13 +31,13 @@ public class DomainListenerTest implements DomainEventListener {
     }
 
     @Override
-    public void onFinish(DomainEvent event) {
-        System.out.println(event);
+    public void onFinish() {
+
     }
 
     @Override
-    public void onCancelled(DomainEvent event) {
-        System.out.println("oncacelled:" + event);
+    public void onCancelled() {
+
     }
 
 }

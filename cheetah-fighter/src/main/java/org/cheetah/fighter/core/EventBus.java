@@ -23,6 +23,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
@@ -78,6 +79,7 @@ public class EventBus implements Dispatcher, Startable {
             Loggers.me().warn(this.getClass(), "Couldn't find the corresponding mapping.");
             throw new NoMapperException();
         } else {
+
             Governor governor = engine().assignGovernor();
             Feedback report = governor.initialize()
                     .accept(eventMessage)
@@ -85,7 +87,6 @@ public class EventBus implements Dispatcher, Startable {
                     .command();
             return new EventResult(eventMessage.event().getSource(), report.isSuccess());
         }
-
     }
 
     @Override

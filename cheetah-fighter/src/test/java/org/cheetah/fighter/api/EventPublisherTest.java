@@ -39,7 +39,7 @@ public class EventPublisherTest {
         for (int i = 0; i < 10; i++) {
             new Thread(() -> {
                 while (true) {
-                    System.out.println(atomicLong2.incrementAndGet());
+//                    System.out.println(atomicLong2.incrementAndGet());
                     DomainEventPublisher.publish(
                             new DomainEventTest2(new User("huahng"))
                     );

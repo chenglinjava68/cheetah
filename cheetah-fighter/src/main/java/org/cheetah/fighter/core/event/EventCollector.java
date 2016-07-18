@@ -6,6 +6,6 @@ package org.cheetah.fighter.core.event;
 */
 public interface EventCollector {
 
-    void collect(Event event);
+    void collect(DomainEvent event);
 
 }

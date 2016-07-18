@@ -3,6 +3,7 @@ package org.cheetah.fighter.api;
 import org.cheetah.fighter.core.EventMessage;
 import org.cheetah.fighter.core.EventBus;
 import org.cheetah.fighter.core.event.AbstractCollector;
+import org.cheetah.fighter.core.event.DomainEvent;
 import org.cheetah.fighter.core.event.Event;
 
 /**
@@ -17,7 +18,7 @@ class DomainEventCollector extends AbstractCollector {
     }
 
     @Override
-    public void collect(Event event) {
+    public void collect(DomainEvent event) {
         getEventBus().receive(new EventMessage(event));
     }
 

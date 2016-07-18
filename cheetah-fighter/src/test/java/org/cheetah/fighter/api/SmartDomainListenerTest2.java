@@ -24,19 +24,17 @@ public class SmartDomainListenerTest2 implements SmartDomainEventListener {
 
     @Override
     public void onDomainEvent(DomainEvent event) {
-        double v = ArithUtils.round(Math.random() * 100, 0);
-        long i = ArithUtils.convertsToLong(v);
         System.out.println("SmartDomainListenerTest2 -- " + atomicLong2.incrementAndGet());
 
     }
 
     @Override
-    public void onCancelled(DomainEvent event) {
+    public void onCancelled() {
 
     }
 
     @Override
-    public void onFinish(DomainEvent event) {
+    public void onFinish() {
         System.out.println("SmartDomainListenerTest2 -- onFinish");
     }
 }
