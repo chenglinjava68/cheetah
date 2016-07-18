@@ -35,10 +35,10 @@ public final class Loggers {
      * @param e a {@link Throwable} object.
      */
     public void debug(Class<?> type, String msg, Throwable e) {
-        ofLogger(type).debug(msg, e);
+        of(type).debug(msg, e);
     }
     public void debug(String moduleName, String msg, Throwable e) {
-        ofLogger(moduleName).debug(msg, e);
+        of(moduleName).debug(msg, e);
     }
 
     /**
@@ -49,10 +49,10 @@ public final class Loggers {
      * @param objs a {@link Object} object.
      */
     public void debug(Class<?> type, String msg, Object... objs) {
-        ofLogger(type).debug(msg, objs);
+        of(type).debug(msg, objs);
     }
     public void debug(String moduleName, String msg, Object... objs) {
-        ofLogger(moduleName).debug(msg, objs);
+        of(moduleName).debug(msg, objs);
     }
 
     /**
@@ -63,10 +63,10 @@ public final class Loggers {
      * @param e a {@link Throwable} object.
      */
     public void info(Class<?> type, String msg, Throwable e) {
-        ofLogger(type).info(msg, e);
+        of(type).info(msg, e);
     }
     public void info(String moduleName, String msg, Throwable e) {
-        ofLogger(moduleName).info(msg, e);
+        of(moduleName).info(msg, e);
     }
 
     /**
@@ -77,10 +77,10 @@ public final class Loggers {
      * @param objs a {@link Object} object.
      */
     public void info(Class<?> type, String msg, Object... objs) {
-        ofLogger(type).info(msg, objs);
+        of(type).info(msg, objs);
     }
     public void info(String moduleName, String msg, Object... objs) {
-        ofLogger(moduleName).info(msg, objs);
+        of(moduleName).info(msg, objs);
     }
 
 
@@ -92,10 +92,10 @@ public final class Loggers {
      * @param e a {@link Throwable} object.
      */
     public void warn(Class<?> type, String msg, Throwable e) {
-        ofLogger(type).warn(msg, e);
+        of(type).warn(msg, e);
     }
     public void warn(String moduleName, String msg, Throwable e) {
-        ofLogger(moduleName).warn(msg, e);
+        of(moduleName).warn(msg, e);
     }
 
     /**
@@ -106,10 +106,10 @@ public final class Loggers {
      * @param objs a {@link Object} object.
      */
     public void warn(Class<?> type, String msg, Object... objs) {
-        ofLogger(type).warn(msg, objs);
+        of(type).warn(msg, objs);
     }
     public void warn(String moduleName, String msg, Object... objs) {
-        ofLogger(moduleName).warn(msg, objs);
+        of(moduleName).warn(msg, objs);
     }
 
     /**
@@ -120,10 +120,10 @@ public final class Loggers {
      * @param e a {@link Throwable} object.
      */
     public void error(Class<?> type, String msg, Throwable e) {
-        ofLogger(type).error(msg, e);
+        of(type).error(msg, e);
     }
     public void error(String moduleName, String msg, Throwable e) {
-        ofLogger(moduleName).error(msg, e);
+        of(moduleName).error(msg, e);
     }
 
     /**
@@ -134,10 +134,10 @@ public final class Loggers {
      * @param objs a {@link Object} object.
      */
     public void error(Class<?> type, String msg, Object... objs) {
-        ofLogger(type).error(msg, objs);
+        of(type).error(msg, objs);
     }
     public void error(String moduleName, String msg, Object... objs) {
-        ofLogger(moduleName).error(msg, objs);
+        of(moduleName).error(msg, objs);
     }
 
     /**
@@ -147,13 +147,13 @@ public final class Loggers {
      * @param e
      */
     public void debugEnabled(Class<?> type, String msg, Throwable e) {
-        Logger log = ofLogger(type);
+        Logger log = of(type);
         if(log.isDebugEnabled())
             log.debug(msg, e);
     }
 
     public void debugEnabled(String moduleName, String msg, Throwable e) {
-        Logger log = ofLogger(moduleName);
+        Logger log = of(moduleName);
         if(log.isDebugEnabled())
             log.debug(msg, e);
     }
@@ -165,93 +165,93 @@ public final class Loggers {
      * @param objs
      */
     public void debugEnabled(Class<?> type, String msg, Object... objs) {
-        Logger log = ofLogger(type);
+        Logger log = of(type);
         if(log.isDebugEnabled())
             log.debug(msg, objs);
     }
 
     public void debugEnabled(String moduleName, String msg, Object... objs) {
-        Logger log = ofLogger(moduleName);
+        Logger log = of(moduleName);
         if(log.isDebugEnabled())
             log.debug(msg, objs);
     }
 
     public void infoEnabled(Class<?> type, String msg, Throwable e) {
-        Logger log = ofLogger(type);
+        Logger log = of(type);
         if(log.isInfoEnabled())
             log.info(msg, e);
     }
 
     public void infoEnabled(String moduleName, String msg, Throwable e) {
-        Logger log = ofLogger(moduleName);
+        Logger log = of(moduleName);
         if(log.isInfoEnabled())
             log.info(msg, e);
     }
 
     public void infoEnabled(Class<?> type, String msg, Object... objs) {
-        Logger log = ofLogger(type);
+        Logger log = of(type);
         if(log.isInfoEnabled())
             log.info(msg, objs);
 
     }
 
     public void infoEnabled(String moduleName, String msg, Object... objs) {
-        Logger log = ofLogger(moduleName);
+        Logger log = of(moduleName);
         if(log.isInfoEnabled())
             log.info(msg, objs);
     }
 
     public void warnEnabled(Class<?> type, String msg, Throwable e) {
-        Logger log = ofLogger(type);
+        Logger log = of(type);
         if(log.isWarnEnabled())
             log.warn(msg, e);
 
     }
     public void warnEnabled(String moduleName, String msg, Throwable e) {
-        Logger log = ofLogger(moduleName);
+        Logger log = of(moduleName);
         if(log.isWarnEnabled())
             log.warn(msg, e);
     }
 
     public void warnEnabled(Class<?> type, String msg, Object... objs) {
-        Logger log = ofLogger(type);
+        Logger log = of(type);
         if(log.isWarnEnabled())
             log.warn(msg, objs);
     }
 
     public void warnEnabled(String moduleName, String msg, Object... objs) {
-        Logger log = ofLogger(moduleName);
+        Logger log = of(moduleName);
         if(log.isWarnEnabled())
             log.warn(msg, objs);
     }
 
     public void errorEnabled(Class<?> type, String msg, Throwable e) {
-        Logger log = ofLogger(type);
+        Logger log = of(type);
         if(log.isErrorEnabled())
             log.error(msg, e);
 
     }
 
     public void errorEnabled(String moduleName, String msg, Throwable e) {
-        Logger log = ofLogger(moduleName);
+        Logger log = of(moduleName);
         if(log.isErrorEnabled())
             log.error(msg, e);
     }
 
     public void errorEnabled(Class<?> type, String msg, Object... objs) {
-        Logger log = ofLogger(type);
+        Logger log = of(type);
         if(log.isErrorEnabled())
             log.error(msg, objs);
 
     }
 
     public void errorEnabled(String moduleName, String msg, Object... objs) {
-        Logger log = ofLogger(moduleName);
+        Logger log = of(moduleName);
         if(log.isErrorEnabled())
             log.error(msg, objs);
     }
 
-    public Logger ofLogger(Class<?> type) {
+    public Logger of(Class<?> type) {
         Objects.requireNonNull(type, "type must not be null.");
         if (null == loggers.get(type)) {
             loggers.putIfAbsent(type, LoggerFactory.getLogger(type));
@@ -260,7 +260,7 @@ public final class Loggers {
         return loggers.get(type);
     }
 
-    public Logger ofLogger(String moduleName) {
+    public Logger of(String moduleName) {
         Objects.requireNonNull(moduleName, "type must not be null.");
         if (null == loggers.get(moduleName)) {
             loggers.putIfAbsent(moduleName, LoggerFactory.getLogger(moduleName));

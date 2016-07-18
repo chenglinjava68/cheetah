@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * Created by maxhuang on 2016/7/18.
  */
 public class SmartDomainListenerTest2 implements SmartDomainEventListener {
+    public static final AtomicLong atomicLong1 = new AtomicLong();
     public static final AtomicLong atomicLong2 = new AtomicLong();
 
     @Override
@@ -24,7 +25,7 @@ public class SmartDomainListenerTest2 implements SmartDomainEventListener {
 
     @Override
     public void onDomainEvent(DomainEvent event) {
-        System.out.println("SmartDomainListenerTest2 -- " + atomicLong2.incrementAndGet());
+        System.out.println("SmartDomainListenerTest2 -- " + atomicLong1.incrementAndGet());
 
     }
 
@@ -35,6 +36,6 @@ public class SmartDomainListenerTest2 implements SmartDomainEventListener {
 
     @Override
     public void onFinish() {
-        System.out.println("SmartDomainListenerTest2 -- onFinish");
+        System.out.println("SmartDomainListenerTest2 -- onFinish-" + atomicLong2.incrementAndGet());
     }
 }

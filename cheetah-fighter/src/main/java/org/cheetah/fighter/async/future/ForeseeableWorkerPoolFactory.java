@@ -49,7 +49,6 @@ public class ForeseeableWorkerPoolFactory implements AsynchronousPoolFactory<For
         }
     }
 
-
     @Override
     public void setEventContext(EventContext context) {
         this.context = context;

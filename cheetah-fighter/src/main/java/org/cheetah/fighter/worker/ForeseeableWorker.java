@@ -37,19 +37,18 @@ public class ForeseeableWorker extends AbstractWorker {
      */
     @Override
     public void work(Command command) {
+//        System.out.println(atomicLong.incrementAndGet());
         try {
             CompletableFuture.supplyAsync(() -> {
                 long start = System.currentTimeMillis();
-                System.out.println(atomicLong.incrementAndGet());
                 boolean s = doWork(command);
+//                boolean s = true;
                 Loggers.me().debugEnabled(this.getClass(), "work消耗了{}毫秒", System.currentTimeMillis() - start);
                 return s;
             }, executor).whenComplete((r, e) -> {
-                long start = System.currentTimeMillis();
                 if (Objects.nonNull(r) && r)
                     handler.get().onSuccess(command);
                 else handler.get().onFailure(command, e);
-                Loggers.me().debugEnabled(this.getClass(), "whenComplete消耗了{}毫秒", System.currentTimeMillis() - start);
             });
         } catch (RejectedExecutionException e) {
             Loggers.me().warn(getClass(), "task rejected execute.", e);

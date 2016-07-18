@@ -1,11 +1,7 @@
 package org.cheetah.fighter.api;
 
 import com.google.common.collect.Lists;
-import org.cheetah.commons.utils.ArithUtils;
-import org.cheetah.domain.UUIDKeyEntity;
 import org.cheetah.fighter.core.event.DomainEvent;
-import org.cheetah.fighter.core.event.DomainEventListener;
-import org.cheetah.fighter.core.event.SmartDomainEventListener;
 import org.cheetah.fighter.core.worker.Command;
 import org.cheetah.fighter.handler.DomainEventHandler;
 import org.cheetah.fighter.worker.ForeseeableWorker;
@@ -49,19 +45,20 @@ public class EventPublisherTest {
 
     @Test
     public void launch() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
+        Thread[] threads = new Thread[10];
         for (int i = 0; i < 10; i++) {
-            new Thread(() -> {
+            threads[i] = new Thread(() -> {
                 while (true) {
-//                    System.out.println(atomicLong2.incrementAndGet());
                     DomainEventPublisher.publish(
                             new DomainEventTest2(new User("huahng"))
                     );
                 }
-            }).start();
+            });
+            threads[i].start();
         }
-
-        latch.await();
+        for (Thread thread : threads) {
+            thread.join();
+        }
     }
 
 
@@ -151,7 +148,7 @@ public class EventPublisherTest {
     }
 
 
-    public static class User extends UUIDKeyEntity {
+    public static class User {
 
         private static final long serialVersionUID = -2269393138381549806L;
         private String name;
