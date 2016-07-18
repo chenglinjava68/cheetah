@@ -2,6 +2,7 @@ package org.cheetah.fighter.core;
 
 
 import org.cheetah.commons.utils.CollectionUtils;
+import org.cheetah.fighter.core.event.DomainEventListener;
 import org.cheetah.fighter.plugin.Plugin;
 import com.google.common.collect.Lists;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public class FighterConfig {
     private List<Plugin> plugins;
     private List<Interceptor> interceptors;
-    private List<EventListener> eventListeners;
+    private List<DomainEventListener> eventListeners;
     private int eventPerformerSize;
     private int queueLength;
     private int minThreads;
@@ -44,11 +45,11 @@ public class FighterConfig {
         this.interceptors = interceptors;
     }
 
-    public List<EventListener> getEventListeners() {
+    public List<DomainEventListener> getEventListeners() {
         return Lists.newArrayList(eventListeners);
     }
 
-    public void setEventListeners(List<EventListener> eventListeners) {
+    public void setEventListeners(List<DomainEventListener> eventListeners) {
         this.eventListeners = eventListeners;
     }
 

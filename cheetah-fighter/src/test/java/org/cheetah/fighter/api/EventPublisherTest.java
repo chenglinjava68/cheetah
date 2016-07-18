@@ -1,10 +1,14 @@
 package org.cheetah.fighter.api;
 
+import com.google.common.collect.Lists;
 import org.cheetah.commons.utils.ArithUtils;
 import org.cheetah.domain.UUIDKeyEntity;
 import org.cheetah.fighter.core.event.DomainEvent;
 import org.cheetah.fighter.core.event.DomainEventListener;
 import org.cheetah.fighter.core.event.SmartDomainEventListener;
+import org.cheetah.fighter.core.worker.Command;
+import org.cheetah.fighter.handler.DomainEventHandler;
+import org.cheetah.fighter.worker.ForeseeableWorker;
 import org.cheetah.ioc.BeanFactory;
 import org.cheetah.ioc.spring.SpringBeanFactoryProvider;
 import org.junit.Before;
@@ -15,6 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -31,6 +36,15 @@ public class EventPublisherTest {
     @Before
     public void before() {
         BeanFactory.setBeanFactoryProvider(springBeanFactoryProvider);
+    }
+
+    @Test
+    public void test() {
+        ForeseeableWorker worker = new ForeseeableWorker(new DomainEventHandler(new DomainListenerTest()), Lists.newArrayList());
+        worker.setExecutor(Executors.newFixedThreadPool(64));
+        while (true) {
+        worker.work(Command.of(new DomainEventTest2(new User("user")), false));
+        }
     }
 
     @Test

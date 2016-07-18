@@ -17,14 +17,14 @@ public class DomainEventHandler extends AbstractHandler {
     public DomainEventHandler() {
     }
 
-    public DomainEventHandler(EventListener eventListener) {
+    public DomainEventHandler(DomainEventListener eventListener) {
         super(eventListener);
     }
 
     protected void doExecute(Event event) {
         Debug.log(this.getClass(), "DomainEventHandler do Execute event {}", event);
         DomainEvent $event = (DomainEvent) event;
-        DomainEventListener<DomainEvent> listener = (DomainEventListener<DomainEvent>) getEventListener();
+        DomainEventListener<DomainEvent> listener = getEventListener();
         listener.onDomainEvent($event);
     }
 

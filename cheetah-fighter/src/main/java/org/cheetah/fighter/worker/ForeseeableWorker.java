@@ -87,4 +87,25 @@ public class ForeseeableWorker extends AbstractWorker {
     public void setExecutor(ExecutorService executor) {
         this.executor = executor;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ForeseeableWorker that = (ForeseeableWorker) o;
+
+        if (handler != null ? !handler.equals(that.handler) : that.handler != null) return false;
+        if (executor != null ? !executor.equals(that.executor) : that.executor != null) return false;
+        return !(interceptors != null ? !interceptors.equals(that.interceptors) : that.interceptors != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = handler != null ? handler.hashCode() : 0;
+        result = 31 * result + (executor != null ? executor.hashCode() : 0);
+        result = 31 * result + (interceptors != null ? interceptors.hashCode() : 0);
+        return result;
+    }
 }

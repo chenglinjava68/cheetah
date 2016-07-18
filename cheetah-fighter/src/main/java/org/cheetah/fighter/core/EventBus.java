@@ -51,7 +51,7 @@ public class EventBus implements Dispatcher, Startable {
     public EventResult receive(final EventMessage eventMessage) {
         try {
             context().setEventMessage(eventMessage);
-            Event event = eventMessage.event();
+            DomainEvent event = eventMessage.event();
             HandlerMapping.HandlerMapperKey key = HandlerMapping.HandlerMapperKey.generate(event.getClass(), event.getSource().getClass());
             List<Interceptor> interceptors = findInterceptor(event);
             context.setInterceptor(interceptors);
@@ -132,11 +132,11 @@ public class EventBus implements Dispatcher, Startable {
      *
      * @param event
      */
-    private List<Handler> eventResolve(final Event event, HandlerMapping.HandlerMapperKey mapperKey) {
+    private List<Handler> eventResolve(final DomainEvent event, HandlerMapping.HandlerMapperKey mapperKey) {
         lock.lock();
         try {
             if (DomainEvent.class.isAssignableFrom(event.getClass())) {
-                List<EventListener> eventListeners = supportsSmartListener((DomainEvent) event);
+                List<DomainEventListener> eventListeners = supportsSmartListener(event);
                 if (eventListeners.isEmpty()) {
                      eventListeners = supportsUniversalListener(event);
                 }
@@ -149,8 +149,8 @@ public class EventBus implements Dispatcher, Startable {
     }
 
     @SuppressWarnings("unchecked")
-    private List<EventListener> supportsUniversalListener(final Event event) {
-        List<EventListener> eventListeners = this.fighterConfig.getEventListeners();
+    private List<DomainEventListener> supportsUniversalListener(final Event event) {
+        List<DomainEventListener> eventListeners = this.fighterConfig.getEventListeners();
 
         return eventListeners.stream().filter(o ->{
             List classes = CollectionUtils.arrayToList(o.getClass().getInterfaces());
@@ -168,9 +168,9 @@ public class EventBus implements Dispatcher, Startable {
     }
 
     private List<Handler> assembleEventHandlerMapping(HandlerMapping.HandlerMapperKey mapperKey,
-                                                                                     List<EventListener> listeners) {
+                                                                                     List<DomainEventListener> listeners) {
         List<Handler> handlers = Lists.newArrayList();
-        for (EventListener listener : listeners) {
+        for (DomainEventListener listener : listeners) {
             Handler handler = engine.assignDomainEventHandler();
             handler.registerEventListener(listener);
             handlers.add(handler);
@@ -185,8 +185,8 @@ public class EventBus implements Dispatcher, Startable {
      * @param event
      * @return
      */
-    private List<EventListener> supportsSmartListener(final DomainEvent event) {
-        List<EventListener> list = this.fighterConfig.getEventListeners();
+    private List<DomainEventListener> supportsSmartListener(final DomainEvent event) {
+        List<DomainEventListener> list = this.fighterConfig.getEventListeners();
 
         return list.stream().filter(o -> SmartDomainEventListener.class.isAssignableFrom(o.getClass()))
                 .map(o -> ((SmartDomainEventListener) o))
@@ -195,7 +195,7 @@ public class EventBus implements Dispatcher, Startable {
                 .collect(Collectors.toList());
     }
 
-    private List<Interceptor> findInterceptor(final Event event) {
+    private List<Interceptor> findInterceptor(final DomainEvent event) {
         List<Interceptor> interceptors = this.fighterConfig.getInterceptors();
         if (CollectionUtils.isEmpty(interceptors))
             return Collections.emptyList();

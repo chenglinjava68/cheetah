@@ -1,6 +1,5 @@
 package org.cheetah.fighter.core.handler;
 
-import org.cheetah.commons.logger.Warn;
 import org.cheetah.commons.utils.ObjectUtils;
 import org.cheetah.fighter.core.event.DomainEvent;
 import org.cheetah.fighter.core.event.DomainEventListener;
@@ -13,12 +12,12 @@ import java.util.EventListener;
  * Created by Max on 2016/2/14.
  */
 public abstract class AbstractHandler implements Handler {
-    private EventListener eventListener;
+    private DomainEventListener<DomainEvent> eventListener;
 
     public AbstractHandler() {
     }
 
-    public AbstractHandler(EventListener eventListener) {
+    public AbstractHandler(DomainEventListener<DomainEvent> eventListener) {
         this.eventListener = eventListener;
     }
 
@@ -40,7 +39,7 @@ public abstract class AbstractHandler implements Handler {
      */
     @Override
     public void onFailure(Command command, Throwable e) {
-        DomainEventListener<DomainEvent> listener = (DomainEventListener<DomainEvent>) getEventListener();
+        DomainEventListener<DomainEvent> listener = getEventListener();
         listener.onCancelled();
     }
 
@@ -50,7 +49,7 @@ public abstract class AbstractHandler implements Handler {
      */
     @Override
     public void onSuccess(Command command) {
-        DomainEventListener<DomainEvent> listener = (DomainEventListener<DomainEvent>) getEventListener();
+        DomainEventListener<? extends DomainEvent> listener = getEventListener();
         listener.onFinish();
     }
 
@@ -74,12 +73,12 @@ public abstract class AbstractHandler implements Handler {
     protected abstract boolean completeExecute(Event event);
 
     @Override
-    public void registerEventListener(EventListener eventListener) {
+    public void registerEventListener(DomainEventListener<DomainEvent> eventListener) {
         this.eventListener = eventListener;
     }
 
     @Override
-    public EventListener getEventListener() {
+    public DomainEventListener<DomainEvent> getEventListener() {
         return eventListener;
     }
 
