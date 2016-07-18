@@ -28,20 +28,24 @@ public class ForeseeableWorker extends AbstractWorker {
 
     /**
      * 根据接受到命令开始工作
+     *
      * @param command
      */
     @Override
     public void work(Command command) {
         try {
-            long start = System.currentTimeMillis();
-            CompletableFuture.supplyAsync(() ->
-                    doWork(command)
-                    , executor).whenComplete((r, e) -> {
+            CompletableFuture.supplyAsync(() -> {
+                long start = System.currentTimeMillis();
+                boolean s = doWork(command);
+                Loggers.me().debugEnabled(this.getClass(), "work消耗了{}毫秒", System.currentTimeMillis() - start);
+                return s;
+            }, executor).whenComplete((r, e) -> {
+                long start = System.currentTimeMillis();
                 if (Objects.nonNull(r) && r)
                     handler.onSuccess(command);
                 else handler.onFailure(command, e);
+                Loggers.me().debugEnabled(this.getClass(), "whenComplete消耗了{}毫秒", System.currentTimeMillis() - start);
             });
-            Loggers.me().debugEnabled(this.getClass(), "work消耗了{}毫秒", System.currentTimeMillis() - start);
         } catch (RejectedExecutionException e) {
             e.printStackTrace();
             Loggers.me().warn(getClass(), "task rejected execute.", e);
@@ -61,7 +65,7 @@ public class ForeseeableWorker extends AbstractWorker {
             HandlerInterceptorChain chain = createInterceptorChain();
             boolean result = chain.beforeHandle(command);
             if (result) {
-                success= handler.handle(command);
+                success = handler.handle(command);
                 chain.afterHandle(command);
             }
         } catch (Exception e) {

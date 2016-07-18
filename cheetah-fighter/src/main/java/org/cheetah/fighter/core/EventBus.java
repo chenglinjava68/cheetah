@@ -48,7 +48,6 @@ public class EventBus implements Dispatcher, Startable {
      */
     @Override
     public EventResult receive(final EventMessage eventMessage) {
-        System.out.println(System.currentTimeMillis());
         try {
             context().setEventMessage(eventMessage);
             Event event = eventMessage.event();
@@ -79,7 +78,6 @@ public class EventBus implements Dispatcher, Startable {
             Loggers.me().warn(this.getClass(), "Couldn't find the corresponding mapping.");
             throw new NoMapperException();
         } else {
-            System.out.println(System.currentTimeMillis());
             Governor governor = engine().assignGovernor();
             Feedback report = governor.initialize()
                     .accept(eventMessage)

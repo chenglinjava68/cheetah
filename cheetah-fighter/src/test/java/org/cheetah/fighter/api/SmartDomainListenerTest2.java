@@ -24,15 +24,10 @@ public class SmartDomainListenerTest2 implements SmartDomainEventListener {
 
     @Override
     public void onDomainEvent(DomainEvent event) {
-//            try {
-//                Thread.sleep(100000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
         double v = ArithUtils.round(Math.random() * 100, 0);
         long i = ArithUtils.convertsToLong(v);
-        System.out.println(System.currentTimeMillis());
         System.out.println("SmartDomainListenerTest2 -- " + atomicLong2.incrementAndGet());
+
     }
 
     @Override
