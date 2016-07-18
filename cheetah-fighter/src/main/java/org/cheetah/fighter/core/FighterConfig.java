@@ -17,7 +17,7 @@ public class FighterConfig {
     private List<Interceptor> interceptors;
     private List<EventListener> eventListeners;
     private int eventPerformerSize;
-    private int ringBufferSize;
+    private int queueLength;
     private int minThreads;
     private int maxThreads;
     private String policy;
@@ -69,11 +69,11 @@ public class FighterConfig {
     }
 
     public int ringBufferSize() {
-        return ringBufferSize;
+        return queueLength;
     }
 
-    public void setRingBufferSize(int ringBufferSize) {
-        this.ringBufferSize = ringBufferSize;
+    public void setQueueLength(int queueLength) {
+        this.queueLength = queueLength;
     }
 
     public String policy() {
