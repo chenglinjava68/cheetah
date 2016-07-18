@@ -20,13 +20,12 @@ import java.util.concurrent.atomic.AtomicReference;
  * Created by Max on 2016/3/2.
  */
 public class ForeseeableWorker extends AbstractWorker {
-    private final AtomicReference<Handler> handler;
+    private final Handler handler;
     private ExecutorService executor;
     private final List<Interceptor> interceptors;
-    static final AtomicLong atomicLong = new AtomicLong();
 
     public ForeseeableWorker(Handler handler, List<Interceptor> interceptors) {
-        this.handler = Atomics.newReference(handler);
+        this.handler = handler;
         this.interceptors = interceptors;
     }
 
@@ -37,7 +36,6 @@ public class ForeseeableWorker extends AbstractWorker {
      */
     @Override
     public void work(Command command) {
-//        System.out.println(atomicLong.incrementAndGet());
         try {
             CompletableFuture.supplyAsync(() -> {
                 long start = System.currentTimeMillis();
@@ -47,12 +45,12 @@ public class ForeseeableWorker extends AbstractWorker {
                 return s;
             }, executor).whenComplete((r, e) -> {
                 if (Objects.nonNull(r) && r)
-                    handler.get().onSuccess(command);
-                else handler.get().onFailure(command, e);
+                    handler.onSuccess(command);
+                else handler.onFailure(command, e);
             });
         } catch (RejectedExecutionException e) {
             Loggers.me().warn(getClass(), "task rejected execute.", e);
-            handler.get().onFailure(command, e);
+            handler.onFailure(command, e);
         }
     }
 
@@ -68,7 +66,7 @@ public class ForeseeableWorker extends AbstractWorker {
             HandlerInterceptorChain chain = createInterceptorChain();
             boolean result = chain.beforeHandle(command);
             if (result) {
-                success = handler.get().handle(command);
+                success = handler.handle(command);
                 chain.afterHandle(command);
             }
         } catch (Exception e) {
