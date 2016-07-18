@@ -1,7 +1,6 @@
 package org.cheetah.fighter.api;
 
 import org.cheetah.commons.utils.ArithUtils;
-import org.cheetah.domain.UUIDKeyEntity;
 import org.cheetah.fighter.core.event.DomainEvent;
 import org.cheetah.fighter.core.event.DomainEventListener;
 import org.cheetah.fighter.core.event.SmartDomainEventListener;
@@ -269,7 +268,7 @@ public class EventPublisherTest {
 
     }
 
-    public static class User extends UUIDKeyEntity {
+    public static class User {
 
         private static final long serialVersionUID = -2269393138381549806L;
         private String name;

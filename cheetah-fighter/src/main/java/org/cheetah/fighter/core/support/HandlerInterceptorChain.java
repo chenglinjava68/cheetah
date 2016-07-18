@@ -1,6 +1,6 @@
 package org.cheetah.fighter.core.support;
 
-import org.cheetah.commons.logger.Error;
+import org.cheetah.commons.logger.Err;
 import org.cheetah.commons.utils.CollectionUtils;
 import org.cheetah.fighter.core.Interceptor;
 import org.cheetah.fighter.core.worker.Command;
@@ -45,7 +45,7 @@ public class HandlerInterceptorChain implements Cloneable {
                 try {
                     $interceptors.get(i).afterCompletion(command, ex);
                 } catch (Exception e) {
-                    Error.log(this.getClass(), "InterceptorChain.afterCompletion threw exception");
+                    Err.log(this.getClass(), "InterceptorChain.afterCompletion threw exception");
                 }
             }
         }
