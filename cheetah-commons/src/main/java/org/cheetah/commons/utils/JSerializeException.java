@@ -1,5 +1,6 @@
 package org.cheetah.commons.utils;
 
+import org.cheetah.commons.ExceptionMapping;
 import org.cheetah.commons.PlatformException;
 
 /**
@@ -8,23 +9,23 @@ import org.cheetah.commons.PlatformException;
 public class JSerializeException extends PlatformException {
     private static final long serialVersionUID = 2336359841576111685L;
 
-    public JSerializeException() {
-        super("");
+    public JSerializeException(int errorCode) {
+        super(errorCode);
     }
 
-    public JSerializeException(String message) {
-        super(message);
+    public JSerializeException(int errorCode, String message) {
+        super(errorCode, message);
     }
 
-    public JSerializeException(Throwable cause) {
-        super("", cause);
+    public JSerializeException(int errorCode, String message, Throwable cause) {
+        super(errorCode, message, cause);
     }
 
-    public JSerializeException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public JSerializeException(ExceptionMapping mapper) {
+        super(mapper);
     }
 
-    public JSerializeException(String message, Throwable cause) {
-        super(message, cause);
+    public JSerializeException(ExceptionMapping mapper, Throwable cause) {
+        super(mapper, cause);
     }
 }

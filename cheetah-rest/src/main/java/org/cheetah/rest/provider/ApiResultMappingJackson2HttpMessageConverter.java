@@ -1,23 +1,22 @@
-package org.cheetah.commons.httpclient.serializer;
+package org.cheetah.rest.provider;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.cheetah.commons.httpclient.EntitySerializer;
-import org.cheetah.commons.httpclient.HttpClientException;
+import org.cheetah.rest.ApiResult;
+import org.springframework.http.HttpOutputMessage;
+import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
 import java.io.IOException;
 
 /**
- * jackson序列化实现
- *
- * Created by Max on 2016/7/6.
-*/
-public class Jackson2JsonSerializer implements EntitySerializer {
+ * Created by Max on 2016/7/20.
+ */
+public class ApiResultMappingJackson2HttpMessageConverter extends MappingJackson2HttpMessageConverter {
     private final static ObjectMapper objectMapper;
 
     static {
@@ -29,21 +28,15 @@ public class Jackson2JsonSerializer implements EntitySerializer {
         objectMapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
     }
 
-    @Override
-    public String serialize(Object entity) {
-        try {
-            return objectMapper.writeValueAsString(entity);
-        } catch (JsonProcessingException e) {
-            throw new HttpClientException("jackson2JsonSerializer serialize failed.", e);
-        }
+    public ApiResultMappingJackson2HttpMessageConverter() {
+        super(objectMapper);
     }
 
     @Override
-    public <T> T deserialize(String representation, Class<T> entity) {
-        try {
-            return objectMapper.readValue(representation, entity);
-        } catch (IOException e) {
-            throw new HttpClientException("jackson2JsonSerializer deserialize failed.", e);
-        }
+    protected void writeInternal(Object object, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
+        if (object instanceof ApiResult)
+            super.writeInternal(object, outputMessage);
+        else
+            super.writeInternal(ApiResult.ok().result(object), outputMessage);
     }
 }

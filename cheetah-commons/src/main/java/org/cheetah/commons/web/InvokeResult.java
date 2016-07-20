@@ -77,7 +77,7 @@ public class InvokeResult<T> {
     }
 
     public static <T> InvokeResult<T> failure(PlatformException e) {
-        return new InvokeResult<T>(e.getErrorCode(), e.getMessage());
+        return new InvokeResult<T>(String.valueOf(e.getErrorCode()), e.getMessage());
     }
 
     public static InvokeResult<Void> voidResult() {
