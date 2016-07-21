@@ -1,7 +1,7 @@
 package org.cheetah.fighter.mapping;
 
-import org.cheetah.fighter.core.HandlerMapping;
-import org.cheetah.fighter.core.handler.Handler;
+import org.cheetah.fighter.HandlerMapping;
+import org.cheetah.fighter.handler.Handler;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

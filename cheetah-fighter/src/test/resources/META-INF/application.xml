@@ -20,9 +20,9 @@ http://www.springframework.org/schema/aop
 
     <bean id="beanFactoryProvider" class="org.cheetah.ioc.spring.SpringBeanFactoryProvider"/>
 
-    <bean id="eventBus" class="org.cheetah.fighter.core.EventBus" init-method="start" destroy-method="stop">
+    <bean id="eventBus" class="org.cheetah.fighter.EventBus" init-method="start" destroy-method="stop">
         <property name="fighterConfig">
-            <bean class="org.cheetah.fighter.core.FighterConfig">
+            <bean class="org.cheetah.fighter.FighterConfig">
                 <property name="eventListeners">
                     <list>
                         <bean class="org.cheetah.fighter.api.SmartDomainListenerTest"/>
@@ -34,7 +34,7 @@ http://www.springframework.org/schema/aop
                 <property name="interceptors">
                     <bean class="org.cheetah.fighter.api.HelloWorldInterceptor"/>
                 </property>
-                <property name="policy" value="future"/>
+                <!--<property name="engine" value="future"/>-->
                 <property name="queueLength" value="1024"/>
 
             </bean>

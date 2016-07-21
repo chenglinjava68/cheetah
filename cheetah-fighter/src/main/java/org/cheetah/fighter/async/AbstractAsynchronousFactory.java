@@ -1,7 +1,7 @@
 package org.cheetah.fighter.async;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import org.cheetah.fighter.core.worker.WorkerFactory;
+import org.cheetah.fighter.worker.WorkerFactory;
 
 import java.util.concurrent.*;
 

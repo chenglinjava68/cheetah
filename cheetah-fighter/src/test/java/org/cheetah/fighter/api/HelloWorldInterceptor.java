@@ -1,8 +1,8 @@
 package org.cheetah.fighter.api;
 
-import org.cheetah.fighter.core.Interceptor;
-import org.cheetah.fighter.core.event.Event;
-import org.cheetah.fighter.core.worker.Command;
+import org.cheetah.fighter.Interceptor;
+import org.cheetah.fighter.Event;
+import org.cheetah.fighter.worker.Command;
 
 /**
  * Created by Max on 2016/3/8.

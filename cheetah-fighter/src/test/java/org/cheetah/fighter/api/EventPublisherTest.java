@@ -1,10 +1,10 @@
 package org.cheetah.fighter.api;
 
 import com.google.common.collect.Lists;
-import org.cheetah.fighter.core.event.DomainEvent;
-import org.cheetah.fighter.core.worker.Command;
-import org.cheetah.fighter.handler.DomainEventHandler;
-import org.cheetah.fighter.worker.ForeseeableWorker;
+import org.cheetah.fighter.DomainEvent;
+import org.cheetah.fighter.worker.Command;
+import org.cheetah.fighter.handler.support.DomainEventHandler;
+import org.cheetah.fighter.worker.support.ForeseeableWorker;
 import org.cheetah.ioc.BeanFactory;
 import org.cheetah.ioc.spring.SpringBeanFactoryProvider;
 import org.junit.Before;
@@ -55,9 +55,7 @@ public class EventPublisherTest {
                 }
             });
             threads[i].start();
-        }
-        for (Thread thread : threads) {
-            thread.join();
+            threads[i].join();
         }
     }
 
@@ -66,6 +64,12 @@ public class EventPublisherTest {
     public void launch2() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         FighterContext.publish(
+                new DomainEventTest2(new User("hzf"))
+        ); FighterContext.publish(
+                new DomainEventTest2(new User("hzf"))
+        ); FighterContext.publish(
+                new DomainEventTest2(new User("hzf"))
+        ); FighterContext.publish(
                 new DomainEventTest2(new User("hzf"))
         );
 

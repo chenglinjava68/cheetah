@@ -2,12 +2,11 @@ package org.cheetah.fighter.async.future;
 
 import org.cheetah.fighter.async.AsynchronousFactory;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
-import org.cheetah.fighter.core.EventContext;
-import org.cheetah.fighter.core.NoMapperException;
-import org.cheetah.fighter.core.HandlerMapping;
-import org.cheetah.fighter.worker.ForeseeableWorker;
+import org.cheetah.fighter.EventContext;
+import org.cheetah.fighter.NoMapperException;
+import org.cheetah.fighter.HandlerMapping;
+import org.cheetah.fighter.worker.support.ForeseeableWorker;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;

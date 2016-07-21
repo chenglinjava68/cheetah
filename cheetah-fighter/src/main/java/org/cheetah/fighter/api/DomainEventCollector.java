@@ -1,10 +1,9 @@
 package org.cheetah.fighter.api;
 
-import org.cheetah.fighter.core.EventMessage;
-import org.cheetah.fighter.core.EventBus;
-import org.cheetah.fighter.core.event.AbstractCollector;
-import org.cheetah.fighter.core.event.DomainEvent;
-import org.cheetah.fighter.core.event.Event;
+import org.cheetah.fighter.EventMessage;
+import org.cheetah.fighter.EventBus;
+import org.cheetah.fighter.AbstractCollector;
+import org.cheetah.fighter.DomainEvent;
 
 /**
  * Created by Max on 2016/2/3.
