@@ -15,16 +15,16 @@ import java.util.concurrent.ConcurrentMap;
  */
 public final class Loggers {
 
-    private static final Loggers ME = new Loggers();
+    private static final Loggers logger = new Loggers();
     private final ConcurrentMap<Object, Logger> loggers = new ConcurrentHashMap<>();
 
     /**
-     * <p>me.</p>
+     * <p>logger.</p>
      *
      * @return a {@link Loggers} object.
      */
-    public static Loggers me() {
-        return ME;
+    public static Loggers logger() {
+        return logger;
     }
 
     /**
@@ -35,7 +35,7 @@ public final class Loggers {
      * @param e    a {@link Throwable} object.
      */
     public void debug(Class<?> type, String msg, Throwable e) {
-        of(type).debug(msg, e);
+        getLogger(type).debug(msg, e);
     }
 
     /**
@@ -45,7 +45,7 @@ public final class Loggers {
      * @param e
      */
     public void debug(String moduleName, String msg, Throwable e) {
-        of(moduleName).debug(msg, e);
+        getLogger(moduleName).debug(msg, e);
     }
 
     /**
@@ -56,7 +56,7 @@ public final class Loggers {
      * @param objs a {@link Object} object.
      */
     public void debug(Class<?> type, String msg, Object... objs) {
-        of(type).debug(msg, objs);
+        getLogger(type).debug(msg, objs);
     }
 
     /**
@@ -66,7 +66,7 @@ public final class Loggers {
      * @param objs
      */
     public void debug(String moduleName, String msg, Object... objs) {
-        of(moduleName).debug(msg, objs);
+        getLogger(moduleName).debug(msg, objs);
     }
 
     /**
@@ -75,13 +75,13 @@ public final class Loggers {
      * @param e
      */
     public void debugEnabled(Class<?> type, String msg, Throwable e) {
-        Logger log = of(type);
+        Logger log = getLogger(type);
         if (log.isDebugEnabled())
             log.debug(msg, e);
     }
 
     public void debugEnabled(String moduleName, String msg, Throwable e) {
-        Logger log = of(moduleName);
+        Logger log = getLogger(moduleName);
         if (log.isDebugEnabled())
             log.debug(msg, e);
     }
@@ -92,7 +92,7 @@ public final class Loggers {
      * @param objs
      */
     public void debugEnabled(Class<?> type, String msg, Object... objs) {
-        Logger log = of(type);
+        Logger log = getLogger(type);
         if (log.isDebugEnabled())
             log.debug(msg, objs);
     }
@@ -104,7 +104,7 @@ public final class Loggers {
      * @param objs
      */
     public void debugEnabled(String moduleName, String msg, Object... objs) {
-        Logger log = of(moduleName);
+        Logger log = getLogger(moduleName);
         if (log.isDebugEnabled())
             log.debug(msg, objs);
     }
@@ -113,7 +113,7 @@ public final class Loggers {
      * @param type
      */
     public boolean isDebugEnabled(Class<?> type) {
-        Logger log = of(type);
+        Logger log = getLogger(type);
         return log.isDebugEnabled();
     }
 
@@ -121,7 +121,7 @@ public final class Loggers {
      * @param moduleName
      */
     public boolean isDebugEnabled(String moduleName) {
-        Logger log = of(moduleName);
+        Logger log = getLogger(moduleName);
         return log.isDebugEnabled();
     }
 
@@ -134,11 +134,11 @@ public final class Loggers {
      * @param e    a {@link Throwable} object.
      */
     public void info(Class<?> type, String msg, Throwable e) {
-        of(type).info(msg, e);
+        getLogger(type).info(msg, e);
     }
 
     public void info(String moduleName, String msg, Throwable e) {
-        of(moduleName).info(msg, e);
+        getLogger(moduleName).info(msg, e);
     }
 
     /**
@@ -149,11 +149,11 @@ public final class Loggers {
      * @param objs a {@link Object} object.
      */
     public void info(Class<?> type, String msg, Object... objs) {
-        of(type).info(msg, objs);
+        getLogger(type).info(msg, objs);
     }
 
     public void info(String moduleName, String msg, Object... objs) {
-        of(moduleName).info(msg, objs);
+        getLogger(moduleName).info(msg, objs);
     }
 
     /**
@@ -163,7 +163,7 @@ public final class Loggers {
      * @param e
      */
     public void infoEnabled(Class<?> type, String msg, Throwable e) {
-        Logger log = of(type);
+        Logger log = getLogger(type);
         if (log.isInfoEnabled())
             log.info(msg, e);
     }
@@ -175,7 +175,7 @@ public final class Loggers {
      * @param e
      */
     public void infoEnabled(String moduleName, String msg, Throwable e) {
-        Logger log = of(moduleName);
+        Logger log = getLogger(moduleName);
         if (log.isInfoEnabled())
             log.info(msg, e);
     }
@@ -187,7 +187,7 @@ public final class Loggers {
      * @param objs
      */
     public void infoEnabled(Class<?> type, String msg, Object... objs) {
-        Logger log = of(type);
+        Logger log = getLogger(type);
         if (log.isInfoEnabled())
             log.info(msg, objs);
 
@@ -200,7 +200,7 @@ public final class Loggers {
      * @param objs
      */
     public void infoEnabled(String moduleName, String msg, Object... objs) {
-        Logger log = of(moduleName);
+        Logger log = getLogger(moduleName);
         if (log.isInfoEnabled())
             log.info(msg, objs);
     }
@@ -211,7 +211,7 @@ public final class Loggers {
      * @return
      */
     public boolean isInfoEnabled(Class<?> type) {
-        Logger log = of(type);
+        Logger log = getLogger(type);
         return log.isInfoEnabled();
     }
 
@@ -221,7 +221,7 @@ public final class Loggers {
      * @return
      */
     public boolean isInfoEnabled(String moduleName) {
-        Logger log = of(moduleName);
+        Logger log = getLogger(moduleName);
         return log.isInfoEnabled();
     }
 
@@ -233,11 +233,11 @@ public final class Loggers {
      * @param e    a {@link Throwable} object.
      */
     public void warn(Class<?> type, String msg, Throwable e) {
-        of(type).warn(msg, e);
+        getLogger(type).warn(msg, e);
     }
 
     public void warn(String moduleName, String msg, Throwable e) {
-        of(moduleName).warn(msg, e);
+        getLogger(moduleName).warn(msg, e);
     }
 
     /**
@@ -248,7 +248,7 @@ public final class Loggers {
      * @param objs a {@link Object} object.
      */
     public void warn(Class<?> type, String msg, Object... objs) {
-        of(type).warn(msg, objs);
+        getLogger(type).warn(msg, objs);
     }
 
     /**
@@ -258,7 +258,7 @@ public final class Loggers {
      * @param objs
      */
     public void warn(String moduleName, String msg, Object... objs) {
-        of(moduleName).warn(msg, objs);
+        getLogger(moduleName).warn(msg, objs);
     }
 
     /**
@@ -268,7 +268,7 @@ public final class Loggers {
      * @param e
      */
     public void warnEnabled(Class<?> type, String msg, Throwable e) {
-        Logger log = of(type);
+        Logger log = getLogger(type);
         if (log.isWarnEnabled())
             log.warn(msg, e);
 
@@ -281,7 +281,7 @@ public final class Loggers {
      * @param e
      */
     public void warnEnabled(String moduleName, String msg, Throwable e) {
-        Logger log = of(moduleName);
+        Logger log = getLogger(moduleName);
         if (log.isWarnEnabled())
             log.warn(msg, e);
     }
@@ -293,7 +293,7 @@ public final class Loggers {
      * @param objs
      */
     public void warnEnabled(Class<?> type, String msg, Object... objs) {
-        Logger log = of(type);
+        Logger log = getLogger(type);
         if (log.isWarnEnabled())
             log.warn(msg, objs);
     }
@@ -305,7 +305,7 @@ public final class Loggers {
      * @param objs
      */
     public void warnEnabled(String moduleName, String msg, Object... objs) {
-        Logger log = of(moduleName);
+        Logger log = getLogger(moduleName);
         if (log.isWarnEnabled())
             log.warn(msg, objs);
     }
@@ -316,7 +316,7 @@ public final class Loggers {
      * @return
      */
     public boolean isWarnEnabled(Class<?> type) {
-        Logger log = of(type);
+        Logger log = getLogger(type);
         return log.isWarnEnabled();
     }
 
@@ -326,7 +326,7 @@ public final class Loggers {
      * @return
      */
     public boolean isWarnEnabled(String moduleName) {
-        Logger log = of(moduleName);
+        Logger log = getLogger(moduleName);
         return log.isWarnEnabled();
     }
     /**
@@ -337,11 +337,11 @@ public final class Loggers {
      * @param e    a {@link Throwable} object.
      */
     public void error(Class<?> type, String msg, Throwable e) {
-        of(type).error(msg, e);
+        getLogger(type).error(msg, e);
     }
 
     public void error(String moduleName, String msg, Throwable e) {
-        of(moduleName).error(msg, e);
+        getLogger(moduleName).error(msg, e);
     }
 
     /**
@@ -352,7 +352,7 @@ public final class Loggers {
      * @param objs a {@link Object} object.
      */
     public void error(Class<?> type, String msg, Object... objs) {
-        of(type).error(msg, objs);
+        getLogger(type).error(msg, objs);
     }
 
     /**
@@ -362,7 +362,7 @@ public final class Loggers {
      * @param objs
      */
     public void error(String moduleName, String msg, Object... objs) {
-        of(moduleName).error(msg, objs);
+        getLogger(moduleName).error(msg, objs);
     }
 
     /**
@@ -372,7 +372,7 @@ public final class Loggers {
      * @param e
      */
     public void errorEnabled(Class<?> type, String msg, Throwable e) {
-        Logger log = of(type);
+        Logger log = getLogger(type);
         if (log.isErrorEnabled())
             log.error(msg, e);
 
@@ -385,7 +385,7 @@ public final class Loggers {
      * @param e
      */
     public void errorEnabled(String moduleName, String msg, Throwable e) {
-        Logger log = of(moduleName);
+        Logger log = getLogger(moduleName);
         if (log.isErrorEnabled())
             log.error(msg, e);
     }
@@ -397,7 +397,7 @@ public final class Loggers {
      * @param objs
      */
     public void errorEnabled(Class<?> type, String msg, Object... objs) {
-        Logger log = of(type);
+        Logger log = getLogger(type);
         if (log.isErrorEnabled())
             log.error(msg, objs);
 
@@ -410,7 +410,7 @@ public final class Loggers {
      * @param objs
      */
     public void errorEnabled(String moduleName, String msg, Object... objs) {
-        Logger log = of(moduleName);
+        Logger log = getLogger(moduleName);
         if (log.isErrorEnabled())
             log.error(msg, objs);
     }
@@ -421,7 +421,7 @@ public final class Loggers {
      * @return
      */
     public boolean isErrorEnabled(Class<?> type) {
-        Logger log = of(type);
+        Logger log = getLogger(type);
         return log.isErrorEnabled();
     }
 
@@ -431,7 +431,7 @@ public final class Loggers {
      * @return
      */
     public boolean isErrorEnabled(String moduleName) {
-        Logger log = of(moduleName);
+        Logger log = getLogger(moduleName);
         return log.isErrorEnabled();
     }
 
@@ -440,7 +440,7 @@ public final class Loggers {
      * @param type
      * @return
      */
-    public Logger of(Class<?> type) {
+    public Logger getLogger(Class<?> type) {
         Objects.requireNonNull(type, "type must not be null.");
         if (null == loggers.get(type)) {
             loggers.putIfAbsent(type, LoggerFactory.getLogger(type));
@@ -454,7 +454,7 @@ public final class Loggers {
      * @param moduleName
      * @return
      */
-    public Logger of(String moduleName) {
+    public Logger getLogger(String moduleName) {
         Objects.requireNonNull(moduleName, "type must not be null.");
         if (null == loggers.get(moduleName)) {
             loggers.putIfAbsent(moduleName, LoggerFactory.getLogger(moduleName));

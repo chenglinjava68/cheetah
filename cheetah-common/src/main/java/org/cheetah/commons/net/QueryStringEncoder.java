@@ -103,11 +103,11 @@ public class QueryStringEncoder {
     }
 
     private static String encodeComponent(String s, Charset charset) {
-        // TODO: Optimize me.
+        // TODO: Optimize logger.
         try {
             return URLEncoder.encode(s, charset.name()).replace("+", "%20");
         } catch (UnsupportedEncodingException e) {
-            Loggers.me().warn(QueryStringEncoder.class, "encode component occurs error.", e);
+            Loggers.logger().warn(QueryStringEncoder.class, "encode component occurs error.", e);
             throw new UnsupportedCharsetException(charset.name());
         }
     }

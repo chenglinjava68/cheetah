@@ -102,7 +102,7 @@ public class ExcelTranslator {
             fis = new FileInputStream(srcPath);
             return readProcessor.read(fis, clz, sheetIndex, readLine, tailLine);
         } catch (FileNotFoundException e) {
-            Loggers.me().error(this.getClass(), "excel文件找不到！", e);
+            Loggers.logger().error(this.getClass(), "excel文件找不到！", e);
             throw new ExcelException("excel文件找不到！");
         } finally {
             try {
@@ -127,7 +127,7 @@ public class ExcelTranslator {
             try {
                 processor = new TemplateExcelProcessor<>(assembly.templateStream(), assembly.placeholder());
             } catch (Exception e) {
-                Loggers.me().error(this.getClass(), "数据转为excel文件流失败！", e);
+                Loggers.logger().error(this.getClass(), "数据转为excel文件流失败！", e);
                 throw new ExcelException("excel导出异常", e);
             }
         } else
