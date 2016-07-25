@@ -1,5 +1,6 @@
 package org.cheetah.fighter.engine.support;
 
+import org.cheetah.commons.utils.StringUtils;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.async.disruptor.DisruptorFactory;
 import org.cheetah.fighter.async.disruptor.DisruptorPoolFactory;
@@ -49,6 +50,8 @@ public class DisruptorEngineBuilder implements EngineBuilder {
         }
         if(fighterConfig.getRingBuffer() > 0)
             disruptorFactory.setRingbufferSize(fighterConfig.getRingBuffer());
+        if(StringUtils.isNotBlank(fighterConfig.getRejectionPolicy()))
+            disruptorFactory.setRejectionPolicy(fighterConfig.getRejectionPolicy());
         disruptorFactory.setWorkerFactory(new DisruptorWorkerFactory());
         DisruptorPoolFactory poolFactory = new DisruptorPoolFactory();
         poolFactory.setAsynchronousFactory(disruptorFactory);

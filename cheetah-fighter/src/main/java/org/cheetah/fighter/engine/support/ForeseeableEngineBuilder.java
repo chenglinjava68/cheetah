@@ -1,5 +1,6 @@
 package org.cheetah.fighter.engine.support;
 
+import org.cheetah.commons.utils.StringUtils;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.async.future.AsyncForeseeableWorkerFactory;
 import org.cheetah.fighter.async.future.ForeseeableWorkerPoolFactory;
@@ -48,6 +49,8 @@ public class ForeseeableEngineBuilder implements EngineBuilder {
             foreseeableWorkerFactory.setMinThreads(fighterConfig.getMinThreads());
             foreseeableWorkerFactory.setMaxThreads(fighterConfig.getMaxThreads());
         }
+        if(StringUtils.isNotBlank(fighterConfig.getRejectionPolicy()))
+            foreseeableWorkerFactory.setRejectionPolicy(fighterConfig.getRejectionPolicy());
         foreseeableWorkerFactory.setWorkerFactory(new ForeseeableWorkerFactory());
         ForeseeableWorkerPoolFactory factory = new ForeseeableWorkerPoolFactory();
         factory.setAsynchronousFactory(foreseeableWorkerFactory);

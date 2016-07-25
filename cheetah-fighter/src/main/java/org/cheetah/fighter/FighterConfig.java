@@ -21,6 +21,7 @@ public class FighterConfig {
     private int minThreads;
     private int maxThreads;
     private String engine;
+    private String rejectionPolicy;
 
     public FighterConfig() {
         this.plugins = Collections.emptyList();
@@ -106,5 +107,13 @@ public class FighterConfig {
 
     public void setMaxThreads(int maxThreads) {
         this.maxThreads = maxThreads;
+    }
+
+    public String getRejectionPolicy() {
+        return rejectionPolicy;
+    }
+
+    public void setRejectionPolicy(String rejectionPolicy) {
+        this.rejectionPolicy = rejectionPolicy;
     }
 }

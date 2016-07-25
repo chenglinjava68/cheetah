@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.cheetah.fighter.worker.WorkerFactory;
 
 import java.util.concurrent.*;
+import java.util.concurrent.ThreadPoolExecutor.AbortPolicy;
 
 /**
  * Created by Max on 2016/5/3.
@@ -12,6 +13,7 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
     private int minThreads = Runtime.getRuntime().availableProcessors() * 2 + 16;
     private int maxThreads = Runtime.getRuntime().availableProcessors() * 2 + 16;
     private int queueLength = 100000;
+    private RejectedExecutionHandler rejectedExecutionHandler = new AbortPolicy();
     private ExecutorService executorService;
     private WorkerFactory workerFactory;
 
@@ -51,7 +53,7 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
         if(this.executorService == null)
             executorService =  new ThreadPoolExecutor(minThreads, maxThreads,
                     3000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(queueLength),
-                    new ThreadFactoryBuilder().setNameFormat("Cheetah-Fighter-%d").build());
+                    new ThreadFactoryBuilder().setNameFormat("Cheetah-Fighter-%d").build(), rejectedExecutionHandler);
         return executorService;
     }
 
@@ -73,5 +75,21 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
 
     public WorkerFactory getWorkerFactory() {
         return workerFactory;
+    }
+
+    public void setRejectionPolicy(String rejectionPolicy) {
+        switch (rejectionPolicy) {
+            case "CALLER_RUNS":
+                this.rejectedExecutionHandler = new ThreadPoolExecutor.CallerRunsPolicy();
+                break;
+            case "DISCARD_OLDEST":
+                this.rejectedExecutionHandler = new ThreadPoolExecutor.DiscardOldestPolicy();
+                break;
+            case "DISCARD":
+                this.rejectedExecutionHandler = new ThreadPoolExecutor.DiscardPolicy();
+                break;
+            default:
+                this.rejectedExecutionHandler = new AbortPolicy();
+        }
     }
 }
