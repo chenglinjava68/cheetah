@@ -76,19 +76,6 @@ public class EventBus implements Dispatcher, Startable {
                 Loggers.me().warn(this.getClass(), "Couldn't find the corresponding mapping.");
                 throw new NoMapperException();
             }
-
-            if(this.engineStrategy.equals(EngineStrategy.DISRUPTOR)){
-                DisruptorWorker[] workers = new DisruptorWorker[handlers.size()];
-                for (int i = 0; i < handlers.size(); i++) {
-                    DisruptorWorker worker = (DisruptorWorker) engine.getWorkerFactory().createWorker();
-                    worker.setHandler(handlers.get(i));
-                    worker.setInterceptors(interceptors);
-                    workers[i] = worker;
-                }
-                ((Disruptor<DisruptorEvent>) engine.getAsynchronous()).handleEventsWith(workers);
-                ((Disruptor<DisruptorEvent>) engine.getAsynchronous()).start();
-            }
-
             context.setHandlers(handlers);
             return dispatch();
         } finally {
