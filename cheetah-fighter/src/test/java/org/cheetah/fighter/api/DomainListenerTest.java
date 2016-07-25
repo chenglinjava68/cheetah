@@ -31,12 +31,12 @@ public class DomainListenerTest implements DomainEventListener {
     }
 
     @Override
-    public void onFinish() {
+    public void onFinish(DomainEvent domainEvent) {
 
     }
 
     @Override
-    public void onCancelled() {
+    public void onCancelled(DomainEvent domainEvent, Throwable e) {
 
     }
 

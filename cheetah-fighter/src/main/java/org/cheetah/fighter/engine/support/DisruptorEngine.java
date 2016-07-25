@@ -1,23 +1,17 @@
 package org.cheetah.fighter.engine.support;
 
-import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import org.cheetah.fighter.async.disruptor.DisruptorEvent;
 import org.cheetah.fighter.engine.AbstractEngine;
-import org.cheetah.fighter.governor.Governor;
-import org.cheetah.fighter.governor.support.DisruptorGovernor;
-import org.cheetah.fighter.governor.support.DisruptorGovernorAdapter;
-
-import java.util.Objects;
 
 /**
  * Created by Max on 2016/2/29.
  */
-public class DisruptorEngine extends AbstractEngine<RingBuffer> {
+public class DisruptorEngine extends AbstractEngine<Disruptor<DisruptorEvent>> {
 
     @Override
-    public RingBuffer getAsynchronous() {
-        return ((Disruptor<DisruptorEvent>)asynchronousPoolFactory().getAsynchronous()).getRingBuffer();
+    public Disruptor<DisruptorEvent> getAsynchronous() {
+        return (Disruptor<DisruptorEvent>) asynchronousPoolFactory().getAsynchronous();
     }
 
     /*@Override
@@ -27,7 +21,7 @@ public class DisruptorEngine extends AbstractEngine<RingBuffer> {
             governor = new DisruptorGovernorAdapter((DisruptorGovernor) governor, pluginChain());
             ((DisruptorGovernorAdapter) governor)
                     .setRingBuffer(((Disruptor<DisruptorEvent>) asynchronousPoolFactory().getAsynchronous()).getRingBuffer());
-            governor.registerHandlerSquad(context().handlers());
+            governor.registerHandlerSquad(context().getHandlers());
             setGovernor(governor);
             return governor;
         } else {

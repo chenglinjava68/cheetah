@@ -40,7 +40,7 @@ public class DisruptorFactory extends AbstractAsynchronousFactory<Disruptor<Disr
 
         DisruptorWorker[] workers = new DisruptorWorker[handlers.size()];
         for (int i = 0; i < handlers.size(); i++) {
-            DisruptorWorker worker = (DisruptorWorker) getWorkerFactory().createWorker(handlers.get(i), interceptors);
+            DisruptorWorker worker = (DisruptorWorker) getWorkerFactory().createWorker();
             workers[i] = worker;
         }
 

@@ -1,10 +1,10 @@
 package org.cheetah.fighter.async.future;
 
+import org.cheetah.fighter.EventBus;
 import org.cheetah.fighter.async.AsynchronousFactory;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.EventContext;
 import org.cheetah.fighter.NoMapperException;
-import org.cheetah.fighter.HandlerMapping;
 import org.cheetah.fighter.worker.support.ForeseeableWorker;
 
 import java.util.Map;
@@ -16,32 +16,32 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ForeseeableWorkerPoolFactory implements AsynchronousPoolFactory<ForeseeableWorker[]> {
     private AsynchronousFactory<ForeseeableWorker[]> asynchronousFactory;
-    private final Map<HandlerMapping.HandlerMapperKey, ForeseeableWorker[]> workerPool;
-    private EventContext context;
+    private final Map<EventBus.HandlerMapperKey, ForeseeableWorker[]> workerPool;
+    protected EventContext context;
 
     public ForeseeableWorkerPoolFactory() {
         this.workerPool = new ConcurrentHashMap<>();
     }
 
     public ForeseeableWorker[] createWorkerTeam() {
-        ForeseeableWorker[] workers = this.workerPool.get(HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event()));
+        ForeseeableWorker[] workers = this.workerPool.get(EventBus.HandlerMapperKey.generate(context.getEventMessage().event()));
         if(Objects.nonNull(workers))
             return workers;
-        return  this.asynchronousFactory.createAsynchronous(context.eventMessage().event().getClass().getName(),
-                context.handlers(), context.interceptors());
+        return  this.asynchronousFactory.createAsynchronous(context.getEventMessage().event().getClass().getName(),
+                context.getHandlers(), context.getInterceptors());
     }
 
     @Override
     public ForeseeableWorker[] getAsynchronous() {
-        ForeseeableWorker[] workers = this.workerPool.get(HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event()));
+        ForeseeableWorker[] workers = this.workerPool.get(EventBus.HandlerMapperKey.generate(context.getEventMessage().event()));
         if (Objects.nonNull(workers)) {
             return workers;
         } else {
             synchronized (this) {
-                if(context.handlers().isEmpty())
+                if(context.getHandlers().isEmpty())
                     throw new NoMapperException();
                 workers = createWorkerTeam();
-                HandlerMapping.HandlerMapperKey key = HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event());
+                EventBus.HandlerMapperKey key = EventBus.HandlerMapperKey.generate(context.getEventMessage().event());
                 this.workerPool.putIfAbsent(key, workers);
                 return workers;
             }

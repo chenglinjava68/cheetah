@@ -1,6 +1,5 @@
 package org.cheetah.fighter.async.future;
 
-import org.cheetah.fighter.FighterException;
 import org.cheetah.fighter.async.AbstractAsynchronousFactory;
 import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.handler.Handler;
@@ -18,12 +17,7 @@ public class AsyncForeseeableWorkerFactory extends AbstractAsynchronousFactory<F
                                                 List<Interceptor> interceptors) {
         ForeseeableWorker[] workers = new ForeseeableWorker[handlers.size()];
         for (int i = 0; i < handlers.size(); i++) {
-            ForeseeableWorker worker;
-            try {
-                worker = (ForeseeableWorker) getWorkerFactory().createWorker(handlers.get(i).kagebunsin(), interceptors);
-            } catch (CloneNotSupportedException e) {
-                throw new FighterException(e);
-            }
+            ForeseeableWorker worker = (ForeseeableWorker) getWorkerFactory().createWorker();
             worker.setExecutor(executorService());
             workers[i] = worker;
         }

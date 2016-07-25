@@ -22,6 +22,7 @@ public class DisruptorEngineDirector implements EngineDirector {
         engine.setHandlerFactory(builder.buildHandlerFactory());
         engine.setGovernorFactory(builder.buildGovernorFactory());
         engine.setMapping(builder.buildMapping());
+        engine.setWorkerFactory(builder.buildWorkerFactory());
         engine.setAsynchronousPoolFactory(builder.buildAsynchronousPoolFactory(configuration));
         return engine;
     }

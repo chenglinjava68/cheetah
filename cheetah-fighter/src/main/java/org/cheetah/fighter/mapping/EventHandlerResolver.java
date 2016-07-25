@@ -27,7 +27,7 @@ public class EventHandlerResolver {
         this.fighterConfig = fighterConfig;
     }
 
-    public List<Handler> getHandlers(final DomainEvent event, final HandlerMapping.HandlerMapperKey mapperKey) {
+    public List<Handler> getHandlers(final DomainEvent event, final EventBus.HandlerMapperKey mapperKey) {
         return resolve(event, mapperKey);
     }
 
@@ -36,7 +36,7 @@ public class EventHandlerResolver {
      *
      * @param event
      */
-    private List<Handler> resolve(final DomainEvent event, final HandlerMapping.HandlerMapperKey mapperKey) {
+    private List<Handler> resolve(final DomainEvent event, final EventBus.HandlerMapperKey mapperKey) {
         lock.lock();
         try {
             if (DomainEvent.class.isAssignableFrom(event.getClass())) {
@@ -71,7 +71,7 @@ public class EventHandlerResolver {
         }).collect(Collectors.toList());
     }
 
-    private List<Handler> assembleEventHandlerMapping(HandlerMapping.HandlerMapperKey mapperKey,
+    private List<Handler> assembleEventHandlerMapping(EventBus.HandlerMapperKey mapperKey,
                                                       List<DomainEventListener> listeners) {
         List<Handler> handlers = Lists.newArrayList();
         for (DomainEventListener listener : listeners) {

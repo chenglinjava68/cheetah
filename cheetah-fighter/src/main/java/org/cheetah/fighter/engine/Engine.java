@@ -9,6 +9,8 @@ import org.cheetah.fighter.governor.GovernorFactory;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.handler.HandlerFactory;
 import org.cheetah.fighter.plugin.PluginChain;
+import org.cheetah.fighter.worker.Worker;
+import org.cheetah.fighter.worker.WorkerFactory;
 
 
 /**
@@ -23,11 +25,15 @@ public interface Engine<T> extends Startable {
      */
     Handler assignDomainEventHandler();
 
+    WorkerFactory getWorkerFactory();
+
     /**
      * 为每个事件分配一个管理者
      * @return
      */
     T getAsynchronous();
+
+    void setWorkerFactory(WorkerFactory workerFactory);
 
     void setHandlerFactory(HandlerFactory handlerFactory);
 
@@ -47,6 +53,7 @@ public interface Engine<T> extends Startable {
      * 获取事件映射器
      * @return
      */
+    @Deprecated
     HandlerMapping getMapping();
 
     State state();

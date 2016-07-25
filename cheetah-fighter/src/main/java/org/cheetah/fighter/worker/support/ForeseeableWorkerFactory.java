@@ -13,7 +13,7 @@ import java.util.List;
 public class ForeseeableWorkerFactory implements WorkerFactory {
 
     @Override
-    public Worker createWorker(Handler handler, List<Interceptor> interceptors) {
-        return new ForeseeableWorker(handler, interceptors);
+    public Worker createWorker() {
+        return new ForeseeableWorker();
     }
 }

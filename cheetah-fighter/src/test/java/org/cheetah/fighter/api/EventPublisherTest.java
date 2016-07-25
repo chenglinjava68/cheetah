@@ -36,7 +36,7 @@ public class EventPublisherTest {
 
     @Test
     public void test() {
-        ForeseeableWorker worker = new ForeseeableWorker(new DomainEventHandler(new DomainListenerTest()), Lists.newArrayList());
+        ForeseeableWorker worker = new ForeseeableWorker( );
         worker.setExecutor(Executors.newFixedThreadPool(64));
         while (true) {
         worker.work(Command.of(new DomainEventTest2(new User("user")), false));

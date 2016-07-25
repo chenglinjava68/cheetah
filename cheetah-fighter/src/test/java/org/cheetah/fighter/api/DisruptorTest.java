@@ -5,12 +5,10 @@ import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.dsl.Disruptor;
 import org.cheetah.fighter.async.disruptor.DisruptorEvent;
 import org.cheetah.fighter.async.disruptor.DisruptorFactory;
-import org.cheetah.fighter.async.future.AsyncForeseeableWorkerFactory;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.handler.support.DomainEventHandlerFactory;
 import org.cheetah.fighter.worker.Command;
 import org.cheetah.fighter.worker.support.DisruptorWorkerFactory;
-import org.cheetah.fighter.worker.support.ForeseeableWorkerFactory;
 import org.junit.Test;
 
 import java.util.Collections;

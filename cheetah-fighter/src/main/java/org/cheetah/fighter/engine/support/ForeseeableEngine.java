@@ -28,7 +28,7 @@ public class ForeseeableEngine extends AbstractEngine<Worker[]> {
             Governor governor = governorFactory().createGovernor();
             governor = new ForeseeableGovernorAdapter((ForeseeableGovernor) governor, pluginChain());
             ((ForeseeableGovernorAdapter) governor).setWorkers((Worker[]) asynchronousPoolFactory().getAsynchronous());
-            governor.registerHandlerSquad(context().handlers());
+            governor.registerHandlerSquad(context().getHandlers());
             setGovernor(governor);
             return governor;
         } else {

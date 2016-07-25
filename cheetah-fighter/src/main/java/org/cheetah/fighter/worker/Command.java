@@ -20,7 +20,7 @@ public final class Command implements Serializable {
         this.needResult = needResult;
     }
 
-    public final Event event() {
+    public final DomainEvent event() {
         return event;
     }
 

@@ -18,14 +18,7 @@ import java.util.concurrent.RejectedExecutionException;
  * Created by Max on 2016/3/2.
  */
 public class ForeseeableWorker extends AbstractWorker {
-    private final Handler handler;
     private ExecutorService executor;
-    private final List<Interceptor> interceptors;
-
-    public ForeseeableWorker(Handler handler, List<Interceptor> interceptors) {
-        this.handler = handler;
-        this.interceptors = interceptors;
-    }
 
     /**
      * 根据接受到命令开始工作
@@ -64,7 +57,7 @@ public class ForeseeableWorker extends AbstractWorker {
             HandlerInterceptorChain chain = createInterceptorChain();
             boolean result = chain.beforeHandle(command);
             if (result) {
-                success = handler.handle(command);
+//                success = handler.handle(command);
                 chain.afterHandle(command);
             }
         } catch (Exception e) {

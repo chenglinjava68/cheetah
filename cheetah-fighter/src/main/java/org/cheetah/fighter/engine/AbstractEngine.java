@@ -9,15 +9,19 @@ import org.cheetah.fighter.governor.GovernorFactory;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.handler.HandlerFactory;
 import org.cheetah.fighter.plugin.PluginChain;
+import org.cheetah.fighter.worker.Worker;
+import org.cheetah.fighter.worker.WorkerFactory;
 
 /**
  * Created by Max on 2016/3/2.
  */
 public abstract class AbstractEngine<T> implements Engine<T> {
+    private WorkerFactory workerFactory;
     private HandlerFactory handlerFactory;
     private GovernorFactory governorFactory;
     private PluginChain pluginChain = new PluginChain();
     private AsynchronousPoolFactory asynchronousPoolFactory;
+    @Deprecated
     private volatile HandlerMapping mapping;
     private EventContext context;
     protected State state;
@@ -53,6 +57,16 @@ public abstract class AbstractEngine<T> implements Engine<T> {
     @Override
     public Handler assignDomainEventHandler() {
         return handlerFactory.createDomainEventHandler();
+    }
+
+    @Override
+    public WorkerFactory getWorkerFactory() {
+        return this.workerFactory;
+    }
+
+    @Override
+    public void setWorkerFactory(WorkerFactory workerFactory) {
+        this.workerFactory = workerFactory;
     }
 
     @Override

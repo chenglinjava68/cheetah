@@ -23,10 +23,8 @@ public class DisruptorWorkerAdapter implements WorkerAdapter {
 
     @Override
     public Feedback work(EventMessage eventMessage) {
-        long start = System.currentTimeMillis();
         Translator translator = new Translator();
         ringBuffer.publishEvent(translator, Command.of(eventMessage.event(), false));
-        Loggers.me().debugEnabled(this.getClass(), "消耗了{}毫秒", System.currentTimeMillis() - start);
         return Feedback.SUCCESS;
     }
 

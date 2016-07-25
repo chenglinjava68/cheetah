@@ -1,5 +1,6 @@
 package org.cheetah.fighter.mapping;
 
+import org.cheetah.fighter.EventBus;
 import org.cheetah.fighter.HandlerMapping;
 import org.cheetah.fighter.handler.Handler;
 
@@ -13,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Max on 2016/2/23.
  */
 public class EventHandlerMapping implements HandlerMapping {
-    private Map<HandlerMapperKey, List<Handler>> handlerMapper = new ConcurrentHashMap<>();
+    private Map<EventBus.HandlerMapperKey, List<Handler>> handlerMapper = new ConcurrentHashMap<>();
     private static final HandlerMapping genericMapping = new EventHandlerMapping();
 
     public static HandlerMapping getGenericMapping() {
@@ -21,12 +22,12 @@ public class EventHandlerMapping implements HandlerMapping {
     }
 
     @Override
-    public List<Handler> getHandlers(HandlerMapperKey mapperKey) {
+    public List<Handler> getHandlers(EventBus.HandlerMapperKey mapperKey) {
         return isExists(mapperKey) ? new ArrayList<>(handlerMapper.get(mapperKey)) : Collections.emptyList();
     }
 
     @Override
-    public void put(HandlerMapperKey mapperKey, List<Handler> handlers) {
+    public void put(EventBus.HandlerMapperKey mapperKey, List<Handler> handlers) {
         if (handlers.isEmpty()) {
             return;
         }
@@ -34,12 +35,12 @@ public class EventHandlerMapping implements HandlerMapping {
     }
 
     @Override
-    public Set<HandlerMapperKey> mapperKeys() {
+    public Set<EventBus.HandlerMapperKey> mapperKeys() {
         return handlerMapper.keySet();
     }
 
     @Override
-    public boolean isExists(HandlerMapperKey mapperKey) {
+    public boolean isExists(EventBus.HandlerMapperKey mapperKey) {
         return handlerMapper.containsKey(mapperKey);
     }
 }

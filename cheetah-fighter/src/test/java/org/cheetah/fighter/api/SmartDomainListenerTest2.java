@@ -29,12 +29,12 @@ public class SmartDomainListenerTest2 implements SmartDomainEventListener {
     }
 
     @Override
-    public void onCancelled() {
+    public void onCancelled(DomainEvent domainEvent, Throwable e) {
 
     }
 
     @Override
-    public void onFinish() {
+    public void onFinish(DomainEvent domainEvent) {
         System.out.println("SmartDomainListenerTest2 -- onFinish-" + atomicLong2.incrementAndGet());
     }
 }

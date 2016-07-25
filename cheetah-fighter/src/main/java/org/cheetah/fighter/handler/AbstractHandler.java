@@ -40,7 +40,7 @@ public abstract class AbstractHandler implements Handler {
     @Override
     public void onFailure(Command command, Throwable e) {
         DomainEventListener<DomainEvent> listener = getEventListener();
-        listener.onCancelled();
+        listener.onCancelled(command.event(), e);
     }
 
     /**
@@ -49,8 +49,8 @@ public abstract class AbstractHandler implements Handler {
      */
     @Override
     public void onSuccess(Command command) {
-        DomainEventListener<? extends DomainEvent> listener = getEventListener();
-        listener.onFinish();
+        DomainEventListener<DomainEvent> listener = getEventListener();
+        listener.onFinish(command.event());
     }
 
     @Override

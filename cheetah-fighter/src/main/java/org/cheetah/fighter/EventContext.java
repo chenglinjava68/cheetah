@@ -8,7 +8,9 @@ import java.util.List;
  * Created by Max on 2016/3/3.
  */
 public final class EventContext {
+
     private static final ThreadLocal<List<Handler>> handlers = new ThreadLocal<>();
+    private static final ThreadLocal<FighterConfig> fighterConfig = new ThreadLocal<>();
     private static final ThreadLocal<EventMessage> eventMessage = new ThreadLocal<>();
     private static final ThreadLocal<List<Interceptor>> interceptors = new ThreadLocal<>();
 
@@ -23,7 +25,7 @@ public final class EventContext {
         EventContext.handlers.set($handlers);
     }
 
-    public final List<Handler> handlers() {
+    public final List<Handler> getHandlers() {
         return EventContext.handlers.get();
     }
 
@@ -31,11 +33,23 @@ public final class EventContext {
         EventContext.handlers.remove();
     }
 
+    public final void setFighterConfig(List<Handler> $handlers) {
+        EventContext.handlers.set($handlers);
+    }
+
+    public final List<Handler> getFighterConfig() {
+        return EventContext.handlers.get();
+    }
+
+    public final void removeFighterConfig() {
+        EventContext.handlers.remove();
+    }
+
     public final void setEventMessage(EventMessage $eventMessage) {
         EventContext.eventMessage.set($eventMessage);
     }
 
-    public final EventMessage eventMessage() {
+    public final EventMessage getEventMessage() {
         return EventContext.eventMessage.get();
     }
 
@@ -47,7 +61,7 @@ public final class EventContext {
         EventContext.interceptors.set(interceptors);
     }
 
-    public final List<Interceptor> interceptors() {
+    public final List<Interceptor> getInterceptors() {
         return EventContext.interceptors.get();
     }
 
