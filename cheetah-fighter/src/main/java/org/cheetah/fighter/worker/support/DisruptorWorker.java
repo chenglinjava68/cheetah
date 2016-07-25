@@ -16,11 +16,9 @@ import java.util.concurrent.atomic.AtomicLong;
  * Created by Max on 2016/2/29.
  */
 public class DisruptorWorker extends AbstractWorker implements EventHandler<DisruptorEvent> {
-    private AtomicLong atomicLong = new AtomicLong();
 
     @Override
     public void onEvent(DisruptorEvent disruptorEvent, long sequence, boolean endOfBatch) throws Exception {
-        System.out.println(atomicLong.incrementAndGet());
         Command command = disruptorEvent.get();
         long start = System.currentTimeMillis();
         work(command);

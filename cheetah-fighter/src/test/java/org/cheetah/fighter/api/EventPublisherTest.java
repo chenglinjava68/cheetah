@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -28,6 +29,8 @@ public class EventPublisherTest {
     public static final AtomicLong atomicLong2 = new AtomicLong();
     @Autowired
     SpringBeanFactoryProvider springBeanFactoryProvider;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @Before
     public void before() {
@@ -52,6 +55,22 @@ public class EventPublisherTest {
                     DomainEventPublisher.publish(
                             new DomainEventTest2(new User("huahng"))
                     );
+//                    System.out.println(atomicLong2.incrementAndGet());
+                }
+            });
+            threads[i].start();
+            threads[i].join();
+        }
+    }
+
+    @Test
+    public void springEventTest() throws InterruptedException {
+        Thread[] threads = new Thread[10];
+        for (int i = 0; i < 10; i++) {
+            threads[i] = new Thread(() -> {
+                while (true) {
+                    applicationContext.publishEvent(new SpringEvent("a"));
+
                 }
             });
             threads[i].start();

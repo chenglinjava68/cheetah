@@ -54,7 +54,7 @@ public class FighterConfig {
     }
 
     public List<DomainEventListener> getEventListeners() {
-        return Lists.newArrayList(eventListeners);
+        return eventListeners;
     }
 
     public void setEventListeners(List<DomainEventListener> eventListeners) {
