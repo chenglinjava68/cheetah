@@ -94,7 +94,7 @@ public class EventBus implements Dispatcher, Startable {
     private EventResult doDispatch(EventMessage eventMessage) {
         WorkerAdapter workerAdapter = getWorkerAdapter(this.engineStrategy);
         if(workerAdapter instanceof DisruptorWorkerAdapter)
-            ((DisruptorWorkerAdapter) workerAdapter).setRingBuffer(((Disruptor<DisruptorEvent>) engine.getAsynchronous()).getRingBuffer());
+            ((DisruptorWorkerAdapter) workerAdapter).setRingBuffer(((Disruptor) engine.getAsynchronous()).getRingBuffer());
         if(workerAdapter instanceof ForeseeableWorkerAdapter)
             ((ForeseeableWorkerAdapter) workerAdapter).setWorkers((Worker[]) engine.getAsynchronous());
         Feedback feedback = workerAdapter.work(eventMessage);

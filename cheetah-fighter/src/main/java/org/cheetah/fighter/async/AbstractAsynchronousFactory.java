@@ -11,6 +11,7 @@ import java.util.concurrent.*;
 public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFactory<T> {
     private int minThreads = Runtime.getRuntime().availableProcessors() * 2 + 16;
     private int maxThreads = Runtime.getRuntime().availableProcessors() * 2 + 16;
+    private int queueLength = 100000;
     private ExecutorService executorService;
     private WorkerFactory workerFactory;
 
@@ -49,12 +50,16 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
     protected synchronized ExecutorService buildExecutorService() {
         if(this.executorService == null)
             executorService =  new ThreadPoolExecutor(minThreads, maxThreads,
-                    3000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(100000),
+                    3000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(queueLength),
                     new ThreadFactoryBuilder().setNameFormat("Cheetah-Fighter-%d").build());
         return executorService;
     }
 
-    public ExecutorService executorService() {
+    public void setQueueLength(int queueLength) {
+        this.queueLength = queueLength;
+    }
+
+    public ExecutorService getExecutorService() {
         return executorService;
     }
 

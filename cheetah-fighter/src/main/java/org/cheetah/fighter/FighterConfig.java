@@ -17,6 +17,7 @@ public class FighterConfig {
     private List<DomainEventListener> eventListeners;
     private int eventPerformerSize;
     private int queueLength;
+    private int ringBuffer;
     private int minThreads;
     private int maxThreads;
     private String engine;
@@ -25,6 +26,14 @@ public class FighterConfig {
         this.plugins = Collections.emptyList();
         this.interceptors = Collections.emptyList();
         this.eventListeners = Collections.emptyList();
+    }
+
+    public int getRingBuffer() {
+        return ringBuffer;
+    }
+
+    public void setRingBuffer(int ringBuffer) {
+        this.ringBuffer = ringBuffer;
     }
 
     public List<Plugin> getPlugins() {

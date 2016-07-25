@@ -34,7 +34,7 @@ http://www.springframework.org/schema/aop
                 <property name="interceptors">
                     <bean class="org.cheetah.fighter.api.HelloWorldInterceptor"/>
                 </property>
-                <!--<property name="engine" value="future"/>-->
+                <property name="engine" value="future"/>
                 <property name="queueLength" value="1024"/>
 
             </bean>

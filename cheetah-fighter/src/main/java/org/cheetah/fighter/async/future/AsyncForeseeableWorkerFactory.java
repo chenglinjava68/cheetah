@@ -18,7 +18,9 @@ public class AsyncForeseeableWorkerFactory extends AbstractAsynchronousFactory<F
         ForeseeableWorker[] workers = new ForeseeableWorker[handlers.size()];
         for (int i = 0; i < handlers.size(); i++) {
             ForeseeableWorker worker = (ForeseeableWorker) getWorkerFactory().createWorker();
-            worker.setExecutor(executorService());
+            worker.setHandler(handlers.get(i));
+            worker.setInterceptors(interceptors);
+            worker.setExecutor(getExecutorService());
             workers[i] = worker;
         }
         return workers;

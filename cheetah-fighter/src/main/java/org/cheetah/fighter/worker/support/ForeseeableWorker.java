@@ -1,6 +1,7 @@
 package org.cheetah.fighter.worker.support;
 
 import org.cheetah.commons.logger.Loggers;
+import org.cheetah.commons.logger.Warn;
 import org.cheetah.commons.utils.Objects;
 import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.handler.Handler;
@@ -31,7 +32,6 @@ public class ForeseeableWorker extends AbstractWorker {
             CompletableFuture.supplyAsync(() -> {
                 long start = System.currentTimeMillis();
                 boolean s = doWork(command);
-//                boolean s = true;
                 Loggers.me().debugEnabled(this.getClass(), "work消耗了{}毫秒", System.currentTimeMillis() - start);
                 return s;
             }, executor).whenComplete((r, e) -> {
@@ -40,7 +40,7 @@ public class ForeseeableWorker extends AbstractWorker {
                 else handler.onFailure(command, e);
             });
         } catch (RejectedExecutionException e) {
-            Loggers.me().warn(getClass(), "task rejected execute.", e);
+            Warn.log(getClass(), "task rejected execute.", e);
             handler.onFailure(command, e);
         }
     }
@@ -57,7 +57,7 @@ public class ForeseeableWorker extends AbstractWorker {
             HandlerInterceptorChain chain = createInterceptorChain();
             boolean result = chain.beforeHandle(command);
             if (result) {
-//                success = handler.handle(command);
+                success = handler.handle(command);
                 chain.afterHandle(command);
             }
         } catch (Exception e) {
