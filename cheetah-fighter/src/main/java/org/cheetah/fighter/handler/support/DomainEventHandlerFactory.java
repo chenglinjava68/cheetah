@@ -1,5 +1,7 @@
 package org.cheetah.fighter.handler.support;
 
+import org.cheetah.fighter.DomainEvent;
+import org.cheetah.fighter.DomainEventListener;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.handler.HandlerFactory;
 
@@ -14,8 +16,8 @@ public class DomainEventHandlerFactory implements HandlerFactory {
     }
 
     @Override
-    public Handler createDomainEventHandler() {
-        return new DomainEventHandler();
+    public Handler createDomainEventHandler(DomainEventListener<DomainEvent> eventListener) {
+        return new DomainEventHandler(eventListener);
     }
 
 }

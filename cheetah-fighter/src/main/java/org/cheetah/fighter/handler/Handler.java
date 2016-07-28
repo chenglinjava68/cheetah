@@ -34,12 +34,8 @@ public interface Handler extends Cloneable {
      */
     void onSuccess(Command command);
 
-    void registerEventListener(DomainEventListener<DomainEvent> eventListener);
-
     DomainEventListener<DomainEvent> getEventListener();
 
     Handler kagebunsin() throws CloneNotSupportedException;
-
-    Handler kagebunsin(EventListener listener) throws CloneNotSupportedException;
 
 }

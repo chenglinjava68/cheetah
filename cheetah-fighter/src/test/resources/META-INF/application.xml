@@ -40,7 +40,7 @@ http://www.springframework.org/schema/aop
                     <bean class="org.cheetah.fighter.api.HelloWorldInterceptor"/>
                 </property>
                 <property name="engine" value="future"/>
-                <property name="queueLength" value="1024"/>
+                <property name="ringBuffer" value="1024"/>
 
             </bean>
         </property>

@@ -1,7 +1,11 @@
 package org.cheetah.fighter.worker.support;
 
+import org.cheetah.fighter.Interceptor;
+import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.worker.Worker;
 import org.cheetah.fighter.worker.WorkerFactory;
+
+import java.util.List;
 
 
 /**
@@ -10,8 +14,8 @@ import org.cheetah.fighter.worker.WorkerFactory;
 public class AkkaWorkerFactory implements WorkerFactory {
 
     @Override
-    public Worker createWorker() {
-        AkkaWorkerAdaptor adaptor = new AkkaWorkerAdaptor(new AkkaWorker());
+    public Worker createWorker(Handler handler, List<Interceptor> interceptors) {
+        AkkaWorkerAdaptor adaptor = new AkkaWorkerAdaptor(new AkkaWorker(handler, interceptors));
         return adaptor;
     }
 }

@@ -7,14 +7,21 @@ import org.cheetah.fighter.handler.Handler;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by Max on 2016/5/4.
  */
 public abstract class AbstractWorker implements Worker {
 
-    protected Handler handler;
-    protected List<Interceptor> interceptors;
+    protected final Handler handler;
+    protected final List<Interceptor> interceptors;
+    protected final AtomicLong counter = new AtomicLong();
+
+    public AbstractWorker(Handler handler, List<Interceptor> interceptors) {
+        this.handler = handler;
+        this.interceptors = interceptors;
+    }
 
     protected abstract boolean doWork(Command command);
 
@@ -51,11 +58,4 @@ public abstract class AbstractWorker implements Worker {
         return success;
     }
 
-    public void setHandler(Handler handler) {
-        this.handler = handler;
-    }
-
-    public void setInterceptors(List<Interceptor> interceptors) {
-        this.interceptors = interceptors;
-    }
 }

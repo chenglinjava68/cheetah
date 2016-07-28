@@ -1,15 +1,15 @@
 package org.cheetah.fighter.engine;
 
 import org.cheetah.commons.logger.Info;
+import org.cheetah.fighter.DomainEvent;
+import org.cheetah.fighter.DomainEventListener;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.EventContext;
 import org.cheetah.fighter.HandlerMapping;
-import org.cheetah.fighter.governor.Governor;
 import org.cheetah.fighter.governor.GovernorFactory;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.handler.HandlerFactory;
 import org.cheetah.fighter.plugin.PluginChain;
-import org.cheetah.fighter.worker.Worker;
 import org.cheetah.fighter.worker.WorkerFactory;
 
 /**
@@ -55,8 +55,8 @@ public abstract class AbstractEngine<T> implements Engine<T> {
     }
 
     @Override
-    public Handler assignDomainEventHandler() {
-        return handlerFactory.createDomainEventHandler();
+    public Handler assignDomainEventHandler(DomainEventListener<DomainEvent> eventListener) {
+        return handlerFactory.createDomainEventHandler(eventListener);
     }
 
     @Override

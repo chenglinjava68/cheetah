@@ -75,8 +75,7 @@ public class EventHandlerResolver {
                                                       List<DomainEventListener> listeners) {
         List<Handler> handlers = Lists.newArrayList();
         for (DomainEventListener listener : listeners) {
-            Handler handler = engine.assignDomainEventHandler();
-            handler.registerEventListener(listener);
+            Handler handler = engine.assignDomainEventHandler(listener);
             handlers.add(handler);
         }
 

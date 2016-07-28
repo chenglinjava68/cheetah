@@ -24,8 +24,7 @@ public class DisruptorTest {
         disruptorFactory.setRingbufferSize(1024);
         disruptorFactory.setWorkerFactory(disruptorWorkerFactory);
         disruptorFactory.start();
-        Handler handler = DomainEventHandlerFactory.getDomainEventHandlerFactory().createDomainEventHandler();
-        handler.registerEventListener(new SmartDomainListenerTest2());
+        Handler handler = DomainEventHandlerFactory.getDomainEventHandlerFactory().createDomainEventHandler(new SmartDomainListenerTest2());
         Disruptor<DisruptorEvent> disruptor = disruptorFactory.createAsynchronous("SINGLE", Lists.newArrayList(handler), Collections.emptyList());
 
         while (true) {

@@ -12,10 +12,7 @@ import java.util.EventListener;
  * Created by Max on 2016/2/14.
  */
 public abstract class AbstractHandler implements Handler {
-    private DomainEventListener<DomainEvent> eventListener;
-
-    public AbstractHandler() {
-    }
+    private final DomainEventListener<DomainEvent> eventListener;
 
     public AbstractHandler(DomainEventListener<DomainEvent> eventListener) {
         this.eventListener = eventListener;
@@ -58,12 +55,6 @@ public abstract class AbstractHandler implements Handler {
         return (Handler) super.clone();
     }
 
-    @Override
-    public Handler kagebunsin(EventListener listener) throws CloneNotSupportedException {
-        Handler handler = (Handler) super.clone();
-        handler.registerEventListener(this.eventListener);
-        return handler;
-    }
     /**
      * 有反馈的执行方式
      *
@@ -71,11 +62,6 @@ public abstract class AbstractHandler implements Handler {
      * @return
      */
     protected abstract boolean completeExecute(Event event);
-
-    @Override
-    public void registerEventListener(DomainEventListener<DomainEvent> eventListener) {
-        this.eventListener = eventListener;
-    }
 
     @Override
     public DomainEventListener<DomainEvent> getEventListener() {

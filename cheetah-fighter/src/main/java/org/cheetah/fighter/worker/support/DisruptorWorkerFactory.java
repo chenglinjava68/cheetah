@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class DisruptorWorkerFactory implements WorkerFactory {
     @Override
-    public Worker createWorker() {
-        return new DisruptorWorker();
+    public Worker createWorker(Handler handler, List<Interceptor> interceptors) {
+        return new DisruptorWorker(handler, interceptors);
     }
 }

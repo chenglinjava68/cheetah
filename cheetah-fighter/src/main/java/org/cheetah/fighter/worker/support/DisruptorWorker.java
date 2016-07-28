@@ -17,12 +17,16 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class DisruptorWorker extends AbstractWorker implements EventHandler<DisruptorEvent> {
 
+    public DisruptorWorker(Handler handler, List<Interceptor> interceptors) {
+        super(handler, interceptors);
+    }
+
     @Override
     public void onEvent(DisruptorEvent disruptorEvent, long sequence, boolean endOfBatch) throws Exception {
         Command command = disruptorEvent.get();
-        long start = System.currentTimeMillis();
+        long start = System.nanoTime();
         work(command);
-        Loggers.me().debugEnabled(this.getClass(), "work消耗了{}毫秒", System.currentTimeMillis() - start);
+        Loggers.me().debugEnabled(this.getClass(), "work消耗了{}微秒", System.nanoTime() - start);
     }
 
     @Override

@@ -41,7 +41,7 @@ public class EventBus implements Dispatcher, Startable {
     private EngineDirector engineDirector;
     private EngineStrategy engineStrategy;
     private final Map<InterceptorCacheKey, List<Interceptor>> interceptorCache;
-    private volatile Map<HandlerMapperKey, List<Handler>> eventHandlers;
+    private Map<HandlerMapperKey, List<Handler>> eventHandlers;
     private final ReentrantLock lock;
     private final EventContext context;
 
@@ -89,6 +89,8 @@ public class EventBus implements Dispatcher, Startable {
     @Override
     public EventResult dispatch() {
         EventMessage eventMessage = context().getEventMessage();
+
+
         return doDispatch(eventMessage);
     }
 
@@ -181,8 +183,7 @@ public class EventBus implements Dispatcher, Startable {
                                                       List<DomainEventListener> listeners) {
         List<Handler> handlers = Lists.newArrayList();
         for (DomainEventListener listener : listeners) {
-            Handler handler = engine.assignDomainEventHandler();
-            handler.registerEventListener(listener);
+            Handler handler = engine.assignDomainEventHandler(listener);
             handlers.add(handler);
         }
 

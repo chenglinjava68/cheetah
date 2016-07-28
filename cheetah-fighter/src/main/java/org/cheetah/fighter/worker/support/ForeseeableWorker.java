@@ -14,12 +14,18 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by Max on 2016/3/2.
  */
 public class ForeseeableWorker extends AbstractWorker {
     private ExecutorService executor;
+
+    public ForeseeableWorker(Handler handler, List<Interceptor> interceptors) {
+        super(handler, interceptors);
+    }
+
 
     /**
      * 根据接受到命令开始工作
@@ -30,9 +36,10 @@ public class ForeseeableWorker extends AbstractWorker {
     public void work(Command command) {
         try {
             CompletableFuture.supplyAsync(() -> {
-                long start = System.currentTimeMillis();
+                long start = System.nanoTime();
                 boolean s = doWork(command);
-                Loggers.me().debugEnabled(this.getClass(), "work消耗了{}毫秒", System.currentTimeMillis() - start);
+//                boolean s = true;
+//                Loggers.me().debugEnabled(this.getClass(), "work消耗了{}微秒", System.nanoTime() - start);
                 return s;
             }, executor).whenComplete((r, e) -> {
                 if (Objects.nonNull(r) && r)

@@ -12,9 +12,6 @@ import org.cheetah.fighter.handler.AbstractHandler;
  */
 public class DomainEventHandler extends AbstractHandler {
 
-    public DomainEventHandler() {
-    }
-
     public DomainEventHandler(DomainEventListener eventListener) {
         super(eventListener);
     }

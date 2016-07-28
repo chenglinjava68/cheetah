@@ -10,6 +10,7 @@ import org.cheetah.fighter.worker.Command;
 import java.util.EventListener;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by Max on 2016/2/21.
@@ -18,13 +19,10 @@ public class AkkaWorker extends AbstractWorker {
     private Map<Class<? extends EventListener>, Handler> eventlistenerMapper;
     private List<Interceptor> interceptors;
 
-    public AkkaWorker() {
+    public AkkaWorker(Handler handler, List<Interceptor> interceptors) {
+        super(handler, interceptors);
     }
 
-    public AkkaWorker(Map<Class<? extends EventListener>, Handler> eventlistenerMapper, List<Interceptor> interceptors) {
-        this.eventlistenerMapper = eventlistenerMapper;
-        this.interceptors = interceptors;
-    }
 
     @Override
     protected boolean doWork(Command command) {

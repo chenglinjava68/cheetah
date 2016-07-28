@@ -38,15 +38,6 @@ public class EventPublisherTest {
     }
 
     @Test
-    public void test() {
-        ForeseeableWorker worker = new ForeseeableWorker( );
-        worker.setExecutor(Executors.newFixedThreadPool(64));
-        while (true) {
-        worker.work(Command.of(new DomainEventTest2(new User("user")), false));
-        }
-    }
-
-    @Test
     public void launch() throws InterruptedException {
         Thread[] threads = new Thread[10];
         for (int i = 0; i < 10; i++) {

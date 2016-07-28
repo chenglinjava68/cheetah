@@ -1,6 +1,8 @@
 package org.cheetah.fighter.engine;
 
 import org.cheetah.commons.Startable;
+import org.cheetah.fighter.DomainEvent;
+import org.cheetah.fighter.DomainEventListener;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.EventContext;
 import org.cheetah.fighter.HandlerMapping;
@@ -23,7 +25,7 @@ public interface Engine<T> extends Startable {
      * 分配领域事件的工作处理器
      * @return
      */
-    Handler assignDomainEventHandler();
+    Handler assignDomainEventHandler(DomainEventListener<DomainEvent> eventListener);
 
     WorkerFactory getWorkerFactory();
 
