@@ -3,8 +3,11 @@ package org.cheetah.fighter.worker.support;
 import org.cheetah.commons.logger.Loggers;
 import org.cheetah.commons.logger.Warn;
 import org.cheetah.commons.utils.Objects;
-import org.cheetah.fighter.*;
+import org.cheetah.fighter.DomainEvent;
+import org.cheetah.fighter.DomainEventListener;
+import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.handler.Handler;
+import org.cheetah.fighter.HandlerInterceptorChain;
 import org.cheetah.fighter.worker.AbstractWorker;
 import org.cheetah.fighter.worker.Command;
 import org.cheetah.fighter.worker.InterceptorExecutionException;
@@ -35,13 +38,12 @@ public class ForeseeableWorker extends AbstractWorker {
     public void work(Command command) {
         try {
             CompletableFuture.supplyAsync(() -> {
-                System.out.println(counter.incrementAndGet());
                 long start = System.nanoTime();
-//                boolean s = doWork(command);
+                boolean s = doWork(command);
 //                    Handler h = handler.kagebunsin();
-                eventListener.onDomainEvent(command.event());
-                boolean s = true;
-                Loggers.me().debugEnabled(this.getClass(), "work消耗了{}微秒", System.nanoTime() - start);
+
+//                boolean s = true;
+//                Loggers.me().debugEnabled(this.getClass(), "work消耗了{}微秒", System.nanoTime() - start);
                 return s;
             }, executor).whenComplete((r, e) -> {
                 if (Objects.nonNull(r) && r)

@@ -39,7 +39,7 @@ http://www.springframework.org/schema/aop
         </property>
         <property name="fighterConfig">
             <bean class="org.cheetah.fighter.FighterConfig">
-                <!--<property name="engine" value="future"/>-->
+                <property name="engine" value="future"/>
                 <property name="ringBuffer" value="1024"/>
             </bean>
         </property>

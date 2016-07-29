@@ -1,7 +1,6 @@
 package org.cheetah.fighter;
 
 import com.google.common.collect.Lists;
-import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import org.cheetah.commons.Startable;
 import org.cheetah.commons.logger.Info;
@@ -9,23 +8,19 @@ import org.cheetah.commons.logger.Loggers;
 import org.cheetah.commons.utils.CollectionUtils;
 import org.cheetah.commons.utils.ObjectUtils;
 import org.cheetah.commons.utils.StringUtils;
-import org.cheetah.fighter.async.disruptor.DisruptorEvent;
 import org.cheetah.fighter.engine.Engine;
 import org.cheetah.fighter.engine.EngineDirector;
-import org.cheetah.fighter.governor.support.ForeseeableWorkerAdapter;
-import org.cheetah.fighter.handler.Handler;
+import org.cheetah.fighter.worker.support.ForeseeableWorkerAdapter;
 import org.cheetah.fighter.engine.support.EngineStrategy;
 import org.cheetah.fighter.plugin.Plugin;
 import org.cheetah.fighter.plugin.PluginChain;
 import org.cheetah.fighter.worker.Worker;
 import org.cheetah.fighter.worker.WorkerAdapter;
-import org.cheetah.fighter.worker.support.DisruptorWorker;
 import org.cheetah.fighter.worker.support.DisruptorWorkerAdapter;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -49,7 +44,7 @@ public class EventBus implements Dispatcher, Startable {
     private Map<HandlerMapperKey, List<DomainEventListener>> eventHandlers;
     private final ReentrantLock lock;
     private final EventContext context;
-    private ExecutorService executorService = Executors.newFixedThreadPool(8);
+
     public EventBus() {
         this.interceptorCache = new ConcurrentHashMap<>();
         this.eventHandlers = new ConcurrentHashMap<>();
@@ -94,7 +89,6 @@ public class EventBus implements Dispatcher, Startable {
     @Override
     public EventResult dispatch() {
         EventMessage eventMessage = context().getEventMessage();
-
         return doDispatch(eventMessage);
     }
 

@@ -1,4 +1,4 @@
-package org.cheetah.fighter.governor.support;
+package org.cheetah.fighter.worker.support;
 
 import org.cheetah.fighter.EventMessage;
 import org.cheetah.fighter.Feedback;
