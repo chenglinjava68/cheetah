@@ -1,10 +1,6 @@
 package org.cheetah.fighter.api;
 
-import com.google.common.collect.Lists;
 import org.cheetah.fighter.DomainEvent;
-import org.cheetah.fighter.worker.Command;
-import org.cheetah.fighter.handler.support.DomainEventHandler;
-import org.cheetah.fighter.worker.support.ForeseeableWorker;
 import org.cheetah.ioc.BeanFactory;
 import org.cheetah.ioc.spring.SpringBeanFactoryProvider;
 import org.junit.Before;
@@ -16,7 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -39,26 +34,20 @@ public class EventPublisherTest {
 
     @Test
     public void launch() throws InterruptedException {
-//        Thread[] threads = new Thread[10];
-//        for (int i = 0; i < 10; i++) {
-//            threads[i] = new Thread(() -> {
-//                while (true) {
-//                    DomainEventPublisher.publish(
-//                            new DomainEventTest2(new User("huahng"))
-//                    );
-////                    System.out.println(atomicLong2.incrementAndGet());
-//                }
-//            });
-//            threads[i].start();
-//            threads[i].join();
-//        }
-
-        while (true) {
-            DomainEventPublisher.publish(
-                    new DomainEventTest2(new User("huahng"))
-            );
+        Thread[] threads = new Thread[10];
+        for (int i = 0; i < 10; i++) {
+            threads[i] = new Thread(() -> {
+                while (true) {
+                    DomainEventPublisher.publish(
+                            new DomainEventTest2(new User("huahng"))
+                    );
 //                    System.out.println(atomicLong2.incrementAndGet());
+                }
+            });
+            threads[i].start();
+            threads[i].join();
         }
+
     }
 
 

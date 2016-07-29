@@ -6,11 +6,10 @@ package org.cheetah.fighter;
 */
 public abstract class Dispatcher {
     /**
-     * 接收一个事件消息
+     * 接收一个事件消息，并进行调度
      * @param eventMessage
      * @return
      */
-    public abstract EventResult receive(final EventMessage eventMessage);
 
-    protected abstract EventResult dispatch();
+    protected abstract EventResult dispatch(EventMessage eventMessage);
 }

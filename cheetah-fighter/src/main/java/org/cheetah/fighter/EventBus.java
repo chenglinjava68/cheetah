@@ -52,14 +52,9 @@ public class EventBus extends Dispatcher implements Startable {
         this.context = EventContext.getContext();
     }
 
-    /**
-     * 接收事件消息，安排相应的engine对其进行处理
-     *
-     * @param eventMessage
-     * @return
-     */
+
     @Override
-    public EventResult receive(final EventMessage eventMessage) {
+    public EventResult dispatch(final EventMessage eventMessage) {
         try {
             context().setEventMessage(eventMessage);
             DomainEvent event = eventMessage.event();
@@ -70,7 +65,7 @@ public class EventBus extends Dispatcher implements Startable {
             if (exists) {
                 List<Handler> handlerMap = eventHandlers.get(key);
                 context.setHandlers(handlerMap);
-                return dispatch();
+                return doDispatch(eventMessage);
             }
             List<Handler> handlers = getHandlers(event, key);
             if (handlers.isEmpty()) {
@@ -78,18 +73,12 @@ public class EventBus extends Dispatcher implements Startable {
                 throw new NoMapperException();
             }
             context.setHandlers(handlers);
-            return dispatch();
+            return doDispatch(eventMessage);
         } finally {
             context.removeEventMessage();
             context.removeHandlers();
             context.removeInterceptor();
         }
-    }
-
-    @Override
-    public EventResult dispatch() {
-        EventMessage eventMessage = context().getEventMessage();
-        return doDispatch(eventMessage);
     }
 
     private EventResult doDispatch(EventMessage eventMessage) {

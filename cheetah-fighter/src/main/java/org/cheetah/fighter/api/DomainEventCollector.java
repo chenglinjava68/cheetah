@@ -18,7 +18,7 @@ class DomainEventCollector extends AbstractCollector {
 
     @Override
     public void collect(DomainEvent event) {
-        getEventBus().receive(new EventMessage(event));
+        getEventBus().dispatch(new EventMessage(event));
     }
 
 }
