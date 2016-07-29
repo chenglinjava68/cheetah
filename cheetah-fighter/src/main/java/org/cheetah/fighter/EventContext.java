@@ -9,7 +9,7 @@ import java.util.List;
  */
 public final class EventContext {
 
-    private static final ThreadLocal<List<Handler>> handlers = new ThreadLocal<>();
+    private static final ThreadLocal<List<DomainEventListener>> eventListeners = new ThreadLocal<>();
     private static final ThreadLocal<FighterConfig> fighterConfig = new ThreadLocal<>();
     private static final ThreadLocal<EventMessage> eventMessage = new ThreadLocal<>();
     private static final ThreadLocal<List<Interceptor>> interceptors = new ThreadLocal<>();
@@ -21,28 +21,28 @@ public final class EventContext {
         return CONTEXT;
     }
 
-    public final void setHandlers(List<Handler> $handlers) {
-        EventContext.handlers.set($handlers);
+    public final void setEventListeners(List<DomainEventListener> eventListeners) {
+        EventContext.eventListeners.set(eventListeners);
     }
 
-    public final List<Handler> getHandlers() {
-        return EventContext.handlers.get();
+    public final List<DomainEventListener> getEventListeners() {
+        return EventContext.eventListeners.get();
     }
 
-    public final void removeHandlers() {
-        EventContext.handlers.remove();
+    public final void removeEventListeners() {
+        EventContext.eventListeners.remove();
     }
 
-    public final void setFighterConfig(List<Handler> $handlers) {
-        EventContext.handlers.set($handlers);
+    public final void setFighterConfig(FighterConfig fighterConfig) {
+        EventContext.fighterConfig.set(fighterConfig);
     }
 
-    public final List<Handler> getFighterConfig() {
-        return EventContext.handlers.get();
+    public final FighterConfig getFighterConfig() {
+        return EventContext.fighterConfig.get();
     }
 
     public final void removeFighterConfig() {
-        EventContext.handlers.remove();
+        EventContext.fighterConfig.remove();
     }
 
     public final void setEventMessage(EventMessage $eventMessage) {

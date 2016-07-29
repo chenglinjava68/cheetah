@@ -1,5 +1,7 @@
 package org.cheetah.fighter.worker.support;
 
+import org.cheetah.fighter.DomainEvent;
+import org.cheetah.fighter.DomainEventListener;
 import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.worker.Worker;
@@ -13,7 +15,7 @@ import java.util.List;
 public class ForeseeableWorkerFactory implements WorkerFactory {
 
     @Override
-    public Worker createWorker(Handler handler, List<Interceptor> interceptors) {
-        return new ForeseeableWorker(handler, interceptors);
+    public Worker createWorker(DomainEventListener<DomainEvent> eventListener, List<Interceptor> interceptors) {
+        return new ForeseeableWorker(eventListener, interceptors);
     }
 }

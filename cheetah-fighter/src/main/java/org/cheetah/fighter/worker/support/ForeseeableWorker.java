@@ -3,9 +3,8 @@ package org.cheetah.fighter.worker.support;
 import org.cheetah.commons.logger.Loggers;
 import org.cheetah.commons.logger.Warn;
 import org.cheetah.commons.utils.Objects;
-import org.cheetah.fighter.Interceptor;
+import org.cheetah.fighter.*;
 import org.cheetah.fighter.handler.Handler;
-import org.cheetah.fighter.HandlerInterceptorChain;
 import org.cheetah.fighter.worker.AbstractWorker;
 import org.cheetah.fighter.worker.Command;
 import org.cheetah.fighter.worker.InterceptorExecutionException;
@@ -22,8 +21,8 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ForeseeableWorker extends AbstractWorker {
     private ExecutorService executor;
 
-    public ForeseeableWorker(Handler handler, List<Interceptor> interceptors) {
-        super(handler, interceptors);
+    public ForeseeableWorker(DomainEventListener<DomainEvent> eventListener, List<Interceptor> interceptors) {
+        super(eventListener, interceptors);
     }
 
 
@@ -36,42 +35,48 @@ public class ForeseeableWorker extends AbstractWorker {
     public void work(Command command) {
         try {
             CompletableFuture.supplyAsync(() -> {
+                System.out.println(counter.incrementAndGet());
                 long start = System.nanoTime();
-                boolean s = doWork(command);
-//                boolean s = true;
-//                Loggers.me().debugEnabled(this.getClass(), "work消耗了{}微秒", System.nanoTime() - start);
+//                boolean s = doWork(command);
+//                    Handler h = handler.kagebunsin();
+                eventListener.onDomainEvent(command.event());
+                boolean s = true;
+                Loggers.me().debugEnabled(this.getClass(), "work消耗了{}微秒", System.nanoTime() - start);
                 return s;
             }, executor).whenComplete((r, e) -> {
                 if (Objects.nonNull(r) && r)
-                    handler.onSuccess(command);
-                else handler.onFailure(command, e);
+                    eventListener.onFinish(command.event());
+                else eventListener.onCancelled(command.event(), e);
             });
         } catch (RejectedExecutionException e) {
             Warn.log(getClass(), "task rejected execute.", e);
-            handler.onFailure(command, e);
+            eventListener.onCancelled(command.event(), e);
         }
     }
 
     @Override
     protected boolean doWork(Command command) {
-        return invoke(command);
+        try {
+            invoke(command);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
-    protected boolean invoke(Command command) {
-        boolean success = false;
+    protected void invoke(Command command) {
         try {
             HandlerInterceptorChain chain = createInterceptorChain();
             boolean result = chain.beforeHandle(command);
             if (result) {
-                success = handler.handle(command);
+                eventListener.onDomainEvent(command.event());
                 chain.afterHandle(command);
             }
         } catch (Exception e) {
             Loggers.me().error(this.getClass(), "interceptor invoke Exception", e);
             throw new InterceptorExecutionException(e);
         }
-        return success;
     }
 
     @Override
@@ -83,24 +88,4 @@ public class ForeseeableWorker extends AbstractWorker {
         this.executor = executor;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ForeseeableWorker that = (ForeseeableWorker) o;
-
-        if (handler != null ? !handler.equals(that.handler) : that.handler != null) return false;
-        if (executor != null ? !executor.equals(that.executor) : that.executor != null) return false;
-        return !(interceptors != null ? !interceptors.equals(that.interceptors) : that.interceptors != null);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = handler != null ? handler.hashCode() : 0;
-        result = 31 * result + (executor != null ? executor.hashCode() : 0);
-        result = 31 * result + (interceptors != null ? interceptors.hashCode() : 0);
-        return result;
-    }
 }

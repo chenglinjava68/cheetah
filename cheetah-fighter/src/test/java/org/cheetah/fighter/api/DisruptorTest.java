@@ -24,8 +24,7 @@ public class DisruptorTest {
         disruptorFactory.setRingbufferSize(1024);
         disruptorFactory.setWorkerFactory(disruptorWorkerFactory);
         disruptorFactory.start();
-        Handler handler = DomainEventHandlerFactory.getDomainEventHandlerFactory().createDomainEventHandler(new SmartDomainListenerTest2());
-        Disruptor<DisruptorEvent> disruptor = disruptorFactory.createAsynchronous("SINGLE", Lists.newArrayList(handler), Collections.emptyList());
+        Disruptor<DisruptorEvent> disruptor = disruptorFactory.createAsynchronous("SINGLE", Lists.newArrayList(new SmartDomainListenerTest2()), Collections.emptyList());
 
         while (true) {
             Command command = Command.of(new EventPublisherTest.DomainEventTest2(new EventPublisherTest.User("name")), false);

@@ -1,6 +1,7 @@
 package org.cheetah.fighter.async;
 
 import org.cheetah.commons.Startable;
+import org.cheetah.fighter.DomainEventListener;
 import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.handler.Handler;
 
@@ -17,5 +18,5 @@ public interface AsynchronousFactory<T> extends Startable {
      * @param handlers
      * @return
      */
-    T createAsynchronous(String name, List<Handler> handlers, List<Interceptor> interceptors);
+    T createAsynchronous(String name, List<DomainEventListener> handlers, List<Interceptor> interceptors);
 }

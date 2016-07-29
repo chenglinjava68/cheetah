@@ -39,18 +39,25 @@ public class EventPublisherTest {
 
     @Test
     public void launch() throws InterruptedException {
-        Thread[] threads = new Thread[10];
-        for (int i = 0; i < 10; i++) {
-            threads[i] = new Thread(() -> {
-                while (true) {
-                    DomainEventPublisher.publish(
-                            new DomainEventTest2(new User("huahng"))
-                    );
+//        Thread[] threads = new Thread[10];
+//        for (int i = 0; i < 10; i++) {
+//            threads[i] = new Thread(() -> {
+//                while (true) {
+//                    DomainEventPublisher.publish(
+//                            new DomainEventTest2(new User("huahng"))
+//                    );
+////                    System.out.println(atomicLong2.incrementAndGet());
+//                }
+//            });
+//            threads[i].start();
+//            threads[i].join();
+//        }
+
+        while (true) {
+            DomainEventPublisher.publish(
+                    new DomainEventTest2(new User("huahng"))
+            );
 //                    System.out.println(atomicLong2.incrementAndGet());
-                }
-            });
-            threads[i].start();
-            threads[i].join();
         }
     }
 

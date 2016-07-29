@@ -45,9 +45,9 @@ public class ForeseeableEngineBuilder implements EngineBuilder {
         AsyncForeseeableWorkerFactory foreseeableWorkerFactory = new AsyncForeseeableWorkerFactory();
         if(fighterConfig.getQueueLength() > 0)
             foreseeableWorkerFactory.setQueueLength(fighterConfig.getQueueLength());
-        if(fighterConfig.getMaxThreads() > 0 && fighterConfig.getMinThreads() > 0) {
-            foreseeableWorkerFactory.setMinThreads(fighterConfig.getMinThreads());
-            foreseeableWorkerFactory.setMaxThreads(fighterConfig.getMaxThreads());
+        if(fighterConfig.getThreadPoolSize() > 0) {
+            foreseeableWorkerFactory.setThreadPoolSize(fighterConfig.getThreadPoolSize());
+            foreseeableWorkerFactory.setThreadPoolSize(fighterConfig.getThreadPoolSize());
         }
         if(StringUtils.isNotBlank(fighterConfig.getRejectionPolicy()))
             foreseeableWorkerFactory.setRejectionPolicy(fighterConfig.getRejectionPolicy());

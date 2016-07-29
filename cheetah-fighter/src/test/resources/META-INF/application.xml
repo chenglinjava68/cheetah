@@ -26,22 +26,21 @@ http://www.springframework.org/schema/aop
     <bean id="beanFactoryProvider" class="org.cheetah.ioc.spring.SpringBeanFactoryProvider"/>
 
     <bean id="eventBus" class="org.cheetah.fighter.EventBus" init-method="start" destroy-method="stop">
+        <property name="eventListeners">
+            <list>
+                <bean class="org.cheetah.fighter.api.SmartDomainListenerTest"/>
+                <bean class="org.cheetah.fighter.api.DomainListenerTest"/>
+                <bean class="org.cheetah.fighter.api.DomainListenerTest2"/>
+                <bean class="org.cheetah.fighter.api.SmartDomainListenerTest2"/>
+            </list>
+        </property>
+        <property name="interceptors">
+            <bean class="org.cheetah.fighter.api.HelloWorldInterceptor"/>
+        </property>
         <property name="fighterConfig">
             <bean class="org.cheetah.fighter.FighterConfig">
-                <property name="eventListeners">
-                    <list>
-                        <bean class="org.cheetah.fighter.api.SmartDomainListenerTest"/>
-                        <bean class="org.cheetah.fighter.api.DomainListenerTest"/>
-                        <bean class="org.cheetah.fighter.api.DomainListenerTest2"/>
-                        <bean class="org.cheetah.fighter.api.SmartDomainListenerTest2"/>
-                    </list>
-                </property>
-                <property name="interceptors">
-                    <bean class="org.cheetah.fighter.api.HelloWorldInterceptor"/>
-                </property>
-                <property name="engine" value="future"/>
+                <!--<property name="engine" value="future"/>-->
                 <property name="ringBuffer" value="1024"/>
-
             </bean>
         </property>
     </bean>

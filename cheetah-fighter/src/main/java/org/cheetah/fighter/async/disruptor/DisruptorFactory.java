@@ -4,6 +4,7 @@ import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+import org.cheetah.fighter.DomainEventListener;
 import org.cheetah.fighter.async.AbstractAsynchronousFactory;
 import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.handler.Handler;
@@ -32,15 +33,15 @@ public class DisruptorFactory extends AbstractAsynchronousFactory<Disruptor<Disr
     }
 
     @Override
-    public Disruptor<DisruptorEvent> createAsynchronous(String name, List<Handler> handlers, List<Interceptor> interceptors) {
+    public Disruptor<DisruptorEvent> createAsynchronous(String name, List<DomainEventListener> eventListeners, List<Interceptor> interceptors) {
         Disruptor<DisruptorEvent> disruptor;
         if (name.equals(ProducerType.SINGLE.name()))
             disruptor = createSingleDisruptor();
         else disruptor = createMultiDisruptor();
 
-        DisruptorWorker[] workers = new DisruptorWorker[handlers.size()];
-        for (int i = 0; i < handlers.size(); i++) {
-            DisruptorWorker worker = (DisruptorWorker) getWorkerFactory().createWorker(handlers.get(i), interceptors);
+        DisruptorWorker[] workers = new DisruptorWorker[eventListeners.size()];
+        for (int i = 0; i < eventListeners.size(); i++) {
+            DisruptorWorker worker = (DisruptorWorker) getWorkerFactory().createWorker(eventListeners.get(i), interceptors);
             workers[i] = worker;
         }
 

@@ -1,5 +1,6 @@
 package org.cheetah.fighter.async.future;
 
+import org.cheetah.fighter.DomainEventListener;
 import org.cheetah.fighter.async.AbstractAsynchronousFactory;
 import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.handler.Handler;
@@ -13,11 +14,11 @@ import java.util.List;
 public class AsyncForeseeableWorkerFactory extends AbstractAsynchronousFactory<ForeseeableWorker[]> {
 
     @Override
-    public ForeseeableWorker[] createAsynchronous(String name, List<Handler> handlers,
+    public ForeseeableWorker[] createAsynchronous(String name, List<DomainEventListener> eventListeners,
                                                 List<Interceptor> interceptors) {
-        ForeseeableWorker[] workers = new ForeseeableWorker[handlers.size()];
-        for (int i = 0; i < handlers.size(); i++) {
-            ForeseeableWorker worker = (ForeseeableWorker) getWorkerFactory().createWorker(handlers.get(i), interceptors);
+        ForeseeableWorker[] workers = new ForeseeableWorker[eventListeners.size()];
+        for (int i = 0; i < eventListeners.size(); i++) {
+            ForeseeableWorker worker = (ForeseeableWorker) getWorkerFactory().createWorker(eventListeners.get(i), interceptors);
             worker.setExecutor(getExecutorService());
             workers[i] = worker;
         }

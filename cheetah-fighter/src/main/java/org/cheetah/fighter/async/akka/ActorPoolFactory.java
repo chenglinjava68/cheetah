@@ -30,7 +30,7 @@ public class ActorPoolFactory implements AsynchronousPoolFactory<ActorRef> {
         EventBus.HandlerMapperKey mapperKey = EventBus.HandlerMapperKey.generate(event);
         if (actorPool.containsKey(mapperKey))
             return this.actorPool.get(mapperKey);
-        List<Handler> handlers = getMapperFrom();
+        List<DomainEventListener> handlers = getMapperFrom();
         return this.actorFactory.createAsynchronous(name, handlers, context.getInterceptors());
     }
 
@@ -41,7 +41,7 @@ public class ActorPoolFactory implements AsynchronousPoolFactory<ActorRef> {
             return actor;
         else {
             synchronized (this) {
-                if (this.context.getHandlers().isEmpty())
+                if (this.context.getEventListeners().isEmpty())
                     throw new NoMapperException();
                 actor = createActor();
                 EventBus.HandlerMapperKey mapperKey = EventBus.HandlerMapperKey.generate(context.getEventMessage().event());
@@ -61,8 +61,8 @@ public class ActorPoolFactory implements AsynchronousPoolFactory<ActorRef> {
         this.actorFactory = asynchronousFactory;
     }
 
-    private List<Handler> getMapperFrom() {
-        List<Handler> handlers = context.getHandlers();
+    private List<DomainEventListener> getMapperFrom() {
+        List<DomainEventListener> handlers = context.getEventListeners();
         if (handlers.isEmpty())
             throw new NoMapperException();
         return handlers;
