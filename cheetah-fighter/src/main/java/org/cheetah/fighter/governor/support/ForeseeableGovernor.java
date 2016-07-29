@@ -8,6 +8,7 @@ import org.cheetah.fighter.worker.Worker;
 /**
  * Created by Max on 2016/2/29.
  */
+@Deprecated
 public class ForeseeableGovernor extends AbstractGovernor {
     private Worker[] workers;
     private int workerSize;

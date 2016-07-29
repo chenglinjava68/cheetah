@@ -11,6 +11,7 @@ import java.util.EventListener;
 /**
  * Created by Max on 2016/2/14.
  */
+@Deprecated
 public abstract class AbstractHandler implements Handler {
     private final DomainEventListener<DomainEvent> eventListener;
 
@@ -30,7 +31,7 @@ public abstract class AbstractHandler implements Handler {
     }
 
     /**
-     * 某个消费者消费失败后的回调函数
+     * 消费者消费失败后的回调函数
      *
      * @param command
      */
@@ -41,7 +42,7 @@ public abstract class AbstractHandler implements Handler {
     }
 
     /**
-     * 某个消费者消费成功后的回调函数
+     * 消费者消费成功后的回调函数
      * @param command
      */
     @Override

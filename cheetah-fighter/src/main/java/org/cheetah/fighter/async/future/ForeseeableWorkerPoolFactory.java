@@ -28,7 +28,7 @@ public class ForeseeableWorkerPoolFactory implements AsynchronousPoolFactory<For
         if(Objects.nonNull(workers))
             return workers;
         return  this.asynchronousFactory.createAsynchronous(context.getEventMessage().event().getClass().getName(),
-                context.getEventListeners(), context.getInterceptors());
+                context.getHandlers(), context.getInterceptors());
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ForeseeableWorkerPoolFactory implements AsynchronousPoolFactory<For
             return workers;
         } else {
             synchronized (this) {
-                if(context.getEventListeners().isEmpty())
+                if(context.getHandlers().isEmpty())
                     throw new NoMapperException();
                 workers = createWorkerTeam();
                 EventBus.HandlerMapperKey key = EventBus.HandlerMapperKey.generate(context.getEventMessage().event());

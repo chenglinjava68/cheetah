@@ -10,6 +10,7 @@ import java.util.List;
  * 事件管理者接口
  * Created by Max on 2016/2/20.
  */
+@Deprecated
 public interface Governor extends Cloneable {
 
     Governor reset();

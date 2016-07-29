@@ -1,7 +1,5 @@
 package org.cheetah.fighter.worker.support;
 
-import org.cheetah.fighter.DomainEvent;
-import org.cheetah.fighter.DomainEventListener;
 import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.worker.Worker;
@@ -16,8 +14,7 @@ import java.util.List;
 public class AkkaWorkerFactory implements WorkerFactory {
 
     @Override
-    public Worker createWorker(DomainEventListener<DomainEvent> eventListener, List<Interceptor> interceptors) {
-        AkkaWorkerAdaptor adaptor = new AkkaWorkerAdaptor(new AkkaWorker(eventListener, interceptors));
-        return adaptor;
+    public Worker createWorker(Handler handler, List<Interceptor> interceptors) {
+        return new AkkaWorkerAdaptor(new AkkaWorker(handler, interceptors));
     }
 }

@@ -12,11 +12,6 @@ import java.util.concurrent.atomic.AtomicLong;
  * Created by Max on 2016/2/1.
  */
 public interface Handler extends Cloneable {
-    static final AtomicLong ATOMIC_LONG = new AtomicLong();
-    default void test() {
-        System.out.println(ATOMIC_LONG.incrementAndGet());
-    }
-
 
     /**
      * 给机器发送一个指令，让其工作

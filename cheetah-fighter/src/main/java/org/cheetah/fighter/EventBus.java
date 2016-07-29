@@ -1,15 +1,18 @@
 package org.cheetah.fighter;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.lmax.disruptor.dsl.Disruptor;
 import org.cheetah.commons.Startable;
 import org.cheetah.commons.logger.Info;
 import org.cheetah.commons.logger.Loggers;
+import org.cheetah.commons.logger.Warn;
 import org.cheetah.commons.utils.CollectionUtils;
 import org.cheetah.commons.utils.ObjectUtils;
 import org.cheetah.commons.utils.StringUtils;
 import org.cheetah.fighter.engine.Engine;
 import org.cheetah.fighter.engine.EngineDirector;
+import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.worker.support.ForeseeableWorkerAdapter;
 import org.cheetah.fighter.engine.support.EngineStrategy;
 import org.cheetah.fighter.plugin.Plugin;
@@ -22,26 +25,24 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 /**
  * Created by Max on 2016/1/29.
  */
-public class EventBus implements Dispatcher, Startable {
+public class EventBus extends Dispatcher implements Startable {
 
     private FighterConfig fighterConfig; //框架配置
-    private final List<Plugin> plugins = new ArrayList<>();
-    private final List<Interceptor> interceptors = new ArrayList<>();
-    private final List<DomainEventListener> eventListeners = new ArrayList<>();
+    private List<Plugin> plugins = ImmutableList.of();
+    private List<Interceptor> interceptors = ImmutableList.of();
+    private List<DomainEventListener> eventListeners = ImmutableList.of();
     private final PluginChain pluginChain = new PluginChain();
     private Engine engine;
     private EngineDirector engineDirector;
     private EngineStrategy engineStrategy;
     private final Map<InterceptorCacheKey, List<Interceptor>> interceptorCache;
-    private Map<HandlerMapperKey, List<DomainEventListener>> eventHandlers;
+    private Map<HandlerMapperKey, List<Handler>> eventHandlers;
     private final ReentrantLock lock;
     private final EventContext context;
 
@@ -68,20 +69,20 @@ public class EventBus implements Dispatcher, Startable {
             context.setInterceptor(interceptors);
             boolean exists = eventHandlers.containsKey(key);
             if (exists) {
-                List<DomainEventListener> handlerMap = eventHandlers.get(key);
-                context.setEventListeners(handlerMap);
+                List<Handler> handlerMap = eventHandlers.get(key);
+                context.setHandlers(handlerMap);
                 return dispatch();
             }
-            List<DomainEventListener> handlers = getHandlers(event, key);
+            List<Handler> handlers = getHandlers(event, key);
             if (handlers.isEmpty()) {
                 Loggers.me().warn(this.getClass(), "Couldn't find the corresponding mapping.");
                 throw new NoMapperException();
             }
-            context.setEventListeners(handlers);
+            context.setHandlers(handlers);
             return dispatch();
         } finally {
             context.removeEventMessage();
-            context.removeEventListeners();
+            context.removeHandlers();
             context.removeInterceptor();
         }
     }
@@ -130,10 +131,10 @@ public class EventBus implements Dispatcher, Startable {
         this.engine = null;
         engineDirector = null;
         engineStrategy = null;
-        Info.log(this.getClass(), "EventBus stop...");
+        Warn.log(this.getClass(), "EventBus stop...");
     }
 
-    private List<DomainEventListener> getHandlers(final DomainEvent event, final HandlerMapperKey mapperKey) {
+    private List<Handler> getHandlers(final DomainEvent event, final HandlerMapperKey mapperKey) {
         return resolve(event, mapperKey);
     }
 
@@ -142,7 +143,7 @@ public class EventBus implements Dispatcher, Startable {
      *
      * @param event
      */
-    private List<DomainEventListener> resolve(final DomainEvent event, final HandlerMapperKey mapperKey) {
+    private List<Handler> resolve(final DomainEvent event, final HandlerMapperKey mapperKey) {
         lock.lock();
         try {
             if (DomainEvent.class.isAssignableFrom(event.getClass())) {
@@ -150,7 +151,7 @@ public class EventBus implements Dispatcher, Startable {
                 if (eventListeners.isEmpty()) {
                     eventListeners = supportsUniversalListener(event);
                 }
-                return eventListeners;
+                return assembleEventHandlerMapping(mapperKey, eventListeners);
             }
         } finally {
             lock.unlock();
@@ -160,9 +161,9 @@ public class EventBus implements Dispatcher, Startable {
 
     @SuppressWarnings("unchecked")
     private List<DomainEventListener> supportsUniversalListener(final Event event) {
-        List<DomainEventListener> $eventListeners = Lists.newArrayList(this.eventListeners);
+        List<DomainEventListener> eventListeners = this.eventListeners;
 
-        return $eventListeners.stream().filter(o -> {
+        return eventListeners.stream().filter(o -> {
             List classes = CollectionUtils.arrayToList(o.getClass().getInterfaces());
             Optional<Class> classOptional = classes.stream().filter(it -> it.equals(DomainEventListener.class)).findFirst();
             if (!classOptional.isPresent())
@@ -177,13 +178,25 @@ public class EventBus implements Dispatcher, Startable {
         }).collect(Collectors.toList());
     }
 
+    private List<Handler> assembleEventHandlerMapping(HandlerMapperKey mapperKey,
+                                                      List<DomainEventListener> listeners) {
+        List<Handler> handlers = Lists.newArrayList();
+        for (DomainEventListener listener : listeners) {
+            Handler handler = engine.assignDomainEventHandler(listener);
+            handlers.add(handler);
+        }
+
+        eventHandlers.put(mapperKey, handlers);
+        return handlers;
+    }
+
     /**
      * 根据domainevent过滤出相应的listener
      * @param event
      * @return
      */
     private List<DomainEventListener> supportsSmartListener(final DomainEvent event) {
-        List<DomainEventListener> list = Lists.newArrayList(this.eventListeners);
+        List<DomainEventListener> list = this.eventListeners;
 
         return list.stream().filter(o -> SmartDomainEventListener.class.isAssignableFrom(o.getClass()))
                 .map(o -> ((SmartDomainEventListener) o))
@@ -191,7 +204,6 @@ public class EventBus implements Dispatcher, Startable {
                 .filter(o -> o.supportsSourceType(event.getSource().getClass()))
                 .collect(Collectors.toList());
     }
-
     private PluginChain initializesPlugin(PluginChain chain) {
         Objects.requireNonNull(chain, "chain must not be null");
         for (Plugin plugin : this.plugins)
@@ -228,15 +240,15 @@ public class EventBus implements Dispatcher, Startable {
     }
 
     public void registerPlugins(List<Plugin> plugins) {
-        this.plugins.addAll(plugins);
+        this.plugins = ImmutableList.<Plugin>builder().addAll(this.plugins).addAll(plugins).build();
     }
 
     public void registerInterceptors(List<Interceptor> interceptors) {
-        this.interceptors.addAll(interceptors);
+        this.interceptors = ImmutableList.<Interceptor>builder().addAll(this.interceptors).addAll(interceptors).build();
     }
 
     public void registerEventListeners(List<DomainEventListener> eventListeners) {
-        this.eventListeners.addAll(eventListeners);
+        this.eventListeners = ImmutableList.<DomainEventListener>builder().addAll(this.eventListeners).addAll(eventListeners).build();
     }
 
     /**
@@ -271,15 +283,15 @@ public class EventBus implements Dispatcher, Startable {
     }
 
     public void setPlugins(List<Plugin> plugins) {
-        this.plugins.addAll(plugins);
+        this.plugins = ImmutableList.<Plugin>builder().addAll(this.plugins).addAll(plugins).build();
     }
 
     public void setInterceptors(List<Interceptor> interceptors) {
-        this.interceptors.addAll(interceptors);
+        this.interceptors = ImmutableList.<Interceptor>builder().addAll(this.interceptors).addAll(interceptors).build();
     }
 
     public void setEventListeners(List<DomainEventListener> eventListeners) {
-        this.eventListeners.addAll(eventListeners);
+        this.eventListeners = ImmutableList.<DomainEventListener>builder().addAll(this.eventListeners).addAll(eventListeners).build();
     }
 
     static class InterceptorCacheKey {

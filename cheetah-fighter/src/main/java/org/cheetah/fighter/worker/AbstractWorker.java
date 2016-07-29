@@ -16,13 +16,11 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public abstract class AbstractWorker implements Worker {
 
-//    protected final Handler handler;
-    protected final DomainEventListener<DomainEvent> eventListener;
+    protected final Handler handler;
     protected final List<Interceptor> interceptors;
-    protected final AtomicLong counter = new AtomicLong();
 
-    public AbstractWorker(DomainEventListener<DomainEvent> eventListener, List<Interceptor> interceptors) {
-        this.eventListener = eventListener;
+    public AbstractWorker(Handler handler, List<Interceptor> interceptors) {
+        this.handler = handler;
         this.interceptors = interceptors;
     }
 
@@ -45,18 +43,20 @@ public abstract class AbstractWorker implements Worker {
         return chain;
     }
 
-    protected void invoke(Command command) {
+    protected boolean invoke(Command command) {
+        boolean success = false;
         try {
             HandlerInterceptorChain chain = createInterceptorChain();
             boolean result = chain.beforeHandle(command);
             if (result) {
-                doWork(command);
+                success = doWork(command);
                 chain.afterHandle(command);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             Loggers.me().error(this.getClass(), "interceptor invoke Exception", e);
+            throw new InterceptorExecutionException(e);
         }
+        return success;
     }
 
 }

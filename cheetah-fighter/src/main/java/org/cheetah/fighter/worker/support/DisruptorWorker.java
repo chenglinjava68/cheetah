@@ -1,26 +1,22 @@
 package org.cheetah.fighter.worker.support;
 
 import com.lmax.disruptor.EventHandler;
-import org.cheetah.commons.logger.Debug;
 import org.cheetah.commons.logger.Loggers;
-import org.cheetah.fighter.DomainEvent;
-import org.cheetah.fighter.DomainEventListener;
-import org.cheetah.fighter.async.disruptor.DisruptorEvent;
 import org.cheetah.fighter.Interceptor;
+import org.cheetah.fighter.async.disruptor.DisruptorEvent;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.worker.AbstractWorker;
 import org.cheetah.fighter.worker.Command;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by Max on 2016/2/29.
  */
 public class DisruptorWorker extends AbstractWorker implements EventHandler<DisruptorEvent> {
 
-    public DisruptorWorker(DomainEventListener<DomainEvent> eventListener, List<Interceptor> interceptors) {
-        super(eventListener, interceptors);
+    public DisruptorWorker(Handler handler, List<Interceptor> interceptors) {
+        super(handler, interceptors);
     }
 
     @Override
@@ -33,17 +29,16 @@ public class DisruptorWorker extends AbstractWorker implements EventHandler<Disr
     public void work(Command command) {
         try {
             invoke(command);
-            eventListener.onFinish(command.event());
+            handler.onSuccess(command);
         } catch (Exception e) {
-            e.printStackTrace();
-            eventListener.onCancelled(command.event(), e);
+            Loggers.me().error(this.getClass(), "event handler handle error", e);
+            handler.onFailure(command, e);
         }
     }
 
     @Override
     protected boolean doWork(Command command) {
-        eventListener.onDomainEvent(command.event());
-        return true;
+        return handler.handle(command);
     }
 
     @Override

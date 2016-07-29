@@ -7,6 +7,7 @@ import org.cheetah.fighter.plugin.PluginChain;
 /**
  * Created by Max on 2016/3/7.
  */
+@Deprecated
 public class AkkaGovernorAdapter extends AbstractGovernorAdapter {
     public AkkaGovernorAdapter(AkkaGovernor governor, PluginChain pluginChain) {
         super(governor, pluginChain);

@@ -1,22 +1,16 @@
 package org.cheetah.fighter.worker.support;
 
-import org.cheetah.commons.logger.Loggers;
 import org.cheetah.commons.logger.Warn;
 import org.cheetah.commons.utils.Objects;
-import org.cheetah.fighter.DomainEvent;
-import org.cheetah.fighter.DomainEventListener;
 import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.handler.Handler;
-import org.cheetah.fighter.HandlerInterceptorChain;
 import org.cheetah.fighter.worker.AbstractWorker;
 import org.cheetah.fighter.worker.Command;
-import org.cheetah.fighter.worker.InterceptorExecutionException;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by Max on 2016/3/2.
@@ -24,10 +18,9 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ForeseeableWorker extends AbstractWorker {
     private ExecutorService executor;
 
-    public ForeseeableWorker(DomainEventListener<DomainEvent> eventListener, List<Interceptor> interceptors) {
-        super(eventListener, interceptors);
+    public ForeseeableWorker(Handler handler, List<Interceptor> interceptors) {
+        super(handler, interceptors);
     }
-
 
     /**
      * 根据接受到命令开始工作
@@ -37,48 +30,22 @@ public class ForeseeableWorker extends AbstractWorker {
     @Override
     public void work(Command command) {
         try {
-            CompletableFuture.supplyAsync(() -> {
-                long start = System.nanoTime();
-                boolean s = doWork(command);
-//                    Handler h = handler.kagebunsin();
-
-//                boolean s = true;
-//                Loggers.me().debugEnabled(this.getClass(), "work消耗了{}微秒", System.nanoTime() - start);
-                return s;
-            }, executor).whenComplete((r, e) -> {
+            CompletableFuture.supplyAsync(() ->
+                    invoke(command)
+                    , executor).whenComplete((r, e) -> {
                 if (Objects.nonNull(r) && r)
-                    eventListener.onFinish(command.event());
-                else eventListener.onCancelled(command.event(), e);
+                    handler.onSuccess(command);
+                else handler.onFailure(command, e);
             });
         } catch (RejectedExecutionException e) {
             Warn.log(getClass(), "task rejected execute.", e);
-            eventListener.onCancelled(command.event(), e);
+            handler.onFailure(command, e);
         }
     }
 
     @Override
     protected boolean doWork(Command command) {
-        try {
-            invoke(command);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    protected void invoke(Command command) {
-        try {
-            HandlerInterceptorChain chain = createInterceptorChain();
-            boolean result = chain.beforeHandle(command);
-            if (result) {
-                eventListener.onDomainEvent(command.event());
-                chain.afterHandle(command);
-            }
-        } catch (Exception e) {
-            Loggers.me().error(this.getClass(), "interceptor invoke Exception", e);
-            throw new InterceptorExecutionException(e);
-        }
+        return handler.handle(command);
     }
 
     @Override

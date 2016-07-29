@@ -11,6 +11,7 @@ import org.cheetah.fighter.worker.Command;
 /**
  * Created by Max on 2016/2/29.
  */
+@Deprecated
 public class DisruptorGovernor extends AbstractGovernor {
     private RingBuffer<DisruptorEvent> ringBuffer;
 

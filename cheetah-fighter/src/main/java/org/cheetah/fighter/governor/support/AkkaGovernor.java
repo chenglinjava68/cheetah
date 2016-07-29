@@ -15,6 +15,7 @@ import java.util.Map;
 /**
  * Created by Max on 2016/2/20.
  */
+@Deprecated
 public class AkkaGovernor extends AbstractGovernor {
     private ActorRef worker;
 

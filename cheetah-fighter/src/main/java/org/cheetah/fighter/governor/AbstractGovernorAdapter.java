@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * Created by Max on 2016/3/7.
  */
+@Deprecated
 public class AbstractGovernorAdapter implements Governor {
     private Governor adaptee;
 

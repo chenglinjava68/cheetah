@@ -8,6 +8,7 @@ import java.util.Set;
 /** 处理器映射器
  * Created by Max on 2016/2/23.
  */
+@Deprecated
 public interface HandlerMapping extends Cloneable {
 
     List<Handler> getHandlers(EventBus.HandlerMapperKey mapperKey);

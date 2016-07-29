@@ -18,5 +18,5 @@ public interface AsynchronousFactory<T> extends Startable {
      * @param handlers
      * @return
      */
-    T createAsynchronous(String name, List<DomainEventListener> handlers, List<Interceptor> interceptors);
+    T createAsynchronous(String name, List<Handler> handlers, List<Interceptor> interceptors);
 }

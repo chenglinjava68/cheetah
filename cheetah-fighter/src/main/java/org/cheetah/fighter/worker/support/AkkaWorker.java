@@ -19,16 +19,15 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class AkkaWorker extends AbstractWorker {
 
-
-    public AkkaWorker(DomainEventListener<DomainEvent> eventListener, List<Interceptor> interceptors) {
-        super(eventListener, interceptors);
+    public AkkaWorker(Handler handler, List<Interceptor> interceptors) {
+        super(handler, interceptors);
     }
 
     @Override
     protected boolean doWork(Command command) {
         try {
             Assert.notNull(command, "order must not be null");
-            eventListener.onDomainEvent(command.event());
+            handler.handle(command);
             return true;
         } catch (Exception e) {
             Loggers.me().error(this.getClass(), "AkkaWorker work fail.", e);

@@ -61,21 +61,6 @@ public class EventPublisherTest {
         }
     }
 
-    @Test
-    public void springEventTest() throws InterruptedException {
-        Thread[] threads = new Thread[10];
-        for (int i = 0; i < 10; i++) {
-            threads[i] = new Thread(() -> {
-                while (true) {
-                    applicationContext.publishEvent(new SpringEvent("a"));
-
-                }
-            });
-            threads[i].start();
-            threads[i].join();
-        }
-    }
-
 
     @Test
     public void launch2() throws InterruptedException {

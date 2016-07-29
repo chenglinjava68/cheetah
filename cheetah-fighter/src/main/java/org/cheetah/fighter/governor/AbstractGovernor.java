@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * Created by Max on 2016/3/2.
  */
+@Deprecated
 public abstract class AbstractGovernor implements Governor {
     private String id;
     private EventMessage eventMessage;

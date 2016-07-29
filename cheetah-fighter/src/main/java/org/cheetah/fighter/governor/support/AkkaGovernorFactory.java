@@ -6,6 +6,7 @@ import org.cheetah.fighter.governor.GovernorFactory;
 /**
  * Created by Max on 2016/2/21.
  */
+@Deprecated
 public class AkkaGovernorFactory implements GovernorFactory {
 
     @Override

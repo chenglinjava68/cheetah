@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 调度中每次都会检查映射器中有没有对应的工作机器，没有则创建，有则直接获取，不会每次都会创建
  * Created by Max on 2016/2/23.
  */
+@Deprecated
 public class EventHandlerMapping implements HandlerMapping {
     private Map<EventBus.HandlerMapperKey, List<Handler>> handlerMapper = new ConcurrentHashMap<>();
     private static final HandlerMapping genericMapping = new EventHandlerMapping();
