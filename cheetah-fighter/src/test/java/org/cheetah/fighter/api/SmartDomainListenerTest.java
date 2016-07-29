@@ -1,7 +1,7 @@
 package org.cheetah.fighter.api;
 
-import org.cheetah.fighter.core.event.DomainEvent;
-import org.cheetah.fighter.core.event.SmartDomainEventListener;
+import org.cheetah.fighter.DomainEvent;
+import org.cheetah.fighter.SmartDomainEventListener;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -26,12 +26,12 @@ public class SmartDomainListenerTest implements SmartDomainEventListener {
     }
 
     @Override
-    public void onFinish() {
+    public void onFinish(DomainEvent domainEvent) {
         System.out.println("on finish");
     }
 
     @Override
-    public void onCancelled() {
+    public void onCancelled(DomainEvent domainEvent, Throwable e) {
         System.out.println("on cancelled");
     }
 

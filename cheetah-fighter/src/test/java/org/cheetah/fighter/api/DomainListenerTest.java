@@ -1,8 +1,8 @@
 package org.cheetah.fighter.api;
 
 import org.cheetah.commons.utils.ArithUtils;
-import org.cheetah.fighter.core.event.DomainEvent;
-import org.cheetah.fighter.core.event.DomainEventListener;
+import org.cheetah.fighter.DomainEvent;
+import org.cheetah.fighter.DomainEventListener;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -31,12 +31,12 @@ public class DomainListenerTest implements DomainEventListener {
     }
 
     @Override
-    public void onFinish() {
+    public void onFinish(DomainEvent domainEvent) {
 
     }
 
     @Override
-    public void onCancelled() {
+    public void onCancelled(DomainEvent domainEvent, Throwable e) {
 
     }
 

@@ -4,10 +4,11 @@ import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+import org.cheetah.fighter.DomainEventListener;
 import org.cheetah.fighter.async.AbstractAsynchronousFactory;
-import org.cheetah.fighter.core.Interceptor;
-import org.cheetah.fighter.core.handler.Handler;
-import org.cheetah.fighter.worker.DisruptorWorker;
+import org.cheetah.fighter.Interceptor;
+import org.cheetah.fighter.handler.Handler;
+import org.cheetah.fighter.worker.support.DisruptorWorker;
 
 import java.util.EventListener;
 import java.util.List;
@@ -21,12 +22,12 @@ public class DisruptorFactory extends AbstractAsynchronousFactory<Disruptor<Disr
 
     public Disruptor<DisruptorEvent> createMultiDisruptor() {
         WaitStrategy waitStrategy = new BlockingWaitStrategy();
-        return new Disruptor<>(new DisruptorEventFactory(), ringbufferSize, executorService(), ProducerType.MULTI, waitStrategy);
+        return new Disruptor<>(new DisruptorEventFactory(), ringbufferSize, getExecutorService(), ProducerType.MULTI, waitStrategy);
     }
 
     public Disruptor<DisruptorEvent> createSingleDisruptor() {
         WaitStrategy waitStrategy = new BlockingWaitStrategy();
-        return new Disruptor<>(new DisruptorEventFactory(), ringbufferSize, executorService(), ProducerType.SINGLE, waitStrategy);
+        return new Disruptor<>(new DisruptorEventFactory(), ringbufferSize, getExecutorService(), ProducerType.SINGLE, waitStrategy);
     }
 
     public void setRingbufferSize(int ringbufferSize) {

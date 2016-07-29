@@ -1,7 +1,7 @@
 package org.cheetah.fighter.api;
 
-import org.cheetah.fighter.core.event.Event;
-import org.cheetah.fighter.core.event.EventCollector;
+import org.cheetah.fighter.DomainEvent;
+import org.cheetah.fighter.EventCollector;
 import org.cheetah.ioc.BeanFactory;
 
 /**
@@ -10,7 +10,7 @@ import org.cheetah.ioc.BeanFactory;
 public final class FighterContext {
     private static EventCollector collector = BeanFactory.getBean(EventCollector.class);
 
-    public static <E extends Event> void publish(E event) {
+    public static <E extends DomainEvent> void publish(E event) {
         collector.collect(event);
     }
 

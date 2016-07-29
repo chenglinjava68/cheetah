@@ -1,7 +1,7 @@
 package org.cheetah.fighter.worker;
 
 
-import org.cheetah.fighter.core.FighterException;
+import org.cheetah.fighter.FighterException;
 
 /**
  * Created by Max on 2016/3/8.

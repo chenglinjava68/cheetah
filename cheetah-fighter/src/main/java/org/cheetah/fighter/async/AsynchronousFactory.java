@@ -1,13 +1,11 @@
 package org.cheetah.fighter.async;
 
 import org.cheetah.commons.Startable;
-import org.cheetah.fighter.core.Interceptor;
-import org.cheetah.fighter.core.handler.Handler;
+import org.cheetah.fighter.DomainEventListener;
+import org.cheetah.fighter.Interceptor;
+import org.cheetah.fighter.handler.Handler;
 
-import java.util.EventListener;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
 
 /**
  * 异步工作者工厂接口

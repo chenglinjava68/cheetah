@@ -5,12 +5,13 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
-		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd">
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
     <context:annotation-config/>
     <context:property-placeholder location="classpath*:*.properties" ignore-unresolvable="true"/>
@@ -18,25 +19,28 @@ http://www.springframework.org/schema/aop
     <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
     <aop:aspectj-autoproxy/>
 
+    <task:executor id="executor" pool-size="64" queue-capacity="100000"/>
+
+    <bean class="org.cheetah.fighter.api.SpringListener"/>
+
     <bean id="beanFactoryProvider" class="org.cheetah.ioc.spring.SpringBeanFactoryProvider"/>
 
-    <bean id="eventBus" class="org.cheetah.fighter.core.EventBus" init-method="start" destroy-method="stop">
+    <bean id="eventBus" class="org.cheetah.fighter.EventBus" init-method="start" destroy-method="stop">
+        <property name="eventListeners">
+            <list>
+                <bean class="org.cheetah.fighter.api.SmartDomainListenerTest"/>
+                <bean class="org.cheetah.fighter.api.DomainListenerTest"/>
+                <bean class="org.cheetah.fighter.api.DomainListenerTest2"/>
+                <bean class="org.cheetah.fighter.api.SmartDomainListenerTest2"/>
+            </list>
+        </property>
+        <property name="interceptors">
+            <bean class="org.cheetah.fighter.api.HelloWorldInterceptor"/>
+        </property>
         <property name="fighterConfig">
-            <bean class="org.cheetah.fighter.core.FighterConfig">
-                <property name="eventListeners">
-                    <list>
-                        <bean class="org.cheetah.fighter.api.EventPublisherTest.SmartDomainListenerTest"/>
-                        <bean class="org.cheetah.fighter.api.EventPublisherTest.DomainListenerTest"/>
-                        <bean class="org.cheetah.fighter.api.EventPublisherTest.DomainListenerTest2"/>
-                        <bean class="org.cheetah.fighter.api.EventPublisherTest.SmartDomainListenerTest2"/>
-                    </list>
-                </property>
-                <property name="interceptors">
-                    <bean class="org.cheetah.fighter.api.HelloWorldInterceptor"/>
-                </property>
-                <!--<property name="policy" value="future"/>-->
-                <property name="ringBufferSize" value="1024"/>
-
+            <bean class="org.cheetah.fighter.FighterConfig">
+                <property name="engine" value="future"/>
+                <property name="ringBuffer" value="1024"/>
             </bean>
         </property>
     </bean>

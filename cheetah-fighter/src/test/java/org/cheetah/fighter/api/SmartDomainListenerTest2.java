@@ -1,9 +1,9 @@
 package org.cheetah.fighter.api;
 
-import org.cheetah.commons.utils.ArithUtils;
-import org.cheetah.fighter.core.event.DomainEvent;
-import org.cheetah.fighter.core.event.SmartDomainEventListener;
+import org.cheetah.fighter.DomainEvent;
+import org.cheetah.fighter.SmartDomainEventListener;
 
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -25,17 +25,20 @@ public class SmartDomainListenerTest2 implements SmartDomainEventListener {
 
     @Override
     public void onDomainEvent(DomainEvent event) {
-        System.out.println("SmartDomainListenerTest2 -- " + atomicLong1.incrementAndGet());
+        int i = 0;
+        while(i < 10000000)
+            i++;
+        System.out.println("SmartDomainListenerTest2 -- " + atomicLong1.incrementAndGet() + "----" + atomicLong2.get());
 
     }
 
     @Override
-    public void onCancelled() {
-
+    public void onCancelled(DomainEvent domainEvent, Throwable e) {
+        if(e instanceof RejectedExecutionException)
+            System.out.println("SmartDomainListenerTest2 -- onCancelled-" + atomicLong2.incrementAndGet());
     }
 
     @Override
-    public void onFinish() {
-        System.out.println("SmartDomainListenerTest2 -- onFinish-" + atomicLong2.incrementAndGet());
+    public void onFinish(DomainEvent domainEvent) {
     }
 }

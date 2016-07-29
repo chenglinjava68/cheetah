@@ -16,7 +16,7 @@
         <module>cheetah-repository</module>
         <module>cheetah-bootstrap</module>
         <module>cheetah-ioc</module>
-        <module>cheetah-jarrs</module>
+        <module>cheetah-rest</module>
     </modules>
 
     <developers>

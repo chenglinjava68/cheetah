@@ -2,11 +2,11 @@ package org.cheetah.fighter.async.disruptor;
 
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+import org.cheetah.fighter.EventBus;
 import org.cheetah.fighter.async.AsynchronousFactory;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
-import org.cheetah.fighter.core.HandlerMapping;
-import org.cheetah.fighter.core.NoMapperException;
-import org.cheetah.fighter.core.EventContext;
+import org.cheetah.fighter.NoMapperException;
+import org.cheetah.fighter.EventContext;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,31 +19,29 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DisruptorPoolFactory implements AsynchronousPoolFactory<Disruptor<DisruptorEvent>> {
     private AsynchronousFactory<Disruptor<DisruptorEvent>> disruptorFactory;
-    private final Map<HandlerMapping.HandlerMapperKey, Disruptor<DisruptorEvent>> disruptorPool;
+    private final Map<EventBus.HandlerMapperKey, Disruptor<DisruptorEvent>> disruptorPool;
     private EventContext context;
 
     public DisruptorPoolFactory() {
         this.disruptorPool = new ConcurrentHashMap<>();
     }
 
-    public Disruptor<DisruptorEvent> createDisruptor() {
-        Disruptor<DisruptorEvent> disruptor = this.disruptorPool.get(HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event()));
+    private Disruptor<DisruptorEvent> createDisruptor() {
+        Disruptor<DisruptorEvent> disruptor = this.disruptorPool.get(EventBus.HandlerMapperKey.generate(context.getEventMessage().event()));
         if (Objects.nonNull(disruptor))
             return disruptor;
-        return this.disruptorFactory.createAsynchronous(ProducerType.SINGLE.name(), context.handlers(),context.interceptors());
+        return this.disruptorFactory.createAsynchronous(ProducerType.SINGLE.name(), context.getHandlers(),context.getInterceptors());
     }
 
     @Override
     public Disruptor<DisruptorEvent> getAsynchronous() {
-        Disruptor<DisruptorEvent> disruptor = this.disruptorPool.get(HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event()));
+        Disruptor<DisruptorEvent> disruptor = this.disruptorPool.get(EventBus.HandlerMapperKey.generate(context.getEventMessage().event()));
         if (Objects.nonNull(disruptor)) {
             return disruptor;
         } else {
             synchronized (this) {
-                if (context.handlers().isEmpty())
-                    throw new NoMapperException();
                 disruptor = createDisruptor();
-                HandlerMapping.HandlerMapperKey key = HandlerMapping.HandlerMapperKey.generate(context.eventMessage().event());
+                EventBus.HandlerMapperKey key = EventBus.HandlerMapperKey.generate(context.getEventMessage().event());
                 this.disruptorPool.putIfAbsent(key, disruptor);
                 return disruptor;
             }
@@ -67,7 +65,7 @@ public class DisruptorPoolFactory implements AsynchronousPoolFactory<Disruptor<D
 
     @Override
     public void stop() {
-        Map<HandlerMapping.HandlerMapperKey, Disruptor<DisruptorEvent>> stopMap = new HashMap<>(this.disruptorPool);
+        Map<EventBus.HandlerMapperKey, Disruptor<DisruptorEvent>> stopMap = new HashMap<>(this.disruptorPool);
         this.disruptorPool.clear();
         Iterator<Disruptor<DisruptorEvent>> iterator = stopMap.values().iterator();
         while (iterator.hasNext()) {

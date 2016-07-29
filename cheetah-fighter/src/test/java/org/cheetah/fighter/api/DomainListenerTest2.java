@@ -1,6 +1,6 @@
 package org.cheetah.fighter.api;
 
-import org.cheetah.fighter.core.event.DomainEventListener;
+import org.cheetah.fighter.DomainEventListener;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -17,12 +17,12 @@ public class DomainListenerTest2 implements DomainEventListener<EventPublisherTe
     }
 
     @Override
-    public void onFinish() {
+    public void onFinish(EventPublisherTest.ApplicationEventTest event) {
         System.out.println("onfinish:" );
     }
 
     @Override
-    public void onCancelled() {
+    public void onCancelled(EventPublisherTest.ApplicationEventTest event, Throwable e) {
         System.out.println("oncacelled:");
     }
 

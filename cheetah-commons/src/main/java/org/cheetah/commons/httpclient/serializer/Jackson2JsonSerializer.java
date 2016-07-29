@@ -16,7 +16,7 @@ import java.io.IOException;
  * jackson序列化实现
  *
  * Created by Max on 2016/7/6.
- */
+*/
 public class Jackson2JsonSerializer implements EntitySerializer {
     private final static ObjectMapper objectMapper;
 
