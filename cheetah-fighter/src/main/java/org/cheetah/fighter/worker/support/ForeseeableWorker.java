@@ -1,7 +1,7 @@
 package org.cheetah.fighter.worker.support;
 
-import org.cheetah.commons.logger.Warn;
-import org.cheetah.commons.utils.Objects;
+import org.cheetah.common.logger.Warn;
+import org.cheetah.common.utils.Objects;
 import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.worker.AbstractWorker;

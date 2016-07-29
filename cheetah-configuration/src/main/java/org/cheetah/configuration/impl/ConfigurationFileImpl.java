@@ -1,7 +1,7 @@
 package org.cheetah.configuration.impl;
 
-import org.cheetah.commons.logger.Info;
-import org.cheetah.commons.utils.StringUtils;
+import org.cheetah.common.logger.Info;
+import org.cheetah.common.utils.StringUtils;
 import org.cheetah.configuration.ConfigurationException;
 import org.cheetah.configuration.WritableConfiguration;
 

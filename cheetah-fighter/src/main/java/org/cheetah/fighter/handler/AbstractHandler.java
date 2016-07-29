@@ -1,12 +1,10 @@
 package org.cheetah.fighter.handler;
 
-import org.cheetah.commons.utils.ObjectUtils;
+import org.cheetah.common.utils.ObjectUtils;
 import org.cheetah.fighter.DomainEvent;
 import org.cheetah.fighter.DomainEventListener;
 import org.cheetah.fighter.Event;
 import org.cheetah.fighter.worker.Command;
-
-import java.util.EventListener;
 
 /**
  * Created by Max on 2016/2/14.

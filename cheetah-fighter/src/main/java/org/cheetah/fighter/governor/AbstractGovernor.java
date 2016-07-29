@@ -1,7 +1,7 @@
 package org.cheetah.fighter.governor;
 
-import org.cheetah.commons.utils.Assert;
-import org.cheetah.commons.utils.IDGenerator;
+import org.cheetah.common.utils.Assert;
+import org.cheetah.common.utils.IDGenerator;
 import org.cheetah.fighter.EventMessage;
 import org.cheetah.fighter.Feedback;
 import org.cheetah.fighter.handler.Handler;

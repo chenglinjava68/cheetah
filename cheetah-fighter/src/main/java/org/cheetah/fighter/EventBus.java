@@ -3,23 +3,22 @@ package org.cheetah.fighter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.lmax.disruptor.dsl.Disruptor;
-import org.cheetah.commons.Startable;
-import org.cheetah.commons.logger.Info;
-import org.cheetah.commons.logger.Loggers;
-import org.cheetah.commons.logger.Warn;
-import org.cheetah.commons.utils.CollectionUtils;
-import org.cheetah.commons.utils.ObjectUtils;
-import org.cheetah.commons.utils.StringUtils;
+import org.cheetah.common.Startable;
+import org.cheetah.common.logger.Info;
+import org.cheetah.common.logger.Warn;
+import org.cheetah.common.utils.CollectionUtils;
+import org.cheetah.common.utils.ObjectUtils;
+import org.cheetah.common.utils.StringUtils;
 import org.cheetah.fighter.engine.Engine;
 import org.cheetah.fighter.engine.EngineDirector;
-import org.cheetah.fighter.handler.Handler;
-import org.cheetah.fighter.worker.support.ForeseeableWorkerAdapter;
 import org.cheetah.fighter.engine.support.EngineStrategy;
+import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.plugin.Plugin;
 import org.cheetah.fighter.plugin.PluginChain;
 import org.cheetah.fighter.worker.Worker;
 import org.cheetah.fighter.worker.WorkerAdapter;
 import org.cheetah.fighter.worker.support.DisruptorWorkerAdapter;
+import org.cheetah.fighter.worker.support.ForeseeableWorkerAdapter;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -75,7 +74,7 @@ public class EventBus extends Dispatcher implements Startable {
             }
             List<Handler> handlers = getHandlers(event, key);
             if (handlers.isEmpty()) {
-                Loggers.me().warn(this.getClass(), "Couldn't find the corresponding mapping.");
+                Warn.log(this.getClass(), "Couldn't find the corresponding mapping.");
                 throw new NoMapperException();
             }
             context.setHandlers(handlers);

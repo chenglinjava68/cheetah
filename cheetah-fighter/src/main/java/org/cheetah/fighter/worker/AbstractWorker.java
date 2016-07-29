@@ -1,15 +1,11 @@
 package org.cheetah.fighter.worker;
 
-import org.cheetah.commons.logger.Loggers;
-import org.cheetah.fighter.DomainEvent;
-import org.cheetah.fighter.DomainEventListener;
-import org.cheetah.fighter.Interceptor;
+import org.cheetah.common.logger.Err;
 import org.cheetah.fighter.HandlerInterceptorChain;
+import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.handler.Handler;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by Max on 2016/5/4.
@@ -53,7 +49,7 @@ public abstract class AbstractWorker implements Worker {
                 chain.afterHandle(command);
             }
         } catch (Exception e) {
-            Loggers.me().error(this.getClass(), "interceptor invoke Exception", e);
+            Err.log(this.getClass(), "interceptor invoke Exception", e);
             throw new InterceptorExecutionException(e);
         }
         return success;

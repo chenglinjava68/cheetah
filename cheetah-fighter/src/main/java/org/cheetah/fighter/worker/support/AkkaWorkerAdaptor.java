@@ -4,7 +4,7 @@ import akka.actor.OneForOneStrategy;
 import akka.actor.SupervisorStrategy;
 import akka.actor.UntypedActor;
 import akka.japi.Function;
-import org.cheetah.commons.logger.Info;
+import org.cheetah.common.logger.Info;
 import org.cheetah.fighter.async.akka.ActorFactory;
 import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.worker.Command;

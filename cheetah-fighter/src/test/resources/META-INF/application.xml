@@ -21,8 +21,6 @@ http://www.springframework.org/schema/aop
 
     <task:executor id="executor" pool-size="64" queue-capacity="100000"/>
 
-    <bean class="org.cheetah.fighter.api.SpringListener"/>
-
     <bean id="beanFactoryProvider" class="org.cheetah.ioc.spring.SpringBeanFactoryProvider"/>
 
     <bean id="eventBus" class="org.cheetah.fighter.EventBus" init-method="start" destroy-method="stop">

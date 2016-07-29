@@ -1,6 +1,6 @@
 package org.cheetah.rest.filter;
 
-import org.cheetah.commons.logger.Loggers;
+import org.cheetah.common.logger.Info;
 import org.cheetah.rest.exceptions.IllegalVisitorAddressException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +20,7 @@ public class ApiAddressFilter extends ApiAccessFilter {
     @Override
     protected void preRequest(ContainerRequestContext requestContext) throws IOException {
         String clientAddr = getIpAddr(request);
-        Loggers.me().info(this.getClass(), "client address: [{}]", clientAddr);
+        Info.log(this.getClass(), "client address: [{}]", clientAddr);
 
         if (allowAddress.size() > 0 && !allowAddress.contains(clientAddr))
             throw new IllegalVisitorAddressException();

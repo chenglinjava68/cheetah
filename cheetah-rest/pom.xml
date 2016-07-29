@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>org.cheetah</groupId>
-            <artifactId>cheetah-commons</artifactId>
+            <artifactId>cheetah-common</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

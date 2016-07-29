@@ -1,6 +1,7 @@
 package org.cheetah.bootstraps;
 
-import org.cheetah.commons.logger.Loggers;
+import org.cheetah.common.logger.Err;
+import org.cheetah.common.logger.Warn;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -22,7 +23,7 @@ public abstract class BootstrapSupport implements Bootstrap {
                 }
             };
             Runtime.getRuntime().addShutdownHook(new Thread(recycle));
-            Loggers.me().warn(this.getClass(), "bootstrap starting ...");
+            Warn.log(this.getClass(), "bootstrap starting ...");
             this.startup();
             Runnable guard = new Runnable() {
                 @Override
@@ -31,12 +32,12 @@ public abstract class BootstrapSupport implements Bootstrap {
                         signal.await();
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
-                        Loggers.me().error(this.getClass(), "signal await occurs error.", e);
+                        Err.log(this.getClass(), "signal await occurs error.", e);
                     }
                 }
             };
             (new Thread(guard)).start();
-            Loggers.me().warn(this.getClass(), "bootstrap finished.");
+            Warn.log(this.getClass(), "bootstrap finished.");
         } catch (Exception e) {
             throw new BootstrapException("bootstrap occurs error.", e);
         }

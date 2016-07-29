@@ -1,13 +1,11 @@
 package org.cheetah.fighter.handler.support;
 
-import org.cheetah.commons.logger.Debug;
-import org.cheetah.commons.logger.Loggers;
-import org.cheetah.commons.logger.Warn;
-import org.cheetah.commons.utils.ObjectUtils;
+import org.cheetah.common.logger.Debug;
+import org.cheetah.common.logger.Err;
+import org.cheetah.common.utils.ObjectUtils;
 import org.cheetah.fighter.DomainEvent;
 import org.cheetah.fighter.DomainEventListener;
 import org.cheetah.fighter.Event;
-import org.cheetah.fighter.handler.AbstractHandler;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.worker.Command;
 
@@ -39,7 +37,7 @@ public class DomainEventHandler implements Handler {
         try {
             doExecute(event);
         } catch (Throwable e) {
-            Loggers.me().error(this.getClass(), "event handler completeExecute error", e);
+            Err.log(this.getClass(), "event handler completeExecute error", e);
             return false;
         }
         return true;

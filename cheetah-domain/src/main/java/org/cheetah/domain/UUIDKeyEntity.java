@@ -1,6 +1,6 @@
 package org.cheetah.domain;
 
-import org.cheetah.commons.utils.IDGenerator;
+import org.cheetah.common.utils.IDGenerator;
 
 /**
  * UUID模型类型

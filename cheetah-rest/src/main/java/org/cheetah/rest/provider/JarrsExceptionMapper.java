@@ -1,6 +1,6 @@
 package org.cheetah.rest.provider;
 
-import org.cheetah.commons.logger.Loggers;
+import org.cheetah.common.logger.Err;
 import org.cheetah.rest.ApiResult;
 
 import javax.ws.rs.NotFoundException;
@@ -20,7 +20,7 @@ public class JarrsExceptionMapper implements ExceptionMapper<RuntimeException> {
             throw e;
         }
 
-        Loggers.me().error(getClass(), "api error.", e);
+        Err.log(getClass(), "api error.", e);
         ApiResult result = ApiResultHelper.doGetApiResult(e);
         return Response.ok().entity(result).build();
     }

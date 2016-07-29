@@ -13,7 +13,7 @@ public interface HandlerMapping extends Cloneable {
 
     List<Handler> getHandlers(EventBus.HandlerMapperKey mapperKey);
 
-    void put(EventBus.HandlerMapperKey mapperKey,List<Handler> handlers);
+    void put(EventBus.HandlerMapperKey mapperKey, List<Handler> handlers);
 
     Set<EventBus.HandlerMapperKey> mapperKeys();
 

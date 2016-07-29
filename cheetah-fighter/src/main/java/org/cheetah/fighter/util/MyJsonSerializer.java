@@ -8,8 +8,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.cheetah.commons.logger.Loggers;
-import org.cheetah.commons.utils.JSerializeException;
+import org.cheetah.common.logger.Err;
+import org.cheetah.common.utils.JSerializeException;
 
 import java.io.IOException;
 
@@ -34,7 +34,7 @@ public class MyJsonSerializer extends JSerializer {
         try {
             return objectMapper.readValue(bytes, manifest);
         } catch (IOException e) {
-            Loggers.me().error(this.getClass(), "MyJsonSerializer fromBinaryJava fail", e);
+            Err.log(this.getClass(), "MyJsonSerializer fromBinaryJava fail", e);
             throw new JSerializeException(null, e);
         }
     }
@@ -49,7 +49,7 @@ public class MyJsonSerializer extends JSerializer {
         try {
             return objectMapper.writeValueAsBytes(o);
         } catch (JsonProcessingException e) {
-            Loggers.me().error(this.getClass(), "MyJsonSerializer toBinary fail", e);
+            Err.log(this.getClass(), "MyJsonSerializer toBinary fail", e);
             throw new JSerializeException(null, e);
         }
     }

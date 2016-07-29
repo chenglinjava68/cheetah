@@ -43,8 +43,8 @@ public class AkkaEngineBuilder implements EngineBuilder {
     @Override
     public AsynchronousPoolFactory buildAsynchronousPoolFactory(FighterConfig fighterConfig) {
         ActorFactory actorFactory = new ActorFactory();
-        if(fighterConfig.eventPerformerSize() > 0)
-            actorFactory.setActorSize(fighterConfig.eventPerformerSize());
+        if(fighterConfig.getEventPerformerSize() > 0)
+            actorFactory.setActorSize(fighterConfig.getEventPerformerSize());
         AsynchronousPoolFactory<ActorRef> factory = new ActorPoolFactory();
         factory.setAsynchronousFactory(actorFactory);
         return factory;

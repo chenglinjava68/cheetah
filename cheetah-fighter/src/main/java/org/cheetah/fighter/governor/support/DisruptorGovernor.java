@@ -2,7 +2,6 @@ package org.cheetah.fighter.governor.support;
 
 import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.RingBuffer;
-import org.cheetah.commons.logger.Loggers;
 import org.cheetah.fighter.async.disruptor.DisruptorEvent;
 import org.cheetah.fighter.Feedback;
 import org.cheetah.fighter.governor.AbstractGovernor;
@@ -17,13 +16,11 @@ public class DisruptorGovernor extends AbstractGovernor {
 
     @Override
     protected Feedback notifyAllWorker() {
-        long start = System.currentTimeMillis();
         if (handlers().isEmpty())
             return Feedback.EMPTY;
         Translator translator = new Translator();
         Command command = Command.of(details().event(), false);
         ringBuffer.publishEvent(translator, command);
-        Loggers.me().debugEnabled(this.getClass(), "消耗了{}毫秒", System.currentTimeMillis() - start);
         return Feedback.SUCCESS;
     }
 

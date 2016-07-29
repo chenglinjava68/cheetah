@@ -2,8 +2,8 @@ package org.cheetah.bootstraps.jetty;
 
 import org.cheetah.bootstraps.BootstrapException;
 import org.cheetah.bootstraps.BootstrapSupport;
-import org.cheetah.commons.logger.Info;
-import org.cheetah.commons.logger.Loggers;
+import org.cheetah.common.logger.Err;
+import org.cheetah.common.logger.Info;
 import org.cheetah.configuration.Configuration;
 import org.cheetah.configuration.ConfigurationFactory;
 import org.cheetah.ioc.spring.web.CheetahContextLoaderListener;
@@ -155,7 +155,7 @@ public class JettyBootstrap extends BootstrapSupport {
             try {
                 server.stop();
             } catch (Exception e) {
-                Loggers.me().error(getClass(), "stop jetty server occurs error.", e);
+                Err.log(getClass(), "stop jetty server occurs error.", e);
             }
         }
     }
