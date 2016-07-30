@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Max on 2016/1/29.
  */
-public class EventBus extends Dispatcher implements Startable {
+public class EventBus implements Dispatcher, Startable {
 
     private FighterConfig fighterConfig; //框架配置
     private List<Plugin> plugins = ImmutableList.of();
@@ -51,7 +51,6 @@ public class EventBus extends Dispatcher implements Startable {
         this.lock = new ReentrantLock();
         this.context = EventContext.getContext();
     }
-
 
     @Override
     public EventResult dispatch(final EventMessage eventMessage) {
