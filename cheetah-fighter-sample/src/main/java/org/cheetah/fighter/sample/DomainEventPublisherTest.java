@@ -29,9 +29,11 @@ public class DomainEventPublisherTest {
                 threads[i] = new Thread(() -> {
                     while (true) {
                         EventResult result = DomainEventPublisher.publish(
-                                new DomainEventTest("huahng"), true
+                                new DomainEventTest("huahng"), false
                         );
-                        System.out.println(result);
+                        DomainEventPublisher.publish(
+                                new DomainEventTest2("huahng"), false
+                        );
                         //                    System.out.println(atomicLong2.incrementAndGet());
                     }
                 });

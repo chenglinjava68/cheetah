@@ -27,6 +27,7 @@ http://www.springframework.org/schema/aop
         <property name="eventListeners">
             <list>
                 <bean class="org.cheetah.fighter.sample.SmartDomainListenerTest"/>
+                <bean class="org.cheetah.fighter.sample.SmartDomainListenerTest2"/>
             </list>
         </property>
         <property name="fighterConfig">
