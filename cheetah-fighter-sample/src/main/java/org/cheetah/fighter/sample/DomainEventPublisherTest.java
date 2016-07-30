@@ -20,7 +20,7 @@ public class DomainEventPublisherTest {
     }
 
     /**
-     * ĞÔÄÜ²âÊÔ
+     * æ€§èƒ½æµ‹è¯•
      */
     public static void performance() {
         try {
