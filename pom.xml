@@ -17,6 +17,7 @@
         <module>cheetah-bootstrap</module>
         <module>cheetah-ioc</module>
         <module>cheetah-rest</module>
+        <module>cheetah-fighter-sample</module>
     </modules>
 
     <developers>
