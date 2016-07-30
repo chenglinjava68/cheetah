@@ -1,5 +1,6 @@
 package org.cheetah.fighter.engine.support;
 
+import org.cheetah.common.logger.Info;
 import org.cheetah.fighter.FighterConfig;
 import org.cheetah.fighter.engine.Engine;
 import org.cheetah.fighter.engine.EngineBuilder;
@@ -24,6 +25,7 @@ public class ForeseeableEngineDirector implements EngineDirector {
         engine.setMapping(builder.buildMapping());
         engine.setWorkerFactory(builder.buildWorkerFactory());
         engine.setAsynchronousPoolFactory(builder.buildAsynchronousPoolFactory(configuration));
+        Info.log(this.getClass(), "direct foreseeable engine with handler factory and worker factroy and asynchronous pool factory");
         return engine;
     }
 

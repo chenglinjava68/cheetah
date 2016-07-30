@@ -1,17 +1,16 @@
 package org.cheetah.fighter.api;
 
 import org.cheetah.fighter.DomainEvent;
+import org.cheetah.fighter.EventResult;
 import org.cheetah.ioc.BeanFactory;
 import org.cheetah.ioc.spring.SpringBeanFactoryProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -24,67 +23,25 @@ public class EventPublisherTest {
     public static final AtomicLong atomicLong2 = new AtomicLong();
     @Autowired
     SpringBeanFactoryProvider springBeanFactoryProvider;
-    @Autowired
-    private ApplicationContext applicationContext;
 
     @Before
     public void before() {
         BeanFactory.setBeanFactoryProvider(springBeanFactoryProvider);
     }
 
-    @Test
-    public void launch() throws InterruptedException {
-        Thread[] threads = new Thread[10];
-        for (int i = 0; i < 10; i++) {
-            threads[i] = new Thread(() -> {
-                while (true) {
-                    DomainEventPublisher.publish(
-                            new DomainEventTest2(new User("huahng"))
-                    );
-//                    System.out.println(atomicLong2.incrementAndGet());
-                }
-            });
-            threads[i].start();
-            threads[i].join();
-        }
 
-    }
 
 
     @Test
     public void launch2() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
-        FighterContext.publish(
-                new DomainEventTest2(new User("hzf"))
-        ); FighterContext.publish(
-                new DomainEventTest2(new User("hzf"))
-        ); FighterContext.publish(
-                new DomainEventTest2(new User("hzf"))
-        ); FighterContext.publish(
-                new DomainEventTest2(new User("hzf"))
+//        CountDownLatch latch = new CountDownLatch(1);
+        EventResult result = FighterContext.publish(
+                new DomainEventTest2(new User("hzf")), true
         );
-
-        latch.await();
+        System.out.println(result);
+        Thread.sleep(1000);
     }
 
-
-    @Test
-    public void launch3() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
-        long start = System.currentTimeMillis();
-        int i = 0;
-        while (true) {
-            i++;
-            DomainEventPublisher.publish(
-                    new ApplicationEventTest(new User("hzf"))
-            );
-            if (i == 1000000) {
-                break;
-            }
-        }
-        System.out.println(System.currentTimeMillis() - start);
-        latch.await();
-    }
 
     public static class ApplicationEventTest extends DomainEvent {
 

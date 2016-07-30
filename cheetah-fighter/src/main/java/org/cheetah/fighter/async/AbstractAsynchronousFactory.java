@@ -1,6 +1,8 @@
 package org.cheetah.fighter.async;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import org.cheetah.common.logger.Info;
+import org.cheetah.common.utils.StringUtils;
 import org.cheetah.fighter.worker.WorkerFactory;
 
 import java.util.concurrent.*;
@@ -13,6 +15,7 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
     private int threadPoolSize = Runtime.getRuntime().availableProcessors() + 2;
     private int queueLength = 100000;
     private RejectedExecutionHandler rejectedExecutionHandler = new AbortPolicy();
+    private String rejectionPolicy;
     private ExecutorService executorService;
     private WorkerFactory workerFactory;
 
@@ -33,10 +36,13 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
     }
 
     protected synchronized ExecutorService buildExecutorService() {
-        if(this.executorService == null)
-            executorService =  new ThreadPoolExecutor(threadPoolSize, threadPoolSize,
+        if (this.executorService == null) {
+            executorService = new ThreadPoolExecutor(threadPoolSize, threadPoolSize,
                     3000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(queueLength),
                     new ThreadFactoryBuilder().setNameFormat("Cheetah-Fighter-%d").build(), rejectedExecutionHandler);
+            Info.log(this.getClass(), "build executor thread pool size {}, keep alive time {} ms, queue length {}, rejection policy {}",
+                    threadPoolSize, 3000, queueLength, StringUtils.isBlank(rejectionPolicy) ? "Abort" : rejectionPolicy);
+        }
         return executorService;
     }
 
@@ -78,5 +84,6 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
             default:
                 this.rejectedExecutionHandler = new AbortPolicy();
         }
+        this.rejectionPolicy = StringUtils.isBlank(rejectionPolicy) ? "Abort" : rejectionPolicy;
     }
 }

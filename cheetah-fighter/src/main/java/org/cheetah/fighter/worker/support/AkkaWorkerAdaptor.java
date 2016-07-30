@@ -5,6 +5,7 @@ import akka.actor.SupervisorStrategy;
 import akka.actor.UntypedActor;
 import akka.japi.Function;
 import org.cheetah.common.logger.Info;
+import org.cheetah.fighter.Feedback;
 import org.cheetah.fighter.async.akka.ActorFactory;
 import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.worker.Command;
@@ -26,8 +27,8 @@ public class AkkaWorkerAdaptor extends UntypedActor implements Worker {
     }
 
     @Override
-    public void work(Command command) {
-        worker.work(command);
+    public Feedback work(Command command) {
+        return worker.work(command);
     }
 
     @Override

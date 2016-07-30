@@ -1,5 +1,6 @@
 package org.cheetah.fighter.worker;
 
+import org.cheetah.fighter.Feedback;
 import org.cheetah.fighter.Interceptor;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface Worker extends Cloneable {
      * 根据接受到命令开始工作
      * @param command
      */
-    void work(Command command);
+    Feedback work(Command command);
 
     List<Interceptor> getInterceptors();
 }

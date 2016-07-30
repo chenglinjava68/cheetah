@@ -1,5 +1,6 @@
 package org.cheetah.fighter.async.future;
 
+import org.cheetah.common.logger.Info;
 import org.cheetah.fighter.EventBus;
 import org.cheetah.fighter.async.AsynchronousFactory;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
@@ -34,6 +35,7 @@ public class ForeseeableWorkerPoolFactory implements AsynchronousPoolFactory<For
     @Override
     public ForeseeableWorker[] getAsynchronous() {
         ForeseeableWorker[] workers = this.workerPool.get(EventBus.HandlerMapperKey.generate(context.getEventMessage().event()));
+        Info.log(this.getClass(), "get asynchronous from pool, {}", workers);
         if (Objects.nonNull(workers)) {
             return workers;
         } else {

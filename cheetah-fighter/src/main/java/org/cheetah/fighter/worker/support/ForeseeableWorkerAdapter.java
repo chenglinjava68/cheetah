@@ -7,6 +7,10 @@ import org.cheetah.fighter.worker.Command;
 import org.cheetah.fighter.worker.Worker;
 import org.cheetah.fighter.worker.WorkerAdapter;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  * Created by Max on 2016/7/21.
  */
@@ -23,9 +27,18 @@ public class ForeseeableWorkerAdapter implements WorkerAdapter {
     public Feedback work(EventMessage eventMessage) {
         if (workerSize < 1)
             return Feedback.EMPTY;
+        Feedback[] feedbacks = new Feedback[workerSize];
+
         for (int i = 0; i < workerSize; i++) {
             Command command = Command.of(eventMessage.event(), true);
-            workers[i].work(command);
+            Feedback feedback = workers[i].work(command);
+            feedbacks[i] = feedback;
+        }
+
+        boolean fail = Arrays.stream(feedbacks).anyMatch(o -> !o.isSuccess());
+        if (fail) {
+            Map<Exception, Class<?>> result = Arrays.stream(feedbacks).filter(o -> !o.isSuccess()).collect(Collectors.toMap(Feedback::getException, Feedback::getFailureListener));
+            return new Feedback(false, result);
         }
         return Feedback.SUCCESS;
     }

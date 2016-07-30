@@ -55,4 +55,11 @@ public abstract class AbstractWorker implements Worker {
         return success;
     }
 
+    @Override
+    public String toString() {
+        return "Worker{" +
+                "\nhandler=" + handler +
+                "\n, interceptors=" + interceptors +
+                "\n}";
+    }
 }

@@ -8,4 +8,6 @@ public interface EventCollector {
 
     void collect(DomainEvent event);
 
+    EventResult collect(DomainEvent event, boolean feedback);
+
 }

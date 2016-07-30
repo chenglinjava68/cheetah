@@ -2,6 +2,7 @@ package org.cheetah.fighter.worker.support;
 
 import org.cheetah.common.logger.Err;
 import org.cheetah.common.utils.Assert;
+import org.cheetah.fighter.Feedback;
 import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.worker.AbstractWorker;
@@ -31,8 +32,8 @@ public class AkkaWorker extends AbstractWorker {
     }
 
     @Override
-    public void work(Command command) {
-
+    public Feedback work(Command command) {
+        return null;
     }
 
     @Override

@@ -4,13 +4,13 @@ import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
-import org.cheetah.fighter.DomainEventListener;
-import org.cheetah.fighter.async.AbstractAsynchronousFactory;
+import org.cheetah.common.logger.Info;
 import org.cheetah.fighter.Interceptor;
+import org.cheetah.fighter.async.AbstractAsynchronousFactory;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.worker.support.DisruptorWorker;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * Created by Max on 2016/2/29.
@@ -43,6 +43,7 @@ public class DisruptorFactory extends AbstractAsynchronousFactory<Disruptor<Disr
         for (int i = 0; i < handlers.size(); i++) {
             DisruptorWorker worker = (DisruptorWorker) getWorkerFactory().createWorker(handlers.get(i), interceptors);
             workers[i] = worker;
+            Info.log(this.getClass(), "create DisruptorWorker: {}", worker);
         }
 
         disruptor.handleEventsWith(workers);

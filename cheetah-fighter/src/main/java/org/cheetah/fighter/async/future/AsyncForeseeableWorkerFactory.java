@@ -1,5 +1,6 @@
 package org.cheetah.fighter.async.future;
 
+import org.cheetah.common.logger.Info;
 import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.async.AbstractAsynchronousFactory;
 import org.cheetah.fighter.handler.Handler;
@@ -20,6 +21,7 @@ public class AsyncForeseeableWorkerFactory extends AbstractAsynchronousFactory<F
             ForeseeableWorker worker = (ForeseeableWorker) getWorkerFactory().createWorker(handlers.get(i), interceptors);
             worker.setExecutor(getExecutorService());
             workers[i] = worker;
+            Info.log(this.getClass(), "create ForesseableWorker: {}", worker);
         }
         return workers;
     }

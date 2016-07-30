@@ -2,6 +2,7 @@ package org.cheetah.fighter.worker.support;
 
 import com.lmax.disruptor.EventHandler;
 import org.cheetah.common.logger.Err;
+import org.cheetah.fighter.Feedback;
 import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.async.disruptor.DisruptorEvent;
 import org.cheetah.fighter.handler.Handler;
@@ -26,7 +27,7 @@ public class DisruptorWorker extends AbstractWorker implements EventHandler<Disr
     }
 
     @Override
-    public void work(Command command) {
+    public Feedback work(Command command) {
         try {
             invoke(command);
             handler.onSuccess(command);
@@ -34,6 +35,7 @@ public class DisruptorWorker extends AbstractWorker implements EventHandler<Disr
             Err.log(this.getClass(), "event handler handle error", e);
             handler.onFailure(command, e);
         }
+        return Feedback.SUCCESS;
     }
 
     @Override

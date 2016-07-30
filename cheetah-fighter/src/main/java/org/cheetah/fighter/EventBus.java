@@ -88,7 +88,7 @@ public class EventBus extends Dispatcher implements Startable {
         if(workerAdapter instanceof ForeseeableWorkerAdapter)
             ((ForeseeableWorkerAdapter) workerAdapter).setWorkers((Worker[]) engine.getAsynchronous());
         Feedback feedback = workerAdapter.work(eventMessage);
-        return new EventResult(eventMessage.event(), feedback.isSuccess());
+        return new EventResult(eventMessage.event().source, feedback.isSuccess(), feedback.getExceptionMap());
     }
 
     @Override
@@ -138,6 +138,12 @@ public class EventBus extends Dispatcher implements Startable {
                 List<DomainEventListener> eventListeners = supportsSmartListener(event);
                 if (eventListeners.isEmpty()) {
                     eventListeners = supportsUniversalListener(event);
+                }
+
+                if (Info.isEnabled(this.getClass())) {
+                    eventListeners.forEach(o ->
+                        Info.log(this.getClass(), "parse event listeners: {}", o.getClass().getName())
+                    );
                 }
                 return assembleEventHandlerMapping(mapperKey, eventListeners);
             }

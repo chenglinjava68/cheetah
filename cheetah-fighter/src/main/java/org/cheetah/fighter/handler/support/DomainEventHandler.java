@@ -101,4 +101,11 @@ public class DomainEventHandler implements Handler {
     public int hashCode() {
         return ObjectUtils.nullSafeHashCode(this.eventListener) * 29;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "eventListener=" + eventListener.getClass().getName() +
+                '}';
+    }
 }

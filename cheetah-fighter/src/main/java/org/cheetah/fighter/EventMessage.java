@@ -1,7 +1,5 @@
 package org.cheetah.fighter;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 /**
  * Created by Max on 2016/2/21.
  */
@@ -58,9 +56,12 @@ public class EventMessage {
         return fisrtWin;
     }
 
-
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        return "EventMessage{" +
+                "event=" + event +
+                ", needResult=" + needResult +
+                ", fisrtWin=" + fisrtWin +
+                '}';
     }
 }

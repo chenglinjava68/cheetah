@@ -2,11 +2,11 @@ package org.cheetah.fighter.async.disruptor;
 
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+import org.cheetah.common.logger.Info;
 import org.cheetah.fighter.EventBus;
+import org.cheetah.fighter.EventContext;
 import org.cheetah.fighter.async.AsynchronousFactory;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
-import org.cheetah.fighter.NoMapperException;
-import org.cheetah.fighter.EventContext;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -36,6 +36,7 @@ public class DisruptorPoolFactory implements AsynchronousPoolFactory<Disruptor<D
     @Override
     public Disruptor<DisruptorEvent> getAsynchronous() {
         Disruptor<DisruptorEvent> disruptor = this.disruptorPool.get(EventBus.HandlerMapperKey.generate(context.getEventMessage().event()));
+        Info.log(this.getClass(), "get asynchronous from pool, {}", disruptor);
         if (Objects.nonNull(disruptor)) {
             return disruptor;
         } else {

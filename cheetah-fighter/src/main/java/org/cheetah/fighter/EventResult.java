@@ -1,7 +1,7 @@
 package org.cheetah.fighter;
 
-import java.util.EventListener;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Max on 2016/1/29.
@@ -9,24 +9,15 @@ import java.util.List;
 public class EventResult {
     private Object source;
     private boolean success;
-    private List<Class<? extends EventListener>> exceptionListeners;
+    private Map<Exception, Class<?>> exceptionClassMap = new HashMap<>();
 
-    public EventResult(Object source) {
+    public EventResult(Object source, boolean success, Map<Exception, Class<?>> exceptionClassMap) {
         this.source = source;
+        this.success = success;
+        this.exceptionClassMap = exceptionClassMap;
     }
 
-    public EventResult(Object source, boolean fail, List<Class<? extends EventListener>> exceptionListeners) {
-        this.source = source;
-        this.success = fail;
-        this.exceptionListeners = exceptionListeners;
-    }
-
-    public EventResult(Object source, boolean fail) {
-        this.source = source;
-        this.success = fail;
-    }
-
-    public Object source() {
+    public Object getSource() {
         return source;
     }
 
@@ -34,7 +25,16 @@ public class EventResult {
         return success;
     }
 
-    public List<Class<? extends EventListener>> exceptionListeners() {
-        return exceptionListeners;
+    public Map<Exception, Class<?>> getExceptionClassMap() {
+        return exceptionClassMap;
+    }
+
+    @Override
+    public String toString() {
+        return "EventResult{" +
+                "source=" + source +
+                ", success=" + success +
+                ", exceptionClassMap=" + exceptionClassMap +
+                '}';
     }
 }
