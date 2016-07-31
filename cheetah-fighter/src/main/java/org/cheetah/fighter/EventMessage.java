@@ -1,47 +1,21 @@
 package org.cheetah.fighter;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by Max on 2016/2/21.
  */
 public class EventMessage {
     private DomainEvent event;
     private boolean needResult;
-    private boolean fisrtWin;
+    private int timeout;
+    private TimeUnit timeUnit;
 
-    public EventMessage(DomainEvent event) {
-        this.event = event;
-        this.needResult = false;
-        this.fisrtWin = false;
-    }
-
-    public EventMessage(boolean needResult, DomainEvent event) {
-        this.event = event;
-        this.needResult = needResult;
-        this.fisrtWin = false;
-    }
-
-    public EventMessage(DomainEvent event, boolean fisrtWin) {
-        this.event = event;
-        this.fisrtWin = fisrtWin;
-        this.needResult = false;
-    }
-
-    public EventMessage(DomainEvent event, boolean needResult, boolean fisrtWin) {
-        this.event = event;
-        this.needResult = needResult;
-        this.fisrtWin = fisrtWin;
-    }
-
-    public void setEvent(DomainEvent event) {
-        this.event = event;
-    }
-
-    public void setNeedResult(boolean needResult) {
-        this.needResult = needResult;
-    }
-
-    public void setFisrtWin(boolean fisrtWin) {
-        this.fisrtWin = fisrtWin;
+    EventMessage(Builder builder) {
+        this.event = builder.event;
+        this.needResult = builder.needResult;
+        this.timeout = builder.timeout;
+        this.timeUnit = builder.timeUnit;
     }
 
     public DomainEvent event() {
@@ -52,8 +26,12 @@ public class EventMessage {
         return needResult;
     }
 
-    public boolean fisrtWin() {
-        return fisrtWin;
+    public int timeout() {
+        return timeout;
+    }
+
+    public TimeUnit timeUnit() {
+        return timeUnit;
     }
 
     @Override
@@ -61,7 +39,43 @@ public class EventMessage {
         return "EventMessage{" +
                 "event=" + event +
                 ", needResult=" + needResult +
-                ", fisrtWin=" + fisrtWin +
+                ", timeout=" + timeout +
+                ", timeUnit=" + timeUnit +
                 '}';
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        DomainEvent event;
+        boolean needResult = false;
+        int timeout = 0;
+        TimeUnit timeUnit = TimeUnit.SECONDS;
+
+        public EventMessage build() {
+            return new EventMessage(this);
+        }
+
+        public Builder event(DomainEvent event) {
+            this.event = event;
+            return this;
+        }
+
+        public Builder needResult(boolean needResult) {
+            this.needResult = needResult;
+            return this;
+        }
+
+        public Builder timeout(int timeout) {
+            this.timeout = timeout;
+            return this;
+        }
+
+        public Builder timeUnit(TimeUnit timeUnit) {
+            this.timeUnit = timeUnit;
+            return this;
+        }
     }
 }

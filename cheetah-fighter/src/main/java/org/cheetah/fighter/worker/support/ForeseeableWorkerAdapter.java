@@ -30,7 +30,7 @@ public class ForeseeableWorkerAdapter implements WorkerAdapter {
         Feedback[] feedbacks = new Feedback[workerSize];
 
         for (int i = 0; i < workerSize; i++) {
-            Command command = Command.of(eventMessage.event(), true);
+            Command command = Command.of(eventMessage.event(), eventMessage.needResult(), eventMessage.timeout(), eventMessage.timeUnit());
             Feedback feedback = workers[i].work(command);
             feedbacks[i] = feedback;
         }

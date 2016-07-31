@@ -1,9 +1,9 @@
 package org.cheetah.fighter.worker;
 
 import org.cheetah.fighter.DomainEvent;
-import org.cheetah.fighter.Event;
 
 import java.io.Serializable;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Max on 2016/2/22.
@@ -14,10 +14,18 @@ public final class Command implements Serializable {
 
     private final DomainEvent event;
     private final boolean needResult;
+    private final int timeout;
+    private final TimeUnit timeUnit;
 
-    public Command(DomainEvent event, boolean needResult) {
+    Command(DomainEvent event, boolean needResult, int timeout, TimeUnit timeUnit) {
         this.event = event;
         this.needResult = needResult;
+        this.timeout = timeout;
+        this.timeUnit = timeUnit;
+    }
+
+    public final boolean timeLimit() {
+        return timeout() > 0;
     }
 
     public final DomainEvent event() {
@@ -28,7 +36,19 @@ public final class Command implements Serializable {
         return needResult;
     }
 
+    public final int timeout() {
+        return timeout;
+    }
+
+    public final TimeUnit timeUnit() {
+        return timeUnit;
+    }
+
     public static Command of(DomainEvent event, boolean needResult) {
-        return new Command(event, needResult);
+        return new Command(event, needResult, 0, TimeUnit.SECONDS);
+    }
+
+    public static Command of(DomainEvent event, boolean needResult, int timeout, TimeUnit timeUnit) {
+        return new Command(event, needResult, timeout, timeUnit);
     }
 }

@@ -98,7 +98,7 @@ public class EventBus implements Dispatcher, Startable {
         } else
             fighterConfig = new FighterConfig();
         if (StringUtils.isEmpty(fighterConfig.getEngine())) {
-            engineStrategy = EngineStrategy.DISRUPTOR;
+            engineStrategy = EngineStrategy.FUTURE;
             engineDirector = engineStrategy.getEngineDirector();
         } else {
             engineStrategy = EngineStrategy.getEngine(fighterConfig.getEngine());

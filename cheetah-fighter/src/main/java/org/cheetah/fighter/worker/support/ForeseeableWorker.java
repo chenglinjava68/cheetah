@@ -10,10 +10,7 @@ import org.cheetah.fighter.worker.AbstractWorker;
 import org.cheetah.fighter.worker.Command;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.*;
 
 /**
  * Created by Max on 2016/3/2.
@@ -34,28 +31,43 @@ public class ForeseeableWorker extends AbstractWorker {
     public Feedback work(Command command) {
         try {
             long start = System.nanoTime();
-            CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() ->
-                    invoke(command)
-                    , executor).whenComplete((r, e) -> {
+            CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
+                if(command.needResult())
+                    invoke(command);
+                else
+                    try {
+                        invoke(command);
+                    } catch (Exception e) {
+                        Warn.log(this.getClass(), "Failure events consumption", e);
+                        throw e;
+                    }
+                return true;
+            }, executor).whenComplete((r, e) -> {
                 if (Objects.nonNull(r) && r)
                     handler.onSuccess(command);
                 else handler.onFailure(command, e);
             });
 
-            if (command.needResult()) {
-                future.get();
-                if (Info.isEnabled(this.getClass())) {
-                    Info.log(this.getClass(), handler.getEventListener().getClass().getName() + " execution time : {}", (System.nanoTime() - start) + " ns");
-                }
-                return Feedback.SUCCESS;
+            if (command.needResult())
+                if (command.timeLimit())
+                    future.get(command.timeout(), command.timeUnit());
+                else
+                    future.get();
+
+            if (Info.isEnabled(this.getClass())) {
+                Info.log(this.getClass(), handler.getEventListener().getClass().getName() + " execution time : {}", (System.nanoTime() - start) + " ns");
             }
             return Feedback.SUCCESS;
         } catch (RejectedExecutionException e) {
-            Warn.log(getClass(), "task rejected execute.", e);
+            Warn.log(getClass(), "event rejected execute.", e);
             handler.onFailure(command, e);
             return Feedback.failure(e, handler.getEventListener().getClass());
         } catch (InterruptedException | ExecutionException e) {
+            Warn.log(getClass(), "event consumer execution error.", e);
             handler.onFailure(command, e);
+            return Feedback.failure(e, handler.getEventListener().getClass());
+        } catch (TimeoutException e) {
+            Warn.log(getClass(), "event consumer execution timeout.", e);
             return Feedback.failure(e, handler.getEventListener().getClass());
         }
     }

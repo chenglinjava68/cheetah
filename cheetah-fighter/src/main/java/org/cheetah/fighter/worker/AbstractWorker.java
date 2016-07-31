@@ -1,6 +1,5 @@
 package org.cheetah.fighter.worker;
 
-import org.cheetah.common.logger.Err;
 import org.cheetah.fighter.HandlerInterceptorChain;
 import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.handler.Handler;
@@ -39,20 +38,21 @@ public abstract class AbstractWorker implements Worker {
         return chain;
     }
 
-    protected boolean invoke(Command command) {
-        boolean success = false;
+    protected void invoke(Command command) {
+        HandlerInterceptorChain chain = createInterceptorChain();
+        boolean result;
         try {
-            HandlerInterceptorChain chain = createInterceptorChain();
-            boolean result = chain.beforeHandle(command);
-            if (result) {
-                success = doWork(command);
-                chain.afterHandle(command);
-            }
+            result = chain.beforeHandle(command);
         } catch (Exception e) {
-            Err.log(this.getClass(), "interceptor invoke Exception", e);
             throw new InterceptorExecutionException(e);
         }
-        return success;
+        if (result)
+            doWork(command);
+        try {
+            chain.afterHandle(command);
+        } catch (Exception e) {
+            throw new InterceptorExecutionException(e);
+        }
     }
 
     @Override

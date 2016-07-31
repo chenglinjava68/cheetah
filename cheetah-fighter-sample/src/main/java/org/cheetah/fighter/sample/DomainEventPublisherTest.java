@@ -17,6 +17,7 @@ public class DomainEventPublisherTest {
         BeanFactory.setBeanFactoryProvider(provider);
 
         performance();
+//        publish();
     }
 
     /**
@@ -43,5 +44,19 @@ public class DomainEventPublisherTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     *
+     */
+    public static void publish() {
+        EventResult result = DomainEventPublisher.publish(
+                new DomainEventTest("huahng"), false
+        );
+        EventResult result2 = DomainEventPublisher.publish(
+                new DomainEventTest2("huahng"), false
+        );
+        System.out.println(result);
+        System.out.println(result2);
     }
 }
