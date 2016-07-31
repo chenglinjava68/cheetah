@@ -28,21 +28,57 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 /**
+ * Event调度器
  * Created by Max on 2016/1/29.
  */
 public class EventBus implements Dispatcher, Startable {
-
-    private FighterConfig fighterConfig; //框架配置
+    /**
+     * 框架配置
+     */
+    private FighterConfig fighterConfig;
+    /**
+     * 注册的插件列表
+     */
     private List<Plugin> plugins = ImmutableList.of();
+    /**
+     * 注册的拦截器列表
+     */
     private List<Interceptor> interceptors = ImmutableList.of();
+    /**
+     * 注册的消费者列表
+     */
     private List<DomainEventListener> eventListeners = ImmutableList.of();
+    /**
+     * 插件链
+     */
     private final PluginChain pluginChain = new PluginChain();
+    /**
+     * 使用的引擎
+     */
     private Engine engine;
+    /**
+     * 引擎的管理者，为bus构建引擎
+     */
     private EngineDirector engineDirector;
+    /**
+     * 引擎策略
+     */
     private EngineStrategy engineStrategy;
+    /**
+     * 事件拦截器缓存
+     */
     private final Map<InterceptorCacheKey, List<Interceptor>> interceptorCache;
+    /**
+     * 事件处理器的缓存
+     */
     private Map<HandlerMapperKey, List<Handler>> eventHandlers;
+    /**
+     * 为事件查找handler时使用的锁
+     */
     private final ReentrantLock lock;
+    /**
+     * 事件上下文
+     */
     private final EventContext context;
 
     public EventBus() {
@@ -52,6 +88,11 @@ public class EventBus implements Dispatcher, Startable {
         this.context = EventContext.getContext();
     }
 
+    /**
+     * 每个事件的调度由此开始
+     * @param eventMessage
+     * @return
+     */
     @Override
     public EventResult dispatch(final EventMessage eventMessage) {
         try {
@@ -80,6 +121,11 @@ public class EventBus implements Dispatcher, Startable {
         }
     }
 
+    /**
+     * 找到相应的orkerAdapter进行调度
+     * @param eventMessage
+     * @return
+     */
     private EventResult doDispatch(EventMessage eventMessage) {
         WorkerAdapter workerAdapter = getWorkerAdapter(this.engineStrategy);
         if(workerAdapter instanceof DisruptorWorkerAdapter)
@@ -90,6 +136,9 @@ public class EventBus implements Dispatcher, Startable {
         return new EventResult(eventMessage.event().source, feedback.isSuccess(), feedback.getExceptionMap());
     }
 
+    /**
+     * 启动，进行初始化数据
+     */
     @Override
     public void start() {
         if (fighterConfig != null) {
@@ -112,6 +161,9 @@ public class EventBus implements Dispatcher, Startable {
         Info.log(this.getClass(), "EventBus start engine is {}", engineStrategy.name());
     }
 
+    /**
+     * 停止EventBus
+     */
     @Override
     public void stop() {
         this.engine.stop();
@@ -121,12 +173,18 @@ public class EventBus implements Dispatcher, Startable {
         Warn.log(this.getClass(), "EventBus stop...");
     }
 
+    /**
+     * 根据事件查找其对应的处理器
+     * @param event
+     * @param mapperKey
+     * @return
+     */
     private List<Handler> getHandlers(final DomainEvent event, final HandlerMapperKey mapperKey) {
         return resolve(event, mapperKey);
     }
 
     /**
-     * Mapper helper
+     * 解析事件类型，
      *
      * @param event
      */
@@ -152,6 +210,11 @@ public class EventBus implements Dispatcher, Startable {
         return Collections.emptyList();
     }
 
+    /**
+     * 找出非Smart类型的消费者
+     * @param event
+     * @return
+     */
     @SuppressWarnings("unchecked")
     private List<DomainEventListener> supportsUniversalListener(final Event event) {
         List<DomainEventListener> eventListeners = this.eventListeners;
@@ -171,6 +234,12 @@ public class EventBus implements Dispatcher, Startable {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * 将消费者包装成Handler
+     * @param mapperKey
+     * @param listeners
+     * @return
+     */
     private List<Handler> assembleEventHandlerMapping(HandlerMapperKey mapperKey,
                                                       List<DomainEventListener> listeners) {
         List<Handler> handlers = Lists.newArrayList();
@@ -197,6 +266,12 @@ public class EventBus implements Dispatcher, Startable {
                 .filter(o -> o.supportsSourceType(event.getSource().getClass()))
                 .collect(Collectors.toList());
     }
+
+    /**
+     * 初始化插件链
+     * @param chain
+     * @return
+     */
     private PluginChain initializesPlugin(PluginChain chain) {
         Objects.requireNonNull(chain, "chain must not be null");
         for (Plugin plugin : this.plugins)
@@ -204,6 +279,11 @@ public class EventBus implements Dispatcher, Startable {
         return chain;
     }
 
+    /**
+     * 查找事件对应的拦截器
+     * @param event
+     * @return
+     */
     private List<Interceptor> findInterceptor(final DomainEvent event) {
         List<Interceptor> interceptors = Lists.newArrayList(this.interceptors);
         if (CollectionUtils.isEmpty(interceptors))
@@ -217,6 +297,10 @@ public class EventBus implements Dispatcher, Startable {
         return $interceptors;
     }
 
+    /**
+     *
+     * @return
+     */
     private List<WorkerAdapter> getDefaultWorkerAdapter() {
         return Lists.newArrayList(
                 new DisruptorWorkerAdapter(),
@@ -224,6 +308,11 @@ public class EventBus implements Dispatcher, Startable {
         );
     }
 
+    /**
+     *
+     * @param engineStrategy
+     * @return
+     */
     private WorkerAdapter getWorkerAdapter(EngineStrategy engineStrategy) {
         return getDefaultWorkerAdapter()
                 .stream()
@@ -232,14 +321,26 @@ public class EventBus implements Dispatcher, Startable {
                 .get();
     }
 
+    /**
+     *
+     * @param plugins
+     */
     public void registerPlugins(List<Plugin> plugins) {
         this.plugins = ImmutableList.<Plugin>builder().addAll(this.plugins).addAll(plugins).build();
     }
 
+    /**
+     *
+     * @param interceptors
+     */
     public void registerInterceptors(List<Interceptor> interceptors) {
         this.interceptors = ImmutableList.<Interceptor>builder().addAll(this.interceptors).addAll(interceptors).build();
     }
 
+    /**
+     *
+     * @param eventListeners
+     */
     public void registerEventListeners(List<DomainEventListener> eventListeners) {
         this.eventListeners = ImmutableList.<DomainEventListener>builder().addAll(this.eventListeners).addAll(eventListeners).build();
     }

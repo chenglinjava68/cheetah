@@ -3,6 +3,7 @@ package org.cheetah.fighter;
 import org.cheetah.fighter.worker.Command;
 
 /**
+ * 消费者拦截器
  * @author Max
  */
 public interface Interceptor {

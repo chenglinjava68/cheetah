@@ -16,8 +16,8 @@ public class DomainEventPublisherTest {
         SpringBeanFactoryProvider provider = new SpringBeanFactoryProvider(context);
         BeanFactory.setBeanFactoryProvider(provider);
 
-        performance();
-//        publish();
+//        performance();
+        publish();
     }
 
     /**
@@ -51,12 +51,12 @@ public class DomainEventPublisherTest {
      */
     public static void publish() {
         EventResult result = DomainEventPublisher.publish(
-                new DomainEventTest("huahng"), false
+                new DomainEventTest("huahng"), true
         );
-        EventResult result2 = DomainEventPublisher.publish(
-                new DomainEventTest2("huahng"), false
-        );
+//        EventResult result2 = DomainEventPublisher.publish(
+//                new DomainEventTest2("huahng"), true
+//        );
         System.out.println(result);
-        System.out.println(result2);
+//        System.out.println(result2);
     }
 }

@@ -10,6 +10,7 @@ import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.worker.Command;
 
 /**
+ * 领域事件处理器实现类
  * Created by Max on 2016/2/1.
  */
 public class DomainEventHandler implements Handler {

@@ -3,6 +3,7 @@ package org.cheetah.fighter;
 import java.io.Serializable;
 
 /**
+ * 事件最顶层的抽象类
  * Created by Max on 2016/1/29.
  */
 public abstract class Event<T> implements Serializable {

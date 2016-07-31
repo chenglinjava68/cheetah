@@ -4,6 +4,7 @@ package org.cheetah.fighter.worker;
 import org.cheetah.fighter.FighterException;
 
 /**
+ * 拦截器执行异常
  * Created by Max on 2016/3/8.
  */
 public class InterceptorExecutionException extends FighterException {

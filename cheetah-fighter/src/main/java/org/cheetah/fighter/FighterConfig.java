@@ -2,15 +2,33 @@ package org.cheetah.fighter;
 
 
 /**
+ * fighter的配置类
  * Created by Max on 2016/2/2.
  */
 public class FighterConfig {
-
+    /**
+     * akka中每个事件需要创建的actor数量
+     */
     private int eventPerformerSize;
+    /**
+     * 底层线程池队列长度
+     */
     private int queueLength;
+    /**
+     * disruptor的RingBuffer长度
+     */
     private int ringBuffer;
+    /**
+     * 底层线程池的线程数量
+     */
     private int threadPoolSize;
+    /**
+     * fighter使用的引擎，默认使用Future
+     */
     private String engine;
+    /**
+     * 线程池的拒绝策略：CALLER_RUNS、DISCARD_OLDEST、DISCARD、ABORT， 默认使用Abort
+     */
     private String rejectionPolicy;
 
     public FighterConfig() {

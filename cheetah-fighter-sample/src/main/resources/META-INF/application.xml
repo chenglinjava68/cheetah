@@ -30,6 +30,11 @@ http://www.springframework.org/schema/aop
                 <bean class="org.cheetah.fighter.sample.SmartDomainListenerTest2"/>
             </list>
         </property>
+        <property name="interceptors">
+            <list>
+                <bean class="org.cheetah.fighter.sample.HelloWorldInterceptor"/>
+            </list>
+        </property>
         <property name="fighterConfig">
             <bean class="org.cheetah.fighter.FighterConfig">
                 <!--<property name="engine" value="disruptor"/>-->

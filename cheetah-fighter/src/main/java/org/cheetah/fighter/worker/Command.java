@@ -12,9 +12,21 @@ public final class Command implements Serializable {
 
     private static final long serialVersionUID = 2193959876727951577L;
 
+    /**
+     * 需要触发的领域事件
+     */
     private final DomainEvent event;
+    /**
+     * 是否需要知道结果
+     */
     private final boolean needResult;
+    /**
+     * 消费超时时间
+     */
     private final int timeout;
+    /**
+     * 消费超时时间单位
+     */
     private final TimeUnit timeUnit;
 
     Command(DomainEvent event, boolean needResult, int timeout, TimeUnit timeUnit) {

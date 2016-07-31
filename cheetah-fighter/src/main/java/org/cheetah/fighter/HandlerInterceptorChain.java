@@ -8,13 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 拦截器链
  * Created by Max on 2016/3/7.
  */
 public class HandlerInterceptorChain implements Cloneable {
     private List<Interceptor> interceptors;
     private int interceptorIndex;
     private static HandlerInterceptorChain DEFAULT_CHAIN = new HandlerInterceptorChain();
-
+    /**
+     *  消费者执行前，先调用所有拦截器的prehandle
+     * @param command
+     * @return
+     */
     public boolean beforeHandle(Command command) throws Exception {
         List<Interceptor> $interceptors = getInterceptors();
         if (!CollectionUtils.isEmpty($interceptors)) {
@@ -27,7 +32,10 @@ public class HandlerInterceptorChain implements Cloneable {
         }
         return true;
     }
-
+    /**
+     *  消费者执行完毕后，先调用所有拦截器的prehandle
+     * @param command
+     */
     public void afterHandle(Command command) throws Exception {
         List<Interceptor> $interceptors = getInterceptors();
         if (!CollectionUtils.isEmpty($interceptors)) {
@@ -36,7 +44,11 @@ public class HandlerInterceptorChain implements Cloneable {
             }
         }
     }
-
+    /**
+     * prehandle执行返回false时执行触发方法， 如果消费者执行异常也会触发一下方法
+     * @param command
+     * @param ex
+     */
     public void triggerAfterCompletion(Command command, Exception ex) {
         List<Interceptor> $interceptors = getInterceptors();
         if (!CollectionUtils.isEmpty($interceptors)) {
@@ -50,6 +62,10 @@ public class HandlerInterceptorChain implements Cloneable {
         }
     }
 
+    /**
+     * 注册拦截器
+     * @param interceptor
+     */
     public void register(Interceptor interceptor) {
         interceptors.add(interceptor);
     }

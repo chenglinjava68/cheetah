@@ -14,7 +14,13 @@ public class Feedback {
     public static final Feedback EMPTY = new Feedback((Boolean) null);
     public static final Feedback FAILURE = new Feedback(false);
     public static final Feedback SUCCESS = new Feedback(true);
+    /**
+     * 消费是否成功
+     */
     private Boolean success;
+    /**
+     * key为消费者执行产生的异常，Class对应的是消费者的DomainEventListener的类
+     */
     private Map<Exception, Class<?>> exceptionMap = new HashMap<>();
 
     private Feedback() {

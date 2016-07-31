@@ -8,10 +8,21 @@ import java.util.List;
  * Created by Max on 2016/3/3.
  */
 public final class EventContext {
-
+    /**
+     * 本次触发事件中所有的消费者被包装为Handler
+     */
     private static final ThreadLocal<List<Handler>> handlers = new ThreadLocal<>();
+    /**
+     * 配置
+     */
     private static final ThreadLocal<FighterConfig> fighterConfig = new ThreadLocal<>();
+    /**
+     * 本次触发事件的事件消息
+     */
     private static final ThreadLocal<EventMessage> eventMessage = new ThreadLocal<>();
+    /**
+     * 本次触发事件中的拦截器
+     */
     private static final ThreadLocal<List<Interceptor>> interceptors = new ThreadLocal<>();
 
     private static final EventContext CONTEXT = new EventContext();

@@ -1,6 +1,7 @@
 package org.cheetah.fighter;
 
 /**
+ * fighter顶层异常
  * Created by Max on 2016/4/30.
  */
 public class FighterException extends RuntimeException {

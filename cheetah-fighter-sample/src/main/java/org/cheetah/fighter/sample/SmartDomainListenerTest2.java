@@ -23,8 +23,13 @@ public class SmartDomainListenerTest2 implements SmartDomainEventListener {
 
     @Override
     public void onDomainEvent(DomainEvent event) {
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("SmartDomainListenerTest2 -- " + atomicLong1.incrementAndGet() + "------" + atomicLong2.get());
-        throw new RuntimeException();
+//        throw new RuntimeException();
     }
 
     @Override

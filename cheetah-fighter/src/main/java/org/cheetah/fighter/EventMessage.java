@@ -6,9 +6,21 @@ import java.util.concurrent.TimeUnit;
  * Created by Max on 2016/2/21.
  */
 public class EventMessage {
+    /**
+     * 需要触发的领域事件
+     */
     private DomainEvent event;
+    /**
+     * 是否需要知道结果
+     */
     private boolean needResult;
+    /**
+     * 消费超时时间
+     */
     private int timeout;
+    /**
+     * 消费超时时间单位
+     */
     private TimeUnit timeUnit;
 
     EventMessage(Builder builder) {

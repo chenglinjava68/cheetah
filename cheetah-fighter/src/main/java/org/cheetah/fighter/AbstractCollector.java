@@ -6,6 +6,7 @@ package org.cheetah.fighter;
  * Created by Max on 2016/2/3.
  */
 public abstract class AbstractCollector implements EventCollector {
+
     private EventBus eventBus;
 
     public AbstractCollector() {
