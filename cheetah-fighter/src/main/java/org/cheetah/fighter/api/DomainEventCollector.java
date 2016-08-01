@@ -31,7 +31,11 @@ class DomainEventCollector extends AbstractCollector {
 
     @Override
     public EventResult collect(DomainEvent event, boolean feedback, int timeout) {
-        return null;
+        return getEventBus().dispatch(EventMessage.newBuilder()
+                .event(event)
+                .needResult(feedback)
+                .timeout(timeout)
+                .build());
     }
 
     @Override

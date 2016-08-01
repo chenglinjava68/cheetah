@@ -42,7 +42,7 @@ public abstract class DomainEventPublisher {
      * 所以feedback和timeout将变得无意义
      * @param event
      * @param feedback  仅支持future引擎
-     * @param timeout   仅支持future引擎
+     * @param timeout   消费者执行超时时间，仅支持future引擎
      * @return
      */
     public static <E extends DomainEvent> EventResult publish(E event, boolean feedback, int timeout) {
@@ -53,7 +53,7 @@ public abstract class DomainEventPublisher {
      * 如果使用disruptor,得到的eventresult是一个无法知道后续情况的值，所以feedback和timeout将变得无意义
      * @param event
      * @param feedback  仅支持future引擎
-     * @param timeout   仅支持future引擎
+     * @param timeout   消费者执行超时时间，仅支持future引擎
      * @return
      */
     public static <E extends DomainEvent> EventResult publish(E event, boolean feedback, int timeout, TimeUnit timeUnit) {
