@@ -322,7 +322,31 @@ public class EventBus implements Dispatcher, Startable {
     }
 
     /**
-     *
+     * 注册一个插件
+     * @param plugin
+     */
+    public void registerPlugin(Plugin plugin) {
+        this.plugins = ImmutableList.<Plugin>builder().addAll(this.plugins).add(plugin).build();
+    }
+
+    /**
+     * 注册一个拦截器
+     * @param interceptor
+     */
+    public void registerInterceptor(Interceptor interceptor) {
+        this.interceptors = ImmutableList.<Interceptor>builder().addAll(this.interceptors).add(interceptor).build();
+    }
+
+    /**
+     * 注册一个监听器
+     * @param eventListener
+     */
+    public void registerEventListener(DomainEventListener eventListener) {
+        this.eventListeners = ImmutableList.<DomainEventListener>builder().addAll(this.eventListeners).add(eventListener).build();
+    }
+
+    /**
+     * 注册一组插件
      * @param plugins
      */
     public void registerPlugins(List<Plugin> plugins) {
@@ -330,7 +354,7 @@ public class EventBus implements Dispatcher, Startable {
     }
 
     /**
-     *
+     * 注册一组拦截器
      * @param interceptors
      */
     public void registerInterceptors(List<Interceptor> interceptors) {
@@ -338,7 +362,7 @@ public class EventBus implements Dispatcher, Startable {
     }
 
     /**
-     *
+     * 注册一组监听器
      * @param eventListeners
      */
     public void registerEventListeners(List<DomainEventListener> eventListeners) {
