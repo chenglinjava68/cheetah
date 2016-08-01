@@ -26,7 +26,7 @@ public abstract class AbstractEngine<T> implements Engine<T> {
 
     @Override
     public void start() {
-        Info.log(this.getClass(), "DefaultEngine start ...");
+        Info.log(this.getClass(), " Engine start ...");
         initialize();
         this.state = State.RUNNING;
     }
@@ -42,7 +42,7 @@ public abstract class AbstractEngine<T> implements Engine<T> {
         pluginChain = null;
         asynchronousPoolFactory.stop();
         asynchronousPoolFactory = null;
-        Info.log(this.getClass(), "DefualtEngine has been shut down.");
+        Info.log(this.getClass(), "Engine has been shutdown.");
         this.state = State.STOP;
     }
 
