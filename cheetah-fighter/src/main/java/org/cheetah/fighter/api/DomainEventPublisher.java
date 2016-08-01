@@ -28,7 +28,7 @@ public abstract class DomainEventPublisher {
 
     /**
      * 发布后可以等待事件结果，需要将feedback设为true，如果需要知道事件消费执行的结果需要使用Future引擎，
-     * 如果使用disruptor,得到的eventresult是一个无法知道后续情况值
+     * 如果使用disruptor,得到的eventresult是一个无法知道后续情况的值，所以feedback和timeout将变得无意义
      * @param event
      * @param feedback  仅支持future引擎
      * @return
@@ -38,7 +38,8 @@ public abstract class DomainEventPublisher {
     }
     /**
      * 发布后可以等待事件结果，需要将feedback设为true，并且支持消费者执行的超时时间设置，如果需要知道事件
-     * 消费执行的结果需要使用Future引擎，如果使用disruptor,得到的eventresult是一个无法知道后续情况值
+     * 消费执行的结果需要使用Future引擎，如果使用disruptor,得到的eventresult是一个无法知道后续情况的值，
+     * 所以feedback和timeout将变得无意义
      * @param event
      * @param feedback  仅支持future引擎
      * @param timeout   仅支持future引擎
@@ -49,7 +50,7 @@ public abstract class DomainEventPublisher {
     }
     /**
      * 发布后可以等待事件结果，需要将feedback设为true，如果需要知道事件消费执行的结果需要使用Future引擎，
-     * 如果使用disruptor,得到的eventresult是一个无法知道后续情况值
+     * 如果使用disruptor,得到的eventresult是一个无法知道后续情况的值，所以feedback和timeout将变得无意义
      * @param event
      * @param feedback  仅支持future引擎
      * @param timeout   仅支持future引擎
