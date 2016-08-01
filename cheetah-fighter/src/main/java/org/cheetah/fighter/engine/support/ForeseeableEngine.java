@@ -1,12 +1,7 @@
 package org.cheetah.fighter.engine.support;
 
 import org.cheetah.fighter.engine.AbstractEngine;
-import org.cheetah.fighter.governor.Governor;
 import org.cheetah.fighter.worker.Worker;
-import org.cheetah.fighter.governor.support.ForeseeableGovernor;
-import org.cheetah.fighter.governor.support.ForeseeableGovernorAdapter;
-
-import java.util.Objects;
 
 /**
  * Created by Max on 2016/2/1.

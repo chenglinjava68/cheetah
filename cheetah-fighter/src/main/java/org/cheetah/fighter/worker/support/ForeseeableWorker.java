@@ -38,7 +38,6 @@ public class ForeseeableWorker extends AbstractWorker {
                     try {
                         invoke(command);
                     } catch (Exception e) {
-                        e.printStackTrace();
                         Warn.log(this.getClass(), "Failure events consumption", e);
                         throw e;
                     }
@@ -60,17 +59,14 @@ public class ForeseeableWorker extends AbstractWorker {
             }
             return Feedback.SUCCESS;
         } catch (RejectedExecutionException e) {
-            e.printStackTrace();
             Warn.log(getClass(), "event rejected execute.", e);
             handler.onFailure(command, e);
             return Feedback.failure(e, handler.getEventListener().getClass());
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
             Warn.log(getClass(), "event consumer execution error.", e);
             handler.onFailure(command, e);
             return Feedback.failure(e, handler.getEventListener().getClass());
         } catch (TimeoutException e) {
-            e.printStackTrace();
             Warn.log(getClass(), "event consumer execution timeout.", e);
             return Feedback.failure(e, handler.getEventListener().getClass());
         }

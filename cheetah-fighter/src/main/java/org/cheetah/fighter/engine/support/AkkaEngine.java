@@ -2,11 +2,6 @@ package org.cheetah.fighter.engine.support;
 
 import akka.actor.ActorRef;
 import org.cheetah.fighter.engine.AbstractEngine;
-import org.cheetah.fighter.governor.Governor;
-import org.cheetah.fighter.governor.support.AkkaGovernor;
-import org.cheetah.fighter.governor.support.AkkaGovernorAdapter;
-
-import java.util.Objects;
 
 /**
  * Created by Max on 2016/2/1.

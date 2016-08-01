@@ -20,7 +20,6 @@ public class AkkaEngineDirector implements EngineDirector {
     public Engine directEngine() {
         Engine engine = new AkkaEngine();
         engine.setHandlerFactory(builder.buildHandlerFactory());
-        engine.setGovernorFactory(builder.buildGovernorFactory());
         engine.setMapping(builder.buildMapping());
         engine.setWorkerFactory(builder.buildWorkerFactory());
         engine.setAsynchronousPoolFactory(builder.buildAsynchronousPoolFactory(fighterConfig));

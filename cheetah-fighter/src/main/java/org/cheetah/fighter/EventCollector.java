@@ -14,13 +14,6 @@ public interface EventCollector {
     void collect(DomainEvent event);
 
     /**
-     * 收集一个事件, 并设置其消费者的执行超时时间
-     * @param event
-     * @param timeout 消费的超时时间
-     */
-    void collect(DomainEvent event, int timeout);
-
-    /**
      *  收集一个事件
      * @param event
      * @param feedback  事件消费后的反馈，如果是true就会得到一个有用的EventResul，里面能够准确的反馈出消费者消费的情况

@@ -3,10 +3,9 @@ package org.cheetah.fighter.engine;
 import org.cheetah.common.Startable;
 import org.cheetah.fighter.DomainEvent;
 import org.cheetah.fighter.DomainEventListener;
-import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.EventContext;
 import org.cheetah.fighter.HandlerMapping;
-import org.cheetah.fighter.governor.GovernorFactory;
+import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.handler.HandlerFactory;
 import org.cheetah.fighter.plugin.PluginChain;
@@ -36,8 +35,6 @@ public interface Engine<T> extends Startable {
     void setWorkerFactory(WorkerFactory workerFactory);
 
     void setHandlerFactory(HandlerFactory handlerFactory);
-
-    void setGovernorFactory(GovernorFactory governorFactory);
 
     void setMapping(HandlerMapping mapping);
 

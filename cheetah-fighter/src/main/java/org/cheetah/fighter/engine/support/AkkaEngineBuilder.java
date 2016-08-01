@@ -7,10 +7,8 @@ import org.cheetah.fighter.async.akka.ActorPoolFactory;
 import org.cheetah.fighter.FighterConfig;
 import org.cheetah.fighter.HandlerMapping;
 import org.cheetah.fighter.engine.EngineBuilder;
-import org.cheetah.fighter.governor.GovernorFactory;
 import org.cheetah.fighter.handler.HandlerFactory;
 import org.cheetah.fighter.worker.WorkerFactory;
-import org.cheetah.fighter.governor.support.AkkaGovernorFactory;
 import org.cheetah.fighter.handler.support.DomainEventHandlerFactory;
 import org.cheetah.fighter.mapping.EventHandlerMapping;
 import org.cheetah.fighter.worker.support.AkkaWorkerFactory;
@@ -23,11 +21,6 @@ public class AkkaEngineBuilder implements EngineBuilder {
     @Override
     public HandlerFactory buildHandlerFactory() {
         return DomainEventHandlerFactory.getDomainEventHandlerFactory();
-    }
-
-    @Override
-    public GovernorFactory buildGovernorFactory() {
-        return new AkkaGovernorFactory();
     }
 
     @Override

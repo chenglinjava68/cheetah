@@ -24,7 +24,7 @@ public class SmartDomainListenerTest implements SmartDomainEventListener {
     @Override
     public void onDomainEvent(DomainEvent event) {
         System.out.println("SmartDomainListenerTest -- " + atomicLong1.incrementAndGet() + "------" + atomicLong2.get());
-//        throw new RuntimeException();
+        throw new RuntimeException();
     }
 
     @Override

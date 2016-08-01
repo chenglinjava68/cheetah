@@ -12,7 +12,8 @@ import java.util.concurrent.ThreadPoolExecutor.AbortPolicy;
  * Created by Max on 2016/5/3.
  */
 public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFactory<T> {
-    private int threadPoolSize = Runtime.getRuntime().availableProcessors() + 2;
+    private int minThreahs = Runtime.getRuntime().availableProcessors() + 2;
+    private int maxThreahs = Runtime.getRuntime().availableProcessors() * 2 + 2;
     private int queueLength = 100000;
     private RejectedExecutionHandler rejectedExecutionHandler = new AbortPolicy();
     private String rejectionPolicy;
@@ -37,17 +38,21 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
 
     protected synchronized ExecutorService buildExecutorService() {
         if (this.executorService == null) {
-            executorService = new ThreadPoolExecutor(threadPoolSize, threadPoolSize,
+            executorService = new ThreadPoolExecutor(minThreahs, maxThreahs,
                     3000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(queueLength),
                     new ThreadFactoryBuilder().setNameFormat("Cheetah-Fighter-%d").build(), rejectedExecutionHandler);
-            Info.log(this.getClass(), "build executor thread pool size {}, keep alive time {} ms, queue length {}, rejection policy {}",
-                    threadPoolSize, 3000, queueLength, StringUtils.isBlank(rejectionPolicy) ? "Abort" : rejectionPolicy);
+            Info.log(this.getClass(), "build executor min threahs size {}, max threahs size {}, keep alive time {} ms, queue length {}, rejection policy {}",
+                    minThreahs, maxThreahs, 3000, queueLength, StringUtils.isBlank(rejectionPolicy) ? "Abort" : rejectionPolicy);
         }
         return executorService;
     }
 
-    public void setThreadPoolSize(int threadPoolSize) {
-        this.threadPoolSize = threadPoolSize;
+    public void setMinThreahs(int minThreahs) {
+        this.minThreahs = minThreahs;
+    }
+
+    public void setMaxThreahs(int maxThreahs) {
+        this.maxThreahs = maxThreahs;
     }
 
     public void setQueueLength(int queueLength) {

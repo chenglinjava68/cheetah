@@ -3,7 +3,6 @@ package org.cheetah.fighter.engine;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.FighterConfig;
 import org.cheetah.fighter.HandlerMapping;
-import org.cheetah.fighter.governor.GovernorFactory;
 import org.cheetah.fighter.handler.HandlerFactory;
 import org.cheetah.fighter.worker.WorkerFactory;
 
@@ -18,12 +17,6 @@ public interface EngineBuilder {
      * @return
      */
     HandlerFactory buildHandlerFactory();
-
-    /**
-     * 构建引擎所需的事件管理者工厂
-     * @return
-     */
-    GovernorFactory buildGovernorFactory();
 
     /**
      * 构建引擎所需的工人工厂

@@ -11,7 +11,7 @@ public class FighterConfig {
      */
     private int eventPerformerSize;
     /**
-     * 底层线程池队列长度
+     * 线程池队列长度
      */
     private int queueLength;
     /**
@@ -19,9 +19,13 @@ public class FighterConfig {
      */
     private int ringBuffer;
     /**
-     * 底层线程池的线程数量
+     * 线程池的线程基本大小
      */
-    private int threadPoolSize;
+    private int minThreads;
+    /**
+     * 线程池的线程最大数量
+     */
+    private int maxThreads;
     /**
      * fighter使用的引擎，默认使用Future
      */
@@ -67,12 +71,20 @@ public class FighterConfig {
         this.engine = engine;
     }
 
-    public int getThreadPoolSize() {
-        return threadPoolSize;
+    public int getMinThreads() {
+        return minThreads;
     }
 
-    public void setThreadPoolSize(int threadPoolSize) {
-        this.threadPoolSize = threadPoolSize;
+    public void setMinThreads(int minThreads) {
+        this.minThreads = minThreads;
+    }
+
+    public int getMaxThreads() {
+        return maxThreads;
+    }
+
+    public void setMaxThreads(int maxThreads) {
+        this.maxThreads = maxThreads;
     }
 
     public String getRejectionPolicy() {

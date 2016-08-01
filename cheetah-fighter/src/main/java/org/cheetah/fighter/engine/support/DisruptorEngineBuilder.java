@@ -7,10 +7,8 @@ import org.cheetah.fighter.async.disruptor.DisruptorPoolFactory;
 import org.cheetah.fighter.FighterConfig;
 import org.cheetah.fighter.HandlerMapping;
 import org.cheetah.fighter.engine.EngineBuilder;
-import org.cheetah.fighter.governor.GovernorFactory;
 import org.cheetah.fighter.handler.HandlerFactory;
 import org.cheetah.fighter.worker.WorkerFactory;
-import org.cheetah.fighter.governor.support.DisruptorGovernorFactory;
 import org.cheetah.fighter.handler.support.DomainEventHandlerFactory;
 import org.cheetah.fighter.mapping.EventHandlerMapping;
 import org.cheetah.fighter.worker.support.DisruptorWorkerFactory;
@@ -22,11 +20,6 @@ public class DisruptorEngineBuilder implements EngineBuilder {
     @Override
     public HandlerFactory buildHandlerFactory() {
         return DomainEventHandlerFactory.getDomainEventHandlerFactory();
-    }
-
-    @Override
-    public GovernorFactory buildGovernorFactory() {
-        return new DisruptorGovernorFactory();
     }
 
     @Override
@@ -44,9 +37,9 @@ public class DisruptorEngineBuilder implements EngineBuilder {
         DisruptorFactory disruptorFactory = new DisruptorFactory();
         if(fighterConfig.getQueueLength() > 0)
             disruptorFactory.setRingbufferSize(fighterConfig.getQueueLength());
-        if(fighterConfig.getThreadPoolSize() > 0) {
-            disruptorFactory.setThreadPoolSize(fighterConfig.getThreadPoolSize());
-            disruptorFactory.setThreadPoolSize(fighterConfig.getThreadPoolSize());
+        if(fighterConfig.getMaxThreads() > 0 && fighterConfig.getMinThreads() > 0) {
+            disruptorFactory.setMinThreahs(fighterConfig.getMinThreads());
+            disruptorFactory.setMaxThreahs(fighterConfig.getMaxThreads());
         }
         if(fighterConfig.getRingBuffer() > 0)
             disruptorFactory.setRingbufferSize(fighterConfig.getRingBuffer());

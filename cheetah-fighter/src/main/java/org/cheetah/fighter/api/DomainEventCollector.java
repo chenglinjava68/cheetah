@@ -5,6 +5,7 @@ import org.cheetah.fighter.*;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 领域事件收集器
  * Created by Max on 2016/2/3.
  */
 class DomainEventCollector extends AbstractCollector {
@@ -18,14 +19,6 @@ class DomainEventCollector extends AbstractCollector {
     @Override
     public void collect(DomainEvent event) {
         getEventBus().dispatch(EventMessage.newBuilder().event(event).build());
-    }
-
-    @Override
-    public void collect(DomainEvent event, int timeout) {
-        getEventBus().dispatch(EventMessage.newBuilder()
-                .event(event)
-                .timeout(timeout)
-                .build());
     }
 
     @Override
