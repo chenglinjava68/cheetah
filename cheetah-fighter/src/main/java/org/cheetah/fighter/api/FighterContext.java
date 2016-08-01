@@ -5,6 +5,8 @@ import org.cheetah.fighter.EventCollector;
 import org.cheetah.fighter.EventResult;
 import org.cheetah.ioc.BeanFactory;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by Max on 2016/4/29.
  */
@@ -19,5 +21,12 @@ public final class FighterContext {
         return collector.collect(event, feedback);
     }
 
+    public static <E extends DomainEvent> EventResult publish(E event, boolean feedback, int timeout) {
+        return collector.collect(event, feedback, timeout);
+    }
+
+    public static <E extends DomainEvent> EventResult publish(E event, boolean feedback, int timeout, TimeUnit timeUnit) {
+        return collector.collect(event, feedback, timeout, timeUnit);
+    }
 }
 

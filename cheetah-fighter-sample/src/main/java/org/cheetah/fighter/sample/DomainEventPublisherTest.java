@@ -1,11 +1,12 @@
 package org.cheetah.fighter.sample;
 
 import org.cheetah.fighter.EventResult;
-import org.cheetah.fighter.api.DomainEventPublisher;
 import org.cheetah.ioc.BeanFactory;
 import org.cheetah.ioc.spring.SpringBeanFactoryProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Max on 2016/7/29.
@@ -16,8 +17,8 @@ public class DomainEventPublisherTest {
         SpringBeanFactoryProvider provider = new SpringBeanFactoryProvider(context);
         BeanFactory.setBeanFactoryProvider(provider);
 
-        performance();
-//        publish();
+//        performance();
+        publish();
     }
 
     /**
@@ -29,10 +30,10 @@ public class DomainEventPublisherTest {
             for (int i = 0; i < 10; i++) {
                 threads[i] = new Thread(() -> {
                     while (true) {
-                        EventResult result = DomainEventPublisher.publish(
+                        EventResult result = org.cheetah.fighter.api.DomainEventPublisher.publish(
                                 new DomainEventTest("huahng"), false
                         );
-                        DomainEventPublisher.publish(
+                        org.cheetah.fighter.api.DomainEventPublisher.publish(
                                 new DomainEventTest2("huahng"), false
                         );
                         //                    System.out.println(atomicLong2.incrementAndGet());
@@ -50,8 +51,8 @@ public class DomainEventPublisherTest {
      *
      */
     public static void publish() {
-        EventResult result = DomainEventPublisher.publish(
-                new DomainEventTest("huahng"), true
+        EventResult result = org.cheetah.fighter.api.DomainEventPublisher.publish(
+                new DomainEventTest("huahng"), true, 1, TimeUnit.MILLISECONDS
         );
 //        EventResult result2 = DomainEventPublisher.publish(
 //                new DomainEventTest2("huahng"), true
