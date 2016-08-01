@@ -1,6 +1,7 @@
 package org.cheetah.fighter.worker.support;
 
 import com.lmax.disruptor.EventHandler;
+import org.cheetah.common.logger.Debug;
 import org.cheetah.common.logger.Err;
 import org.cheetah.fighter.Feedback;
 import org.cheetah.fighter.Interceptor;
@@ -28,12 +29,16 @@ public class DisruptorWorker extends AbstractWorker implements EventHandler<Disr
 
     @Override
     public Feedback work(Command command) {
+        long start = System.nanoTime();
         try {
             invoke(command);
             handler.onSuccess(command);
         } catch (Exception e) {
             Err.log(this.getClass(), "event handler handle error", e);
             handler.onFailure(command, e);
+        }
+        if (Debug.isEnabled(this.getClass())) {
+            Debug.log(this.getClass(), handler.getEventListener().getClass().getName() + " execution time : {}", (System.nanoTime() - start) + " ns");
         }
         return Feedback.SUCCESS;
     }

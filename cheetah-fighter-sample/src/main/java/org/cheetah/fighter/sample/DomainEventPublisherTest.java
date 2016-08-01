@@ -16,8 +16,8 @@ public class DomainEventPublisherTest {
         SpringBeanFactoryProvider provider = new SpringBeanFactoryProvider(context);
         BeanFactory.setBeanFactoryProvider(provider);
 
-//        performance();
-        publish();
+        performance();
+//        publish();
     }
 
     /**

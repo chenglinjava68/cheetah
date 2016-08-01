@@ -1,6 +1,6 @@
 package org.cheetah.fighter.worker.support;
 
-import org.cheetah.common.logger.Info;
+import org.cheetah.common.logger.Debug;
 import org.cheetah.common.logger.Warn;
 import org.cheetah.common.utils.Objects;
 import org.cheetah.fighter.Feedback;
@@ -54,8 +54,8 @@ public class ForeseeableWorker extends AbstractWorker {
                 else
                     future.get();
 
-            if (Info.isEnabled(this.getClass())) {
-                Info.log(this.getClass(), handler.getEventListener().getClass().getName() + " execution time : {}", (System.nanoTime() - start) + " ns");
+            if (Debug.isEnabled(this.getClass())) {
+                Debug.log(this.getClass(), handler.getEventListener().getClass().getName() + " execution time : {}", (System.nanoTime() - start) + " ns");
             }
             return Feedback.SUCCESS;
         } catch (RejectedExecutionException e) {
