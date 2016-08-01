@@ -7,7 +7,8 @@ import org.cheetah.fighter.FighterException;
  * Created by Max on 2016/3/2.
  */
 public class EnginePolicyNotFoundException extends FighterException {
-    public EnginePolicyNotFoundException() {
-        super("There is no policy.");
+
+    public EnginePolicyNotFoundException(Throwable cause) {
+        super(" No corresponding strategy", cause);
     }
 }

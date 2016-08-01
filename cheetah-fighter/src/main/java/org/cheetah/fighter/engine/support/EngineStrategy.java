@@ -54,11 +54,11 @@ public enum EngineStrategy {
     public abstract EngineDirector getEngineDirector();
 
     public static EngineStrategy getEngine(String name) {
-        for (EngineStrategy policy : EngineStrategy.values()) {
-            if (policy.name().equals(name.toUpperCase())) {
-                return policy;
-            }
+        try {
+            return EngineStrategy.valueOf(name.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new EnginePolicyNotFoundException(e);
         }
-        throw new EnginePolicyNotFoundException();
     }
+
 }
