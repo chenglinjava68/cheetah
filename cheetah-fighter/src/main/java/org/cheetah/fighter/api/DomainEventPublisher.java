@@ -8,6 +8,7 @@ import org.cheetah.ioc.BeanFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 领域时间发布器
  * Created by Max on 2016/1/10.
  */
 public abstract class DomainEventPublisher {
@@ -49,7 +50,7 @@ public abstract class DomainEventPublisher {
         return collector.collect(event, feedback, timeout);
     }
     /**
-     * 发布后可以等待事件结果，需要将feedback设为true，如果需要知道事件消费执行的结果需要使用Future引擎，
+     * 发布后可以等待事件结果，需要将feedback设为true，如果需要知道事件消费执行的结果，需要使用Future引擎，
      * 如果使用disruptor,得到的eventresult是一个无法知道后续情况的值，所以feedback和timeout将变得无意义
      * @param event
      * @param feedback  仅支持future引擎

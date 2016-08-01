@@ -8,6 +8,7 @@ import org.cheetah.ioc.BeanFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 领域时间发布上下文
  * Created by Max on 2016/4/29.
  */
 public final class FighterContext {
