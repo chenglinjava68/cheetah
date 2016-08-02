@@ -143,7 +143,7 @@ public class EventBus implements Dispatcher, Startable {
     @Override
     public void start() {
         if(fighterConfig == null)
-            this.fighterConfig = FighterConfig.DEFAULT_CONFIG;
+            this.fighterConfig = FighterConfig.getDefaultConfig();
         if (!plugins.isEmpty())
             initializesPlugin(pluginChain);
 

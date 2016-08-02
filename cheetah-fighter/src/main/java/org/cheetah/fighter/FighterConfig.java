@@ -6,7 +6,7 @@ package org.cheetah.fighter;
  * Created by Max on 2016/2/2.
  */
 public class FighterConfig {
-    public static final FighterConfig DEFAULT_CONFIG = new FighterConfig();
+    private static final FighterConfig DEFAULT_CONFIG = new FighterConfig();
     /**
      * akka中每个事件需要创建的actor数量
      */
@@ -36,8 +36,8 @@ public class FighterConfig {
      */
     private String rejectionPolicy;
 
-    public FighterConfig() {
-
+    public static FighterConfig getDefaultConfig() {
+        return DEFAULT_CONFIG;
     }
 
     public int getRingBuffer() {
