@@ -244,11 +244,9 @@ public class EventBus implements Dispatcher, Startable {
      */
     private List<Handler> assembleEventHandlerMapping(HandlerMapperKey mapperKey,
                                                       List<DomainEventListener> listeners) {
-        List<Handler> handlers = Lists.newArrayList();
-        for (DomainEventListener listener : listeners) {
-            Handler handler = engine.assignDomainEventHandler(listener);
-            handlers.add(handler);
-        }
+        List<Handler> handlers = listeners.stream()
+                .map(engine::assignDomainEventHandler)
+                .collect(Collectors.toList());
 
         eventHandlers.put(mapperKey, handlers);
         return handlers;
