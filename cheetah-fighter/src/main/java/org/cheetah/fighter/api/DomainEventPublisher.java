@@ -8,7 +8,7 @@ import org.cheetah.ioc.BeanFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
- * ÁìÓòÊ±¼ä·¢²¼Æ÷
+ * é¢†åŸŸæ—¶é—´å‘å¸ƒå™¨
  * Created by Max on 2016/1/10.
  */
 public abstract class DomainEventPublisher {
@@ -19,7 +19,7 @@ public abstract class DomainEventPublisher {
     }
 
     /**
-     * ×îÎª¼òµ¥µÄ·¢²¼£¬ÎŞ·¨ÖªµÀÖ´ĞĞ½á¹û£¬disruptorºÍfuture¶¼Ö§³Ö
+     * æœ€ä¸ºç®€å•çš„å‘å¸ƒï¼Œæ— æ³•çŸ¥é“æ‰§è¡Œç»“æœï¼Œdisruptorå’Œfutureéƒ½æ”¯æŒ
      * @param event
      * @param <E>
      */
@@ -28,33 +28,33 @@ public abstract class DomainEventPublisher {
     }
 
     /**
-     * ·¢²¼ºó¿ÉÒÔµÈ´ıÊÂ¼ş½á¹û£¬ĞèÒª½«feedbackÉèÎªtrue£¬Èç¹ûĞèÒªÖªµÀÊÂ¼şÏû·ÑÖ´ĞĞµÄ½á¹ûĞèÒªÊ¹ÓÃFutureÒıÇæ£¬
-     * Èç¹ûÊ¹ÓÃdisruptor,µÃµ½µÄeventresultÊÇÒ»¸öÎŞ·¨ÖªµÀºóĞøÇé¿öµÄÖµ£¬ËùÒÔfeedbackºÍtimeout½«±äµÃÎŞÒâÒå
+     * å‘å¸ƒåå¯ä»¥ç­‰å¾…äº‹ä»¶ç»“æœï¼Œéœ€è¦å°†feedbackè®¾ä¸ºtrueï¼Œå¦‚æœéœ€è¦çŸ¥é“äº‹ä»¶æ¶ˆè´¹æ‰§è¡Œçš„ç»“æœéœ€è¦ä½¿ç”¨Futureå¼•æ“ï¼Œ
+     * å¦‚æœä½¿ç”¨disruptor,å¾—åˆ°çš„eventresultæ˜¯ä¸€ä¸ªæ— æ³•çŸ¥é“åç»­æƒ…å†µçš„å€¼ï¼Œæ‰€ä»¥feedbackå’Œtimeoutå°†å˜å¾—æ— æ„ä¹‰
      * @param event
-     * @param feedback  ½öÖ§³ÖfutureÒıÇæ
+     * @param feedback  ä»…æ”¯æŒfutureå¼•æ“
      * @return
      */
     public static <E extends DomainEvent> EventResult publish(E event, boolean feedback) {
         return collector.collect(event, feedback);
     }
     /**
-     * ·¢²¼ºó¿ÉÒÔµÈ´ıÊÂ¼ş½á¹û£¬ĞèÒª½«feedbackÉèÎªtrue£¬²¢ÇÒÖ§³ÖÏû·ÑÕßÖ´ĞĞµÄ³¬Ê±Ê±¼äÉèÖÃ£¬Èç¹ûĞèÒªÖªµÀÊÂ¼ş
-     * Ïû·ÑÖ´ĞĞµÄ½á¹ûĞèÒªÊ¹ÓÃFutureÒıÇæ£¬Èç¹ûÊ¹ÓÃdisruptor,µÃµ½µÄeventresultÊÇÒ»¸öÎŞ·¨ÖªµÀºóĞøÇé¿öµÄÖµ£¬
-     * ËùÒÔfeedbackºÍtimeout½«±äµÃÎŞÒâÒå
+     * å‘å¸ƒåå¯ä»¥ç­‰å¾…äº‹ä»¶ç»“æœï¼Œéœ€è¦å°†feedbackè®¾ä¸ºtrueï¼Œå¹¶ä¸”æ”¯æŒæ¶ˆè´¹è€…æ‰§è¡Œçš„è¶…æ—¶æ—¶é—´è®¾ç½®ï¼Œå¦‚æœéœ€è¦çŸ¥é“äº‹ä»¶
+     * æ¶ˆè´¹æ‰§è¡Œçš„ç»“æœéœ€è¦ä½¿ç”¨Futureå¼•æ“ï¼Œå¦‚æœä½¿ç”¨disruptor,å¾—åˆ°çš„eventresultæ˜¯ä¸€ä¸ªæ— æ³•çŸ¥é“åç»­æƒ…å†µçš„å€¼ï¼Œ
+     * æ‰€ä»¥feedbackå’Œtimeoutå°†å˜å¾—æ— æ„ä¹‰
      * @param event
-     * @param feedback  ½öÖ§³ÖfutureÒıÇæ
-     * @param timeout   Ïû·ÑÕßÖ´ĞĞ³¬Ê±Ê±¼ä£¬½öÖ§³ÖfutureÒıÇæ
+     * @param feedback  ä»…æ”¯æŒfutureå¼•æ“
+     * @param timeout   æ¶ˆè´¹è€…æ‰§è¡Œè¶…æ—¶æ—¶é—´ï¼Œä»…æ”¯æŒfutureå¼•æ“
      * @return
      */
     public static <E extends DomainEvent> EventResult publish(E event, boolean feedback, int timeout) {
         return collector.collect(event, feedback, timeout);
     }
     /**
-     * ·¢²¼ºó¿ÉÒÔµÈ´ıÊÂ¼ş½á¹û£¬ĞèÒª½«feedbackÉèÎªtrue£¬Èç¹ûĞèÒªÖªµÀÊÂ¼şÏû·ÑÖ´ĞĞµÄ½á¹û£¬ĞèÒªÊ¹ÓÃFutureÒıÇæ£¬
-     * Èç¹ûÊ¹ÓÃdisruptor,µÃµ½µÄeventresultÊÇÒ»¸öÎŞ·¨ÖªµÀºóĞøÇé¿öµÄÖµ£¬ËùÒÔfeedbackºÍtimeout½«±äµÃÎŞÒâÒå
+     * å‘å¸ƒåå¯ä»¥ç­‰å¾…äº‹ä»¶ç»“æœï¼Œéœ€è¦å°†feedbackè®¾ä¸ºtrueï¼Œå¦‚æœéœ€è¦çŸ¥é“äº‹ä»¶æ¶ˆè´¹æ‰§è¡Œçš„ç»“æœï¼Œéœ€è¦ä½¿ç”¨Futureå¼•æ“ï¼Œ
+     * å¦‚æœä½¿ç”¨disruptor,å¾—åˆ°çš„eventresultæ˜¯ä¸€ä¸ªæ— æ³•çŸ¥é“åç»­æƒ…å†µçš„å€¼ï¼Œæ‰€ä»¥feedbackå’Œtimeoutå°†å˜å¾—æ— æ„ä¹‰
      * @param event
-     * @param feedback  ½öÖ§³ÖfutureÒıÇæ
-     * @param timeout   Ïû·ÑÕßÖ´ĞĞ³¬Ê±Ê±¼ä£¬½öÖ§³ÖfutureÒıÇæ
+     * @param feedback  ä»…æ”¯æŒfutureå¼•æ“
+     * @param timeout   æ¶ˆè´¹è€…æ‰§è¡Œè¶…æ—¶æ—¶é—´ï¼Œä»…æ”¯æŒfutureå¼•æ“
      * @return
      */
     public static <E extends DomainEvent> EventResult publish(E event, boolean feedback, int timeout, TimeUnit timeUnit) {
