@@ -28,7 +28,7 @@ public class FighterConfig {
      */
     private int maxThreads;
     /**
-     * fighter使用的引擎，默认使用Future
+     * fighter使用的引擎，类型：AKKA, DISRUPTOR, FUTURE，默认使用Future
      */
     private String engine;
     /**
