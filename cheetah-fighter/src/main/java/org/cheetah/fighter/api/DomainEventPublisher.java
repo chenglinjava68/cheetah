@@ -8,7 +8,7 @@ import org.cheetah.ioc.BeanFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 领域时间发布器
+ * 领域事件发布器
  * Created by Max on 2016/1/10.
  */
 public abstract class DomainEventPublisher {
