@@ -3,10 +3,12 @@ package org.cheetah.fighter.sample;
 import org.cheetah.fighter.Event;
 import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.worker.Command;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Max on 2016/3/8.
  */
+@Component
 public class HelloWorldInterceptor implements Interceptor {
     @Override
     public boolean preHandle(Command command) throws Exception {

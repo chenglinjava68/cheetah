@@ -17,8 +17,8 @@ public class DomainEventPublisherTest {
         SpringBeanFactoryProvider provider = new SpringBeanFactoryProvider(context);
         BeanFactory.setBeanFactoryProvider(provider);
 
-        performance();
-//        publish();
+//        performance();
+        publish();
     }
 
     /**
@@ -51,6 +51,7 @@ public class DomainEventPublisherTest {
      *
      */
     public static void publish() {
+
         EventResult result = org.cheetah.fighter.api.DomainEventPublisher.publish(
                 new DomainEventTest("huahng"), true, 1, TimeUnit.MILLISECONDS
         );

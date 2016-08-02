@@ -19,6 +19,7 @@ import org.cheetah.fighter.worker.Worker;
 import org.cheetah.fighter.worker.WorkerAdapter;
 import org.cheetah.fighter.worker.support.DisruptorWorkerAdapter;
 import org.cheetah.fighter.worker.support.ForeseeableWorkerAdapter;
+import org.cheetah.ioc.BeanFactory;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -217,7 +218,8 @@ public class EventBus implements Dispatcher, Startable {
      */
     @SuppressWarnings("unchecked")
     private List<DomainEventListener> supportsUniversalListener(final Event event) {
-        List<DomainEventListener> eventListeners = this.eventListeners;
+        List<DomainEventListener> eventListeners = Lists.newArrayList(this.eventListeners);
+        merge(eventListeners, DomainEventListener.class);
 
         return eventListeners.stream().filter(o -> {
             List classes = CollectionUtils.arrayToList(o.getClass().getInterfaces());
@@ -258,13 +260,31 @@ public class EventBus implements Dispatcher, Startable {
      * @return
      */
     private List<DomainEventListener> supportsSmartListener(final DomainEvent event) {
-        List<DomainEventListener> list = this.eventListeners;
+        List<DomainEventListener> list = Lists.newArrayList(this.eventListeners);
+
+        merge(list, DomainEventListener.class);
 
         return list.stream().filter(o -> SmartDomainEventListener.class.isAssignableFrom(o.getClass()))
                 .map(o -> ((SmartDomainEventListener) o))
                 .filter(o -> o.supportsEventType(event.getClass()))
                 .filter(o -> o.supportsSourceType(event.getSource().getClass()))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 将本地的eventlistener或者interceptor与spring工厂中的合并
+     * @param list
+     */
+    private <T> void merge(List<T> list, Class<T> objClz) {
+        Map<String, T> listenerMap = BeanFactory.getBeansOfType(objClz);
+        if (!CollectionUtils.isEmpty(listenerMap)) {
+            Collection<T> collection = listenerMap.values();
+            collection.forEach(o -> {
+                if (list.contains(o))
+                    return ;
+                list.add(o);
+            });
+        }
     }
 
     /**
@@ -286,6 +306,8 @@ public class EventBus implements Dispatcher, Startable {
      */
     private List<Interceptor> findInterceptor(final DomainEvent event) {
         List<Interceptor> interceptors = Lists.newArrayList(this.interceptors);
+        merge(interceptors, Interceptor.class);
+
         if (CollectionUtils.isEmpty(interceptors))
             return Collections.emptyList();
         InterceptorCacheKey key = new InterceptorCacheKey(event.getClass());

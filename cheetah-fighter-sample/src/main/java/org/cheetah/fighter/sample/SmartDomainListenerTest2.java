@@ -2,12 +2,14 @@ package org.cheetah.fighter.sample;
 
 import org.cheetah.fighter.DomainEvent;
 import org.cheetah.fighter.SmartDomainEventListener;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by maxhuang on 2016/7/18.
  */
+@Component
 public class SmartDomainListenerTest2 implements SmartDomainEventListener {
     public AtomicLong atomicLong1 = new AtomicLong();
     public AtomicLong atomicLong2 = new AtomicLong();

@@ -15,16 +15,20 @@ http://www.springframework.org/schema/aop
 
     <context:annotation-config/>
     <context:property-placeholder location="classpath*:*.properties" ignore-unresolvable="true"/>
-
+    <context:component-scan base-package="org.cheetah.fighter.sample" />
     <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
     <aop:aspectj-autoproxy/>
 
     <task:executor id="executor" pool-size="64" queue-capacity="100000"/>
 
     <bean id="beanFactoryProvider" class="org.cheetah.ioc.spring.SpringBeanFactoryProvider"/>
+<!--
+    <bean class="org.cheetah.fighter.sample.SmartDomainListenerTest"/>
+    <bean class="org.cheetah.fighter.sample.SmartDomainListenerTest2"/>
+    <bean class="org.cheetah.fighter.sample.HelloWorldInterceptor"/>-->
 
     <bean id="eventBus" class="org.cheetah.fighter.EventBus" init-method="start" destroy-method="stop">
-        <property name="eventListeners">
+        <!--<property name="eventListeners">
             <list>
                 <bean class="org.cheetah.fighter.sample.SmartDomainListenerTest"/>
                 <bean class="org.cheetah.fighter.sample.SmartDomainListenerTest2"/>
@@ -34,7 +38,7 @@ http://www.springframework.org/schema/aop
             <list>
                 <bean class="org.cheetah.fighter.sample.HelloWorldInterceptor"/>
             </list>
-        </property>
+        </property>-->
         <property name="fighterConfig">
             <bean class="org.cheetah.fighter.FighterConfig">
                 <!--<property name="engine" value="disruptor"/>-->
