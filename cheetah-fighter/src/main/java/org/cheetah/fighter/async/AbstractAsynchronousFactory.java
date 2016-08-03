@@ -14,7 +14,7 @@ import java.util.concurrent.ThreadPoolExecutor.AbortPolicy;
 public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFactory<T> {
     private int minThreahs = Runtime.getRuntime().availableProcessors() + 2;
     private int maxThreahs = Runtime.getRuntime().availableProcessors() * 2 + 2;
-    private int queueLength = 100000;
+    private int queueLength;
     private RejectedExecutionHandler rejectedExecutionHandler = new AbortPolicy();
     private String rejectionPolicy;
     private ExecutorService executorService;
@@ -38,8 +38,14 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
 
     protected synchronized ExecutorService buildExecutorService() {
         if (this.executorService == null) {
+            BlockingQueue<Runnable> blockingQueue;
+            if(queueLength > 0)
+                blockingQueue = new LinkedBlockingQueue<>(queueLength);
+            else
+                blockingQueue = new LinkedTransferQueue<>();
+
             executorService = new ThreadPoolExecutor(minThreahs, maxThreahs,
-                    3000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(queueLength),
+                    3000L, TimeUnit.MILLISECONDS, blockingQueue,
                     new ThreadFactoryBuilder().setNameFormat("Cheetah-Fighter-%d").build(), rejectedExecutionHandler);
             Info.log(this.getClass(), "build executor min threahs size {}, max threahs size {}, keep alive time {} ms, queue length {}, rejection policy {}",
                     minThreahs, maxThreahs, 3000, queueLength, StringUtils.isBlank(rejectionPolicy) ? "Abort" : rejectionPolicy);
