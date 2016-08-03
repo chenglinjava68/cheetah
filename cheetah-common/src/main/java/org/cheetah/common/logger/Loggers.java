@@ -26,6 +26,104 @@ public final class Loggers {
     public static Loggers logger() {
         return logger;
     }
+    /**
+     * <p>debug.</p>
+     *
+     * @param type a {@link Class} object.
+     * @param msg  a {@link String} object.
+     * @param e    a {@link Throwable} object.
+     */
+    public void trace(Class<?> type, String msg, Throwable e) {
+        getLogger(type).trace(msg, e);
+    }
+
+    /**
+     *
+     * @param moduleName
+     * @param msg
+     * @param e
+     */
+    public void trace(String moduleName, String msg, Throwable e) {
+        getLogger(moduleName).trace(msg, e);
+    }
+
+    /**
+     * <p>debug.</p>
+     *
+     * @param type a {@link Class} object.
+     * @param msg  a {@link String} object.
+     * @param objs a {@link Object} object.
+     */
+    public void trace(Class<?> type, String msg, Object... objs) {
+        getLogger(type).trace(msg, objs);
+    }
+
+    /**
+     *
+     * @param moduleName
+     * @param msg
+     * @param objs
+     */
+    public void trace(String moduleName, String msg, Object... objs) {
+        getLogger(moduleName).trace(msg, objs);
+    }
+
+    /**
+     * @param type
+     * @param msg
+     * @param e
+     */
+    public void traceEnabled(Class<?> type, String msg, Throwable e) {
+        Logger log = getLogger(type);
+        if (log.isTraceEnabled())
+            log.trace(msg, e);
+    }
+
+    public void traceEnabled(String moduleName, String msg, Throwable e) {
+        Logger log = getLogger(moduleName);
+        if (log.isTraceEnabled())
+            log.trace(msg, e);
+    }
+
+    /**
+     * @param type
+     * @param msg
+     * @param objs
+     */
+    public void traceEnabled(Class<?> type, String msg, Object... objs) {
+        Logger log = getLogger(type);
+        if (log.isTraceEnabled())
+            log.trace(msg, objs);
+    }
+
+    /**
+     *
+     * @param moduleName
+     * @param msg
+     * @param objs
+     */
+    public void traceEnabled(String moduleName, String msg, Object... objs) {
+        Logger log = getLogger(moduleName);
+        if (log.isTraceEnabled())
+            log.trace(msg, objs);
+    }
+
+    /**
+     * @param type
+     */
+    public boolean isTraceEnabled(Class<?> type) {
+        Logger log = getLogger(type);
+        return log.isTraceEnabled();
+    }
+
+    /**
+     * @param moduleName
+     */
+    public boolean isTraceEnabled(String moduleName) {
+        Logger log = getLogger(moduleName);
+        return log.isTraceEnabled();
+    }
+
 
     /**
      * <p>debug.</p>
