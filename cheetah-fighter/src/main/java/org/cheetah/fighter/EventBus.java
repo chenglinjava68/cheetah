@@ -127,12 +127,9 @@ public class EventBus implements Dispatcher, Startable {
      * @param eventMessage
      * @return
      */
+    @SuppressWarnings("unchecked")
     private EventResult doDispatch(EventMessage eventMessage) {
-        WorkerAdapter workerAdapter = getWorkerAdapter(this.engineStrategy);
-        if(workerAdapter instanceof DisruptorWorkerAdapter)
-            ((DisruptorWorkerAdapter) workerAdapter).setRingBuffer(((Disruptor) engine.getAsynchronous()).getRingBuffer());
-        if(workerAdapter instanceof ForeseeableWorkerAdapter)
-            ((ForeseeableWorkerAdapter) workerAdapter).setWorkers((Worker[]) engine.getAsynchronous());
+        WorkerAdapter workerAdapter = this.engine.assignWorkerAdapter();
         Feedback feedback = workerAdapter.work(eventMessage);
         return new EventResult(eventMessage.event().source, feedback.isSuccess(), feedback.getExceptionMap());
     }
@@ -315,30 +312,6 @@ public class EventBus implements Dispatcher, Startable {
             interceptorCache.put(key, $interceptors);
         }
         return $interceptors;
-    }
-
-    /**
-     *
-     * @return
-     */
-    private List<WorkerAdapter> getDefaultWorkerAdapter() {
-        return Lists.newArrayList(
-                new DisruptorWorkerAdapter(),
-                new ForeseeableWorkerAdapter()
-        );
-    }
-
-    /**
-     *
-     * @param engineStrategy
-     * @return
-     */
-    private WorkerAdapter getWorkerAdapter(EngineStrategy engineStrategy) {
-        return getDefaultWorkerAdapter()
-                .stream()
-                .filter(o -> o.supports(engineStrategy))
-                .findFirst()
-                .get();
     }
 
     /**

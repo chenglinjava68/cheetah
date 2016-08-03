@@ -24,7 +24,7 @@
         <developer>
             <id>max</id>
             <name>Max</name>
-            <email>gpdemok@gmail.com</email>
+            <email>pdemok@163.com</email>
             <roles>
                 <role>architect</role>
                 <role>developer</role>
@@ -33,9 +33,9 @@
     </developers>
 
     <scm>
-        <url>https://git.oschina.net/puffCode/cheetah</url>
-        <connection>scm:git:https://git.oschina.net/puffCode/cheetah.git</connection>
-        <developerConnection>scm:git:git@git.oschina.net:puffCode/cheetah.git</developerConnection>
+        <url>https://github.com/pdemok/cheetah</url>
+        <connection>scm:git:https://github.com/pdemok/cheetah/wiki</connection>
+        <developerConnection>scm:git:https://github.com/pdemok/cheetah/wiki</developerConnection>
     </scm>
 <!--
     <distributionManagement>

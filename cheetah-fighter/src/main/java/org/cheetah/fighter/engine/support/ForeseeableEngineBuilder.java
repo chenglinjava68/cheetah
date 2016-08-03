@@ -3,15 +3,14 @@ package org.cheetah.fighter.engine.support;
 
 import org.cheetah.common.utils.StringUtils;
 import org.cheetah.fighter.FighterConfig;
-import org.cheetah.fighter.HandlerMapping;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.async.future.AsyncForeseeableWorkerFactory;
 import org.cheetah.fighter.async.future.ForeseeableWorkerPoolFactory;
 import org.cheetah.fighter.engine.EngineBuilder;
 import org.cheetah.fighter.handler.HandlerFactory;
 import org.cheetah.fighter.handler.support.DomainEventHandlerFactory;
-import org.cheetah.fighter.mapping.EventHandlerMapping;
-import org.cheetah.fighter.worker.WorkerFactory;
+import org.cheetah.fighter.worker.WorkerAdapterFactory;
+import org.cheetah.fighter.worker.support.DisruptorWorkerAdapterFactory;
 import org.cheetah.fighter.worker.support.ForeseeableWorkerFactory;
 
 /**
@@ -25,13 +24,8 @@ public class ForeseeableEngineBuilder implements EngineBuilder {
     }
 
     @Override
-    public WorkerFactory buildWorkerFactory() {
-        return new ForeseeableWorkerFactory();
-    }
-
-    @Override
-    public HandlerMapping buildMapping() {
-        return EventHandlerMapping.getGenericMapping();
+    public WorkerAdapterFactory buildWorkerAdapterFactory() {
+        return new DisruptorWorkerAdapterFactory();
     }
 
     @Override

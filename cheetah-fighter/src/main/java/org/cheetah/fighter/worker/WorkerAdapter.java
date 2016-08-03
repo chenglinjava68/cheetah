@@ -14,6 +14,7 @@ public interface WorkerAdapter {
      * @param object
      * @return
      */
+    @Deprecated
     boolean supports(Object object);
 
     Feedback work(EventMessage eventMessage);

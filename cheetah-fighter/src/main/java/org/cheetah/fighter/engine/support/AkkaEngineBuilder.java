@@ -1,17 +1,14 @@
 package org.cheetah.fighter.engine.support;
 
 import akka.actor.ActorRef;
+import org.cheetah.fighter.FighterConfig;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.async.akka.ActorFactory;
 import org.cheetah.fighter.async.akka.ActorPoolFactory;
-import org.cheetah.fighter.FighterConfig;
-import org.cheetah.fighter.HandlerMapping;
 import org.cheetah.fighter.engine.EngineBuilder;
 import org.cheetah.fighter.handler.HandlerFactory;
-import org.cheetah.fighter.worker.WorkerFactory;
 import org.cheetah.fighter.handler.support.DomainEventHandlerFactory;
-import org.cheetah.fighter.mapping.EventHandlerMapping;
-import org.cheetah.fighter.worker.support.AkkaWorkerFactory;
+import org.cheetah.fighter.worker.WorkerAdapterFactory;
 
 /**
  * Created by Max on 2016/2/19.
@@ -24,13 +21,8 @@ public class AkkaEngineBuilder implements EngineBuilder {
     }
 
     @Override
-    public WorkerFactory buildWorkerFactory() {
-        return new AkkaWorkerFactory();
-    }
-
-    @Override
-    public HandlerMapping buildMapping() {
-        return EventHandlerMapping.getGenericMapping();
+    public WorkerAdapterFactory buildWorkerAdapterFactory() {
+        return null;
     }
 
     @Override

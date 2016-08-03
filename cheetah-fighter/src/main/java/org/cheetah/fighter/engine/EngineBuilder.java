@@ -1,13 +1,12 @@
 package org.cheetah.fighter.engine;
 
-import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.FighterConfig;
-import org.cheetah.fighter.HandlerMapping;
+import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.handler.HandlerFactory;
-import org.cheetah.fighter.worker.WorkerFactory;
+import org.cheetah.fighter.worker.WorkerAdapterFactory;
 
 /**
- * 引擎的构建者
+ * 引擎部组件的构建者
  * Created by Max on 2016/2/19.
  */
 public interface EngineBuilder {
@@ -19,16 +18,10 @@ public interface EngineBuilder {
     HandlerFactory buildHandlerFactory();
 
     /**
-     * 构建引擎所需的工人工厂
+     * 构建引擎所需的worker适配器工厂
      * @return
      */
-    WorkerFactory buildWorkerFactory();
-
-    /**
-     * 构建引擎所需的事件映射
-     * @return
-     */
-    HandlerMapping buildMapping();
+    WorkerAdapterFactory buildWorkerAdapterFactory();
 
     /**
      * 构建引擎所需的异步者池子的工厂

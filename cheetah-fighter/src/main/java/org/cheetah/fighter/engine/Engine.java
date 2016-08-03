@@ -9,6 +9,8 @@ import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.handler.HandlerFactory;
 import org.cheetah.fighter.plugin.PluginChain;
+import org.cheetah.fighter.worker.WorkerAdapter;
+import org.cheetah.fighter.worker.WorkerAdapterFactory;
 import org.cheetah.fighter.worker.WorkerFactory;
 
 
@@ -24,20 +26,37 @@ public interface Engine<T> extends Startable {
      */
     Handler assignDomainEventHandler(DomainEventListener<DomainEvent> eventListener);
 
-    WorkerFactory getWorkerFactory();
+    /**
+     * 分配worker适配器
+     * @return
+     */
+    WorkerAdapter assignWorkerAdapter();
 
     /**
-     * 为每个事件分配一个管理者
+     * 获取异步工作者
      * @return
      */
     T getAsynchronous();
 
-    void setWorkerFactory(WorkerFactory workerFactory);
+    /**
+     * 设置worker适配器工厂
+     * @return
+     */
+    void setWorkerAdapterFactory(WorkerAdapterFactory workerAdapterFactory);
 
+    /**
+     * 设置handler工厂
+     * @param handlerFactory
+     */
     void setHandlerFactory(HandlerFactory handlerFactory);
 
+    @Deprecated
     void setMapping(HandlerMapping mapping);
 
+    /**
+     * 设置事件上下文
+     * @param context
+     */
     void setContext(EventContext context);
 
     /**
@@ -53,13 +72,25 @@ public interface Engine<T> extends Startable {
     @Deprecated
     HandlerMapping getMapping();
 
+    /**
+     * 引擎状态
+     * @return
+     */
     State state();
-
+    /**
+     * 注册插件链
+     */
     void registerPluginChain(PluginChain pluginChain);
 
+    /**
+     * 引擎是否启动
+     * @return
+     */
     boolean isRunning();
 
-
+    /**
+     * 引擎状态枚举
+     */
     enum State {
         NEW, RUNNING, STOP
     }

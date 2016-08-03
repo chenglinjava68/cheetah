@@ -3,19 +3,19 @@ package org.cheetah.fighter.engine;
 import org.cheetah.common.logger.Info;
 import org.cheetah.fighter.DomainEvent;
 import org.cheetah.fighter.DomainEventListener;
-import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.EventContext;
 import org.cheetah.fighter.HandlerMapping;
+import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.handler.HandlerFactory;
 import org.cheetah.fighter.plugin.PluginChain;
-import org.cheetah.fighter.worker.WorkerFactory;
+import org.cheetah.fighter.worker.WorkerAdapterFactory;
 
 /**
  * Created by Max on 2016/3/2.
  */
 public abstract class AbstractEngine<T> implements Engine<T> {
-    private WorkerFactory workerFactory;
+    private WorkerAdapterFactory workerAdapterFactory;
     private HandlerFactory handlerFactory;
     private PluginChain pluginChain = new PluginChain();
     private AsynchronousPoolFactory asynchronousPoolFactory;
@@ -33,7 +33,7 @@ public abstract class AbstractEngine<T> implements Engine<T> {
 
     public void initialize() {
         this.asynchronousPoolFactory.setEventContext(this.context);
-        asynchronousPoolFactory().start();
+        getAsynchronousPoolFactory().start();
     }
 
     @Override
@@ -57,13 +57,8 @@ public abstract class AbstractEngine<T> implements Engine<T> {
     }
 
     @Override
-    public WorkerFactory getWorkerFactory() {
-        return this.workerFactory;
-    }
-
-    @Override
-    public void setWorkerFactory(WorkerFactory workerFactory) {
-        this.workerFactory = workerFactory;
+    public void setWorkerAdapterFactory(WorkerAdapterFactory workerAdapterFactory) {
+        this.workerAdapterFactory = workerAdapterFactory;
     }
 
     @Override
@@ -96,24 +91,28 @@ public abstract class AbstractEngine<T> implements Engine<T> {
         return this.mapping;
     }
 
-    public void setPluginChain(PluginChain interceptorChain) {
-        this.pluginChain = interceptorChain;
+    public void setPluginChain(PluginChain pluginChain) {
+        this.pluginChain = pluginChain;
     }
 
-    protected HandlerFactory handlerFactory() {
-        return handlerFactory;
-    }
-
-    protected PluginChain pluginChain() {
+    protected PluginChain getPluginChain() {
         return pluginChain;
     }
 
-    protected AsynchronousPoolFactory asynchronousPoolFactory() {
+    protected AsynchronousPoolFactory getAsynchronousPoolFactory() {
         return asynchronousPoolFactory;
     }
 
-    protected EventContext context() {
+    protected EventContext getContext() {
         return context;
+    }
+
+    protected WorkerAdapterFactory getWorkerAdapterFactory() {
+        return workerAdapterFactory;
+    }
+
+    protected HandlerFactory getHandlerFactory() {
+        return handlerFactory;
     }
 
     @Override

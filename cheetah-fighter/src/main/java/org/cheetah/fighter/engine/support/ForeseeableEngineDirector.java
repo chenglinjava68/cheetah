@@ -21,8 +21,7 @@ public class ForeseeableEngineDirector implements EngineDirector {
     public Engine directEngine() {
         Engine engine = new ForeseeableEngine();
         engine.setHandlerFactory(builder.buildHandlerFactory());
-        engine.setMapping(builder.buildMapping());
-        engine.setWorkerFactory(builder.buildWorkerFactory());
+        engine.setWorkerAdapterFactory(builder.buildWorkerAdapterFactory());
         engine.setAsynchronousPoolFactory(builder.buildAsynchronousPoolFactory(configuration));
         Info.log(this.getClass(), "direct foreseeable engine with handler factory and worker factroy and asynchronous pool factory");
         return engine;
