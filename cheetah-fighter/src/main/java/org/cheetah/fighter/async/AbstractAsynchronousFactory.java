@@ -14,7 +14,7 @@ import java.util.concurrent.ThreadPoolExecutor.AbortPolicy;
 public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFactory<T> {
     private int minThreahs = Runtime.getRuntime().availableProcessors() + 2;
     private int maxThreahs = Runtime.getRuntime().availableProcessors() * 2 + 2;
-    private int queueLength;
+    private int queueLength = 100000;
     private RejectedExecutionHandler rejectedExecutionHandler = new AbortPolicy();
     private String rejectionPolicy;
     private ExecutorService executorService;

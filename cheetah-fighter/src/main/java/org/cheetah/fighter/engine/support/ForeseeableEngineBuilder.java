@@ -32,8 +32,7 @@ public class ForeseeableEngineBuilder implements EngineBuilder {
     @Override
     public AsynchronousPoolFactory buildAsynchronousPoolFactory(FighterConfig fighterConfig) {
         AsyncForeseeableWorkerFactory foreseeableWorkerFactory = new AsyncForeseeableWorkerFactory();
-        if(fighterConfig.getQueueLength() > 0)
-            foreseeableWorkerFactory.setQueueLength(fighterConfig.getQueueLength());
+        foreseeableWorkerFactory.setQueueLength(fighterConfig.getQueueLength());
         if(fighterConfig.getMaxThreads() > 0 && fighterConfig.getMinThreads() > 0) {
             foreseeableWorkerFactory.setMinThreahs(fighterConfig.getMinThreads());
             foreseeableWorkerFactory.setMaxThreahs(fighterConfig.getMaxThreads());
