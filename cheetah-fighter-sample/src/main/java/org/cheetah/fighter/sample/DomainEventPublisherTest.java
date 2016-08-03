@@ -17,34 +17,31 @@ public class DomainEventPublisherTest {
         SpringBeanFactoryProvider provider = new SpringBeanFactoryProvider(context);
         BeanFactory.setBeanFactoryProvider(provider);
 
-//        performance();
-        publish();
+        performance();
+//        publish();
     }
 
     /**
      * 性能测试
      */
     public static void performance() {
-        try {
+
             Thread[] threads = new Thread[10];
             for (int i = 0; i < 10; i++) {
                 threads[i] = new Thread(() -> {
                     while (true) {
+                        System.out.println("put");
                         EventResult result = org.cheetah.fighter.api.DomainEventPublisher.publish(
-                                new DomainEventTest("huahng"), false
+                                new DomainEventTest("huahng"), true, 1
                         );
                         org.cheetah.fighter.api.DomainEventPublisher.publish(
-                                new DomainEventTest2("huahng"), false
+                                new DomainEventTest2("huahng"), true, 1
                         );
                         //                    System.out.println(atomicLong2.incrementAndGet());
                     }
                 });
                 threads[i].start();
-                threads[i].join();
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -53,7 +50,7 @@ public class DomainEventPublisherTest {
     public static void publish() {
 
         EventResult result = org.cheetah.fighter.api.DomainEventPublisher.publish(
-                new DomainEventTest("huahng"), true, 1, TimeUnit.MILLISECONDS
+                new DomainEventTest("huahng"), true, 1, TimeUnit.SECONDS
         );
 //        EventResult result2 = DomainEventPublisher.publish(
 //                new DomainEventTest2("huahng"), true
