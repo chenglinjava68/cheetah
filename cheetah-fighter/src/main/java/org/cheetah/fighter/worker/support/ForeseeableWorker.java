@@ -1,6 +1,7 @@
 package org.cheetah.fighter.worker.support;
 
 import org.cheetah.common.logger.Debug;
+import org.cheetah.common.logger.Err;
 import org.cheetah.common.logger.Warn;
 import org.cheetah.common.utils.Objects;
 import org.cheetah.fighter.Feedback;
@@ -38,7 +39,7 @@ public class ForeseeableWorker extends AbstractWorker {
                     try {
                         invoke(command);
                     } catch (Exception e) {
-                        Warn.log(this.getClass(), "Failure events consumption", e);
+                        Err.log(this.getClass(), "Failure events consumption", e);
                         throw e;
                     }
                 return true;
@@ -59,15 +60,15 @@ public class ForeseeableWorker extends AbstractWorker {
             }
             return Feedback.SUCCESS;
         } catch (RejectedExecutionException e) {
-            Warn.log(getClass(), "event rejected execute.", e);
+            Err.log(getClass(), "event rejected execute.", e);
             handler.onFailure(command, e);
             return Feedback.failure(e, handler.getEventListener().getClass());
         } catch (InterruptedException | ExecutionException e) {
-            Warn.log(getClass(), "event consumer execution error.", e);
+            Err.log(getClass(), "event consumer execution error.", e);
             handler.onFailure(command, e);
             return Feedback.failure(e, handler.getEventListener().getClass());
         } catch (TimeoutException e) {
-            Warn.log(getClass(), "event consumer execution timeout.", e);
+            Err.log(getClass(), "event consumer execution timeout.", e);
             return Feedback.failure(e, handler.getEventListener().getClass());
         }
     }
