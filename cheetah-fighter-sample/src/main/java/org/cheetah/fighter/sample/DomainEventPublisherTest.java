@@ -1,5 +1,6 @@
 package org.cheetah.fighter.sample;
 
+import org.cheetah.common.logger.Err;
 import org.cheetah.fighter.EventResult;
 import org.cheetah.ioc.BeanFactory;
 import org.cheetah.ioc.spring.SpringBeanFactoryProvider;
@@ -7,11 +8,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by Max on 2016/7/29.
  */
 public class DomainEventPublisherTest {
+    static final AtomicLong atomicLong = new AtomicLong();
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("/META-INF/application.xml");
         SpringBeanFactoryProvider provider = new SpringBeanFactoryProvider(context);
@@ -30,14 +33,13 @@ public class DomainEventPublisherTest {
             for (int i = 0; i < 10; i++) {
                 threads[i] = new Thread(() -> {
                     while (true) {
-                        System.out.println("put");
                         EventResult result = org.cheetah.fighter.api.DomainEventPublisher.publish(
                                 new DomainEventTest("huahng"), true, 1
                         );
                         org.cheetah.fighter.api.DomainEventPublisher.publish(
                                 new DomainEventTest2("huahng"), true, 1
                         );
-                        //                    System.out.println(atomicLong2.incrementAndGet());
+                        System.out.println(atomicLong.incrementAndGet());
                     }
                 });
                 threads[i].start();

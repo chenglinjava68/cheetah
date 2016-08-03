@@ -25,7 +25,7 @@ public class SmartDomainListenerTest implements SmartDomainEventListener {
 
     @Override
     public void onDomainEvent(DomainEvent event) {
-        int i = 10000000;
+        int i = 1000000;
         while (i > 0) {
             i--;
         }
