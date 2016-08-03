@@ -25,22 +25,20 @@ public class SmartDomainListenerTest2 implements SmartDomainEventListener {
 
     @Override
     public void onDomainEvent(DomainEvent event) {
-        int i = 100000000;
+        int i = 10000000;
         while (i > 0) {
             i--;
         }
-        System.out.println("SmartDomainListenerTest2 -- " + atomicLong1.incrementAndGet() + "------" + atomicLong2.get());
+//            System.out.println("SmartDomainListenerTest2 -- " + atomicLong1.incrementAndGet() + "------" + atomicLong2.get());
 //        throw new RuntimeException();
     }
 
     @Override
     public void onFinish(DomainEvent domainEvent) {
-        System.out.println("on finish");
     }
 
     @Override
     public void onCancelled(DomainEvent domainEvent, Throwable e) {
-        System.out.println("on cancelled");
         atomicLong2.incrementAndGet();
     }
 

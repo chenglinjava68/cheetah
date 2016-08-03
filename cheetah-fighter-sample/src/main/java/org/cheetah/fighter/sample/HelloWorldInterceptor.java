@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * Created by Max on 2016/3/8.
  */
-@Component
+//@Component
 public class HelloWorldInterceptor implements Interceptor {
     @Override
     public boolean preHandle(Command command) throws Exception {
