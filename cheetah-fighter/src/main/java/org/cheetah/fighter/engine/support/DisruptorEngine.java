@@ -1,5 +1,6 @@
 package org.cheetah.fighter.engine.support;
 
+import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import org.cheetah.fighter.async.disruptor.DisruptorEvent;
 import org.cheetah.fighter.engine.AbstractEngine;
@@ -15,7 +16,9 @@ public class DisruptorEngine extends AbstractEngine<Disruptor<DisruptorEvent>> {
 
     @Override
     public WorkerAdapter assignWorkerAdapter() {
-        return ((DisruptorWorkerAdapterFactory)getWorkerAdapterFactory()).createWorkerAdapter(getAsynchronous().getRingBuffer());
+        RingBuffer ringBuffer = getAsynchronous().getRingBuffer();
+
+        return ((DisruptorWorkerAdapterFactory)getWorkerAdapterFactory()).createWorkerAdapter(ringBuffer);
     }
 
     @Override

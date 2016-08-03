@@ -30,7 +30,7 @@ public class DisruptorPoolFactory implements AsynchronousPoolFactory<Disruptor<D
         Disruptor<DisruptorEvent> disruptor = this.disruptorPool.get(EventBus.HandlerMapperKey.generate(context.getEventMessage().event()));
         if (Objects.nonNull(disruptor))
             return disruptor;
-        return this.disruptorFactory.createAsynchronous(ProducerType.SINGLE.name(), context.getHandlers(),context.getInterceptors());
+        return this.disruptorFactory.createAsynchronous(ProducerType.SINGLE.name(), context.getHandlers(), context.getInterceptors());
     }
 
     @Override
@@ -43,7 +43,8 @@ public class DisruptorPoolFactory implements AsynchronousPoolFactory<Disruptor<D
             synchronized (this) {
                 disruptor = createDisruptor();
                 EventBus.HandlerMapperKey key = EventBus.HandlerMapperKey.generate(context.getEventMessage().event());
-                return this.disruptorPool.putIfAbsent(key, disruptor);
+                this.disruptorPool.putIfAbsent(key, disruptor);
+                return this.disruptorPool.get(key);
             }
         }
     }
