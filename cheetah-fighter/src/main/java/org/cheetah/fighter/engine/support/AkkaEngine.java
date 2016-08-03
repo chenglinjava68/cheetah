@@ -23,28 +23,4 @@ public class AkkaEngine extends AbstractEngine<ActorRef> {
         return (ActorRef) getAsynchronousPoolFactory().getAsynchronous();
     }
 
-    /*@Override
-    public Governor getAsynchronous() {
-        if(Objects.isNull(governor())) {
-            Governor governor = governorFactory().createGovernor();
-            governor = new AkkaGovernorAdapter((AkkaGovernor) governor, getPluginChain());
-            ((AkkaGovernorAdapter) governor).setWorker((ActorRef) getAsynchronousPoolFactory().getAsynchronous());
-            governor.registerHandlerSquad(getContext().getHandlers());
-            setGovernor(governor);
-            return governor;
-        } else {
-            try {
-                Governor clone = governor().kagebunsin();
-                clone.reset();
-                ActorRef actor = (ActorRef) getAsynchronousPoolFactory().getAsynchronous();
-                ((AkkaGovernorAdapter) clone).setWorker(actor);
-                return clone;
-            } catch (CloneNotSupportedException e) {
-                Governor governor = governorFactory().createGovernor();
-                ((AkkaGovernorAdapter) governor).setWorker((ActorRef) getAsynchronousPoolFactory().getAsynchronous());
-                return governor;
-            }
-        }
-    }
-*/
 }

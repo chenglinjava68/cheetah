@@ -25,30 +25,4 @@ public class DisruptorEngine extends AbstractEngine<Disruptor<DisruptorEvent>> {
         return (Disruptor<DisruptorEvent>) getAsynchronousPoolFactory().getAsynchronous();
     }
 
-    /*@Override
-    public RingBuffer getAsynchronous() {
-        if (Objects.isNull(governor())) {
-            Governor governor = governorFactory().createGovernor();
-            governor = new DisruptorGovernorAdapter((DisruptorGovernor) governor, getPluginChain());
-            ((DisruptorGovernorAdapter) governor)
-                    .setRingBuffer(((Disruptor<DisruptorEvent>) getAsynchronousPoolFactory().getAsynchronous()).getRingBuffer());
-            governor.registerHandlerSquad(getContext().getHandlers());
-            setGovernor(governor);
-            return governor;
-        } else {
-            try {
-                Governor clone = governor().kagebunsin();
-                clone.reset();
-                ((DisruptorGovernorAdapter) clone)
-                        .setRingBuffer(((Disruptor<DisruptorEvent>) getAsynchronousPoolFactory().getAsynchronous()).getRingBuffer());
-                return clone;
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-                Governor governor = governorFactory().createGovernor();
-                ((DisruptorGovernorAdapter) governor)
-                        .setRingBuffer(((Disruptor<DisruptorEvent>) getAsynchronousPoolFactory().getAsynchronous()).getRingBuffer());
-                return governor;
-            }
-        }
-    }*/
 }

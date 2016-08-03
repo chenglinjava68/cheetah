@@ -25,30 +25,5 @@ public class ForeseeableEngine extends AbstractEngine<Worker[]> {
     public Worker[] getAsynchronous() {
         return (Worker[]) getAsynchronousPoolFactory().getAsynchronous();
     }
-/*
-    @Override
-    public Governor getAsynchronous() {
-        if (Objects.isNull(governor())) {
-            Governor governor = governorFactory().createGovernor();
-            governor = new ForeseeableGovernorAdapter((ForeseeableGovernor) governor, getPluginChain());
-            ((ForeseeableGovernorAdapter) governor).setWorkers((Worker[]) getAsynchronousPoolFactory().getAsynchronous());
-            governor.registerHandlerSquad(getContext().getHandlers());
-            setGovernor(governor);
-            return governor;
-        } else {
-            try {
-                Governor clone = governor().kagebunsin();
-                clone.reset();
-                Worker[] workers = (Worker[]) getAsynchronousPoolFactory().getAsynchronous();
-                ((ForeseeableGovernorAdapter) clone).setWorkers(workers);
-                return clone;
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-                Governor governor = governorFactory().createGovernor();
-                ((ForeseeableGovernorAdapter) governor).setWorkers((Worker[]) getAsynchronousPoolFactory().getAsynchronous());
-                return governor;
-            }
-        }
-    }*/
 
 }
