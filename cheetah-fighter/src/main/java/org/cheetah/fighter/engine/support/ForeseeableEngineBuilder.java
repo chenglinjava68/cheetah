@@ -11,6 +11,7 @@ import org.cheetah.fighter.handler.HandlerFactory;
 import org.cheetah.fighter.handler.support.DomainEventHandlerFactory;
 import org.cheetah.fighter.worker.WorkerAdapterFactory;
 import org.cheetah.fighter.worker.support.DisruptorWorkerAdapterFactory;
+import org.cheetah.fighter.worker.support.ForeseeableWorkerAdapterFactory;
 import org.cheetah.fighter.worker.support.ForeseeableWorkerFactory;
 
 /**
@@ -25,7 +26,7 @@ public class ForeseeableEngineBuilder implements EngineBuilder {
 
     @Override
     public WorkerAdapterFactory buildWorkerAdapterFactory() {
-        return new DisruptorWorkerAdapterFactory();
+        return new ForeseeableWorkerAdapterFactory();
     }
 
     @Override
