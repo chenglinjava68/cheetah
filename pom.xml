@@ -77,7 +77,7 @@
     <properties>
         <akka.version>2.3.9</akka.version>
         <jackson.version>2.6.3</jackson.version>
-        <disruptor.version>3.3.2</disruptor.version>
+        <disruptor.version>3.3.4</disruptor.version>
         <guava.version>18.0</guava.version>
         <spring.version>4.1.6.RELEASE</spring.version>
         <mybatis.version>3.2.8</mybatis.version>
