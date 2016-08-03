@@ -17,12 +17,6 @@ public class DomainListenerTest implements DomainEventListener {
         if(!(event instanceof EventPublisherTest.DomainEventTest))
             return ;
         double v = ArithUtils.round(Math.random() * 100, 0);
-        long i = ArithUtils.convertsToLong(v);
-//            try {
-//                Thread.sleep(i);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
         int k = 100000;
         while (k > 0) {
             k--;

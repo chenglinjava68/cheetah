@@ -43,8 +43,7 @@ public class DisruptorPoolFactory implements AsynchronousPoolFactory<Disruptor<D
             synchronized (this) {
                 disruptor = createDisruptor();
                 EventBus.HandlerMapperKey key = EventBus.HandlerMapperKey.generate(context.getEventMessage().event());
-                this.disruptorPool.putIfAbsent(key, disruptor);
-                return disruptor;
+                return this.disruptorPool.putIfAbsent(key, disruptor);
             }
         }
     }

@@ -44,8 +44,7 @@ public class ForeseeableWorkerPoolFactory implements AsynchronousPoolFactory<For
                     throw new NoMapperException();
                 workers = createWorkerTeam();
                 EventBus.HandlerMapperKey key = EventBus.HandlerMapperKey.generate(context.getEventMessage().event());
-                this.workerPool.putIfAbsent(key, workers);
-                return workers;
+                return this.workerPool.putIfAbsent(key, workers);
             }
         }
     }

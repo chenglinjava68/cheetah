@@ -6,6 +6,7 @@ import org.cheetah.fighter.engine.AbstractEngine;
 import org.cheetah.fighter.worker.WorkerAdapter;
 import org.cheetah.fighter.worker.WorkerAdapterFactory;
 import org.cheetah.fighter.worker.support.DisruptorWorkerAdapter;
+import org.cheetah.fighter.worker.support.DisruptorWorkerAdapterFactory;
 
 /**
  * Created by Max on 2016/2/29.
@@ -14,9 +15,7 @@ public class DisruptorEngine extends AbstractEngine<Disruptor<DisruptorEvent>> {
 
     @Override
     public WorkerAdapter assignWorkerAdapter() {
-        WorkerAdapter workerAdapter = getWorkerAdapterFactory().createWorkerAdapter();
-        ((DisruptorWorkerAdapter) workerAdapter).setRingBuffer(getAsynchronous().getRingBuffer());
-        return workerAdapter;
+        return ((DisruptorWorkerAdapterFactory)getWorkerAdapterFactory()).createWorkerAdapter(getAsynchronous().getRingBuffer());
     }
 
     @Override

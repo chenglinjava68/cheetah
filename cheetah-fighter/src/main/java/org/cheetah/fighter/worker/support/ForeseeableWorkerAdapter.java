@@ -1,5 +1,7 @@
 package org.cheetah.fighter.worker.support;
 
+import com.google.common.collect.ImmutableList;
+import org.apache.http.annotation.Immutable;
 import org.cheetah.fighter.EventMessage;
 import org.cheetah.fighter.Feedback;
 import org.cheetah.fighter.engine.support.EngineStrategy;
@@ -15,8 +17,11 @@ import java.util.stream.Collectors;
  * Created by Max on 2016/7/21.
  */
 public class ForeseeableWorkerAdapter implements WorkerAdapter {
-    private Worker[] workers;
-    private int workerSize;
+    private final ImmutableList<Worker> workers;
+
+    public ForeseeableWorkerAdapter(Worker[] workers) {
+        this.workers = ImmutableList.copyOf(workers);
+    }
 
     @Override
     public boolean supports(Object object) {
@@ -25,13 +30,13 @@ public class ForeseeableWorkerAdapter implements WorkerAdapter {
 
     @Override
     public Feedback work(EventMessage eventMessage) {
-        if (workerSize < 1)
+        if (workers.isEmpty())
             return Feedback.EMPTY;
-        Feedback[] feedbacks = new Feedback[workerSize];
+        Feedback[] feedbacks = new Feedback[workers.size()];
 
-        for (int i = 0; i < workerSize; i++) {
+        for (int i = 0; i < workers.size(); i++) {
             Command command = Command.of(eventMessage.event(), eventMessage.needResult(), eventMessage.timeout(), eventMessage.timeUnit());
-            Feedback feedback = workers[i].work(command);
+            Feedback feedback = workers.get(i).work(command);
             feedbacks[i] = feedback;
         }
 
@@ -43,8 +48,4 @@ public class ForeseeableWorkerAdapter implements WorkerAdapter {
         return Feedback.SUCCESS;
     }
 
-    public void setWorkers(Worker[] workers) {
-        this.workers = workers;
-        this.workerSize = workers.length;
-    }
 }

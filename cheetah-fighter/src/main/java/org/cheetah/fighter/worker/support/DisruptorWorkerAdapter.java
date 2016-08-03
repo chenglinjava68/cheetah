@@ -13,7 +13,11 @@ import org.cheetah.fighter.worker.WorkerAdapter;
  * Created by Max on 2016/7/21.
  */
 public class DisruptorWorkerAdapter implements WorkerAdapter {
-    private RingBuffer<DisruptorEvent> ringBuffer;
+    private final RingBuffer<DisruptorEvent> ringBuffer;
+
+    public DisruptorWorkerAdapter(RingBuffer<DisruptorEvent> ringBuffer) {
+        this.ringBuffer = ringBuffer;
+    }
 
     @Override
     public boolean supports(Object object) {
@@ -25,10 +29,6 @@ public class DisruptorWorkerAdapter implements WorkerAdapter {
         Translator translator = new Translator();
         ringBuffer.publishEvent(translator, Command.of(eventMessage.event(), false));
         return Feedback.SUCCESS;
-    }
-
-    public void setRingBuffer(RingBuffer<DisruptorEvent> ringBuffer) {
-        this.ringBuffer = ringBuffer;
     }
 
     static class Translator implements EventTranslatorOneArg<DisruptorEvent, Command> {
