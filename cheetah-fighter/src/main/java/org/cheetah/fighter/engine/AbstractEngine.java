@@ -4,7 +4,6 @@ import org.cheetah.common.logger.Info;
 import org.cheetah.fighter.DomainEvent;
 import org.cheetah.fighter.DomainEventListener;
 import org.cheetah.fighter.EventContext;
-import org.cheetah.fighter.HandlerMapping;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.handler.HandlerFactory;
@@ -19,8 +18,6 @@ public abstract class AbstractEngine<T> implements Engine<T> {
     private HandlerFactory handlerFactory;
     private PluginChain pluginChain = new PluginChain();
     private AsynchronousPoolFactory asynchronousPoolFactory;
-    @Deprecated
-    private volatile HandlerMapping mapping;
     private EventContext context;
     protected State state;
 
@@ -67,11 +64,6 @@ public abstract class AbstractEngine<T> implements Engine<T> {
     }
 
     @Override
-    public void setMapping(HandlerMapping mapping) {
-        this.mapping = mapping;
-    }
-
-    @Override
     public void setAsynchronousPoolFactory(AsynchronousPoolFactory asynchronousPoolFactory) {
         this.asynchronousPoolFactory = asynchronousPoolFactory;
     }
@@ -84,11 +76,6 @@ public abstract class AbstractEngine<T> implements Engine<T> {
     @Override
     public void registerPluginChain(PluginChain pluginChain) {
         this.pluginChain = pluginChain;
-    }
-
-    @Override
-    public HandlerMapping getMapping() {
-        return this.mapping;
     }
 
     public void setPluginChain(PluginChain pluginChain) {

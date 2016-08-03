@@ -4,14 +4,12 @@ import org.cheetah.common.Startable;
 import org.cheetah.fighter.DomainEvent;
 import org.cheetah.fighter.DomainEventListener;
 import org.cheetah.fighter.EventContext;
-import org.cheetah.fighter.HandlerMapping;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.handler.HandlerFactory;
 import org.cheetah.fighter.plugin.PluginChain;
 import org.cheetah.fighter.worker.WorkerAdapter;
 import org.cheetah.fighter.worker.WorkerAdapterFactory;
-import org.cheetah.fighter.worker.WorkerFactory;
 
 
 /**
@@ -50,9 +48,6 @@ public interface Engine<T> extends Startable {
      */
     void setHandlerFactory(HandlerFactory handlerFactory);
 
-    @Deprecated
-    void setMapping(HandlerMapping mapping);
-
     /**
      * 设置事件上下文
      * @param context
@@ -64,13 +59,6 @@ public interface Engine<T> extends Startable {
      * @param asynchronousPoolFactory
      */
     void setAsynchronousPoolFactory(AsynchronousPoolFactory asynchronousPoolFactory);
-
-    /**
-     * 获取事件映射器
-     * @return
-     */
-    @Deprecated
-    HandlerMapping getMapping();
 
     /**
      * 引擎状态
