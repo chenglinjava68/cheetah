@@ -4,7 +4,9 @@ import org.cheetah.bootstraps.BootstrapException;
 import org.cheetah.bootstraps.BootstrapSupport;
 import org.cheetah.common.logger.Err;
 import org.cheetah.common.logger.Info;
+import org.cheetah.common.logger.Warn;
 import org.cheetah.common.utils.Objects;
+import org.cheetah.common.utils.StringUtils;
 import org.cheetah.configuration.Configuration;
 import org.cheetah.configuration.ConfigurationFactory;
 import org.cheetah.ioc.spring.web.CheetahContextLoaderListener;
@@ -15,8 +17,11 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.webapp.WebAppContext;
 
+import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.Servlet;
+import java.io.File;
+import java.util.EnumSet;
 import java.util.EventListener;
 
 /**
@@ -31,7 +36,7 @@ public class JettyBootstrap extends BootstrapSupport {
     public static final String MIN_THREADS = "server.min.threads";
     public static final String MAX_THREADS = "server.max.threads";
     public static final String SERVER_DESCRIPTOR = "server.web.xml";
-    public static final String SERVER_WEBAPP_PATH  = "server.webapp.path";
+    public static final String SERVER_WEBAPP_PATH = "server.webapp.path";
 
     public static final int DEFAULT_PORT = 8000;
     public static final int DEFAULT_ACCEPT_QUEUE_SIZE = 512;
@@ -40,6 +45,8 @@ public class JettyBootstrap extends BootstrapSupport {
     public static final String DEFAULT_SERVER_DESCRIPTOR = "./webapp/WEB-INF/web.xml";
     public static final String DEFAULT_SERVER_WEBAPP_PATH = "./webapp";
 
+    private static final String WEBXML = "WEB-INF/web.xml";
+
     private Configuration configuration;
     private String applicationConfig = "classpath:META-INF/application.xml";
     protected JettyServerConfig serverConfig;
@@ -47,6 +54,14 @@ public class JettyBootstrap extends BootstrapSupport {
     private ServerConnector serverConnector;
     protected WebAppContext webAppContext;
     protected Class<? extends Servlet> dispatcher;
+
+    public JettyBootstrap(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
+    public JettyBootstrap(JettyServerConfig serverConfig) {
+        this.serverConfig = serverConfig;
+    }
 
     public JettyBootstrap(String applicationConfig, JettyServerConfig serverConfig) {
         this.applicationConfig = applicationConfig;
@@ -149,11 +164,27 @@ public class JettyBootstrap extends BootstrapSupport {
         webAppContext.setContextPath(serverConfig.contextPath());    //设置上下文根路径
         setContextLoaderListener();
         FilterHolder filterHolder = createEncodingFilter();
-        if(Objects.nonNull(filterHolder))
-            webAppContext.addFilter(filterHolder, "/*", null);  //添加编码过滤器，解决中文问题
+        if (Objects.nonNull(filterHolder))
+            webAppContext.addFilter(filterHolder, "/*", EnumSet.allOf(DispatcherType.class));  //添加编码过滤器，解决中文问题
         setDispatcher(); //引入Apache CXF、Jersey、Spring、ResetEasy等，提供Restful Web Service能力
-        webAppContext.setDescriptor(serverConfig.descriptor());
-        webAppContext.setResourceBase(serverConfig.webappPath());
+        if (serverConfig.webappPath().contains(",")) {
+            String webappPath = getWebappPath(serverConfig.webappPath().split(","));
+            webAppContext.setDescriptor(webappPath.endsWith("/") ? webappPath + WEBXML : webappPath + "/" + WEBXML);
+            webAppContext.setResourceBase(webappPath);
+        } else {
+            webAppContext.setDescriptor(serverConfig.descriptor());
+            webAppContext.setResourceBase(serverConfig.webappPath());
+        }
+    }
+
+    private String getWebappPath(String[] webappPaths) {
+        for (String webappPath : webappPaths) {
+            if (new File(webappPath, WEBXML).exists()) {
+                Info.log(this.getClass(), "webappPath: {}", webappPath);
+                return webappPath;
+            }
+        }
+        throw new BootstrapException("not find any webappPath");
     }
 
     protected void setDispatcher() {
@@ -168,8 +199,10 @@ public class JettyBootstrap extends BootstrapSupport {
      * 默认使用spring
      */
     protected void setContextLoaderListener() {
-        webAppContext.addEventListener(new CheetahContextLoaderListener());  //提供Spring支持能力
-        webAppContext.setInitParameter("contextConfigLocation", applicationConfig);    //Spring配置文件位置
+        if (StringUtils.isNotBlank(this.applicationConfig)) {
+            webAppContext.addEventListener(new CheetahContextLoaderListener());  //提供Spring支持能力
+            webAppContext.setInitParameter("contextConfigLocation", applicationConfig);    //Spring配置文件位置
+        }
     }
 
     public void addServlet(Class<? extends Servlet> servlet, String pathSpec) {

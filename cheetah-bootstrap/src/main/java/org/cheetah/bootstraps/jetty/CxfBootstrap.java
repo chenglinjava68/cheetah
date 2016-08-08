@@ -5,10 +5,20 @@ import org.cheetah.configuration.Configuration;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import javax.servlet.Servlet;
+
 /**
  * Created by Max on 2016/8/8.
  */
 public class CxfBootstrap extends JettyBootstrap {
+
+    public CxfBootstrap(Configuration configuration) {
+        super(configuration, null, CXFServlet.class);
+    }
+
+    public CxfBootstrap(JettyServerConfig serverConfig) {
+        super(null, serverConfig, CXFServlet.class);
+    }
 
     public CxfBootstrap(String applicationConfig, JettyServerConfig serverConfig) {
         super(applicationConfig, serverConfig, CXFServlet.class);
