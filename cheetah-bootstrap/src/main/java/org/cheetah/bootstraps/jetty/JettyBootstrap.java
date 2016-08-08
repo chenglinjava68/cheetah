@@ -29,14 +29,14 @@ import java.util.EventListener;
  */
 public class JettyBootstrap extends BootstrapSupport {
 
-    public static final String PORT_KEY = "http.port";
-    public static final String IDLE_TIMEOUT_KEY = "http.idle.timeout";
-    public static final String CONTEXT_PATH_KEY = "http.context.path";
-    public static final String ACCEPT_QUEUE_SIZE_KEY = "http.accept.queue.size";
-    public static final String MIN_THREADS = "server.min.threads";
-    public static final String MAX_THREADS = "server.max.threads";
-    public static final String SERVER_DESCRIPTOR = "server.web.xml";
-    public static final String SERVER_WEBAPP_PATH = "server.webapp.path";
+    public static final String PORT_KEY = "jetty.http.port";
+    public static final String IDLE_TIMEOUT_KEY = "jetty.http.idle.timeout";
+    public static final String CONTEXT_PATH_KEY = "jetty.http.context.path";
+    public static final String ACCEPT_QUEUE_SIZE_KEY = "jetty.http.accept.queue.size";
+    public static final String MIN_THREADS = "jetty.server.min.threads";
+    public static final String MAX_THREADS = "jetty.server.max.threads";
+    public static final String SERVER_DESCRIPTOR = "jetty.server.web.xml";
+    public static final String SERVER_WEBAPP_PATH = "jetty.server.webapp.path";
 
     public static final int DEFAULT_PORT = 8000;
     public static final int DEFAULT_ACCEPT_QUEUE_SIZE = 512;
@@ -55,40 +55,21 @@ public class JettyBootstrap extends BootstrapSupport {
     protected WebAppContext webAppContext;
     protected Class<? extends Servlet> dispatcher;
 
-    public JettyBootstrap(Configuration configuration) {
-        this(configuration, null, null);
+    public JettyBootstrap() {
+        initialize();
     }
 
     public JettyBootstrap(String serverConfig) {
-        this(ConfigurationFactory.singleton().fromClasspath(serverConfig), null, null);
-    }
-
-    public JettyBootstrap(JettyServerConfig serverConfig) {
-        this(null, serverConfig, null);
-    }
-
-    public JettyBootstrap(String applicationConfig, JettyServerConfig serverConfig) {
-        this(applicationConfig, serverConfig, null);
-    }
-
-    public JettyBootstrap(Configuration configuration, String applicationConfig) {
-        this(configuration, applicationConfig, null);
+        this(serverConfig, null);
     }
 
     public JettyBootstrap(String serverConfig, String applicationConfig) {
-        this(ConfigurationFactory.singleton().fromClasspath(serverConfig), applicationConfig, null);
+        this(serverConfig, applicationConfig, null);
     }
 
     public JettyBootstrap(String applicationConfig, JettyServerConfig serverConfig, Class<? extends Servlet> dispatcher) {
         this.applicationConfig = applicationConfig;
         this.serverConfig = serverConfig;
-        this.dispatcher = dispatcher;
-        initialize();
-    }
-
-    public JettyBootstrap(Configuration configuration, String applicationConfig, Class<? extends Servlet> dispatcher) {
-        this.configuration = configuration;
-        this.applicationConfig = applicationConfig;
         this.dispatcher = dispatcher;
         initialize();
     }
@@ -118,6 +99,40 @@ public class JettyBootstrap extends BootstrapSupport {
     }
 
     private void initialize() {
+        if(Objects.isNull(this.configuration))
+            loadEnvVariable();
+        else
+            loadConfigFile();
+
+        webAppContext = new WebAppContext();
+        Info.log(this.getClass(), "jetty server config initialize: {}", serverConfig.toString());
+    }
+
+    private void loadEnvVariable() {
+        if(Objects.nonNull(this.serverConfig))
+            return ;
+        int maxThreads = Integer.parseInt(System.getProperty(MAX_THREADS, "256"));
+        int minThreads = Integer.parseInt(System.getProperty(MIN_THREADS, (Runtime.getRuntime().availableProcessors() * 2) + ""));
+        int port = Integer.parseInt(System.getProperty(PORT_KEY, DEFAULT_PORT + ""));
+        int timeout = Integer.parseInt(System.getProperty(IDLE_TIMEOUT_KEY, DEFAULT_IDLE_TIMEOUT + ""));
+        int acceptQueueSize = Integer.parseInt(System.getProperty(ACCEPT_QUEUE_SIZE_KEY, DEFAULT_ACCEPT_QUEUE_SIZE + ""));
+        String contextPath = System.getProperty(CONTEXT_PATH_KEY, DEFAULT_CONTEXT_PATH);
+        String descriptor = System.getProperty(SERVER_DESCRIPTOR, DEFAULT_SERVER_DESCRIPTOR);
+        String webappPath = System.getProperty(SERVER_WEBAPP_PATH, DEFAULT_SERVER_WEBAPP_PATH);
+
+        serverConfig = JettyServerConfig.newBuilder()
+                .acceptQueueSize(acceptQueueSize)
+                .contextPath(contextPath)
+                .descriptor(descriptor)
+                .maxThreads(maxThreads)
+                .minThreads(minThreads)
+                .port(port)
+                .timeout(timeout)
+                .webappPath(webappPath)
+                .build();
+    }
+
+    private void loadConfigFile() {
         int maxThreads = configuration.getInt(MAX_THREADS, 256);
         int minThreads = configuration.getInt(MIN_THREADS, Runtime.getRuntime().availableProcessors() * 2);
         int port = configuration.getInt(PORT_KEY, DEFAULT_PORT);
@@ -137,9 +152,6 @@ public class JettyBootstrap extends BootstrapSupport {
                 .timeout(timeout)
                 .webappPath(webappPath)
                 .build();
-
-        webAppContext = new WebAppContext();
-        Info.log(this.getClass(), "jetty server config initialize: {}", serverConfig.toString());
     }
 
     @Override

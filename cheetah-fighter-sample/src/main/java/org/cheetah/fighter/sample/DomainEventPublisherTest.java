@@ -7,6 +7,7 @@ import org.cheetah.ioc.spring.SpringBeanFactoryProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -28,22 +29,26 @@ public class DomainEventPublisherTest {
      * 性能测试
      */
     public static void performance() {
-
+        CountDownLatch latch = new CountDownLatch(1);
             Thread[] threads = new Thread[10];
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 20; i++) {
                 threads[i] = new Thread(() -> {
                     while (true) {
-                        EventResult result = org.cheetah.fighter.api.DomainEventPublisher.publish(
-                                new DomainEventTest("huahng"), true, 1
+                        org.cheetah.fighter.api.DomainEventPublisher.publish(
+                                new DomainEventTest("huahng")
                         );
                         org.cheetah.fighter.api.DomainEventPublisher.publish(
-                                new DomainEventTest2("huahng"), true, 1
+                                new DomainEventTest2("huahng")
                         );
-                        System.out.println(atomicLong.incrementAndGet());
                     }
                 });
                 threads[i].start();
             }
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
