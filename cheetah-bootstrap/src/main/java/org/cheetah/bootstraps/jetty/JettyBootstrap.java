@@ -56,15 +56,15 @@ public class JettyBootstrap extends BootstrapSupport {
     protected Class<? extends Servlet> dispatcher;
 
     public JettyBootstrap(Configuration configuration) {
-        this.configuration = configuration;
+        this(configuration, null, null);
     }
 
     public JettyBootstrap(String serverConfig) {
-        this.configuration = ConfigurationFactory.singleton().fromClasspath(serverConfig);
+        this(ConfigurationFactory.singleton().fromClasspath(serverConfig), null, null);
     }
 
     public JettyBootstrap(JettyServerConfig serverConfig) {
-        this.serverConfig = serverConfig;
+        this(null, serverConfig, null);
     }
 
     public JettyBootstrap(String applicationConfig, JettyServerConfig serverConfig) {
