@@ -48,6 +48,27 @@ public abstract class JettyBootstrap extends BootstrapSupport {
     protected WebAppContext webAppContext;
     protected Class<? extends Servlet> dispatcher;
 
+    public JettyBootstrap(String applicationConfig, JettyServerConfig serverConfig) {
+        this.applicationConfig = applicationConfig;
+        this.serverConfig = serverConfig;
+        this.dispatcher = null;
+        initialize();
+    }
+
+    public JettyBootstrap(Configuration configuration, String applicationConfig) {
+        this.configuration = configuration;
+        this.applicationConfig = applicationConfig;
+        this.dispatcher = null;
+        initialize();
+    }
+
+    public JettyBootstrap(String serverConfig, String applicationConfig) {
+        this.configuration = ConfigurationFactory.singleton().fromClasspath(serverConfig);
+        this.applicationConfig = applicationConfig;
+        this.dispatcher = null;
+        initialize();
+    }
+
     public JettyBootstrap(String applicationConfig, JettyServerConfig serverConfig, Class<? extends Servlet> dispatcher) {
         this.applicationConfig = applicationConfig;
         this.serverConfig = serverConfig;
