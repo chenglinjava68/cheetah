@@ -14,6 +14,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.StringUtil;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.webapp.WebAppContext;
 
@@ -149,6 +150,9 @@ public class JettyBootstrap extends BootstrapSupport {
         connector.setPort(serverConfig.port());
         connector.setMaxIdleTime(serverConfig.timeout());
         connector.setAcceptQueueSize(serverConfig.acceptQueueSize());
+        if (StringUtils.isNotBlank(serverConfig.host())) {
+            connector.setHost(serverConfig.host());
+        }
         connector.setReuseAddress(true);
 
         server.addConnector(connector);
@@ -169,6 +173,8 @@ public class JettyBootstrap extends BootstrapSupport {
             webAppContext.setDescriptor(serverConfig.descriptor());
             webAppContext.setResourceBase(serverConfig.webappPath());
         }
+
+        webAppContext.setParentLoaderPriority(true);
     }
 
     private String getWebappPath(String[] webappPaths) {

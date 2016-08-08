@@ -8,6 +8,7 @@ import org.cheetah.common.utils.Assert;
  * Created by Max on 2016/6/22.
  */
 public final class JettyServerConfig {
+    private String host;
     private int port;
     private int timeout;
     private String contextPath;
@@ -21,6 +22,7 @@ public final class JettyServerConfig {
     }
 
     JettyServerConfig(Builder builder) {
+        this.host = builder.host;
         this.port = builder.port;
         this.timeout = builder.timeout;
         this.contextPath = builder.contextPath;
@@ -29,6 +31,10 @@ public final class JettyServerConfig {
         this.maxThreads = builder.maxThreads;
         this.descriptor = builder.descriptor;
         this.webappPath = builder.webappPath;
+    }
+
+    public String host() {
+        return host;
     }
 
     public int port() {
@@ -72,6 +78,7 @@ public final class JettyServerConfig {
         return new Builder();
     }
     public static class Builder {
+        String host;
         int port = 8000;
         int timeout = 30000;
         String contextPath;
@@ -83,6 +90,11 @@ public final class JettyServerConfig {
 
         public JettyServerConfig build() {
             return new JettyServerConfig(this);
+        }
+
+        public Builder host(String host) {
+            this.host = host;
+            return this;
         }
 
         public Builder port(int port) {
