@@ -1,41 +1,30 @@
 package org.cheetah.bootstraps.jetty;
 
 import org.apache.cxf.transport.servlet.CXFServlet;
-import org.cheetah.configuration.Configuration;
-import org.cheetah.configuration.ConfigurationFactory;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import javax.servlet.Servlet;
 
 /**
  * Created by Max on 2016/8/8.
  */
 public class CxfBootstrap extends JettyBootstrap {
-
-    public CxfBootstrap(Configuration configuration) {
-        this(configuration, null);
+    public CxfBootstrap() {
+        super();
     }
 
     public CxfBootstrap(String serverConfig) {
-        this(serverConfig, (String) null);
-    }
-
-    public CxfBootstrap(JettyServerConfig serverConfig) {
-        super(null, serverConfig, CXFServlet.class);
+        super(serverConfig);
     }
 
     public CxfBootstrap(String applicationConfig, JettyServerConfig serverConfig) {
         super(applicationConfig, serverConfig, CXFServlet.class);
     }
 
-    public CxfBootstrap(Configuration configuration, String applicationConfig) {
-        super(configuration, applicationConfig, CXFServlet.class);
-    }
-
     public CxfBootstrap(String serverConfig, String applicationConfig) {
         super(serverConfig, applicationConfig, CXFServlet.class);
     }
+
 
     @Override
     protected void setDispatcher() {
