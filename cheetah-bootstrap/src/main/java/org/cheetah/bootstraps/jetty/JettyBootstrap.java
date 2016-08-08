@@ -22,7 +22,7 @@ import java.util.EventListener;
 /**
  * @author Max
  */
-public abstract class JettyBootstrap extends BootstrapSupport {
+public class JettyBootstrap extends BootstrapSupport {
 
     public static final String PORT_KEY = "http.port";
     public static final String IDLE_TIMEOUT_KEY = "http.idle.timeout";
