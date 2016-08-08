@@ -14,7 +14,6 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.StringUtil;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.webapp.WebAppContext;
 
@@ -58,6 +57,10 @@ public class JettyBootstrap extends BootstrapSupport {
 
     public JettyBootstrap(Configuration configuration) {
         this.configuration = configuration;
+    }
+
+    public JettyBootstrap(String serverConfig) {
+        this.configuration = ConfigurationFactory.singleton().fromClasspath(serverConfig);
     }
 
     public JettyBootstrap(JettyServerConfig serverConfig) {

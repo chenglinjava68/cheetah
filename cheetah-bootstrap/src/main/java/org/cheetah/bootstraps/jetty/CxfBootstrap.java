@@ -2,6 +2,7 @@ package org.cheetah.bootstraps.jetty;
 
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.cheetah.configuration.Configuration;
+import org.cheetah.configuration.ConfigurationFactory;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
@@ -13,7 +14,11 @@ import javax.servlet.Servlet;
 public class CxfBootstrap extends JettyBootstrap {
 
     public CxfBootstrap(Configuration configuration) {
-        super(configuration, null, CXFServlet.class);
+        this(configuration, null);
+    }
+
+    public CxfBootstrap(String serverConfig) {
+        this(serverConfig, (String) null);
     }
 
     public CxfBootstrap(JettyServerConfig serverConfig) {
