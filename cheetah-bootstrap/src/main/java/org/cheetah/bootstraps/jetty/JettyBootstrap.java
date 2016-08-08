@@ -64,24 +64,15 @@ public class JettyBootstrap extends BootstrapSupport {
     }
 
     public JettyBootstrap(String applicationConfig, JettyServerConfig serverConfig) {
-        this.applicationConfig = applicationConfig;
-        this.serverConfig = serverConfig;
-        this.dispatcher = null;
-        initialize();
+        this(applicationConfig, serverConfig, null);
     }
 
     public JettyBootstrap(Configuration configuration, String applicationConfig) {
-        this.configuration = configuration;
-        this.applicationConfig = applicationConfig;
-        this.dispatcher = null;
-        initialize();
+        this(configuration, applicationConfig, null);
     }
 
     public JettyBootstrap(String serverConfig, String applicationConfig) {
-        this.configuration = ConfigurationFactory.singleton().fromClasspath(serverConfig);
-        this.applicationConfig = applicationConfig;
-        this.dispatcher = null;
-        initialize();
+        this(ConfigurationFactory.singleton().fromClasspath(serverConfig), applicationConfig, null);
     }
 
     public JettyBootstrap(String applicationConfig, JettyServerConfig serverConfig, Class<? extends Servlet> dispatcher) {
