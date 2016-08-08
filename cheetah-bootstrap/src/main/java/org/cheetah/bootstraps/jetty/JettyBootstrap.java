@@ -48,7 +48,7 @@ public class JettyBootstrap extends BootstrapSupport {
     private static final String WEBXML = "WEB-INF/web.xml";
 
     private Configuration configuration;
-    private String applicationConfig = "classpath:META-INF/application.xml";
+    private String applicationConfig;
     protected JettyServerConfig serverConfig;
     private Server server;
     private SelectChannelConnector connector;
