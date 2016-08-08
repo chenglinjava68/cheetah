@@ -9,12 +9,17 @@ import org.springframework.web.filter.CharacterEncodingFilter;
  * Created by Max on 2016/8/8.
  */
 public class CxfBootstrap extends JettyBootstrap {
+
     public CxfBootstrap(String applicationConfig, JettyServerConfig serverConfig) {
         super(applicationConfig, serverConfig, CXFServlet.class);
     }
 
     public CxfBootstrap(Configuration configuration, String applicationConfig) {
         super(configuration, applicationConfig, CXFServlet.class);
+    }
+
+    public CxfBootstrap(String serverConfig, String applicationConfig) {
+        super(serverConfig, applicationConfig, CXFServlet.class);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package org.cheetah.bootstraps.jetty;
 
 import org.cheetah.configuration.Configuration;
-import org.springframework.web.servlet.DispatcherServlet;
 
 /**
  * Created by Max on 2016/8/8.
@@ -9,12 +8,14 @@ import org.springframework.web.servlet.DispatcherServlet;
 public class SpringMvcBootstrap extends JettyBootstrap {
 
     public SpringMvcBootstrap(String applicationConfig, JettyServerConfig serverConfig) {
-        super(applicationConfig, serverConfig, DispatcherServlet.class);
+        super(applicationConfig, serverConfig, null);
     }
 
     public SpringMvcBootstrap(Configuration configuration, String applicationConfig) {
-        super(configuration, applicationConfig, DispatcherServlet.class);
+        super(configuration, applicationConfig, null);
     }
 
-
+    public SpringMvcBootstrap(String serverConfig, String applicationConfig) {
+        super(serverConfig, applicationConfig, null);
+    }
 }

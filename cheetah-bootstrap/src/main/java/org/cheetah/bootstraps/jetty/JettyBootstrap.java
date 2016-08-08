@@ -6,6 +6,7 @@ import org.cheetah.common.logger.Err;
 import org.cheetah.common.logger.Info;
 import org.cheetah.common.utils.Objects;
 import org.cheetah.configuration.Configuration;
+import org.cheetah.configuration.ConfigurationFactory;
 import org.cheetah.ioc.spring.web.CheetahContextLoaderListener;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -56,6 +57,18 @@ public abstract class JettyBootstrap extends BootstrapSupport {
 
     public JettyBootstrap(Configuration configuration, String applicationConfig, Class<? extends Servlet> dispatcher) {
         this.configuration = configuration;
+        this.applicationConfig = applicationConfig;
+        this.dispatcher = dispatcher;
+        initialize();
+    }
+
+    public JettyBootstrap(String serverConfig, String applicationConfig, Class<? extends Servlet> dispatcher) {
+        String temp = serverConfig.toUpperCase();
+        String _serverConfig = serverConfig;
+        if(!temp.startsWith("CLASSPATH"))
+            _serverConfig = "classpath:" + serverConfig;
+
+        this.configuration = ConfigurationFactory.singleton().fromClasspath(_serverConfig);
         this.applicationConfig = applicationConfig;
         this.dispatcher = dispatcher;
         initialize();
