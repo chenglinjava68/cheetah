@@ -9,7 +9,7 @@ import org.cheetah.common.utils.Assert;
  */
 public final class JettyServerConfig {
     private int port;
-    private long timeout;
+    private int timeout;
     private String contextPath;
     private int acceptQueueSize;
     private int minThreads;
@@ -35,7 +35,7 @@ public final class JettyServerConfig {
         return port;
     }
 
-    public long timeout() {
+    public int timeout() {
         return timeout;
     }
 
@@ -73,7 +73,7 @@ public final class JettyServerConfig {
     }
     public static class Builder {
         int port = 8000;
-        long timeout = 30000L;
+        int timeout = 30000;
         String contextPath;
         int acceptQueueSize = 512;
         int minThreads = Runtime.getRuntime().availableProcessors() * 2;
@@ -92,7 +92,7 @@ public final class JettyServerConfig {
             return this;
         }
 
-        public Builder timeout(long timeout) {
+        public Builder timeout(int timeout) {
             if(timeout <= 0)
                 throw new IllegalArgumentException(" timeout must be greater than 0");
             this.timeout = timeout;

@@ -4,14 +4,14 @@ import org.cheetah.bootstraps.BootstrapException;
 import org.cheetah.bootstraps.BootstrapSupport;
 import org.cheetah.common.logger.Err;
 import org.cheetah.common.logger.Info;
-import org.cheetah.common.logger.Warn;
 import org.cheetah.common.utils.Objects;
 import org.cheetah.common.utils.StringUtils;
 import org.cheetah.configuration.Configuration;
 import org.cheetah.configuration.ConfigurationFactory;
 import org.cheetah.ioc.spring.web.CheetahContextLoaderListener;
+import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
@@ -40,7 +40,7 @@ public class JettyBootstrap extends BootstrapSupport {
 
     public static final int DEFAULT_PORT = 8000;
     public static final int DEFAULT_ACCEPT_QUEUE_SIZE = 512;
-    public static final long DEFAULT_IDLE_TIMEOUT = 30000;
+    public static final int DEFAULT_IDLE_TIMEOUT = 30000;
     public static final String DEFAULT_CONTEXT_PATH = "/";
     public static final String DEFAULT_SERVER_DESCRIPTOR = "./webapp/WEB-INF/web.xml";
     public static final String DEFAULT_SERVER_WEBAPP_PATH = "./webapp";
@@ -51,7 +51,7 @@ public class JettyBootstrap extends BootstrapSupport {
     private String applicationConfig = "classpath:META-INF/application.xml";
     protected JettyServerConfig serverConfig;
     private Server server;
-    private ServerConnector serverConnector;
+    private Connector connector;
     protected WebAppContext webAppContext;
     protected Class<? extends Servlet> dispatcher;
 
@@ -99,13 +99,13 @@ public class JettyBootstrap extends BootstrapSupport {
     @Override
     protected void startup() throws Exception {
         try {
-            server = new Server(new QueuedThreadPool(serverConfig.maxThreads(), serverConfig.minThreads()));
-            serverConnector = new ServerConnector(server);
+            QueuedThreadPool queuedThreadPool = new QueuedThreadPool(this.serverConfig.maxThreads());
+            server = new Server();
+            server.setThreadPool(queuedThreadPool);
             configServerConnector();
 
             configWebAppContext();
 
-            server.addConnector(serverConnector);
             server.setHandler(webAppContext);
             server.start();
         } catch (Exception e) {
@@ -117,7 +117,7 @@ public class JettyBootstrap extends BootstrapSupport {
         int maxThreads = configuration.getInt(MAX_THREADS, 256);
         int minThreads = configuration.getInt(MIN_THREADS, Runtime.getRuntime().availableProcessors() * 2);
         int port = configuration.getInt(PORT_KEY, DEFAULT_PORT);
-        long timeout = configuration.getLong(IDLE_TIMEOUT_KEY, DEFAULT_IDLE_TIMEOUT);
+        int timeout = configuration.getInt(IDLE_TIMEOUT_KEY, DEFAULT_IDLE_TIMEOUT);
         int acceptQueueSize = configuration.getInt(ACCEPT_QUEUE_SIZE_KEY, DEFAULT_ACCEPT_QUEUE_SIZE);
         String contextPath = configuration.getString(CONTEXT_PATH_KEY, DEFAULT_CONTEXT_PATH);
         String descriptor = configuration.getString(SERVER_DESCRIPTOR, DEFAULT_SERVER_DESCRIPTOR);
@@ -145,10 +145,13 @@ public class JettyBootstrap extends BootstrapSupport {
     }
 
     private void configServerConnector() {
-        serverConnector.setReuseAddress(true);
-        serverConnector.setPort(serverConfig.port());
-        serverConnector.setIdleTimeout(serverConfig.timeout());
-        serverConnector.setAcceptQueueSize(serverConfig.acceptQueueSize());
+        SelectChannelConnector connector = new SelectChannelConnector();
+        connector.setPort(serverConfig.port());
+        connector.setMaxIdleTime(serverConfig.timeout());
+        connector.setAcceptQueueSize(serverConfig.acceptQueueSize());
+        connector.setReuseAddress(true);
+
+        server.addConnector(connector);
     }
 
     private void configWebAppContext() {
