@@ -51,7 +51,7 @@ public class JettyBootstrap extends BootstrapSupport {
     private String applicationConfig = "classpath:META-INF/application.xml";
     protected JettyServerConfig serverConfig;
     private Server server;
-    private Connector connector;
+    private SelectChannelConnector connector;
     protected WebAppContext webAppContext;
     protected Class<? extends Servlet> dispatcher;
 
@@ -99,18 +99,17 @@ public class JettyBootstrap extends BootstrapSupport {
     }
 
     private void initialize() {
-        if(Objects.isNull(this.configuration))
-            loadEnvVariable();
-        else
-            loadConfigFile();
+        if (Objects.isNull(this.serverConfig))
+            if (Objects.isNull(this.configuration))
+                loadEnvVariable();
+            else
+                loadConfigFile();
 
         webAppContext = new WebAppContext();
         Info.log(this.getClass(), "jetty server config initialize: {}", serverConfig.toString());
     }
 
     private void loadEnvVariable() {
-        if(Objects.nonNull(this.serverConfig))
-            return ;
         int maxThreads = Integer.parseInt(System.getProperty(MAX_THREADS, "256"));
         int minThreads = Integer.parseInt(System.getProperty(MIN_THREADS, (Runtime.getRuntime().availableProcessors() * 2) + ""));
         int port = Integer.parseInt(System.getProperty(PORT_KEY, DEFAULT_PORT + ""));
@@ -161,7 +160,7 @@ public class JettyBootstrap extends BootstrapSupport {
     }
 
     private void configServerConnector() {
-        SelectChannelConnector connector = new SelectChannelConnector();
+        connector = new SelectChannelConnector();
         connector.setPort(serverConfig.port());
         connector.setMaxIdleTime(serverConfig.timeout());
         connector.setAcceptQueueSize(serverConfig.acceptQueueSize());
