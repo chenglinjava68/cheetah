@@ -113,8 +113,6 @@ public class JettyBootstrap extends BootstrapSupport {
     }
 
     public JettyBootstrap(String applicationConfig, JettyServerConfig serverConfig, Class<? extends Servlet> dispatcher) {
-        Assert.notBlank(applicationConfig, "applicationConfig must not be blank");
-        Assert.notNull(serverConfig, "serverConfig must not be null");
         this.applicationConfig = applicationConfig;
         this.serverConfig = serverConfig;
         this.dispatcher = dispatcher;
@@ -122,8 +120,6 @@ public class JettyBootstrap extends BootstrapSupport {
     }
 
     public JettyBootstrap(String serverConfig, String applicationConfig, Class<? extends Servlet> dispatcher) {
-        Assert.notBlank(applicationConfig, "applicationConfig must not be blank");
-        Assert.notBlank(serverConfig, "serverConfig must not be blank");
         this.configuration = ConfigurationFactory.singleton().fromClasspath(serverConfig);
         this.serverConfigPath = serverConfig;
         this.applicationConfig = applicationConfig;
