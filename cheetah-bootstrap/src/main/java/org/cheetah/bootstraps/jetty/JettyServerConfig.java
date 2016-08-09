@@ -139,13 +139,11 @@ public final class JettyServerConfig {
         }
 
         public Builder descriptor(String descriptor) {
-            Assert.notBlank(descriptor, "descriptor must not be null or empty");
             this.descriptor = descriptor;
             return this;
         }
 
         public Builder webappPath(String webappPath) {
-            Assert.notBlank(webappPath, "webappPath must not be null or empty");
             this.webappPath = webappPath;
             return this;
         }
