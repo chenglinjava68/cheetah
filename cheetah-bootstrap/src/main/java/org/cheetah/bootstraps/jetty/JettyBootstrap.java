@@ -245,14 +245,12 @@ public class JettyBootstrap extends BootstrapSupport {
         if (Objects.nonNull(filterHolder))
             webAppContext.addFilter(filterHolder, "/*", EnumSet.allOf(DispatcherType.class));  //添加编码过滤器，解决中文问题
         setDispatcher(); //引入Apache CXF、Jersey、Spring、ResetEasy等，提供Restful Web Service能力
-        if (serverConfig.webappPath().contains(",")) {
-            String webappPath = getWebappPath(serverConfig.webappPath().split(","));
+        String webappPath = getWebappPath(serverConfig.webappPath().split(","));
+        if (serverConfig.webappPath().contains(","))
             webAppContext.setDescriptor(webappPath.endsWith("/") ? webappPath + WEBXML : webappPath + "/" + WEBXML);
-            webAppContext.setResourceBase(webappPath);
-        } else {
+        else
             webAppContext.setDescriptor(serverConfig.descriptor());
-            webAppContext.setResourceBase(serverConfig.webappPath());
-        }
+        webAppContext.setResourceBase(webappPath);
         //优先使用父类加载器
         webAppContext.setParentLoaderPriority(true);
     }
@@ -299,7 +297,7 @@ public class JettyBootstrap extends BootstrapSupport {
                 return webappPath;
             }
         }
-        throw new BootstrapException("not find any webappPath");
+        throw new BootstrapException("not find available webappPath");
     }
 
     protected void setDispatcher() {
