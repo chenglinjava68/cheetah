@@ -22,6 +22,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTabJc;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
@@ -59,6 +60,7 @@ public class JettyBootstrap extends BootstrapSupport {
     public static final String DEFAULT_SERVER_DESCRIPTOR = "WEB-INF/web.xml";
     public static final String DEFAULT_SERVER_WEBAPP_PATH = "webapp";
 
+    private static final String DEFAULT_JETTY_CONFIG = "/jetty.properties";
     private static final String WEBXML = "WEB-INF/web.xml";
     /**
      * 读取配置库
@@ -94,7 +96,7 @@ public class JettyBootstrap extends BootstrapSupport {
     private URI serverURI;
 
     public JettyBootstrap() {
-        initialize();
+        this(DEFAULT_JETTY_CONFIG);
     }
 
     public JettyBootstrap(String serverConfig) {
