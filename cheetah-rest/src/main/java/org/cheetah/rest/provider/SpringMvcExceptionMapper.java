@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by Max on 2016/7/20.
  */
 @ControllerAdvice
-public class SpringExceptionMapper {
+public class SpringMvcExceptionMapper {
 
     @ExceptionHandler
     @ResponseBody

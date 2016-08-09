@@ -1,14 +1,11 @@
 package org.cheetah.rest.provider;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+import org.cheetah.common.utils.ObjectMappers;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -32,19 +29,7 @@ import java.lang.reflect.Type;
 @Produces(MediaType.WILDCARD)
 public class JarrsApiJsonProvider implements MessageBodyReader<Object>, MessageBodyWriter<Object> {
 
-    static ObjectMapper OBJECT_MAPPER;
-
-    static {
-        OBJECT_MAPPER = new ObjectMapper();
-        OBJECT_MAPPER.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
-        OBJECT_MAPPER.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        OBJECT_MAPPER.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
-        OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        OBJECT_MAPPER.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
-        OBJECT_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        OBJECT_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        OBJECT_MAPPER.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
-    }
+    static ObjectMapper OBJECT_MAPPER = ObjectMappers.specialStyleObjectMapper();
 
     final JacksonJsonProvider jsonProvider;
 

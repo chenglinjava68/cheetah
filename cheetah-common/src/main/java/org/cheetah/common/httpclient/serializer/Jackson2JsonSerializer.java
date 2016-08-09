@@ -1,14 +1,10 @@
 package org.cheetah.common.httpclient.serializer;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.cheetah.common.httpclient.EntitySerializer;
 import org.cheetah.common.httpclient.HttpClientException;
+import org.cheetah.common.utils.ObjectMappers;
 
 import java.io.IOException;
 
@@ -18,16 +14,7 @@ import java.io.IOException;
  * Created by Max on 2016/7/6.
 */
 public class Jackson2JsonSerializer implements EntitySerializer {
-    private final static ObjectMapper objectMapper;
-
-    static {
-        objectMapper = new ObjectMapper();
-        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
-        objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        objectMapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
-    }
+    private final static ObjectMapper objectMapper = ObjectMappers.newborn();
 
     @Override
     public String serialize(Object entity) {
