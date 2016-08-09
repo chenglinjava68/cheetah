@@ -6,7 +6,6 @@ import org.cheetah.bootstraps.BootstrapException;
 import org.cheetah.bootstraps.BootstrapSupport;
 import org.cheetah.common.logger.Err;
 import org.cheetah.common.logger.Info;
-import org.cheetah.common.logger.Warn;
 import org.cheetah.common.utils.Objects;
 import org.cheetah.common.utils.StringUtils;
 import org.cheetah.configuration.Configuration;
@@ -19,6 +18,7 @@ import org.eclipse.jetty.server.ConnectionFactory;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -83,7 +83,7 @@ public class JettyBootstrap extends BootstrapSupport {
     /**
      * webapp上下文
      */
-    protected WebAppContext webAppContext;
+    protected ServletContextHandler contextHandler;
     /**
      * servlet调度，如springmvc：DispatcherSerlvet
      */
@@ -123,12 +123,15 @@ public class JettyBootstrap extends BootstrapSupport {
     protected void startup() throws Exception {
         try {
             server = new Server(new QueuedThreadPool(this.serverConfig.maxThreads(), this.serverConfig.minThreads()));
-            ServerConnector connector = configServerConnector();
+            ServerConnector connector = configureServerConnector();
             server.addConnector(connector);
 
-            configWebAppContext(getScratchDir());
+            if(StringUtils.isNotBlank(this.serverConfig.webappPath()))
+                configureWebAppContext(getScratchDir());
+            else
+                configureServletContextHandler();
 
-            server.setHandler(webAppContext);
+            server.setHandler(contextHandler);
             server.start();
 
             this.serverURI = getServerUri(connector);
@@ -147,7 +150,10 @@ public class JettyBootstrap extends BootstrapSupport {
             else
                 loadConfigFile();
 
-        webAppContext = new WebAppContext();
+        if(StringUtils.isBlank(this.serverConfig.webappPath()))
+            contextHandler = new ServletContextHandler();
+        else
+            contextHandler = new WebAppContext();
         Info.log(this.getClass(), "jetty server config initialize: {}", serverConfig.toString());
     }
 
@@ -212,7 +218,7 @@ public class JettyBootstrap extends BootstrapSupport {
      *
      * @return
      */
-    private ServerConnector configServerConnector() {
+    private ServerConnector configureServerConnector() {
         connector = new ServerConnector(server);
         connector.setPort(serverConfig.port());
         connector.setIdleTimeout(serverConfig.timeout());
@@ -230,16 +236,33 @@ public class JettyBootstrap extends BootstrapSupport {
      *
      * @param scratchDir
      */
-    private void configWebAppContext(File scratchDir) {
+    private void configureWebAppContext(File scratchDir) {
+        WebAppContext context = (WebAppContext) this.contextHandler;
 
-        webAppContext.setAttribute("javax.servlet.context.tempdir", scratchDir);
+        configureServletContextHandler();
+        context.setParentLoaderPriority(true);        //优先使用父类加载器
 
-        webAppContext.setContextPath(serverConfig.contextPath());    //设置上下文根路径
+        String webappPath = getWebappPath(serverConfig.webappPath().split(","));
+        if (serverConfig.webappPath().contains(","))
+            context.setDescriptor(webappPath.endsWith("/") ? webappPath + WEBXML : webappPath + "/" + WEBXML);
+        else
+            context.setDescriptor(serverConfig.descriptor());
+        contextHandler.setResourceBase(webappPath);
+
+        context.setAttribute("javax.servlet.context.tempdir", scratchDir);
         //容器初始状态设置， 加入jsper初始化，解决jsp不是支持的问题
-        webAppContext.setAttribute("org.eclipse.jetty.containerInitializers", Arrays.asList(
+        context.setAttribute("org.eclipse.jetty.containerInitializers", Arrays.asList(
                 new ContainerInitializer(new JettyJasperInitializer(), null)));
-        webAppContext.setAttribute(InstanceManager.class.getName(), new SimpleInstanceManager());
-        webAppContext.addBean(new ServletContainerInitializersStarter(webAppContext), true);
+        context.setAttribute(InstanceManager.class.getName(), new SimpleInstanceManager());
+        context.addBean(new ServletContainerInitializersStarter(context), true);
+    }
+
+    /**
+     * 配置serlvet上下文
+     */
+    private void configureServletContextHandler() {
+        this.contextHandler.setContextPath(serverConfig.contextPath());    //设置上下文根路径
+
         /**
          * load一个listener，通常是用来设置spring的监听器
          */
@@ -249,21 +272,8 @@ public class JettyBootstrap extends BootstrapSupport {
          */
         FilterHolder filterHolder = createEncodingFilter();
         if (Objects.nonNull(filterHolder))
-            webAppContext.addFilter(filterHolder, "/*", EnumSet.allOf(DispatcherType.class));  //添加编码过滤器，解决中文问题
+            contextHandler.addFilter(filterHolder, "/*", EnumSet.allOf(DispatcherType.class));  //添加编码过滤器，解决中文问题
         setDispatcher(); //引入Apache CXF、Jersey、Spring、ResetEasy等，提供Restful Web Service能力
-        webAppContext.setParentLoaderPriority(true);        //优先使用父类加载器
-
-        if(StringUtils.isBlank(serverConfig.webappPath())) {
-            Warn.log(JettyBootstrap.class, "The boot process without web.xml and the view");
-            return;
-        }
-
-        String webappPath = getWebappPath(serverConfig.webappPath().split(","));
-        if (serverConfig.webappPath().contains(","))
-            webAppContext.setDescriptor(webappPath.endsWith("/") ? webappPath + WEBXML : webappPath + "/" + WEBXML);
-        else
-            webAppContext.setDescriptor(serverConfig.descriptor());
-        webAppContext.setResourceBase(webappPath);
     }
 
     /**
@@ -324,29 +334,29 @@ public class JettyBootstrap extends BootstrapSupport {
      */
     protected void setContextLoaderListener() {
         if (StringUtils.isNotBlank(this.applicationConfig)) {
-            webAppContext.addEventListener(new CheetahContextLoaderListener());  //提供Spring支持能力
-            webAppContext.setInitParameter("contextConfigLocation", applicationConfig);    //Spring配置文件位置
+            contextHandler.addEventListener(new CheetahContextLoaderListener());  //提供Spring支持能力
+            contextHandler.setInitParameter("contextConfigLocation", applicationConfig);    //Spring配置文件位置
         }
     }
 
     public void addServlet(Class<? extends Servlet> servlet, String pathSpec) {
-        webAppContext.addServlet(servlet, pathSpec);
+        contextHandler.addServlet(servlet, pathSpec);
     }
 
     public void addServlet(ServletHolder servletHolder, String pathSpec) {
-        webAppContext.addServlet(servletHolder, pathSpec);
+        contextHandler.addServlet(servletHolder, pathSpec);
     }
 
     public void addFilter(Class<? extends Filter> filterClass, String pathSpec) {
-        webAppContext.addFilter(filterClass, pathSpec, null);
+        contextHandler.addFilter(filterClass, pathSpec, null);
     }
 
     public void addFilter(FilterHolder filterHolder, String pathSpec) {
-        webAppContext.addFilter(filterHolder, pathSpec, null);
+        contextHandler.addFilter(filterHolder, pathSpec, null);
     }
 
     public void addEventListener(EventListener eventListener) {
-        webAppContext.addEventListener(eventListener);
+        contextHandler.addEventListener(eventListener);
     }
 
     private void stop() {
