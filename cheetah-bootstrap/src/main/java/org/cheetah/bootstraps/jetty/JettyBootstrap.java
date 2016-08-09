@@ -6,6 +6,7 @@ import org.cheetah.bootstraps.BootstrapException;
 import org.cheetah.bootstraps.BootstrapSupport;
 import org.cheetah.common.logger.Err;
 import org.cheetah.common.logger.Info;
+import org.cheetah.common.logger.Warn;
 import org.cheetah.common.utils.Objects;
 import org.cheetah.common.utils.StringUtils;
 import org.cheetah.configuration.Configuration;
@@ -118,7 +119,11 @@ public class JettyBootstrap extends BootstrapSupport {
     }
 
     public JettyBootstrap(String serverConfig, String applicationConfig, Class<? extends Servlet> dispatcher) {
-        this.configuration = ConfigurationFactory.singleton().fromClasspath(serverConfig);
+        try {
+            this.configuration = ConfigurationFactory.singleton().fromClasspath(serverConfig);
+        } catch (Exception e) {
+            Warn.log(JettyBootstrap.class, "read configuration local file error, will use environment variables as configuration");
+        }
         this.serverConfigPath = serverConfig;
         this.applicationConfig = applicationConfig;
         this.dispatcher = dispatcher;
@@ -164,7 +169,7 @@ public class JettyBootstrap extends BootstrapSupport {
             contextHandler = new ServletContextHandler();
         else
             contextHandler = new WebAppContext();
-        Info.log(this.getClass(), "jetty server config initialize: {}", serverConfig.toString());
+
     }
 
     /**
@@ -190,6 +195,7 @@ public class JettyBootstrap extends BootstrapSupport {
                 .timeout(timeout)
                 .webappPath(webappPath)
                 .build();
+        Info.log(this.getClass(), "jetty server configuration file from environment variable: {}", serverConfig.toString());
     }
 
     /**
@@ -215,6 +221,7 @@ public class JettyBootstrap extends BootstrapSupport {
                 .timeout(timeout)
                 .webappPath(webappPath)
                 .build();
+        Info.log(this.getClass(), "jetty server configuration file from a local file: {}", serverConfig.toString());
     }
 
     @Override
