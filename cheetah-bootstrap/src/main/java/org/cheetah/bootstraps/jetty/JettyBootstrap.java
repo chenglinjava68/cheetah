@@ -6,6 +6,7 @@ import org.cheetah.bootstraps.BootstrapException;
 import org.cheetah.bootstraps.BootstrapSupport;
 import org.cheetah.common.logger.Err;
 import org.cheetah.common.logger.Info;
+import org.cheetah.common.utils.Assert;
 import org.cheetah.common.utils.Objects;
 import org.cheetah.common.utils.StringUtils;
 import org.cheetah.configuration.Configuration;
@@ -75,6 +76,10 @@ public class JettyBootstrap extends BootstrapSupport {
      */
     protected JettyServerConfig serverConfig;
     /**
+     * 配置文件路径
+     */
+    private String serverConfigPath;
+    /**
      * jetty的server对象
      */
     private Server server;
@@ -108,6 +113,8 @@ public class JettyBootstrap extends BootstrapSupport {
     }
 
     public JettyBootstrap(String applicationConfig, JettyServerConfig serverConfig, Class<? extends Servlet> dispatcher) {
+        Assert.notBlank(applicationConfig, "applicationConfig must not be blank");
+        Assert.notNull(serverConfig, "serverConfig must not be null");
         this.applicationConfig = applicationConfig;
         this.serverConfig = serverConfig;
         this.dispatcher = dispatcher;
@@ -115,11 +122,10 @@ public class JettyBootstrap extends BootstrapSupport {
     }
 
     public JettyBootstrap(String serverConfig, String applicationConfig, Class<? extends Servlet> dispatcher) {
-        try {
-            this.configuration = ConfigurationFactory.singleton().fromClasspath(serverConfig);
-        } catch (Exception e) {
-            throw new BootstrapException("jetty default config[" + serverConfig + "] not found.", e);
-        }
+        Assert.notBlank(applicationConfig, "applicationConfig must not be blank");
+        Assert.notBlank(serverConfig, "serverConfig must not be blank");
+        this.configuration = ConfigurationFactory.singleton().fromClasspath(serverConfig);
+        this.serverConfigPath = serverConfig;
         this.applicationConfig = applicationConfig;
         this.dispatcher = dispatcher;
         initialize();
@@ -150,11 +156,15 @@ public class JettyBootstrap extends BootstrapSupport {
      * 初始化配置和上下文
      */
     private void initialize() {
-        if (Objects.isNull(this.serverConfig))
-            if (Objects.isNull(this.configuration))
-                loadEnvVariable();
-            else
-                loadConfigFile();
+        try {
+            if (Objects.isNull(this.serverConfig))
+                if (Objects.isNull(this.configuration))
+                    loadEnvVariable();
+                else
+                    loadConfigFile();
+        } catch (Exception e) {
+            throw new BootstrapException("jetty config[" + serverConfigPath + "] read occurs error.", e);
+        }
 
         if (StringUtils.isBlank(this.serverConfig.webappPath()))
             contextHandler = new ServletContextHandler();
