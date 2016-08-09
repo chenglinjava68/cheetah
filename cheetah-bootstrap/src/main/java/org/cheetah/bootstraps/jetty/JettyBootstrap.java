@@ -115,7 +115,11 @@ public class JettyBootstrap extends BootstrapSupport {
     }
 
     public JettyBootstrap(String serverConfig, String applicationConfig, Class<? extends Servlet> dispatcher) {
-        this.configuration = ConfigurationFactory.singleton().fromClasspath(serverConfig);
+        try {
+            this.configuration = ConfigurationFactory.singleton().fromClasspath(serverConfig);
+        } catch (Exception e) {
+            throw new BootstrapException("jetty default config[" + serverConfig + "] not found.", e);
+        }
         this.applicationConfig = applicationConfig;
         this.dispatcher = dispatcher;
         initialize();
@@ -128,7 +132,7 @@ public class JettyBootstrap extends BootstrapSupport {
             ServerConnector connector = configureServerConnector();
             server.addConnector(connector);
 
-            if(StringUtils.isNotBlank(this.serverConfig.webappPath()))
+            if (StringUtils.isNotBlank(this.serverConfig.webappPath()))
                 configureWebAppContext(getScratchDir());
             else
                 configureServletContextHandler();
@@ -152,7 +156,7 @@ public class JettyBootstrap extends BootstrapSupport {
             else
                 loadConfigFile();
 
-        if(StringUtils.isBlank(this.serverConfig.webappPath()))
+        if (StringUtils.isBlank(this.serverConfig.webappPath()))
             contextHandler = new ServletContextHandler();
         else
             contextHandler = new WebAppContext();
