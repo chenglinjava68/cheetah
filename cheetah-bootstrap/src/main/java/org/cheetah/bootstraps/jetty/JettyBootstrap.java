@@ -34,6 +34,8 @@ import java.util.*;
 
 
 /**
+ * jetty服务封装
+ *
  * @author Max
  */
 public class JettyBootstrap extends BootstrapSupport {
@@ -55,14 +57,37 @@ public class JettyBootstrap extends BootstrapSupport {
     public static final String DEFAULT_SERVER_WEBAPP_PATH = "./webapp";
 
     private static final String WEBXML = "WEB-INF/web.xml";
-
+    /**
+     * 读取配置库
+     */
     private Configuration configuration;
+    /**
+     * 应用配置，Spring
+     */
     private String applicationConfig;
+    /**
+     * 将服务配置转化为这个对象
+     */
     protected JettyServerConfig serverConfig;
+    /**
+     * jetty的server对象
+     */
     private Server server;
+    /**
+     * jetty服务连接器
+     */
     private ServerConnector connector;
+    /**
+     * webapp上下文
+     */
     protected WebAppContext webAppContext;
+    /**
+     * servlet调度，如springmvc：DispatcherSerlvet
+     */
     protected Class<? extends Servlet> dispatcher;
+    /**
+     * jetty服务启动后的uri
+     */
     private URI serverURI;
 
     public JettyBootstrap() {
@@ -108,7 +133,9 @@ public class JettyBootstrap extends BootstrapSupport {
             throw new BootstrapException("jetty boot occurs error.", e);
         }
     }
-
+    /**
+     * 初始化配置和上下文
+     */
     private void initialize() {
         if (Objects.isNull(this.serverConfig))
             if (Objects.isNull(this.configuration))
@@ -120,6 +147,9 @@ public class JettyBootstrap extends BootstrapSupport {
         Info.log(this.getClass(), "jetty server config initialize: {}", serverConfig.toString());
     }
 
+    /**
+     * 从环境变量中load出配置
+     */
     private void loadEnvVariable() {
         int maxThreads = Integer.parseInt(System.getProperty(MAX_THREADS, "256"));
         int minThreads = Integer.parseInt(System.getProperty(MIN_THREADS, (Runtime.getRuntime().availableProcessors() * 2) + ""));
@@ -142,6 +172,9 @@ public class JettyBootstrap extends BootstrapSupport {
                 .build();
     }
 
+    /**
+     * 从配置文件中load配置
+     */
     private void loadConfigFile() {
         int maxThreads = configuration.getInt(MAX_THREADS, 256);
         int minThreads = configuration.getInt(MIN_THREADS, Runtime.getRuntime().availableProcessors() * 2);
@@ -196,13 +229,18 @@ public class JettyBootstrap extends BootstrapSupport {
         webAppContext.setAttribute("javax.servlet.context.tempdir", scratchDir);
 
         webAppContext.setContextPath(serverConfig.contextPath());    //设置上下文根路径
-
+        //容器初始状态设置， 加入jsper初始化，解决jsp不是支持的问题
         webAppContext.setAttribute("org.eclipse.jetty.containerInitializers", Arrays.asList (
                 new ContainerInitializer(new JettyJasperInitializer(), null)));
         webAppContext.setAttribute(InstanceManager.class.getName(), new SimpleInstanceManager());
         webAppContext.addBean(new ServletContainerInitializersStarter(webAppContext), true);
-
+        /**
+         * load一个listener，通常是用来设置spring的监听器
+         */
         setContextLoaderListener();
+        /**
+         * 字符编码过滤器
+         */
         FilterHolder filterHolder = createEncodingFilter();
         if (Objects.nonNull(filterHolder))
             webAppContext.addFilter(filterHolder, "/*", EnumSet.allOf(DispatcherType.class));  //添加编码过滤器，解决中文问题
@@ -215,7 +253,7 @@ public class JettyBootstrap extends BootstrapSupport {
             webAppContext.setDescriptor(serverConfig.descriptor());
             webAppContext.setResourceBase(serverConfig.webappPath());
         }
-
+        //优先使用父类加载器
         webAppContext.setParentLoaderPriority(true);
     }
 

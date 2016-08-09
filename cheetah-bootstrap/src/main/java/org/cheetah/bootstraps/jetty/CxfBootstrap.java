@@ -6,6 +6,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 
 /**
+ * cxf基于jetty的boot
  * Created by Max on 2016/8/8.
  */
 public class CxfBootstrap extends JettyBootstrap {
