@@ -15,7 +15,7 @@
         <jdk.version>1.7</jdk.version>
         <springframework.version>4.1.6.RELEASE</springframework.version>
         <junit.version>4.12</junit.version>
-        <jetty.version>8.1.17.v20150415</jetty.version>
+        <jetty.version>9.3.8.v20160314</jetty.version>
         <dddlib.version>4.4.5</dddlib.version>
         <slf4j.version>1.7.12</slf4j.version>
         <springframework.version>4.1.6.RELEASE</springframework.version>
@@ -59,6 +59,24 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
+            <version>${jetty.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>apache-jsp</artifactId>
+            <version>${jetty.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>apache-jstl</artifactId>
+            <version>${jetty.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-annotations</artifactId>
             <version>${jetty.version}</version>
             <scope>provided</scope>
         </dependency>
