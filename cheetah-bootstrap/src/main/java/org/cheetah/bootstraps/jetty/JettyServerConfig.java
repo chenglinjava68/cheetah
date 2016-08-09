@@ -85,8 +85,8 @@ public final class JettyServerConfig {
         int acceptQueueSize = 512;
         int minThreads = Runtime.getRuntime().availableProcessors() * 2;
         int maxThreads = 256;
-        String descriptor = "./webapp/WEB-INF/web.xml";
-        String webappPath = "./webapp";
+        String descriptor;
+        String webappPath;
 
         public JettyServerConfig build() {
             return new JettyServerConfig(this);

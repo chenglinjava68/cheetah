@@ -1,11 +1,13 @@
 package org.cheetah.bootstraps.jetty;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.SimpleInstanceManager;
 import org.cheetah.bootstraps.BootstrapException;
 import org.cheetah.bootstraps.BootstrapSupport;
 import org.cheetah.common.logger.Err;
 import org.cheetah.common.logger.Info;
+import org.cheetah.common.logger.Warn;
 import org.cheetah.common.utils.Objects;
 import org.cheetah.common.utils.StringUtils;
 import org.cheetah.configuration.Configuration;
@@ -20,6 +22,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.Jetty;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.webapp.WebAppContext;
 
@@ -49,12 +52,13 @@ public class JettyBootstrap extends BootstrapSupport {
     public static final String SERVER_DESCRIPTOR = "jetty.server.web.xml";
     public static final String SERVER_WEBAPP_PATH = "jetty.server.webapp.path";
 
+    public static final int DEFAULT_MAX_THREADS = 256;
     public static final int DEFAULT_PORT = 8000;
     public static final int DEFAULT_ACCEPT_QUEUE_SIZE = 512;
     public static final int DEFAULT_IDLE_TIMEOUT = 30000;
     public static final String DEFAULT_CONTEXT_PATH = "/";
-    public static final String DEFAULT_SERVER_DESCRIPTOR = "./webapp/WEB-INF/web.xml";
-    public static final String DEFAULT_SERVER_WEBAPP_PATH = "./webapp";
+    public static final String DEFAULT_SERVER_DESCRIPTOR = "WEB-INF/web.xml";
+    public static final String DEFAULT_SERVER_WEBAPP_PATH = "webapp";
 
     private static final String WEBXML = "WEB-INF/web.xml";
     /**
@@ -133,6 +137,7 @@ public class JettyBootstrap extends BootstrapSupport {
             throw new BootstrapException("jetty boot occurs error.", e);
         }
     }
+
     /**
      * 初始化配置和上下文
      */
@@ -151,7 +156,7 @@ public class JettyBootstrap extends BootstrapSupport {
      * 从环境变量中load出配置
      */
     private void loadEnvVariable() {
-        int maxThreads = Integer.parseInt(System.getProperty(MAX_THREADS, "256"));
+        int maxThreads = Integer.parseInt(System.getProperty(MAX_THREADS, DEFAULT_MAX_THREADS + ""));
         int minThreads = Integer.parseInt(System.getProperty(MIN_THREADS, (Runtime.getRuntime().availableProcessors() * 2) + ""));
         int port = Integer.parseInt(System.getProperty(PORT_KEY, DEFAULT_PORT + ""));
         int timeout = Integer.parseInt(System.getProperty(IDLE_TIMEOUT_KEY, DEFAULT_IDLE_TIMEOUT + ""));
@@ -176,7 +181,7 @@ public class JettyBootstrap extends BootstrapSupport {
      * 从配置文件中load配置
      */
     private void loadConfigFile() {
-        int maxThreads = configuration.getInt(MAX_THREADS, 256);
+        int maxThreads = configuration.getInt(MAX_THREADS, DEFAULT_MAX_THREADS);
         int minThreads = configuration.getInt(MIN_THREADS, Runtime.getRuntime().availableProcessors() * 2);
         int port = configuration.getInt(PORT_KEY, DEFAULT_PORT);
         int timeout = configuration.getInt(IDLE_TIMEOUT_KEY, DEFAULT_IDLE_TIMEOUT);
@@ -205,6 +210,7 @@ public class JettyBootstrap extends BootstrapSupport {
 
     /**
      * 配置服务连接器
+     *
      * @return
      */
     private ServerConnector configServerConnector() {
@@ -222,6 +228,7 @@ public class JettyBootstrap extends BootstrapSupport {
 
     /**
      * 配置web上下文
+     *
      * @param scratchDir
      */
     private void configWebAppContext(File scratchDir) {
@@ -230,7 +237,7 @@ public class JettyBootstrap extends BootstrapSupport {
 
         webAppContext.setContextPath(serverConfig.contextPath());    //设置上下文根路径
         //容器初始状态设置， 加入jsper初始化，解决jsp不是支持的问题
-        webAppContext.setAttribute("org.eclipse.jetty.containerInitializers", Arrays.asList (
+        webAppContext.setAttribute("org.eclipse.jetty.containerInitializers", Arrays.asList(
                 new ContainerInitializer(new JettyJasperInitializer(), null)));
         webAppContext.setAttribute(InstanceManager.class.getName(), new SimpleInstanceManager());
         webAppContext.addBean(new ServletContainerInitializersStarter(webAppContext), true);
@@ -245,14 +252,19 @@ public class JettyBootstrap extends BootstrapSupport {
         if (Objects.nonNull(filterHolder))
             webAppContext.addFilter(filterHolder, "/*", EnumSet.allOf(DispatcherType.class));  //添加编码过滤器，解决中文问题
         setDispatcher(); //引入Apache CXF、Jersey、Spring、ResetEasy等，提供Restful Web Service能力
+        webAppContext.setParentLoaderPriority(true);        //优先使用父类加载器
+
+        if(StringUtils.isBlank(serverConfig.webappPath())) {
+            Warn.log(JettyBootstrap.class, "The boot process without web.xml and the view");
+            return;
+        }
+
         String webappPath = getWebappPath(serverConfig.webappPath().split(","));
         if (serverConfig.webappPath().contains(","))
             webAppContext.setDescriptor(webappPath.endsWith("/") ? webappPath + WEBXML : webappPath + "/" + WEBXML);
         else
             webAppContext.setDescriptor(serverConfig.descriptor());
         webAppContext.setResourceBase(webappPath);
-        //优先使用父类加载器
-        webAppContext.setParentLoaderPriority(true);
     }
 
     /**
