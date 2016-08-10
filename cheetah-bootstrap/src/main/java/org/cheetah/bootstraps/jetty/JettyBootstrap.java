@@ -34,6 +34,7 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.EventListener;
+import java.util.concurrent.LinkedTransferQueue;
 
 
 /**
@@ -133,7 +134,10 @@ public class JettyBootstrap extends BootstrapSupport {
     @Override
     protected void startup() throws Exception {
         try {
-            server = new Server(new QueuedThreadPool(this.serverConfig.maxThreads(), this.serverConfig.minThreads()));
+            QueuedThreadPool queuedThreadPool = new QueuedThreadPool(this.serverConfig.maxThreads(), this.serverConfig.minThreads(),
+                    60000, new LinkedTransferQueue<Runnable>());
+            server = new Server(queuedThreadPool);
+
             ServerConnector connector = configureServerConnector();
             server.addConnector(connector);
 
