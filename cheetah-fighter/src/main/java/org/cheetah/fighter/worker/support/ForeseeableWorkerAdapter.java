@@ -1,7 +1,6 @@
 package org.cheetah.fighter.worker.support;
 
 import com.google.common.collect.ImmutableList;
-import org.apache.http.annotation.Immutable;
 import org.cheetah.fighter.EventMessage;
 import org.cheetah.fighter.Feedback;
 import org.cheetah.fighter.engine.support.EngineStrategy;
