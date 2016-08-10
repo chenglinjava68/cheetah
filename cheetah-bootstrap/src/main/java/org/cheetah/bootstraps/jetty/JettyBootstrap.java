@@ -22,6 +22,7 @@ import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
+import org.eclipse.jetty.util.thread.ThreadPool;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 import javax.servlet.DispatcherType;
@@ -34,7 +35,7 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.EventListener;
-import java.util.concurrent.LinkedTransferQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 
 /**
@@ -99,6 +100,18 @@ public class JettyBootstrap extends BootstrapSupport {
      * jetty服务启动后的uri
      */
     private URI serverURI;
+    /**
+     * jetty服务线程池， 默认使用QueuedThreadPool
+     */
+    private ThreadPool threadPool;
+    /**
+     * web模式，代表目前所启动的项目是一个web项目，包含web.xml和html(jsp)；
+     * 当如果只是提供单纯的rest接口时，即仅是一个微服务，没有任何的页面也不使用web.xml，
+     * 这种情况可以将其设置为false，这时需要手动通过api来添加servlet、filter和EventListener；
+     *
+     * 默认值：false
+     */
+    private boolean webMode;
 
     public JettyBootstrap() {
         this(DEFAULT_JETTY_CONFIG);
@@ -109,17 +122,18 @@ public class JettyBootstrap extends BootstrapSupport {
     }
 
     public JettyBootstrap(String serverConfig, String applicationConfig) {
-        this(serverConfig, applicationConfig, null);
+        this(serverConfig, applicationConfig, null, null);
     }
 
-    public JettyBootstrap(String applicationConfig, JettyServerConfig serverConfig, Class<? extends Servlet> dispatcher) {
+    public JettyBootstrap(String applicationConfig, JettyServerConfig serverConfig, Class<? extends Servlet> dispatcher, ThreadPool threadPool) {
         this.applicationConfig = applicationConfig;
         this.serverConfig = serverConfig;
         this.dispatcher = dispatcher;
+        this.threadPool = threadPool;
         initialize();
     }
 
-    public JettyBootstrap(String serverConfig, String applicationConfig, Class<? extends Servlet> dispatcher) {
+    public JettyBootstrap(String serverConfig, String applicationConfig, Class<? extends Servlet> dispatcher, ThreadPool threadPool) {
         try {
             this.configuration = ConfigurationFactory.singleton().fromClasspath(serverConfig);
         } catch (Exception e) {
@@ -128,23 +142,26 @@ public class JettyBootstrap extends BootstrapSupport {
         this.serverConfigPath = serverConfig;
         this.applicationConfig = applicationConfig;
         this.dispatcher = dispatcher;
+        this.threadPool = threadPool;
         initialize();
     }
 
     @Override
     protected void startup() throws Exception {
         try {
-            QueuedThreadPool queuedThreadPool = new QueuedThreadPool(this.serverConfig.maxThreads(), this.serverConfig.minThreads(),
-                    60000, new LinkedTransferQueue<Runnable>());
-            server = new Server(queuedThreadPool);
+            server = new Server(threadPool);
 
             ServerConnector connector = configureServerConnector();
             server.addConnector(connector);
 
-            if (StringUtils.isNotBlank(this.serverConfig.webappPath()))
+            if (webMode) {
+                contextHandler = new WebAppContext();
                 configureWebAppContext(getScratchDir());
-            else
+            }
+            else {
+                contextHandler = new ServletContextHandler();
                 configureServletContextHandler();
+            }
 
             server.setHandler(contextHandler);
             server.start();
@@ -169,11 +186,11 @@ public class JettyBootstrap extends BootstrapSupport {
             throw new BootstrapException("jetty config[" + serverConfigPath + "] read occurs error.", e);
         }
 
-        if (StringUtils.isBlank(this.serverConfig.webappPath()))
-            contextHandler = new ServletContextHandler();
-        else
-            contextHandler = new WebAppContext();
+        if(this.threadPool == null)
+            threadPool = new QueuedThreadPool(this.serverConfig.maxThreads(), this.serverConfig.minThreads(),
+                    60000, new LinkedBlockingQueue<Runnable>());
 
+        this.webMode = false;
     }
 
     /**
@@ -401,5 +418,9 @@ public class JettyBootstrap extends BootstrapSupport {
      */
     public void waitForInterrupt() throws InterruptedException {
         server.join();
+    }
+
+    public void setWebMode(boolean webMode) {
+        this.webMode = webMode;
     }
 }

@@ -2,6 +2,7 @@ package org.cheetah.bootstraps.jetty;
 
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.util.thread.ThreadPool;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 
@@ -18,14 +19,13 @@ public class CxfBootstrap extends JettyBootstrap {
         super(serverConfig);
     }
 
-    public CxfBootstrap(String applicationConfig, JettyServerConfig serverConfig) {
-        super(applicationConfig, serverConfig, CXFServlet.class);
+    public CxfBootstrap(String applicationConfig, JettyServerConfig serverConfig, ThreadPool threadPool) {
+        super(applicationConfig, serverConfig, CXFServlet.class, threadPool);
     }
 
-    public CxfBootstrap(String serverConfig, String applicationConfig) {
-        super(serverConfig, applicationConfig, CXFServlet.class);
+    public CxfBootstrap(String serverConfig, String applicationConfig, ThreadPool threadPool) {
+        super(serverConfig, applicationConfig, CXFServlet.class, threadPool);
     }
-
 
     @Override
     protected void setDispatcher() {
