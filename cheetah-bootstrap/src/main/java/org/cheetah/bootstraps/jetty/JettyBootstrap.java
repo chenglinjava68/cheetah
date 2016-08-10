@@ -414,18 +414,6 @@ public class JettyBootstrap extends BootstrapSupport {
         }
     }
 
-
-    /**
-     * Cause server to keep running until it receives a Interrupt.
-     * <p>
-     * Interrupt Signal, or SIGINT (Unix Signal), is typically seen as a result of a kill -TERM {pid} or Ctrl+C
-     *
-     * @throws InterruptedException if interrupted
-     */
-    public void waitForInterrupt() throws InterruptedException {
-        server.join();
-    }
-
     public void setWebMode(boolean webMode) {
         this.webMode = webMode;
     }
