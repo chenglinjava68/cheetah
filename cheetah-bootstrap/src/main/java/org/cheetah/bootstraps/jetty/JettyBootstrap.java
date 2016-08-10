@@ -6,7 +6,6 @@ import org.cheetah.bootstraps.BootstrapException;
 import org.cheetah.bootstraps.BootstrapSupport;
 import org.cheetah.common.logger.Err;
 import org.cheetah.common.logger.Info;
-import org.cheetah.common.logger.Warn;
 import org.cheetah.common.utils.Objects;
 import org.cheetah.common.utils.StringUtils;
 import org.cheetah.configuration.Configuration;
@@ -113,6 +112,12 @@ public class JettyBootstrap extends BootstrapSupport {
      */
     private boolean webMode;
 
+    /**
+     * 配置源，1、true：加载环境变量；2、false：加载配置文件
+     * 默认为 false， 加载配置文件
+     */
+    private boolean envConfigSource;
+
     public JettyBootstrap() {
         this(DEFAULT_JETTY_CONFIG);
     }
@@ -137,7 +142,7 @@ public class JettyBootstrap extends BootstrapSupport {
         try {
             this.configuration = ConfigurationFactory.singleton().fromClasspath(serverConfig);
         } catch (Exception e) {
-            Warn.log(JettyBootstrap.class, "read configuration local file error, will use environment variables as configuration");
+            throw new BootstrapException("read configuration local file error", e);
         }
         this.serverConfigPath = serverConfig;
         this.applicationConfig = applicationConfig;
@@ -178,7 +183,7 @@ public class JettyBootstrap extends BootstrapSupport {
     private void initialize() {
         try {
             if (Objects.isNull(this.serverConfig))
-                if (Objects.isNull(this.configuration))
+                if (Objects.isNull(this.configuration) || envConfigSource)
                     loadEnvVariable();
                 else
                     loadConfigFile();
@@ -191,6 +196,8 @@ public class JettyBootstrap extends BootstrapSupport {
                     60000, new LinkedBlockingQueue<Runnable>());
 
         this.webMode = false;
+
+        this.envConfigSource = false;
     }
 
     /**
@@ -422,5 +429,9 @@ public class JettyBootstrap extends BootstrapSupport {
 
     public void setWebMode(boolean webMode) {
         this.webMode = webMode;
+    }
+
+    public void setEnvConfigSource(boolean envConfigSource) {
+        this.envConfigSource = envConfigSource;
     }
 }

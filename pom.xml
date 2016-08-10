@@ -75,6 +75,7 @@
     </repositories>-->
 
     <properties>
+        <jdk.version>1.8</jdk.version>
         <akka.version>2.3.9</akka.version>
         <jackson.version>2.6.3</jackson.version>
         <disruptor.version>3.3.4</disruptor.version>
@@ -83,6 +84,8 @@
         <mybatis.version>3.2.8</mybatis.version>
         <hibernate.version>4.3.10.Final</hibernate.version>
         <poi.version>3.12</poi.version>
+        <jetty.version>9.3.8.v20160314</jetty.version>
+        <cxf.version>3.1.1</cxf.version>
     </properties>
 
     <dependencyManagement>
@@ -333,12 +336,42 @@
                 <version>${spring.version}</version>
             </dependency>
 
+            <!-- jetty jaxrs -->
             <dependency>
                 <groupId>org.glassfish.jersey.containers</groupId>
                 <artifactId>jersey-container-servlet</artifactId>
                 <version>2.22.1</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-webapp</artifactId>
+                <version>${jetty.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>apache-jsp</artifactId>
+                <version>${jetty.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>apache-jstl</artifactId>
+                <version>${jetty.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-annotations</artifactId>
+                <version>${jetty.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+                <version>${cxf.version}</version>
+                <scope>provided</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
