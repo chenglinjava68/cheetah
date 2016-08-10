@@ -14,6 +14,7 @@ public class ApiResult implements Serializable {
     private int status;
     private String message;
     private Object result;
+    private long timestamp;
 
     ApiResult() {
     }
@@ -22,6 +23,7 @@ public class ApiResult implements Serializable {
         this.status = builder.status;
         this.message = builder.message;
         this.result = builder.result;
+        this.timestamp = builder.timestamp;
     }
 
     /**
@@ -36,6 +38,10 @@ public class ApiResult implements Serializable {
      */
     public String message() {
         return message;
+    }
+
+    public long timestamp() {
+        return timestamp;
     }
 
     /**
@@ -72,6 +78,7 @@ public class ApiResult implements Serializable {
         int status;
         String message = "Everything is ok.";
         Object result = Collections.emptyMap();
+        long timestamp = System.currentTimeMillis();
 
         Builder(int status) {
             this.status = status;
@@ -86,6 +93,11 @@ public class ApiResult implements Serializable {
             Assert.isTrue(status == ApiConstants.OK, "isOK must eq 0.");
             Assert.notNull(result, "result must not null.");
             this.result = result;
+            return this;
+        }
+
+        public Builder timestamp(long timestamp) {
+            this.timestamp = timestamp;
             return this;
         }
 

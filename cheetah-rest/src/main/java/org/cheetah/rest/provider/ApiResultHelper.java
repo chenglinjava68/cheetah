@@ -2,7 +2,7 @@ package org.cheetah.rest.provider;
 
 import org.cheetah.common.ExceptionMapping;
 import org.cheetah.common.PlatformException;
-import org.cheetah.rest.ApiExceptionMetadata;
+import org.cheetah.rest.ApiException;
 import org.cheetah.rest.ApiResult;
 
 /**
@@ -11,7 +11,7 @@ import org.cheetah.rest.ApiResult;
 final class ApiResultHelper {
 
     static ApiResult doGetApiResult(Exception e) {
-        ApiExceptionMetadata metadata = getExceptionMetadata(e);
+        ApiException metadata = getExceptionMetadata(e);
         if (null != metadata) {
             return ApiResult.error(metadata.code()).message(metadata.message()).build();
         }
@@ -24,7 +24,7 @@ final class ApiResultHelper {
         return ApiResult.error(ExceptionMapping.SYSTEM.getCode()).message(ExceptionMapping.SYSTEM.getMessage()).build();
     }
 
-    static ApiExceptionMetadata getExceptionMetadata(Exception ex) {
-        return ex.getClass().getDeclaredAnnotation(ApiExceptionMetadata.class);
+    static ApiException getExceptionMetadata(Exception ex) {
+        return ex.getClass().getDeclaredAnnotation(ApiException.class);
     }
 }

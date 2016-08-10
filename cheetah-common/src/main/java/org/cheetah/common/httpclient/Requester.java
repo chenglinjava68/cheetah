@@ -2,8 +2,6 @@ package org.cheetah.common.httpclient;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.http.client.config.RequestConfig;
 
 import java.util.Map;
@@ -64,7 +62,12 @@ public class Requester {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        return "\nurl=" + this.url + "\n" +
+                "method=" + this.method + "\n" +
+                "entity=" + this.entity + "\n" +
+                "headers=" + this.headers + "\n" +
+                "parameters=" + this.parameters + "\n" +
+                "requestConfig=" + this.requestConfig;
     }
 
     public static Builder POST() {

@@ -1,12 +1,11 @@
 package org.cheetah.rest.exceptions;
 
 import org.cheetah.rest.ApiConstants;
-import org.cheetah.rest.ApiExceptionMetadata;
 
 /**
  * @author Max
  */
-@ApiExceptionMetadata(code = ApiConstants.API_ERROR, message = "api error.")
+@org.cheetah.rest.ApiException(code = ApiConstants.API_ERROR, message = "api error.")
 public class ApiException extends RuntimeException {
     private static final long serialVersionUID = 8573106210247936829L;
 
