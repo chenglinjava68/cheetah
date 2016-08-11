@@ -29,7 +29,7 @@ public class SmartDomainListenerTest implements SmartDomainEventListener {
         while (i > 0) {
             i--;
         }
-//        System.out.println("SmartDomainListenerTest -- " + atomicLong1.incrementAndGet() + "------" + atomicLong2.get());
+        System.out.println("SmartDomainListenerTest -- " + atomicLong1.incrementAndGet() + "------" + atomicLong2.get());
 //        throw new RuntimeException();
     }
 

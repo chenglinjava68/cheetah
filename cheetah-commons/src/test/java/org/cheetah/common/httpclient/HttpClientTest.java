@@ -78,7 +78,7 @@ public class HttpClientTest {
     }
 
     @Test
-    public void custom() {
+    public void rest() {
         User user = new User("user", "pass");
 
         Clients.resource("http://localhost:8080/test")

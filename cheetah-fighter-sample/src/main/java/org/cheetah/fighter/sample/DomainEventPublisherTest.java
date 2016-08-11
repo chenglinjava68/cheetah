@@ -33,9 +33,7 @@ public class DomainEventPublisherTest {
                     org.cheetah.fighter.api.DomainEventPublisher.publish(
                             new DomainEventTest("huahng")
                     );
-                    org.cheetah.fighter.api.DomainEventPublisher.publish(
-                            new DomainEventTest2("huahng")
-                    );
+
                 }
             }).start();
         }
