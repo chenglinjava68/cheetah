@@ -36,7 +36,7 @@ public class SmartDomainListenerTest implements SmartDomainEventListener {
 //            e.printStackTrace();
 //        }
         long strat = System.currentTimeMillis();
-        long i = 50000000L;
+        long i = 10000000L;
         while (i > 0) {
             i--;
         }
