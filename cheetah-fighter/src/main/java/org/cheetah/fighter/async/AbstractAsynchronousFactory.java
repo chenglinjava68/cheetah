@@ -14,7 +14,8 @@ import java.util.concurrent.ThreadPoolExecutor.AbortPolicy;
 public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFactory<T> {
     private int minThreahs = Runtime.getRuntime().availableProcessors() + 2;
     private int maxThreahs = Runtime.getRuntime().availableProcessors() * 2 + 2;
-    private int queueLength = 100000;
+    private int queueLength;
+    private int DEFAULT_QUEUE_LENGTH = 100000;
     private RejectedExecutionHandler rejectedExecutionHandler = new AbortPolicy();
     private String rejectionPolicy;
     private ExecutorService executorService;
@@ -42,7 +43,7 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
             if(queueLength > 0)
                 blockingQueue = new LinkedBlockingQueue<>(queueLength);
             else
-                blockingQueue = new LinkedTransferQueue<>();
+                blockingQueue = new LinkedBlockingQueue<>(DEFAULT_QUEUE_LENGTH);
 
             executorService = new ThreadPoolExecutor(minThreahs, maxThreahs,
                     3000L, TimeUnit.MILLISECONDS, blockingQueue,
