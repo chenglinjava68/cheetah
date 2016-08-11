@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by Max on 2016/7/20.
  */
 @ControllerAdvice
-public abstract class SpringMvcExceptionMapper<T> {
+public class SpringMvcExceptionMapper<T> {
     private ExceptionMessageConverter<T> exceptionMessageConverter;
 
     public SpringMvcExceptionMapper(ExceptionMessageConverter<T> exceptionMessageConverter) {
