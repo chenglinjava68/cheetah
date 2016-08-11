@@ -49,6 +49,10 @@ public abstract class BootstrapSupport implements Bootstrap {
         this.state = State.STOP;
     }
 
+    public State state() {
+        return state;
+    }
+
     enum State {
         NEW, STARTED, STOP
     }
