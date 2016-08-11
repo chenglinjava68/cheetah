@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <context:annotation-config/>
+    <context:component-scan base-package="org.cheetah.bootstrap">
+    </context:component-scan>
+
+    <bean id="beanFactoryProvider" class="org.cheetah.ioc.spring.SpringBeanFactoryProvider"/>
+    <bean id="eventBus" class="org.cheetah.fighter.EventBus" init-method="start" destroy-method="stop">
+        <property name="eventListeners">
+            <list>
+                <bean class="org.cheetah.bootstrap.controller.ApplicationListenerTest"/>
+            </list>
+        </property>
+        <property name="fighterConfig">
+            <bean class="org.cheetah.fighter.FighterConfig">
+                <!--<property name="engine" value="disruptor"/>-->
+                <property name="ringBuffer" value="1024"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="collector" class="org.cheetah.fighter.api.DomainEventCollector">
+        <constructor-arg index="0" ref="eventBus"/>
+    </bean>
+    <bean id="demoService" class="org.cheetah.bootstrap.service.DemoServiceImpl"/>
+</beans>
