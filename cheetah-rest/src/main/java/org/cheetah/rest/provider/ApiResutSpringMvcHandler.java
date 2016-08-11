@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 /**
  * Created by maxhuang on 2016/8/9.
  */
-public class ApiResuthandler implements ResponseBodyAdvice<Object> {
+public class ApiResutSpringMvcHandler implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         return MappingJackson2HttpMessageConverter.class
@@ -22,7 +22,7 @@ public class ApiResuthandler implements ResponseBodyAdvice<Object> {
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-        Debug.log(ApiResuthandler.class, "MyResponseBodyAdvice==>beforeBodyWrite:{},{}", returnType, body);
+        Debug.log(ApiResutSpringMvcHandler.class, "MyResponseBodyAdvice==>beforeBodyWrite:{},{}", returnType, body);
         return ApiResult.ok().result(body).build();
     }
 }
