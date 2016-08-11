@@ -134,6 +134,7 @@ public class JettyBootstrap extends BootstrapSupport {
     }
 
     public JettyBootstrap(String applicationConfig, JettyServerConfig serverConfig, Class<? extends Servlet> dispatcher, ThreadPool threadPool) {
+        super();
         this.applicationConfig = applicationConfig;
         this.serverConfig = serverConfig;
         this.dispatcher = dispatcher;
@@ -142,6 +143,7 @@ public class JettyBootstrap extends BootstrapSupport {
     }
 
     public JettyBootstrap(String serverConfig, String applicationConfig, Class<? extends Servlet> dispatcher, ThreadPool threadPool) {
+        super();
         this.serverConfigPath = serverConfig;
         this.applicationConfig = applicationConfig;
         this.dispatcher = dispatcher;
