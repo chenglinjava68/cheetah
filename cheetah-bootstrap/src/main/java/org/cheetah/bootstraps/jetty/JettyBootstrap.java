@@ -104,19 +104,18 @@ public class JettyBootstrap extends BootstrapSupport {
      */
     private ThreadPool threadPool;
     /**
+     * <p>
      * web模式，代表目前所启动的项目是一个web项目，包含web.xml和html(jsp)；
      * 当如果只是提供单纯的rest接口时，即仅是一个微服务，没有任何的页面也不使用web.xml，
      * 这种情况可以将其设置为false，这时需要手动通过api来添加servlet、filter和EventListener；
      * <p>
-     * 默认值：false
      */
-    private boolean webMode;
+    private boolean webMode = false;
 
     /**
      * 配置源，1、true：加载环境变量；2、false：加载配置文件
-     * 默认为 false， 加载配置文件
      */
-    private boolean envConfigSource;
+    private boolean envConfigSource = false;
 
     public JettyBootstrap() {
         this(DEFAULT_JETTY_CONFIG);
@@ -139,11 +138,6 @@ public class JettyBootstrap extends BootstrapSupport {
     }
 
     public JettyBootstrap(String serverConfig, String applicationConfig, Class<? extends Servlet> dispatcher, ThreadPool threadPool) {
-        try {
-            this.configuration = ConfigurationFactory.singleton().fromClasspath(serverConfig);
-        } catch (Exception e) {
-            throw new BootstrapException("read configuration local file error", e);
-        }
         this.serverConfigPath = serverConfig;
         this.applicationConfig = applicationConfig;
         this.dispatcher = dispatcher;
@@ -182,7 +176,7 @@ public class JettyBootstrap extends BootstrapSupport {
     private void initialize() {
         try {
             if (Objects.isNull(this.serverConfig))
-                if (Objects.isNull(this.configuration) || envConfigSource)
+                if (envConfigSource)
                     loadEnvVariable();
                 else
                     loadConfigFile();
@@ -193,10 +187,6 @@ public class JettyBootstrap extends BootstrapSupport {
         if (this.threadPool == null)
             threadPool = new QueuedThreadPool(this.serverConfig.maxThreads(), this.serverConfig.minThreads(),
                     60000, new LinkedBlockingQueue<Runnable>());
-
-        this.webMode = false;
-
-        this.envConfigSource = false;
     }
 
     /**
@@ -229,6 +219,11 @@ public class JettyBootstrap extends BootstrapSupport {
      * 从配置文件中load配置
      */
     private void loadConfigFile() {
+        try {
+            this.configuration = ConfigurationFactory.singleton().fromClasspath(serverConfigPath);
+        } catch (Exception e) {
+            throw new BootstrapException("read configuration local file error", e);
+        }
         int maxThreads = configuration.getInt(MAX_THREADS, DEFAULT_MAX_THREADS);
         int minThreads = configuration.getInt(MIN_THREADS, Runtime.getRuntime().availableProcessors() * 2);
         int port = configuration.getInt(PORT_KEY, DEFAULT_PORT);
