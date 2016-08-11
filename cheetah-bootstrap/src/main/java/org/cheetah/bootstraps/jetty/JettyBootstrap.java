@@ -77,7 +77,7 @@ public class JettyBootstrap extends BootstrapSupport {
     /**
      * 将服务配置转化为这个对象
      */
-    protected JettyServerConfig serverConfig;
+    private JettyServerConfig serverConfig;
     /**
      * 配置文件路径
      */
@@ -93,11 +93,11 @@ public class JettyBootstrap extends BootstrapSupport {
     /**
      * webapp上下文
      */
-    protected ServletContextHandler contextHandler;
+    private ServletContextHandler contextHandler;
     /**
      * servlet调度，如springmvc：DispatcherSerlvet
      */
-    protected Class<? extends Servlet> dispatcher;
+    private Class<? extends Servlet> dispatcher;
     /**
      * jetty服务启动后的uri
      */
@@ -119,6 +119,7 @@ public class JettyBootstrap extends BootstrapSupport {
      * 配置源，1、true：加载环境变量；2、false：加载配置文件
      */
     private boolean envConfigSource = false;
+
 
     public JettyBootstrap() {
         this(DEFAULT_JETTY_CONFIG);
@@ -422,5 +423,17 @@ public class JettyBootstrap extends BootstrapSupport {
 
     public void setEnvConfigSource(boolean envConfigSource) {
         this.envConfigSource = envConfigSource;
+    }
+
+    protected JettyServerConfig getServerConfig() {
+        return serverConfig;
+    }
+
+    protected ServletContextHandler getContextHandler() {
+        return contextHandler;
+    }
+
+    protected Class<? extends Servlet> getDispatcher() {
+        return dispatcher;
     }
 }
