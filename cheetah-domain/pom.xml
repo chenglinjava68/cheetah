@@ -13,9 +13,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.cheetah</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>cheetah-commons</artifactId>
-            <version>${project.version}</version>
         </dependency>
        <!-- <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>

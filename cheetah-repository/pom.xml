@@ -13,9 +13,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.cheetah</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>cheetah-domain</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>

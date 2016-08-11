@@ -13,7 +13,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
  * Created by maxhuang on 2016/8/9.
  */
 public final class ObjectMappers {
-    private ObjectMappers(){}
 
     public static ObjectMapper newborn() {
         ObjectMapper objectMapper = new ObjectMapper();

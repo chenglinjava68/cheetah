@@ -16,19 +16,16 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.cheetah</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>cheetah-commons</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.cheetah</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>cheetah-ioc</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.cheetah</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>cheetah-configuration</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

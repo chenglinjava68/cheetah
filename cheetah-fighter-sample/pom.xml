@@ -13,9 +13,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.cheetah</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>cheetah-fighter</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
