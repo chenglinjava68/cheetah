@@ -4,7 +4,10 @@ import org.cheetah.fighter.DomainEvent;
 import org.cheetah.fighter.SmartDomainEventListener;
 import org.springframework.stereotype.Component;
 
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
+
+import static org.cheetah.fighter.sample.DomainEventPublisherTest.requests;
 
 /**
  * Created by maxhuang on 2016/7/18.
@@ -25,11 +28,14 @@ public class SmartDomainListenerTest implements SmartDomainEventListener {
 
     @Override
     public void onDomainEvent(DomainEvent event) {
-        int i = 1000000;
-        while (i > 0) {
-            i--;
+        Random ramdon = new Random();
+        try {
+            Thread.sleep(ramdon.nextInt(1000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        System.out.println("SmartDomainListenerTest -- " + atomicLong1.incrementAndGet() + "------" + atomicLong2.get());
+        requests.mark();
+//        System.out.println("SmartDomainListenerTest -- " + atomicLong1.incrementAndGet() + "------" + atomicLong2.get());
 //        throw new RuntimeException();
     }
 

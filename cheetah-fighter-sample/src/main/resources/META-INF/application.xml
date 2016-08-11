@@ -44,6 +44,7 @@ http://www.springframework.org/schema/aop
                 <!--<property name="engine" value="disruptor"/>-->
                 <property name="ringBuffer" value="1024"/>
                 <property name="queueLength" value="100000"/>
+                <property name="maxThreads" value="254"/>
             </bean>
         </property>
     </bean>

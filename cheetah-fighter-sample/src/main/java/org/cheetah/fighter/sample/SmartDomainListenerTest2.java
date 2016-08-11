@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import static org.cheetah.fighter.sample.DomainEventPublisherTest.requests;
+
 /**
  * Created by maxhuang on 2016/7/18.
  */
@@ -29,6 +31,8 @@ public class SmartDomainListenerTest2 implements SmartDomainEventListener {
         while (i > 0) {
             i--;
         }
+        requests.mark();
+
 //            System.out.println("SmartDomainListenerTest2 -- " + atomicLong1.incrementAndGet() + "------" + atomicLong2.get());
 //        throw new RuntimeException();
     }
