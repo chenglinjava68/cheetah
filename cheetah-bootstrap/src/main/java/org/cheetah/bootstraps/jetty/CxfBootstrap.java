@@ -29,7 +29,7 @@ public class CxfBootstrap extends JettyBootstrap {
 
     @Override
     protected void setDispatcher() {
-        contextHandler.addServlet(dispatcher, "/*");
+        addServlet(getDispatcher(), "/*");
     }
 
     @Override
