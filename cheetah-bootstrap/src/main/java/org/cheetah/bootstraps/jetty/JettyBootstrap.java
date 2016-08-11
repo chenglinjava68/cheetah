@@ -109,8 +109,9 @@ public class JettyBootstrap extends BootstrapSupport {
     /**
      * <p>
      * web模式，代表目前所启动的项目是一个web项目，包含web.xml和html(jsp)；
-     * 当如果只是提供单纯的rest接口时，即仅是一个微服务，没有任何的页面也不使用web.xml，
-     * 这种情况可以将其设置为false，这时需要手动通过api来添加servlet、filter和EventListener；
+     * 当如果只是提供单纯的rest接口时，即仅是提供RPC功能，没有任何的页面也不使用web.xml，
+     * 这种情况可以将其设置为false，这时需要手动通过api来添加servlet、filter和EventListener
+     *
      * <p>
      */
     private boolean webMode = false;
