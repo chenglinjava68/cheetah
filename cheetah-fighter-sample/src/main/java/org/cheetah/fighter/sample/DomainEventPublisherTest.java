@@ -46,7 +46,7 @@ public class DomainEventPublisherTest {
      */
     public static void performance() {
         reporter.start(3, TimeUnit.SECONDS);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             new Thread(() -> {
                 while (true) {
                     org.cheetah.fighter.api.DomainEventPublisher.publish(

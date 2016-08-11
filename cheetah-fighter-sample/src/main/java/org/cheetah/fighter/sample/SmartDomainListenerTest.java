@@ -29,11 +29,19 @@ public class SmartDomainListenerTest implements SmartDomainEventListener {
     @Override
     public void onDomainEvent(DomainEvent event) {
         Random ramdon = new Random();
-        try {
-            Thread.sleep(ramdon.nextInt(1000));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+//        LockSupport.parkNanos(ramdon.nextInt(1000000));
+//        try {
+//            Thread.sleep(ramdon.nextInt(100));
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        long strat = System.currentTimeMillis();
+        long i = 50000000L;
+        while (i > 0) {
+            i--;
         }
+        System.out.println(System.currentTimeMillis() - strat);
+
         requests.mark();
 //        System.out.println("SmartDomainListenerTest -- " + atomicLong1.incrementAndGet() + "------" + atomicLong2.get());
 //        throw new RuntimeException();
