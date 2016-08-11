@@ -9,7 +9,7 @@ import java.util.concurrent.CountDownLatch;
  * Created by Max on 2016/5/22.
  */
 public abstract class BootstrapSupport implements Bootstrap {
-    private State state;
+    private volatile State state;
 
     public BootstrapSupport() {
         this.state = State.NEW;
