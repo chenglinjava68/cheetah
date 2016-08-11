@@ -6,6 +6,7 @@ import org.cheetah.bootstraps.BootstrapException;
 import org.cheetah.bootstraps.BootstrapSupport;
 import org.cheetah.commons.logger.Err;
 import org.cheetah.commons.logger.Info;
+import org.cheetah.commons.logger.Warn;
 import org.cheetah.commons.utils.Objects;
 import org.cheetah.commons.utils.StringUtils;
 import org.cheetah.configuration.Configuration;
@@ -45,6 +46,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class JettyBootstrap extends BootstrapSupport {
 
     public static final String PORT_KEY = "jetty.http.port";
+    public static final String HOST_KEY = "jetty.http.host";
     public static final String IDLE_TIMEOUT_KEY = "jetty.http.idle.timeout";
     public static final String CONTEXT_PATH_KEY = "jetty.http.context.path";
     public static final String ACCEPT_QUEUE_SIZE_KEY = "jetty.http.accept.queue.size";
@@ -53,6 +55,7 @@ public class JettyBootstrap extends BootstrapSupport {
     public static final String SERVER_DESCRIPTOR = "jetty.server.web.xml";
     public static final String SERVER_WEBAPP_PATH = "jetty.server.webapp.path";
 
+    public static final String DEFAULT_HOST = "";
     public static final int DEFAULT_MAX_THREADS = 256;
     public static final int DEFAULT_PORT = 8000;
     public static final int DEFAULT_ACCEPT_QUEUE_SIZE = 512;
@@ -163,7 +166,7 @@ public class JettyBootstrap extends BootstrapSupport {
 
             server.setHandler(contextHandler);
             server.start();
-
+            Warn.log(JettyBootstrap.class, "Launch configuration source from {}, Server Mode: {}", envConfigSource ? "env":"a file", webMode ? "web" : "Microservices)");
             this.serverURI = getServerUri(connector);
         } catch (Exception e) {
             throw new BootstrapException("jetty boot occurs error.", e);
@@ -193,6 +196,7 @@ public class JettyBootstrap extends BootstrapSupport {
      * 从环境变量中load出配置
      */
     private void loadEnvVariable() {
+        String host = System.getProperty(HOST_KEY, DEFAULT_HOST);
         int maxThreads = Integer.parseInt(System.getProperty(MAX_THREADS, DEFAULT_MAX_THREADS + ""));
         int minThreads = Integer.parseInt(System.getProperty(MIN_THREADS, (Runtime.getRuntime().availableProcessors() * 2) + ""));
         int port = Integer.parseInt(System.getProperty(PORT_KEY, DEFAULT_PORT + ""));
@@ -211,6 +215,7 @@ public class JettyBootstrap extends BootstrapSupport {
                 .port(port)
                 .timeout(timeout)
                 .webappPath(webappPath)
+                .host(host)
                 .build();
         Info.log(this.getClass(), "jetty server configuration file from environment variable: {}", serverConfig.toString());
     }
@@ -224,6 +229,7 @@ public class JettyBootstrap extends BootstrapSupport {
         } catch (Exception e) {
             throw new BootstrapException("read configuration local file error", e);
         }
+        String host = configuration.getString(HOST_KEY, DEFAULT_HOST);
         int maxThreads = configuration.getInt(MAX_THREADS, DEFAULT_MAX_THREADS);
         int minThreads = configuration.getInt(MIN_THREADS, Runtime.getRuntime().availableProcessors() * 2);
         int port = configuration.getInt(PORT_KEY, DEFAULT_PORT);
@@ -242,6 +248,7 @@ public class JettyBootstrap extends BootstrapSupport {
                 .port(port)
                 .timeout(timeout)
                 .webappPath(webappPath)
+                .host(host)
                 .build();
         Info.log(this.getClass(), "jetty server configuration file from a local file: {}", serverConfig.toString());
     }
@@ -346,7 +353,7 @@ public class JettyBootstrap extends BootstrapSupport {
         }
         int port = connector.getLocalPort();
         serverURI = new URI(String.format("%s://%s:%d/", scheme, host, port));
-        Info.log(JettyBootstrap.class, "Server URI: " + serverURI);
+        Warn.log(JettyBootstrap.class, "Server URI: " + serverURI);
         return serverURI;
     }
 
