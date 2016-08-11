@@ -39,6 +39,8 @@ public class ForeseeableWorkerAdapter implements WorkerAdapter {
             feedbacks[i] = feedback;
         }
 
+        if(!eventMessage.needResult())
+            return Feedback.SUCCESS;
         boolean fail = Arrays.stream(feedbacks).anyMatch(o -> !o.isSuccess());
         if (fail) {
             Map<Exception, Class<?>> result = Arrays.stream(feedbacks).filter(o -> !o.isSuccess()).collect(Collectors.toMap(Feedback::getException, Feedback::getFailureListener));
@@ -46,5 +48,6 @@ public class ForeseeableWorkerAdapter implements WorkerAdapter {
         }
         return Feedback.SUCCESS;
     }
+
 
 }

@@ -37,4 +37,5 @@ public class DisruptorWorkerAdapter implements WorkerAdapter {
             event.set(data);
         }
     }
+
 }

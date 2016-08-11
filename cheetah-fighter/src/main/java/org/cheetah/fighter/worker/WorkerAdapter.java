@@ -7,7 +7,7 @@ import org.cheetah.fighter.Feedback;
  * worker适配器
  * Created by Max on 2016/7/21.
  */
-public interface WorkerAdapter {
+public interface WorkerAdapter extends Cloneable{
 
     /**
      * 支持的类型，按引擎为准
@@ -18,4 +18,5 @@ public interface WorkerAdapter {
     boolean supports(Object object);
 
     Feedback work(EventMessage eventMessage);
+
 }
