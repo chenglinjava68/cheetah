@@ -1,7 +1,6 @@
 package org.cheetah.common.httpclient;
 
 import org.cheetah.commons.httpclient.Form;
-import org.cheetah.commons.httpclient.Requester;
 import org.cheetah.commons.httpclient.api.Clients;
 import org.junit.Test;
 
@@ -78,18 +77,13 @@ public class HttpClientTest {
                 .get();
     }
 
-    /**
-     * 基于get查询参数
-     */
     @Test
     public void custom() {
-        Map<String, String> params = new HashMap<>();
-        params.put("user", "user");
-        params.put("pass", "pass");
+        User user = new User("user", "pass");
 
-        String s = Clients.getDefaultClient().execute(Requester.POST()
-                .parameters(params)
-                .build(), response -> null);
+        Clients.resource("http://localhost:8080/test")
+                .entity(user)
+                .post();
     }
 
 }

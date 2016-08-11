@@ -51,7 +51,8 @@ public class TestController {
 
     @RequestMapping(value = "form", method = RequestMethod.POST)
     @ResponseBody
-    public void testForm(User user) {
+    public User testForm(User user) {
         System.out.println(user);
+        return new User();
     }
 }

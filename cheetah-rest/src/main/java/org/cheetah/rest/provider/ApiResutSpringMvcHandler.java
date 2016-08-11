@@ -23,6 +23,8 @@ public class ApiResutSpringMvcHandler implements ResponseBodyAdvice<Object> {
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         Debug.log(ApiResutSpringMvcHandler.class, "MyResponseBodyAdvice==>beforeBodyWrite:{},{}", returnType, body);
+        if(body == null)
+            return ApiResult.ok().build();
         return ApiResult.ok().result(body).build();
     }
 }

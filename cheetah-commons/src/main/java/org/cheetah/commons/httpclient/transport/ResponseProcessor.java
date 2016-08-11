@@ -3,6 +3,7 @@ package org.cheetah.commons.httpclient.transport;
 import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.cheetah.commons.httpclient.HttpClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +32,7 @@ public interface ResponseProcessor<T> {
     }
 
     default void onFailure(StatusLine statusLine) {
-        logger.warn("request 1 failed with a {} response", statusLine.getStatusCode());
+        throw new HttpClientException("request 1 failed with a " + statusLine.getStatusCode() + " response");
     }
 
     T onSuccess(HttpEntity entity);
