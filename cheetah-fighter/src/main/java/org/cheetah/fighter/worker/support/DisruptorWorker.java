@@ -1,8 +1,8 @@
 package org.cheetah.fighter.worker.support;
 
 import com.lmax.disruptor.EventHandler;
-import org.cheetah.common.logger.Debug;
-import org.cheetah.common.logger.Err;
+import org.cheetah.commons.logger.Debug;
+import org.cheetah.commons.logger.Err;
 import org.cheetah.fighter.Feedback;
 import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.async.disruptor.DisruptorEvent;

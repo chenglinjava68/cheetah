@@ -1,6 +1,6 @@
 package org.cheetah.rest.provider;
 
-import org.cheetah.common.logger.Err;
+import org.cheetah.commons.logger.Err;
 import org.cheetah.rest.ApiResult;
 
 import javax.ws.rs.NotFoundException;

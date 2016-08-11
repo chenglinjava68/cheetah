@@ -1,6 +1,6 @@
 package org.cheetah.repository;
 
-import org.cheetah.common.utils.Assert;
+import org.cheetah.commons.utils.Assert;
 import org.cheetah.domain.Entity;
 import org.cheetah.domain.Repository;
 import org.cheetah.domain.TrackingId;

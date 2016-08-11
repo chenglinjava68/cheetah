@@ -1,11 +1,9 @@
 package org.cheetah.rest.provider;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-import org.cheetah.common.utils.ObjectMappers;
+import org.cheetah.commons.utils.ObjectMappers;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;

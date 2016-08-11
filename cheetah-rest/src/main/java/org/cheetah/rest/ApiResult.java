@@ -1,6 +1,6 @@
 package org.cheetah.rest;
 
-import org.cheetah.common.utils.Assert;
+import org.cheetah.commons.utils.Assert;
 
 import java.io.Serializable;
 import java.util.Collections;

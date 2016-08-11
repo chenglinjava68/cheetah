@@ -1,7 +1,7 @@
 package org.cheetah.bootstraps;
 
-import org.cheetah.common.logger.Err;
-import org.cheetah.common.logger.Warn;
+import org.cheetah.commons.logger.Err;
+import org.cheetah.commons.logger.Warn;
 
 import java.util.concurrent.CountDownLatch;
 

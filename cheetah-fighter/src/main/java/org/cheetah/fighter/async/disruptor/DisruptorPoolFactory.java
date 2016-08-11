@@ -2,7 +2,7 @@ package org.cheetah.fighter.async.disruptor;
 
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
-import org.cheetah.common.logger.Info;
+import org.cheetah.commons.logger.Info;
 import org.cheetah.fighter.EventBus;
 import org.cheetah.fighter.EventContext;
 import org.cheetah.fighter.async.AsynchronousFactory;

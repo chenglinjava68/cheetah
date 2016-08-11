@@ -1,6 +1,6 @@
 package org.cheetah.rest.provider;
 
-import org.cheetah.common.logger.Debug;
+import org.cheetah.commons.logger.Debug;
 import org.cheetah.rest.ApiResult;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;

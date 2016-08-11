@@ -1,6 +1,6 @@
 package org.cheetah.fighter.engine.support;
 
-import org.cheetah.common.logger.Info;
+import org.cheetah.commons.logger.Info;
 import org.cheetah.fighter.FighterConfig;
 import org.cheetah.fighter.engine.Engine;
 import org.cheetah.fighter.engine.EngineBuilder;

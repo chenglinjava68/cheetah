@@ -1,9 +1,9 @@
 package org.cheetah.rest.filter;
 
 
-import org.cheetah.common.path.AntPathMatcher;
-import org.cheetah.common.path.PathMatcher;
-import org.cheetah.common.utils.Assert;
+import org.cheetah.commons.path.AntPathMatcher;
+import org.cheetah.commons.path.PathMatcher;
+import org.cheetah.commons.utils.Assert;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;

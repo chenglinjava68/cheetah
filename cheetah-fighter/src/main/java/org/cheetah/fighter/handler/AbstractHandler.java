@@ -1,6 +1,6 @@
 package org.cheetah.fighter.handler;
 
-import org.cheetah.common.utils.ObjectUtils;
+import org.cheetah.commons.utils.ObjectUtils;
 import org.cheetah.fighter.DomainEvent;
 import org.cheetah.fighter.DomainEventListener;
 import org.cheetah.fighter.Event;

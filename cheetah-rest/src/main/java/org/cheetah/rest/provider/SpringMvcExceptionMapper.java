@@ -1,7 +1,7 @@
 package org.cheetah.rest.provider;
 
-import org.cheetah.common.logger.Err;
-import org.cheetah.rest.ApiResult;
+
+import org.cheetah.commons.logger.Err;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

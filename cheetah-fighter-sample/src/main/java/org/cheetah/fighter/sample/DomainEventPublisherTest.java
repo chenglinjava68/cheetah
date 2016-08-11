@@ -1,6 +1,5 @@
 package org.cheetah.fighter.sample;
 
-import org.cheetah.common.logger.Err;
 import org.cheetah.fighter.EventResult;
 import org.cheetah.ioc.BeanFactory;
 import org.cheetah.ioc.spring.SpringBeanFactoryProvider;

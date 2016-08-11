@@ -1,7 +1,7 @@
 package org.cheetah.configuration.impl;
 
-import org.cheetah.common.utils.Assert;
-import org.cheetah.common.utils.StringUtils;
+import org.cheetah.commons.utils.Assert;
+import org.cheetah.commons.utils.StringUtils;
 import org.cheetah.configuration.Configuration;
 import org.cheetah.configuration.ConfigurationException;
 

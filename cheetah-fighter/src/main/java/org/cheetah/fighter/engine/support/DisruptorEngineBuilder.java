@@ -1,6 +1,6 @@
 package org.cheetah.fighter.engine.support;
 
-import org.cheetah.common.utils.StringUtils;
+import org.cheetah.commons.utils.StringUtils;
 import org.cheetah.fighter.FighterConfig;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.async.disruptor.DisruptorFactory;

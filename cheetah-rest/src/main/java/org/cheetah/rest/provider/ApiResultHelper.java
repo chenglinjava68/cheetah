@@ -1,7 +1,7 @@
 package org.cheetah.rest.provider;
 
-import org.cheetah.common.ExceptionMapping;
-import org.cheetah.common.PlatformException;
+import org.cheetah.commons.ExceptionMapping;
+import org.cheetah.commons.PlatformException;
 import org.cheetah.rest.ApiException;
 import org.cheetah.rest.ApiResult;
 

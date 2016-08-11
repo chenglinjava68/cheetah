@@ -1,6 +1,6 @@
 package org.cheetah.rest.filter;
 
-import org.cheetah.common.logger.Info;
+import org.cheetah.commons.logger.Info;
 import org.cheetah.rest.exceptions.IllegalVisitorAddressException;
 
 import javax.servlet.http.HttpServletRequest;

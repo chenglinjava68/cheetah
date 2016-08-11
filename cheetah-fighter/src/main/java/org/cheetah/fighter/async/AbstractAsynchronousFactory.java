@@ -1,8 +1,8 @@
 package org.cheetah.fighter.async;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import org.cheetah.common.logger.Info;
-import org.cheetah.common.utils.StringUtils;
+import org.cheetah.commons.logger.Info;
+import org.cheetah.commons.utils.StringUtils;
 import org.cheetah.fighter.worker.WorkerFactory;
 
 import java.util.concurrent.*;
