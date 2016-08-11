@@ -166,7 +166,7 @@ public class JettyBootstrap extends BootstrapSupport {
 
             server.setHandler(contextHandler);
             server.start();
-            Warn.log(JettyBootstrap.class, "Launch configuration source from {}, Server Mode: {}", envConfigSource ? "env":"a file", webMode ? "web" : "Microservices)");
+            Warn.log(JettyBootstrap.class, "Launch configuration source from {}, Server Mode: {}", envConfigSource ? "env":"a file", webMode ? "web" : "restful");
             this.serverURI = getServerUri(connector);
         } catch (Exception e) {
             throw new BootstrapException("jetty boot occurs error.", e);
