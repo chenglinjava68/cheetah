@@ -43,7 +43,6 @@ http://www.springframework.org/schema/aop
             <bean class="org.cheetah.fighter.FighterConfig">
                 <!--<property name="engine" value="disruptor"/>-->
                 <property name="ringBuffer" value="1024"/>
-                <property name="queueLength" value="-1"/>
             </bean>
         </property>
     </bean>

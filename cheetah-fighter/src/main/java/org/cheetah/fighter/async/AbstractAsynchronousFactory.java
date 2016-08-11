@@ -15,7 +15,7 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
     private int minThreahs = Runtime.getRuntime().availableProcessors() + 2;
     private int maxThreahs = Runtime.getRuntime().availableProcessors() * 2 + 2;
     private int queueLength;
-    private int DEFAULT_QUEUE_LENGTH = 100000;
+    private int DEFAULT_QUEUE_LENGTH = 1000000;
     private RejectedExecutionHandler rejectedExecutionHandler = new AbortPolicy();
     private String rejectionPolicy;
     private ExecutorService executorService;

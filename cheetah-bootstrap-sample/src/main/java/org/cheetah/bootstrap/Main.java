@@ -8,7 +8,7 @@ import org.cheetah.bootstraps.jetty.JettyBootstrap;
 public class Main {
     public static void main(String[] args) {
         JettyBootstrap bootstrap = new JettyBootstrap();
-        bootstrap.setWebMode(true);
+//        bootstrap.setWebMode(true);
         bootstrap.bootstrap();
     }
 }
