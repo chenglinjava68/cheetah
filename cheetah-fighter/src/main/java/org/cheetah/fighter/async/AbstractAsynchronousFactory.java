@@ -49,7 +49,7 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
                     3000L, TimeUnit.MILLISECONDS, blockingQueue,
                     new ThreadFactoryBuilder().setNameFormat("Cheetah-Fighter-%d").build(), rejectedExecutionHandler);
             Info.log(this.getClass(), "build executor min threahs size {}, max threahs size {}, keep alive time {} ms, queue length {}, rejection policy {}",
-                    minThreahs, maxThreahs, 3000, queueLength, StringUtils.isBlank(rejectionPolicy) ? "Abort" : rejectionPolicy);
+                    minThreahs, maxThreahs, 30000, queueLength, StringUtils.isBlank(rejectionPolicy) ? "Abort" : rejectionPolicy);
         }
         return executorService;
     }

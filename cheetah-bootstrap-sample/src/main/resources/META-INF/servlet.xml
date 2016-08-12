@@ -35,6 +35,15 @@
 
     <bean class="org.cheetah.rest.provider.DefaultSpringMvcExceptionMapper"/>
 
+    <bean class="org.cheetah.bootstrap.controller.PlatformExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="io.atworkcommons.PlatformException">error/err</prop>
+                <prop key="java.lang.Throwable">error/404</prop>
+            </props>
+        </property>
+    </bean>
+
     <!-- 通用视图解析类 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/"/>
@@ -45,15 +54,6 @@
         <property name="maxUploadSize" value="1024000000"/>
         <property name="resolveLazily" value="true"/>
         <property name="maxInMemorySize" value="4096"/>
-    </bean>
-
-    <bean class="org.cheetah.bootstrap.controller.PlatformExceptionResolver">
-        <property name="exceptionMappings">
-            <props>
-                <prop key="io.atworkcommons.PlatformException">error/err</prop>
-                <prop key="java.lang.Throwable">error/404</prop>
-            </props>
-        </property>
     </bean>
 
     <mvc:interceptors>
