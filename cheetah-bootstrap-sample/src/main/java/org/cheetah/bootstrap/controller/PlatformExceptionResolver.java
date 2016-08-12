@@ -24,15 +24,11 @@ public class PlatformExceptionResolver extends SimpleMappingExceptionResolver {
         Loggers.logger().warn(this.getClass(), "Exception stack trace logs:");
         ex.printStackTrace();
         String viewName = determineViewName(ex, request);
-        if (viewName == null) {
+        if (viewName == null)
             return null;
-        }
+
         if (ajaxRequest(request)) {
             try {
-                if (ex == null) {
-                    return null;
-                }
-
                 Loggers.logger().info(this.getClass(), ex.getMessage());
                 Loggers.logger().warn(this.getClass(), ex.getMessage());
 
