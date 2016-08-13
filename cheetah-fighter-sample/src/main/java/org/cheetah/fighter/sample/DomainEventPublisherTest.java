@@ -36,15 +36,15 @@ public class DomainEventPublisherTest {
         ApplicationContext context = new ClassPathXmlApplicationContext("/META-INF/application.xml");
         SpringBeanFactoryProvider provider = new SpringBeanFactoryProvider(context);
         BeanFactory.setBeanFactoryProvider(provider);
-        performance();
-//        publish();
+//        performance();
+        publish();
     }
 
     /**
      * 性能测试
      */
     public static void performance() {
-        reporter.start(3, TimeUnit.SECONDS);
+        reporter.start(1, TimeUnit.SECONDS);
         for (int i = 0; i < 20; i++) {
             new Thread(() -> {
                 while (true) {

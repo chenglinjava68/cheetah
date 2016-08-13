@@ -17,7 +17,7 @@
     <dubbo:protocol name="dubbo" host="192.168.2.101" port="10000"/>
     <dubbo:registry address="zookeeper://192.168.2.101:2181"/>
 
-    <dubbo:service interface="org.cheetah.bootstrap.service.DemoService" ref="demoService"/>
+    <dubbo:reference id="demoService" interface="org.cheetah.bootstrap.service.DemoService" />
 
     <bean id="beanFactoryProvider" class="org.cheetah.ioc.spring.SpringBeanFactoryProvider"/>
     <bean id="eventBus" class="org.cheetah.fighter.EventBus" init-method="start" destroy-method="stop">
@@ -37,5 +37,4 @@
     <bean id="collector" class="org.cheetah.fighter.api.DomainEventCollector">
         <constructor-arg index="0" ref="eventBus"/>
     </bean>
-    <bean id="demoService" class="org.cheetah.bootstrap.service.DemoServiceImpl"/>
 </beans>
