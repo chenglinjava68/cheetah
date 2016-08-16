@@ -56,6 +56,10 @@ public final class Command implements Serializable {
         return timeUnit;
     }
 
+    public final String eventId() {
+        return this.event.getId();
+    }
+
     public static Command of(DomainEvent event, boolean needResult) {
         return new Command(event, needResult, 0, TimeUnit.SECONDS);
     }
