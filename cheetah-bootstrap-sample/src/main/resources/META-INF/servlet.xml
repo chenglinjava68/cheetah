@@ -33,12 +33,9 @@
         </property>
     </bean>
 
-    <bean class="org.cheetah.rest.provider.DefaultSpringMvcExceptionMapper"/>
-
     <bean class="org.cheetah.bootstrap.controller.PlatformExceptionResolver">
         <property name="exceptionMappings">
             <props>
-                <prop key="io.atworkcommons.PlatformException">error/err</prop>
                 <prop key="java.lang.Throwable">error/404</prop>
             </props>
         </property>

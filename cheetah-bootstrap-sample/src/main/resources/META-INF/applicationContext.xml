@@ -14,8 +14,8 @@
     </context:component-scan>
 
     <dubbo:application name="test" logger="slf4j"/>
-    <dubbo:protocol name="dubbo" host="192.168.2.101" port="10000"/>
-    <dubbo:registry address="zookeeper://192.168.2.101:2181"/>
+    <dubbo:protocol name="dubbo" host="localhost" port="10000"/>
+    <dubbo:registry address="zookeeper://localhost:2181"/>
 
     <dubbo:service interface="org.cheetah.bootstrap.service.DemoService" ref="demoService"/>
 

@@ -13,8 +13,8 @@ public class ApiResult implements Serializable {
 
     private int status;
     private String message;
-    private Object result;
     private long timestamp;
+    private Object result;
 
     ApiResult() {
     }
