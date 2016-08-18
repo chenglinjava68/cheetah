@@ -300,7 +300,10 @@ public class JettyBootstrap extends BootstrapSupport {
         contextHandler.setResourceBase(webappPath);
 
         context.setAttribute("javax.servlet.context.tempdir", scratchDir);
-        //容器初始状态设置， 加入jsper初始化，解决jsp不是支持的问题
+
+        context.setAttribute("org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern",
+                ".*/[^/]*servlet-api-[^/]*\\.jar$|.*/javax.servlet.jsp.jstl-.*\\.jar$|.*/.*taglibs.*\\.jar$");
+        //容器初始状态设置， 加入jsper初始化
         context.setAttribute("org.eclipse.jetty.containerInitializers", Arrays.asList(
                 new ContainerInitializer(new JettyJasperInitializer(), null)));
         context.setAttribute(InstanceManager.class.getName(), new SimpleInstanceManager());
