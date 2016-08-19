@@ -66,6 +66,7 @@ public class JettyBootstrap extends BootstrapSupport {
 
     private static final String DEFAULT_JETTY_CONFIG = "/jetty.properties";
     private static final String WEBXML = "WEB-INF/web.xml";
+    private static final int DEFAULT_QUEUE_CAPACITY = 1000000;
     /**
      * 读取配置库
      */
@@ -193,7 +194,7 @@ public class JettyBootstrap extends BootstrapSupport {
 
         if (this.threadPool == null)
             threadPool = new QueuedThreadPool(this.serverConfig.maxThreads(), this.serverConfig.minThreads(),
-                    60000, new LinkedBlockingQueue<Runnable>());
+                    60000, new LinkedBlockingQueue<>(DEFAULT_QUEUE_CAPACITY));
     }
 
     /**
