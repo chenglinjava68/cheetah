@@ -19,6 +19,7 @@
         <module>cheetah-rest</module>
         <module>cheetah-fighter-sample</module>
         <module>cheetah-bootstrap-sample</module>
+        <module>dog</module>
     </modules>
 
     <developers>
