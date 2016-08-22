@@ -77,7 +77,7 @@
     </repositories>-->
 
     <properties>
-        <jdk.version>1.8</jdk.version>
+        <java.version>1.8</java.version>
         <akka.version>2.3.9</akka.version>
         <jackson.version>2.6.3</jackson.version>
         <disruptor.version>3.3.4</disruptor.version>
@@ -452,8 +452,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.3</version>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
                         <encoding>UTF-8</encoding>
                         <fork>true</fork>
                         <meminitial>128m</meminitial>
