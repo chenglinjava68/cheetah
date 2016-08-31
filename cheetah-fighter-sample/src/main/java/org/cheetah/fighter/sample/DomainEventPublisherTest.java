@@ -36,8 +36,8 @@ public class DomainEventPublisherTest {
         ApplicationContext context = new ClassPathXmlApplicationContext("/META-INF/application.xml");
         SpringBeanFactoryProvider provider = new SpringBeanFactoryProvider(context);
         BeanFactory.setBeanFactoryProvider(provider);
-//        performance();
-        publish();
+        performance();
+//        publish();
     }
 
     /**

@@ -43,7 +43,7 @@ public class SmartDomainListenerTest implements SmartDomainEventListener {
 //        System.out.println(System.currentTimeMillis() - strat);
         requests.mark();
 //        System.out.println("SmartDomainListenerTest -- " + atomicLong1.incrementAndGet() + "------" + atomicLong2.get());
-        throw new RuntimeException();
+//        throw new RuntimeException();
     }
 
     @Override

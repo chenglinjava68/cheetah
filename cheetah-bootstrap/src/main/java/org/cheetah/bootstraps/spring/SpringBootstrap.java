@@ -27,11 +27,11 @@ public class SpringBootstrap extends BootstrapSupport {
 
     @Override
     protected void shutdown() {
-        super.shutdown();
         if (applicationContext != null) {
             applicationContext.stop();
             applicationContext.close();
         }
+        super.shutdown();
     }
 
 }
