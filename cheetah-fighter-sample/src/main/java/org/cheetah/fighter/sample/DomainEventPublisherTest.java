@@ -3,7 +3,7 @@ package org.cheetah.fighter.sample;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
-import org.cheetah.fighter.EventResult;
+import org.cheetah.fighter.api.EventResult;
 import org.cheetah.ioc.BeanFactory;
 import org.cheetah.ioc.spring.SpringBeanFactoryProvider;
 import org.springframework.context.ApplicationContext;

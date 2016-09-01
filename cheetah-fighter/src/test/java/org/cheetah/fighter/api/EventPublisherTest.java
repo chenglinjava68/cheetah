@@ -1,7 +1,5 @@
 package org.cheetah.fighter.api;
 
-import org.cheetah.fighter.DomainEvent;
-import org.cheetah.fighter.EventResult;
 import org.cheetah.ioc.BeanFactory;
 import org.cheetah.ioc.spring.SpringBeanFactoryProvider;
 import org.junit.Before;

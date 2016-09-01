@@ -3,7 +3,7 @@ package org.cheetah.commons.httpclient.transport;
 import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.cheetah.commons.httpclient.HttpClientException;
+import org.cheetah.commons.httpclient.api.HttpClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

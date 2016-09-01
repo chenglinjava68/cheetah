@@ -2,8 +2,8 @@ package org.cheetah.commons.excel.processor;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.cheetah.commons.excel.ExcelException;
-import org.cheetah.commons.excel.ExcelHeader;
+import org.cheetah.commons.excel.api.ExcelException;
+import org.cheetah.commons.excel.api.ExcelHeader;
 import org.cheetah.commons.logger.Info;
 
 import java.io.File;

@@ -1,4 +1,4 @@
-package org.cheetah.fighter;
+package org.cheetah.fighter.api;
 
 /**
  * 一种聪明的监听器

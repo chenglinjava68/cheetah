@@ -4,9 +4,9 @@ import com.google.common.collect.Lists;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.*;
-import org.cheetah.commons.excel.ExcelException;
-import org.cheetah.commons.excel.ExcelProcessor;
-import org.cheetah.commons.excel.StyleHandler;
+import org.cheetah.commons.excel.api.ExcelException;
+import org.cheetah.commons.excel.api.ExcelProcessor;
+import org.cheetah.commons.excel.api.StyleHandler;
 import org.cheetah.commons.logger.Info;
 
 import java.io.InputStream;

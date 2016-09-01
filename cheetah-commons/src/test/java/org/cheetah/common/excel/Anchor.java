@@ -1,7 +1,7 @@
 package org.cheetah.common.excel;
 
 import com.google.common.collect.Maps;
-import org.cheetah.commons.excel.StyleHandler;
+import org.cheetah.commons.excel.api.StyleHandler;
 import org.cheetah.commons.excel.annotation.CellStyle;
 import org.cheetah.commons.excel.annotation.ExcelResources;
 

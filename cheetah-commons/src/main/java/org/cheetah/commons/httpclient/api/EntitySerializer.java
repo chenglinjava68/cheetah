@@ -1,4 +1,4 @@
-package org.cheetah.commons.httpclient;
+package org.cheetah.commons.httpclient.api;
 
 /**
  * 请求实体和表述的序列化接口

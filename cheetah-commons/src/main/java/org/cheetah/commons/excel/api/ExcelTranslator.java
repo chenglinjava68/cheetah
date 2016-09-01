@@ -1,7 +1,5 @@
 package org.cheetah.commons.excel.api;
 
-import org.cheetah.commons.excel.ExcelException;
-import org.cheetah.commons.excel.ExcelProcessor;
 import org.cheetah.commons.excel.processor.SimpleExcelProcessor;
 import org.cheetah.commons.excel.processor.TemplateExcelProcessor;
 import org.cheetah.commons.logger.Loggers;

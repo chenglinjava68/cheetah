@@ -1,8 +1,6 @@
 package org.cheetah.fighter.api;
 
 import org.cheetah.commons.utils.ArithUtils;
-import org.cheetah.fighter.DomainEvent;
-import org.cheetah.fighter.DomainEventListener;
 
 import java.util.concurrent.atomic.AtomicLong;
 

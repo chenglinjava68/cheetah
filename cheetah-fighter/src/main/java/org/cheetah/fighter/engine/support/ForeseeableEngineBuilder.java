@@ -2,7 +2,7 @@ package org.cheetah.fighter.engine.support;
 
 
 import org.cheetah.commons.utils.StringUtils;
-import org.cheetah.fighter.FighterConfig;
+import org.cheetah.fighter.api.FighterConfig;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.async.future.AsyncForeseeableWorkerFactory;
 import org.cheetah.fighter.async.future.ForeseeableWorkerPoolFactory;

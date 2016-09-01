@@ -1,6 +1,6 @@
 package org.cheetah.fighter.worker;
 
-import org.cheetah.fighter.DomainEvent;
+import org.cheetah.fighter.api.DomainEvent;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;

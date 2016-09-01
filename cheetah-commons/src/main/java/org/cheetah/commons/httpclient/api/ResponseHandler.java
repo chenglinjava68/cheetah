@@ -1,4 +1,4 @@
-package org.cheetah.commons.httpclient;
+package org.cheetah.commons.httpclient.api;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 

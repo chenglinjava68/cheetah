@@ -1,6 +1,6 @@
 package org.cheetah.fighter.sample;
 
-import org.cheetah.fighter.DomainEvent;
+import org.cheetah.fighter.api.DomainEvent;
 
 /**
  * Created by Max on 2016/7/29.

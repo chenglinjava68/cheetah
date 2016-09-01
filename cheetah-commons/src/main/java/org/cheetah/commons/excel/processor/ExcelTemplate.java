@@ -1,8 +1,8 @@
 package org.cheetah.commons.excel.processor;
 
 import org.apache.poi.ss.usermodel.*;
-import org.cheetah.commons.excel.ExcelException;
-import org.cheetah.commons.excel.ExcelHeader;
+import org.cheetah.commons.excel.api.ExcelException;
+import org.cheetah.commons.excel.api.ExcelHeader;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

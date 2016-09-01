@@ -2,8 +2,8 @@ package org.cheetah.fighter.worker.support;
 
 import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.RingBuffer;
-import org.cheetah.fighter.EventMessage;
-import org.cheetah.fighter.Feedback;
+import org.cheetah.fighter.api.EventMessage;
+import org.cheetah.fighter.api.Feedback;
 import org.cheetah.fighter.async.disruptor.DisruptorEvent;
 import org.cheetah.fighter.engine.support.EngineStrategy;
 import org.cheetah.fighter.worker.Command;

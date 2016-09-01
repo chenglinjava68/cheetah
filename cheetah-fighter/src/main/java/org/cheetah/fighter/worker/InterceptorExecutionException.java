@@ -1,7 +1,7 @@
 package org.cheetah.fighter.worker;
 
 
-import org.cheetah.fighter.FighterException;
+import org.cheetah.fighter.api.FighterException;
 
 /**
  * 拦截器执行异常

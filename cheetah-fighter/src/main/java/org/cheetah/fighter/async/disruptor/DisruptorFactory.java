@@ -5,7 +5,7 @@ import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import org.cheetah.commons.logger.Info;
-import org.cheetah.fighter.Interceptor;
+import org.cheetah.fighter.api.Interceptor;
 import org.cheetah.fighter.async.AbstractAsynchronousFactory;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.worker.support.DisruptorWorker;

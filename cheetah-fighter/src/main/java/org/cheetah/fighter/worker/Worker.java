@@ -1,7 +1,7 @@
 package org.cheetah.fighter.worker;
 
-import org.cheetah.fighter.Feedback;
-import org.cheetah.fighter.Interceptor;
+import org.cheetah.fighter.api.Feedback;
+import org.cheetah.fighter.api.Interceptor;
 
 import java.util.List;
 

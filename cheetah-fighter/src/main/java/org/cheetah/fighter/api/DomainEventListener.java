@@ -1,4 +1,4 @@
-package org.cheetah.fighter;
+package org.cheetah.fighter.api;
 
 import java.io.Serializable;
 import java.util.EventListener;

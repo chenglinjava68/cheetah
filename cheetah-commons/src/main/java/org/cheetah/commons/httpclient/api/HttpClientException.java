@@ -1,4 +1,4 @@
-package org.cheetah.commons.httpclient;
+package org.cheetah.commons.httpclient.api;
 
 /**
  * Created by maxhuang on 2016/7/5.

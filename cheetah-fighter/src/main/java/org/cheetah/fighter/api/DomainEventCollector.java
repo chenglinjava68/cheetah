@@ -1,7 +1,5 @@
 package org.cheetah.fighter.api;
 
-import org.cheetah.fighter.*;
-
 import java.util.concurrent.TimeUnit;
 
 /**

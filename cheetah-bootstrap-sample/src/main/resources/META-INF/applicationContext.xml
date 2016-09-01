@@ -20,9 +20,9 @@
     <dubbo:service interface="org.cheetah.bootstrap.service.DemoService" ref="demoService"/>-->
 
     <bean id="beanFactoryProvider" class="org.cheetah.ioc.spring.SpringBeanFactoryProvider"/>
-    <bean id="eventBus" class="org.cheetah.fighter.EventBus" init-method="start" destroy-method="stop">
+    <bean id="eventBus" class="org.cheetah.fighter.api.EventBus" init-method="start" destroy-method="stop">
         <property name="fighterConfig">
-            <bean class="org.cheetah.fighter.FighterConfig">
+            <bean class="org.cheetah.fighter.api.FighterConfig">
                 <!--<property name="engine" value="disruptor"/>-->
                 <property name="ringBuffer" value="1024"/>
             </bean>

@@ -1,4 +1,4 @@
-package org.cheetah.commons.excel;
+package org.cheetah.commons.excel.api;
 
 import java.io.InputStream;
 import java.io.OutputStream;

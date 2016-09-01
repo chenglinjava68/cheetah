@@ -3,8 +3,8 @@ package org.cheetah.commons.httpclient.transport;
 import org.apache.http.HttpEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.cheetah.commons.httpclient.AbstractHttpTransport;
-import org.cheetah.commons.httpclient.HttpClientException;
+import org.cheetah.commons.httpclient.api.AbstractHttpTransport;
+import org.cheetah.commons.httpclient.api.HttpClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

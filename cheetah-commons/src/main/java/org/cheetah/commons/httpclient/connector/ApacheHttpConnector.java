@@ -11,7 +11,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContexts;
-import org.cheetah.commons.httpclient.HttpClientException;
+import org.cheetah.commons.httpclient.api.HttpClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

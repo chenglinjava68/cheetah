@@ -1,7 +1,5 @@
 package org.cheetah.fighter.api;
 
-import org.cheetah.fighter.Interceptor;
-import org.cheetah.fighter.Event;
 import org.cheetah.fighter.worker.Command;
 
 /**

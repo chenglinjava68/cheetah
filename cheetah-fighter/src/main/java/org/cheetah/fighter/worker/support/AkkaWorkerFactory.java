@@ -1,6 +1,6 @@
 package org.cheetah.fighter.worker.support;
 
-import org.cheetah.fighter.Interceptor;
+import org.cheetah.fighter.api.Interceptor;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.worker.Worker;
 import org.cheetah.fighter.worker.WorkerFactory;

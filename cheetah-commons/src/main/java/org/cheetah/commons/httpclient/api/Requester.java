@@ -1,4 +1,4 @@
-package org.cheetah.commons.httpclient;
+package org.cheetah.commons.httpclient.api;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -6,7 +6,7 @@ import org.apache.http.client.config.RequestConfig;
 
 import java.util.Map;
 
-import static org.cheetah.commons.httpclient.Requester.Method.GET;
+import static org.cheetah.commons.httpclient.api.Requester.Method.GET;
 
 /**
  * 请求者，携带URL、entity、method、headers、parameters、requestConfig到HttpTransport

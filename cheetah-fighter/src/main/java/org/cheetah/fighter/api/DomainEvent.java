@@ -1,4 +1,4 @@
-package org.cheetah.fighter;
+package org.cheetah.fighter.api;
 
 
 import org.cheetah.commons.utils.IDGenerator;

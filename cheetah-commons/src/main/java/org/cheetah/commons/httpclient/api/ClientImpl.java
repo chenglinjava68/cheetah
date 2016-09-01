@@ -1,9 +1,6 @@
 package org.cheetah.commons.httpclient.api;
 
 import com.google.common.collect.Maps;
-import org.cheetah.commons.httpclient.Client;
-import org.cheetah.commons.httpclient.Requester;
-import org.cheetah.commons.httpclient.ResponseHandler;
 import org.cheetah.commons.httpclient.transport.BinaryTransport;
 import org.cheetah.commons.httpclient.transport.CustomTransport;
 import org.cheetah.commons.httpclient.transport.StringTransport;

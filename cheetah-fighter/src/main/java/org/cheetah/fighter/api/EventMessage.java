@@ -1,4 +1,4 @@
-package org.cheetah.fighter;
+package org.cheetah.fighter.api;
 
 import java.util.concurrent.TimeUnit;
 

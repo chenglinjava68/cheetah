@@ -1,9 +1,9 @@
 package org.cheetah.fighter.handler;
 
 import org.cheetah.commons.utils.ObjectUtils;
-import org.cheetah.fighter.DomainEvent;
-import org.cheetah.fighter.DomainEventListener;
-import org.cheetah.fighter.Event;
+import org.cheetah.fighter.api.DomainEvent;
+import org.cheetah.fighter.api.DomainEventListener;
+import org.cheetah.fighter.api.Event;
 import org.cheetah.fighter.worker.Command;
 
 /**

@@ -1,4 +1,4 @@
-package org.cheetah.fighter;
+package org.cheetah.fighter.api;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;

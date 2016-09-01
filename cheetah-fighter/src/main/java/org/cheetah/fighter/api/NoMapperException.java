@@ -1,4 +1,4 @@
-package org.cheetah.fighter;
+package org.cheetah.fighter.api;
 
 /**
  * 触发事件如若没有找到相应的消费者进行消费，将触发该异常

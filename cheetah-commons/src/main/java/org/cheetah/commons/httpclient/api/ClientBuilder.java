@@ -1,6 +1,5 @@
 package org.cheetah.commons.httpclient.api;
 
-import org.cheetah.commons.httpclient.Client;
 import org.cheetah.commons.httpclient.transport.BinaryTransport;
 import org.cheetah.commons.httpclient.transport.StringTransport;
 

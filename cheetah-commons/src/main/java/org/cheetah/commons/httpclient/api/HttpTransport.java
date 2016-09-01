@@ -1,4 +1,4 @@
-package org.cheetah.commons.httpclient;
+package org.cheetah.commons.httpclient.api;
 
 /**
  * http运输接口

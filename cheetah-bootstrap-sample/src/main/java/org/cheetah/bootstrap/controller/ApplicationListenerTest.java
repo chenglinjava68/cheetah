@@ -1,7 +1,7 @@
 package org.cheetah.bootstrap.controller;
 
 
-import org.cheetah.fighter.DomainEventListener;
+import org.cheetah.fighter.api.DomainEventListener;
 
 import java.util.concurrent.atomic.AtomicLong;
 

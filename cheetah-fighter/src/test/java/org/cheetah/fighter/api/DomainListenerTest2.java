@@ -1,7 +1,5 @@
 package org.cheetah.fighter.api;
 
-import org.cheetah.fighter.DomainEventListener;
-
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
