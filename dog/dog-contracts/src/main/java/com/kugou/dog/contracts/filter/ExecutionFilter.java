@@ -3,12 +3,14 @@ package com.kugou.dog.contracts.filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Priority;
 import javax.servlet.*;
 import java.io.IOException;
 
 /**
  * Created by Max on 2016/8/22.
  */
+@Priority(12)
 public class ExecutionFilter implements Filter {
     private final static Logger LOGGER = LoggerFactory.getLogger(ExecutionFilter.class);
     @Override

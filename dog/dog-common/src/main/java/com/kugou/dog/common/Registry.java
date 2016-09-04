@@ -10,25 +10,25 @@ import java.lang.annotation.*;
 @Documented
 public @interface Registry {
     /**
-     * ½Ó¿ÚÃû
+     * æ¥å£å
      * @return
      */
     String value();
 
     /**
-     * ²¢·¢Êı
+     * å¹¶å‘æ•°
      * @return
      */
     int executes() default 0;
 
     /**
-     * ÍÌÍÂÂÊ£¬ÓëperiodÏà¹Ø£¬Èç¹ûÊ¹ÓÃÄ¬ÈÏµÄperiod¼´¿ØÖÆ1ÃëÄÚÁ÷Á¿½ø³ö
+     * ååç‡ï¼Œä¸periodç›¸å…³ï¼Œå¦‚æœä½¿ç”¨é»˜è®¤çš„periodå³æ§åˆ¶1ç§’å†…æµé‡è¿›å‡º
      * @return
      */
     int throughput() default 0;
 
     /**
-     * µ¥Î»ÎªÃë
+     * å•ä½ä¸ºç§’
      * @return
      */
     int period() default 1;
