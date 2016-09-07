@@ -54,9 +54,9 @@ public class MD5Util {
      * @return 经过MD5加密之后的结果
      */
     public static String MD5Encode(String origin, String charsetname) {
-        String resultString = null;
+        String resultString;
         try {
-            resultString = new String(origin);
+            resultString = origin;
             MessageDigest md = MessageDigest.getInstance("MD5");
             if (charsetname == null || "".equals(charsetname))
                 resultString = byteArrayToHexString(md.digest(resultString
@@ -84,7 +84,8 @@ public class MD5Util {
             }
         }
         String params = sb.substring(0, sb.lastIndexOf("&"));
-        return MD5Util.MD5Encode(params, "UTF-8").toUpperCase();
+        String result = MD5Encode(params, "UTF-8");
+        return Objects.isNull(result) ? null : result.toUpperCase();
     }
 
     /**
@@ -113,9 +114,8 @@ public class MD5Util {
         } else {
             params = sb.substring(0, sb.lastIndexOf("&"));
         }
-        System.out.println("sign:");
-        System.out.println(params);
-        return MD5Util.MD5Encode(params, "UTF-8").toUpperCase();
+        String result = MD5Encode(params, "UTF-8");
+        return Objects.isNull(result) ? null : result.toUpperCase();
     }
 
     /**
