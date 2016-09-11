@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.cheetah.commons.logger.Warn;
 
 import java.io.IOException;
 
@@ -32,7 +33,7 @@ public abstract class JsonSerializer {
         try {
             return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            Warn.log(JsonSerializer.class, "json serialize occus error", e);
         }
         return null;
     }
@@ -50,7 +51,7 @@ public abstract class JsonSerializer {
         try {
             return objectMapper.readValue(json, clz);
         } catch (IOException e) {
-            e.printStackTrace();
+            Warn.log(JsonSerializer.class, "json deserialize occus error", e);
         }
         return null;
     }

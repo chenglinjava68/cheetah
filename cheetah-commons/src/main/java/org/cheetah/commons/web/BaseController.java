@@ -1,7 +1,6 @@
 package org.cheetah.commons.web;
 
 import com.google.common.io.ByteStreams;
-import org.cheetah.commons.utils.Objects;
 import org.cheetah.commons.utils.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Objects;
 
 /**
  * Created by Max on 2016/5/1.

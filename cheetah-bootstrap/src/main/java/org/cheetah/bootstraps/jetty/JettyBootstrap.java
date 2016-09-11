@@ -7,7 +7,6 @@ import org.cheetah.bootstraps.BootstrapSupport;
 import org.cheetah.commons.logger.Err;
 import org.cheetah.commons.logger.Info;
 import org.cheetah.commons.logger.Warn;
-import org.cheetah.commons.utils.Objects;
 import org.cheetah.commons.utils.StringUtils;
 import org.cheetah.configuration.Configuration;
 import org.cheetah.configuration.ConfigurationFactory;
@@ -35,6 +34,7 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.EventListener;
+import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 
 

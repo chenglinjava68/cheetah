@@ -4,7 +4,6 @@ package org.cheetah.fighter.worker.support;
 import org.cheetah.commons.logger.Debug;
 import org.cheetah.commons.logger.Err;
 import org.cheetah.commons.logger.Warn;
-import org.cheetah.commons.utils.Objects;
 import org.cheetah.fighter.api.Feedback;
 import org.cheetah.fighter.api.Interceptor;
 import org.cheetah.fighter.handler.Handler;
@@ -12,6 +11,7 @@ import org.cheetah.fighter.worker.AbstractWorker;
 import org.cheetah.fighter.worker.Command;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.*;
 
 /**

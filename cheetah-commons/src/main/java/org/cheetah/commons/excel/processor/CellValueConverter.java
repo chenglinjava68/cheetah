@@ -38,7 +38,7 @@ public final class CellValueConverter {
         } else if (header.getType().equals(double.class) || header.getType().equals(Double.class)) {
             double value = getDouble(obj, ExcelResourcesHelper.getTargetName(header));
             cell.setCellValue(value);
-        } else if (header.getType().equals(char.class)) {
+        } else if (header.getType().equals(char.class) || header.getType().equals(Character.class)) {
             char value = getChar(obj, ExcelResourcesHelper.getTargetName(header));
             cell.setCellValue(value);
         } else if (header.getType().equals(Date.class)) {
