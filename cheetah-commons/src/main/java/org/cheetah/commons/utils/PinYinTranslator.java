@@ -1,10 +1,9 @@
-package org.cheetah.commons.pinyin;
+package org.cheetah.commons.utils;
 
 import com.github.stuxuhai.jpinyin.ChineseHelper;
 import com.github.stuxuhai.jpinyin.PinyinFormat;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.google.common.collect.Maps;
-import org.cheetah.commons.utils.StringUtils;
 
 import java.util.Map;
 
