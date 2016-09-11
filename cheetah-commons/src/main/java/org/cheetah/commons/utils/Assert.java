@@ -366,113 +366,28 @@ public abstract class Assert {
     }
 
     public static <T extends Number> void notGt(T value, T expect, String message) {
-        if (value.getClass().equals(int.class) || value.getClass().equals(Integer.class)) {
-            if (((Integer) value) > ((Integer)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(byte.class) || value.getClass().equals(Byte.class)) {
-            if (((Byte)value) > ((Byte)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(short.class) || value.getClass().equals(Short.class)) {
-            if (((Short)value) > ((Short)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(long.class) || value.getClass().equals(Long.class)) {
-            if (((Long)value) > ((Long)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(float.class) || value.getClass().equals(Float.class)) {
-            if (((Float)value) > ((Float)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(double.class) || value.getClass().equals(Double.class)) {
-            if (((Double)value) > ((Double)expect))
-                throw new IllegalArgumentException(message);
-        }
+        if (Numbers.isGt(value, expect))
+            throw new IllegalArgumentException(message);
     }
 
     public static <T extends Number> void notGte(T value, T expect, String message) {
-        if (value.getClass().equals(int.class) || value.getClass().equals(Integer.class)) {
-            if (((Integer) value) >= ((Integer)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(byte.class) || value.getClass().equals(Byte.class)) {
-            if (((Byte)value) >= ((Byte)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(short.class) || value.getClass().equals(Short.class)) {
-            if (((Short)value) >= ((Short)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(long.class) || value.getClass().equals(Long.class)) {
-            if (((Long)value) >= ((Long)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(float.class) || value.getClass().equals(Float.class)) {
-            if (((Float)value) >= ((Float)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(double.class) || value.getClass().equals(Double.class)) {
-            if (((Double)value) >= ((Double)expect))
-                throw new IllegalArgumentException(message);
-        }
+        if (Numbers.isGte(value, expect))
+            throw new IllegalArgumentException(message);
     }
 
     public static <T extends Number> void notEquals(T value, T expect, String message) {
-        if (value.getClass().equals(int.class) || value.getClass().equals(Integer.class)) {
-            if (value.equals(expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(byte.class) || value.getClass().equals(Byte.class)) {
-            if (value.equals(expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(short.class) || value.getClass().equals(Short.class)) {
-            if (value.equals(expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(long.class) || value.getClass().equals(Long.class)) {
-            if (value.equals(expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(float.class) || value.getClass().equals(Float.class)) {
-            if (value.equals(expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(double.class) || value.getClass().equals(Double.class)) {
-            if (value.equals(expect))
-                throw new IllegalArgumentException(message);
-        }
+        if (Numbers.isEquals(value, expect))
+            throw new IllegalArgumentException(message);
     }
 
     public static <T extends Number> void notLt(T value, T expect, String message) {
-        if (value.getClass().equals(int.class) || value.getClass().equals(Integer.class)) {
-            if (((Integer) value) < ((Integer)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(byte.class) || value.getClass().equals(Byte.class)) {
-            if (((Byte)value) < ((Byte)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(short.class) || value.getClass().equals(Short.class)) {
-            if (((Short)value) < ((Short)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(long.class) || value.getClass().equals(Long.class)) {
-            if (((Long)value) < ((Long)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(float.class) || value.getClass().equals(Float.class)) {
-            if (((Float)value) < ((Float)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(double.class) || value.getClass().equals(Double.class)) {
-            if (((Double)value) < ((Double)expect))
-                throw new IllegalArgumentException(message);
-        }
+        if (Numbers.isLt(value, expect))
+            throw new IllegalArgumentException(message);
     }
 
     public static <T extends Number> void notLte(T value, T expect, String message) {
-        if (value.getClass().equals(int.class) || value.getClass().equals(Integer.class)) {
-            if (((Integer) value) <= ((Integer)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(byte.class) || value.getClass().equals(Byte.class)) {
-            if (((Byte)value) <= ((Byte)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(short.class) || value.getClass().equals(Short.class)) {
-            if (((Short)value) <= ((Short)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(long.class) || value.getClass().equals(Long.class)) {
-            if (((Long)value) <= ((Long)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(float.class) || value.getClass().equals(Float.class)) {
-            if (((Float)value) <= ((Float)expect))
-                throw new IllegalArgumentException(message);
-        } else if (value.getClass().equals(double.class) || value.getClass().equals(Double.class)) {
-            if (((Double)value) <= ((Double)expect))
-                throw new IllegalArgumentException(message);
-        }
+        if (Numbers.isLte(value, expect))
+            throw new IllegalArgumentException(message);
     }
 }
 

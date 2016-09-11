@@ -17,29 +17,29 @@ public class AssertTest {
 
     @Test
     public void testNotGte() {
-        int a = 1;
-        int b = 2;
+        float a = 1;
+        float b = 2;
         Assert.notGte(a, b, "test");
     }
 
     @Test
     public void testNotLt() {
-        int a = 1;
-        int b = 2;
+        double a = 1;
+        double b = 2;
         Assert.notLt(a, b, "test");
     }
 
     @Test
     public void testNotLte() {
-        int a = 1;
-        int b = 2;
+        byte a = 21;
+        byte b = 2;
         Assert.notLte(a, b, "test");
     }
 
     @Test
     public void testNotEquals() {
-        int a = 2;
-        int b = 2;
+        long a = 2;
+        long b = 2;
         Assert.notEquals(a, b, "test");
     }
 }
