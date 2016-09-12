@@ -26,7 +26,7 @@ public final class Numbers {
      * @param <T>
      * @return
      */
-    public static <T extends Number> boolean isGt(T value, T expect) {
+    public static <T extends Number> boolean isGreaterThan(T value, T expect) {
         return greaterThanComparer.compare(value, expect);
     }
     /**
@@ -36,7 +36,7 @@ public final class Numbers {
      * @param <T>
      * @return
      */
-    public static <T extends Number> boolean isGte(T value, T expect) {
+    public static <T extends Number> boolean isGreaterThanEquals(T value, T expect) {
         return greaterThanEqualsComparer.compare(value, expect);
     }
     /**
@@ -56,7 +56,7 @@ public final class Numbers {
      * @param <T>
      * @return
      */
-    public static <T extends Number> boolean isLt(T value, T expect) {
+    public static <T extends Number> boolean isLessThan(T value, T expect) {
         return lessThanComparer.compare(value, expect);
     }
     /**
@@ -66,7 +66,7 @@ public final class Numbers {
      * @param <T>
      * @return
      */
-    public static <T extends Number> boolean isLte(T value, T expect) {
+    public static <T extends Number> boolean isLessThanEquals(T value, T expect) {
         return lessThanEqualsComparer.compare(value, expect);
     }
 

@@ -20,6 +20,7 @@
         <module>cheetah-fighter-sample</module>
         <module>cheetah-bootstrap-sample</module>
         <module>dog</module>
+        <module>cheetah-test</module>
     </modules>
 
     <developers>

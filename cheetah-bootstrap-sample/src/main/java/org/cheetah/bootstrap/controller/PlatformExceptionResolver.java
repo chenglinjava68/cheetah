@@ -21,18 +21,14 @@ public class PlatformExceptionResolver extends SimpleMappingExceptionResolver {
 
     @Override
     protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        Loggers.logger().warn(this.getClass(), "Exception stack trace logs:");
-        ex.printStackTrace();
-        String viewName = determineViewName(ex, request);
-        if (viewName == null)
-            return null;
+        Loggers.logger().warn(this.getClass(), "Exception stack trace logs:", ex);
 
-        if (ajaxRequest(request)) {
+//        String viewName = determineViewName(ex, request);
+//        if (viewName == null)
+//            return null;
+
+//        if (ajaxRequest(request)) {
             try {
-                Loggers.logger().info(this.getClass(), ex.getMessage());
-                Loggers.logger().warn(this.getClass(), ex.getMessage());
-
-
                 ApiResult apiResult = exceptionMessageConverter.convert(ex);
 
                 write(JsonSerializer.serialize(apiResult), response);
@@ -41,19 +37,23 @@ public class PlatformExceptionResolver extends SimpleMappingExceptionResolver {
                 Loggers.logger().warn(this.getClass(), "resolver exception occur a error.", e);
             }
             return null;
-        }
-        Integer statusCode = determineStatusCode(request, viewName);
-        if (statusCode != null) {
-            applyStatusCodeIfPossible(request, response, statusCode);
-        }
-        return getModelAndView(viewName, ex, request);
+//        }
+//        Integer statusCode = determineStatusCode(request, viewName);
+//        if (statusCode != null) {
+//            applyStatusCodeIfPossible(request, response, statusCode);
+//        }
+//        return getModelAndView(viewName, ex, request);
     }
 
     private boolean ajaxRequest(HttpServletRequest request) {
-        return request.getHeader("accept").contains("application/json")
-                || (request.getHeader("X-Requested-With") != null && request.getHeader("X-Requested-With").contains("XMLHttpRequest"))
-                || (request.getContentType() != null && request.getContentType().contains("application/json"))
-                || (request.getContentType() != null && request.getContentType().contains("multipart/form-data"));
+        try {
+            return request.getHeader("accept").contains("application/json")
+                    || (request.getHeader("X-Requested-With") != null && request.getHeader("X-Requested-With").contains("XMLHttpRequest"))
+                    || (request.getContentType() != null && request.getContentType().contains("application/json"))
+                    || (request.getContentType() != null && request.getContentType().contains("multipart/form-data"));
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private void write(String json, HttpServletResponse response) throws IOException {

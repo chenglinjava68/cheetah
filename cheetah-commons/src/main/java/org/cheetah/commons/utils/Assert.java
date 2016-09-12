@@ -365,13 +365,13 @@ public abstract class Assert {
         state(expression, "[Assertion failed] - this state invariant must be true");
     }
 
-    public static <T extends Number> void notGt(T value, T expect, String message) {
-        if (Numbers.isGt(value, expect))
+    public static <T extends Number> void notGreaterThan(T value, T expect, String message) {
+        if (Numbers.isGreaterThan(value, expect))
             throw new IllegalArgumentException(message);
     }
 
-    public static <T extends Number> void notGte(T value, T expect, String message) {
-        if (Numbers.isGte(value, expect))
+    public static <T extends Number> void notGreaterThanEquals(T value, T expect, String message) {
+        if (Numbers.isGreaterThanEquals(value, expect))
             throw new IllegalArgumentException(message);
     }
 
@@ -380,13 +380,13 @@ public abstract class Assert {
             throw new IllegalArgumentException(message);
     }
 
-    public static <T extends Number> void notLt(T value, T expect, String message) {
-        if (Numbers.isLt(value, expect))
+    public static <T extends Number> void notLessThan(T value, T expect, String message) {
+        if (Numbers.isLessThan(value, expect))
             throw new IllegalArgumentException(message);
     }
 
-    public static <T extends Number> void notLte(T value, T expect, String message) {
-        if (Numbers.isLte(value, expect))
+    public static <T extends Number> void notLessThanEquals(T value, T expect, String message) {
+        if (Numbers.isLessThanEquals(value, expect))
             throw new IllegalArgumentException(message);
     }
 }
