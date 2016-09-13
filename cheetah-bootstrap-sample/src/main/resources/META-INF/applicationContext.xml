@@ -13,11 +13,11 @@
     <context:component-scan base-package="org.cheetah.bootstrap">
     </context:component-scan>
 
-   <!-- <dubbo:application name="test" logger="slf4j"/>
+    <dubbo:application name="test" logger="slf4j"/>
     <dubbo:protocol name="dubbo" host="localhost" port="10000"/>
     <dubbo:registry address="zookeeper://localhost:2181"/>
 
-    <dubbo:service interface="org.cheetah.bootstrap.service.DemoService" ref="demoService"/>-->
+    <dubbo:service interface="org.cheetah.bootstrap.service.DemoService" ref="demoService"/>
 
     <bean id="beanFactoryProvider" class="org.cheetah.ioc.spring.SpringBeanFactoryProvider"/>
     <bean id="eventBus" class="org.cheetah.fighter.api.EventBus" init-method="start" destroy-method="stop">

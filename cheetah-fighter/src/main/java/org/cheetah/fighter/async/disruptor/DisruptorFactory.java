@@ -20,12 +20,12 @@ public class DisruptorFactory extends AbstractAsynchronousFactory<Disruptor<Disr
 
     public Disruptor<DisruptorEvent> createMultiDisruptor() {
         WaitStrategy waitStrategy = new BlockingWaitStrategy();
-        return new Disruptor<>(new DisruptorEventFactory(), ringbufferSize, getExecutorService(), ProducerType.MULTI, waitStrategy);
+        return new Disruptor<>(new DisruptorEventFactory(), ringbufferSize, buildThreadPool(), ProducerType.MULTI, waitStrategy);
     }
 
     public Disruptor<DisruptorEvent> createSingleDisruptor() {
         WaitStrategy waitStrategy = new BlockingWaitStrategy();
-        return new Disruptor<>(new DisruptorEventFactory(), ringbufferSize, getExecutorService(), ProducerType.SINGLE, waitStrategy);
+        return new Disruptor<>(new DisruptorEventFactory(), ringbufferSize, buildThreadPool(), ProducerType.SINGLE, waitStrategy);
     }
 
     public void setRingbufferSize(int ringbufferSize) {
