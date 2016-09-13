@@ -46,13 +46,13 @@ public abstract class AbstractAsynchronousFactory<T> implements AsynchronousFact
         else
             blockingQueue = new LinkedBlockingQueue<>(DEFAULT_QUEUE_LENGTH);
 
-        ThreadPoolExecutor executorService = new ThreadPoolExecutor(minThreahs, maxThreahs,
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(minThreahs, maxThreahs,
                 3000L, TimeUnit.MILLISECONDS, blockingQueue,
                 new ThreadFactoryBuilder().setNameFormat("Cheetah-Fighter-%d").build(), rejectedExecutionHandler);
         Info.log(this.getClass(), "build executor min threahs size {}, max threahs size {}, keep alive time {} ms, queue length {}, rejection policy {}",
                 minThreahs, maxThreahs, 30000, queueLength, StringUtils.isBlank(rejectionPolicy) ? "Abort" : rejectionPolicy);
-        executorServices.add(executorService);
-        return executorService;
+        executorServices.add(threadPoolExecutor);
+        return threadPoolExecutor;
     }
 
     public void setMinThreahs(int minThreahs) {
