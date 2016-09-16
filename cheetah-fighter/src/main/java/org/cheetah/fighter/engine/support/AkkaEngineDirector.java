@@ -1,6 +1,6 @@
 package org.cheetah.fighter.engine.support;
 
-import org.cheetah.fighter.api.FighterConfig;
+import org.cheetah.fighter.FighterConfig;
 import org.cheetah.fighter.engine.Engine;
 import org.cheetah.fighter.engine.EngineBuilder;
 import org.cheetah.fighter.engine.EngineDirector;

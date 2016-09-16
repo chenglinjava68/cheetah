@@ -1,6 +1,6 @@
 package org.cheetah.bootstrap.controller;
 
-import org.cheetah.fighter.api.DomainEventPublisher;
+import org.cheetah.fighter.DomainEventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.*;

@@ -1,7 +1,7 @@
 package org.cheetah.fighter.worker;
 
 import org.cheetah.fighter.handler.support.HandlerInterceptorChain;
-import org.cheetah.fighter.api.Interceptor;
+import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.handler.Handler;
 
 import java.util.List;

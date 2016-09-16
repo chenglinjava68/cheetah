@@ -1,7 +1,7 @@
 package org.cheetah.fighter.engine.support;
 
 import akka.actor.ActorRef;
-import org.cheetah.fighter.api.FighterConfig;
+import org.cheetah.fighter.FighterConfig;
 import org.cheetah.fighter.async.AsynchronousPoolFactory;
 import org.cheetah.fighter.async.akka.ActorFactory;
 import org.cheetah.fighter.async.akka.ActorPoolFactory;

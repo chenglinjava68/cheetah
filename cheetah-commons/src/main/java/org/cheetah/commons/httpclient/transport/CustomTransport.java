@@ -2,7 +2,7 @@ package org.cheetah.commons.httpclient.transport;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.cheetah.commons.httpclient.api.AbstractHttpTransport;
+import org.cheetah.commons.httpclient.AbstractHttpTransport;
 
 /**
  * Created by Max on 2016/7/9.

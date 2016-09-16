@@ -1,7 +1,7 @@
 package org.cheetah.fighter.handler;
 
-import org.cheetah.fighter.api.DomainEvent;
-import org.cheetah.fighter.api.DomainEventListener;
+import org.cheetah.fighter.DomainEvent;
+import org.cheetah.fighter.DomainEventListener;
 
 /**
  * handler工厂

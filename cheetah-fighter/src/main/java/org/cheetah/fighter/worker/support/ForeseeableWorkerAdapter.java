@@ -1,8 +1,8 @@
 package org.cheetah.fighter.worker.support;
 
 import com.google.common.collect.ImmutableList;
-import org.cheetah.fighter.api.EventMessage;
-import org.cheetah.fighter.api.Feedback;
+import org.cheetah.fighter.EventMessage;
+import org.cheetah.fighter.Feedback;
 import org.cheetah.fighter.engine.support.EngineStrategy;
 import org.cheetah.fighter.worker.Command;
 import org.cheetah.fighter.worker.Worker;

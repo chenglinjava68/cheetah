@@ -1,8 +1,8 @@
 package org.cheetah.common.excel;
 
 import com.google.common.collect.Lists;
-import org.cheetah.commons.excel.api.Assembly;
-import org.cheetah.commons.excel.api.ExcelTranslator;
+import org.cheetah.commons.excel.Assembly;
+import org.cheetah.commons.excel.ExcelTranslator;
 import org.junit.Test;
 
 import java.io.FileInputStream;

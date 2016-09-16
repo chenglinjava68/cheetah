@@ -1,17 +1,18 @@
 package org.cheetah.commons.httpclient.connector;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.ssl.SSLContexts;
-import org.cheetah.commons.httpclient.api.HttpClientException;
+import org.cheetah.commons.httpclient.HttpClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -107,10 +108,13 @@ public class ApacheHttpConnector {
             KeyStore trustStore = KeyStore.getInstance(KeyStore
                     .getDefaultType());
             SSLContext sslContext = SSLContexts.custom()
-                    .loadTrustMaterial(trustStore, (TrustStrategy) (chain, authType) -> true).build();
+                    .loadTrustMaterial(trustStore, (chain, authType) -> true).build();
             PoolingHttpClientConnectionManager connectionManager = createConnectionManager(sslContext, SSLConnectionSocketFactory.getDefaultHostnameVerifier());
             return HttpClients.
                     custom()
+                    .addInterceptorLast((HttpResponse httpResponse, HttpContext httpContext) -> {
+                        System.out.println("request interceptor" + "   " + httpResponse.getStatusLine());
+                    })
                     .setConnectionManager(connectionManager)
                     .setRetryHandler(new RetryHandler()).build();
         } catch (Exception e) {

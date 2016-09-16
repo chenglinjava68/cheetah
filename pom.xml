@@ -19,7 +19,6 @@
         <module>cheetah-rest</module>
         <module>cheetah-fighter-sample</module>
         <module>cheetah-bootstrap-sample</module>
-        <module>cheetah-test</module>
         <module>limos</module>
     </modules>
 

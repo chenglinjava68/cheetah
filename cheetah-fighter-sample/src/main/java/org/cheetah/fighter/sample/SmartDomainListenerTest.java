@@ -1,7 +1,7 @@
 package org.cheetah.fighter.sample;
 
-import org.cheetah.fighter.api.DomainEvent;
-import org.cheetah.fighter.api.SmartDomainEventListener;
+import org.cheetah.fighter.DomainEvent;
+import org.cheetah.fighter.SmartDomainEventListener;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;

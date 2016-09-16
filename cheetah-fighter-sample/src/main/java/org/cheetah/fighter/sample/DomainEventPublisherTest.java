@@ -3,7 +3,8 @@ package org.cheetah.fighter.sample;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
-import org.cheetah.fighter.api.EventResult;
+import org.cheetah.fighter.DomainEventPublisher;
+import org.cheetah.fighter.EventResult;
 import org.cheetah.ioc.BeanFactory;
 import org.cheetah.ioc.spring.SpringBeanFactoryProvider;
 import org.springframework.context.ApplicationContext;
@@ -48,7 +49,7 @@ public class DomainEventPublisherTest {
         for (int i = 0; i < 20; i++) {
             new Thread(() -> {
                 while (true) {
-                    org.cheetah.fighter.api.DomainEventPublisher.publish(
+                    DomainEventPublisher.publish(
                             new DomainEventTest("huahng")
                     );
 
@@ -64,7 +65,7 @@ public class DomainEventPublisherTest {
      */
     public static void publish() {
 
-        EventResult result = org.cheetah.fighter.api.DomainEventPublisher.publish(
+        EventResult result = DomainEventPublisher.publish(
                 new DomainEventTest("huahng"), true, 1, TimeUnit.SECONDS
         );
 //        EventResult result2 = DomainEventPublisher.publish(

@@ -1,7 +1,7 @@
 package org.cheetah.fighter.worker;
 
-import org.cheetah.fighter.api.EventMessage;
-import org.cheetah.fighter.api.Feedback;
+import org.cheetah.fighter.EventMessage;
+import org.cheetah.fighter.Feedback;
 
 /**
  * worker适配器

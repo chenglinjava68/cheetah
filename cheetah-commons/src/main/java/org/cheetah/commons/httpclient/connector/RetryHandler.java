@@ -23,6 +23,7 @@ public class RetryHandler implements HttpRequestRetryHandler {
 	@Override
 	public boolean retryRequest(IOException exception, int executionCount,
 			HttpContext context) {
+		System.out.println("exception");
 		if(executionCount > 3)
 			return false;
 		if(exception instanceof InterruptedIOException)

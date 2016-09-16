@@ -2,8 +2,8 @@ package org.cheetah.fighter.worker.support;
 
 import org.cheetah.commons.logger.Err;
 import org.cheetah.commons.utils.Assert;
-import org.cheetah.fighter.api.Feedback;
-import org.cheetah.fighter.api.Interceptor;
+import org.cheetah.fighter.Feedback;
+import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.worker.AbstractWorker;
 import org.cheetah.fighter.worker.Command;

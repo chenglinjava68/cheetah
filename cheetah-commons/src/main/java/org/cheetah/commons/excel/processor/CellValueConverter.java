@@ -2,7 +2,7 @@ package org.cheetah.commons.excel.processor;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.ss.usermodel.Cell;
-import org.cheetah.commons.excel.api.ExcelHeader;
+import org.cheetah.commons.excel.ExcelHeader;
 import org.cheetah.commons.utils.Assert;
 
 import java.lang.reflect.Field;

@@ -6,7 +6,7 @@ import akka.routing.SmallestMailboxPool;
 import com.typesafe.config.ConfigFactory;
 import org.cheetah.commons.logger.Info;
 import org.cheetah.fighter.async.AsynchronousFactory;
-import org.cheetah.fighter.api.Interceptor;
+import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.handler.Handler;
 import org.cheetah.fighter.worker.support.AkkaWorker;
 import scala.concurrent.Await;

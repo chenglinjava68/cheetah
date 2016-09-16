@@ -1,6 +1,6 @@
 package org.cheetah.bootstrap.controller;
 
-import org.cheetah.fighter.api.DomainEvent;
+import org.cheetah.fighter.DomainEvent;
 
 /**
  * Created by Max on 2016/3/1.

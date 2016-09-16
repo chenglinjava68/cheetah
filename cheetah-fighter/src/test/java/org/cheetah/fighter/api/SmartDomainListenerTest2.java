@@ -1,5 +1,8 @@
 package org.cheetah.fighter.api;
 
+import org.cheetah.fighter.DomainEvent;
+import org.cheetah.fighter.SmartDomainEventListener;
+
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicLong;
 

@@ -1,6 +1,6 @@
 package org.cheetah.fighter.engine;
 
-import org.cheetah.fighter.api.FighterConfig;
+import org.cheetah.fighter.FighterConfig;
 
 /**
  * 引擎主管-负责管理构建一个完整的引擎

@@ -2,8 +2,8 @@ package org.cheetah.commons.httpclient.serializer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.cheetah.commons.httpclient.api.EntitySerializer;
-import org.cheetah.commons.httpclient.api.HttpClientException;
+import org.cheetah.commons.httpclient.EntitySerializer;
+import org.cheetah.commons.httpclient.HttpClientException;
 import org.cheetah.commons.utils.ObjectMappers;
 
 import java.io.IOException;

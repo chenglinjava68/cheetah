@@ -1,7 +1,7 @@
 package org.cheetah.fighter.async;
 
 import org.cheetah.commons.Startable;
-import org.cheetah.fighter.api.EventContext;
+import org.cheetah.fighter.EventContext;
 
 /**
  * 异步工作者池子的工厂

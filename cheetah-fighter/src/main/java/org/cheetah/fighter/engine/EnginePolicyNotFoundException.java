@@ -1,7 +1,7 @@
 package org.cheetah.fighter.engine;
 
 
-import org.cheetah.fighter.api.FighterException;
+import org.cheetah.fighter.FighterException;
 
 /**
  * Created by Max on 2016/3/2.

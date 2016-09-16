@@ -16,7 +16,7 @@
 package org.cheetah.fighter.plugin;
 
 
-import org.cheetah.fighter.api.FighterException;
+import org.cheetah.fighter.FighterException;
 
 /**
  * @author Max
