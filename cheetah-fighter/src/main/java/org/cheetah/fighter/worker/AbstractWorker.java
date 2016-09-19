@@ -5,6 +5,7 @@ import org.cheetah.fighter.Interceptor;
 import org.cheetah.fighter.handler.Handler;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 异步工作者的抽象类
@@ -55,16 +56,25 @@ public abstract class AbstractWorker implements Worker {
      */
     protected void invoke(Command command) {
         HandlerInterceptorChain chain = createInterceptorChain();
-        boolean result = preHandle(command, chain);
-        if (!result)
-            return ;
+        Exception executionEx = null;
+        boolean preHandleStatus = true;
+
         try {
+            preHandleStatus = preHandle(command, chain);
+            if (!preHandleStatus)
+                return ;
             doWork(command);
+            afterHandle(command, chain);
         } catch (Exception e) {
-            triggerAfterCompletion(command, e, chain);
+            executionEx = e;
             throw e;
+        } finally {
+            if(Objects.isNull(executionEx) && !preHandleStatus)
+                ;
+            else
+                triggerAfterCompletion(command, executionEx, chain);
+
         }
-        afterHandle(command, chain);
     }
 
     /**

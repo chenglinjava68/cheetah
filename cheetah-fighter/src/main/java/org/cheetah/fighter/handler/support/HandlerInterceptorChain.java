@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class HandlerInterceptorChain implements Cloneable {
     private List<Interceptor> interceptors;
-    private int interceptorIndex;
+    private int interceptorIndex = -1;
     private static HandlerInterceptorChain DEFAULT_CHAIN = new HandlerInterceptorChain();
     /**
      *  消费者执行前，先调用所有拦截器的prehandle
@@ -24,11 +24,12 @@ public class HandlerInterceptorChain implements Cloneable {
     public boolean beforeHandle(Command command) throws Exception {
         List<Interceptor> $interceptors = getInterceptors();
         if (!CollectionUtils.isEmpty($interceptors)) {
-            for (int i = 0; i < $interceptors.size(); this.interceptorIndex = i++) {
+            for (int i = 0; i < $interceptors.size(); i++) {
                 if (!$interceptors.get(i).preHandle(command)) {
                     this.triggerAfterCompletion(command, null);
                     return false;
                 }
+                this.interceptorIndex = i;
             }
         }
         return true;
@@ -40,7 +41,7 @@ public class HandlerInterceptorChain implements Cloneable {
     public void afterHandle(Command command) throws Exception {
         List<Interceptor> $interceptors = getInterceptors();
         if (!CollectionUtils.isEmpty($interceptors)) {
-            for(int i = $interceptors.size() - 1; i >= 0; --i) {
+            for(int i = $interceptors.size() - 1; i >= 0; i--) {
                 $interceptors.get(i).postHandle(command);
             }
         }
@@ -53,7 +54,7 @@ public class HandlerInterceptorChain implements Cloneable {
     public void triggerAfterCompletion(Command command, Exception ex) {
         List<Interceptor> $interceptors = getInterceptors();
         if (!CollectionUtils.isEmpty($interceptors)) {
-            for (int i = this.interceptorIndex; i >= 0; --i) {
+            for (int i = this.interceptorIndex; i >= 0; i--) {
                 try {
                     $interceptors.get(i).afterCompletion(command, ex);
                 } catch (Exception e) {
@@ -76,13 +77,13 @@ public class HandlerInterceptorChain implements Cloneable {
     }
 
     public void initialize() {
-        this.interceptorIndex = 0;
+        this.interceptorIndex = -1;
         this.interceptors = new ArrayList<>();
     }
 
     public void reset() {
         this.interceptors = null;
-        this.interceptorIndex = 0;
+        this.interceptorIndex = -1;
     }
 
     public static HandlerInterceptorChain getDefualtChain() {
