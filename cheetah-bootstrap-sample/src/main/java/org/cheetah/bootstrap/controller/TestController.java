@@ -23,6 +23,7 @@ public class TestController {
 
     @RequestMapping(value = "/on", method = RequestMethod.GET)
     public void test3() {
+
     }
 
     @RequestMapping(method = RequestMethod.POST)

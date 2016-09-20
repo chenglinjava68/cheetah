@@ -59,8 +59,8 @@ public class PlatformExceptionResolver extends SimpleMappingExceptionResolver {
     private void write(String json, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(json);
-        response.getWriter().flush();
-        response.getWriter().close();
+        response.getOutputStream().write(json.getBytes());
+        response.getOutputStream().flush();
+        response.getOutputStream().close();
     }
 }
