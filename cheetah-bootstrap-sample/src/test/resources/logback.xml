@@ -6,9 +6,9 @@
             <pattern>%d [%thread] %-5level %logger{24} - %msg%n</pattern>
         </encoder>
     </appender>
-    <logger name="org.cheetah" level="info" />
+    <logger name="org.cheetah" level="warn" />
     <logger name="com.alibaba.dubbo" level="info" />
-    <root level="info">
+    <root level="warn">
         <appender-ref ref="console" />
     </root>
 </configuration>

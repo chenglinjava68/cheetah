@@ -43,7 +43,7 @@
         </property>
     </bean>-->
 
-    <bean class="org.cheetah.rest.provider.DefaultSpringMvcExceptionMapper"/>
+    <!--<bean class="org.cheetah.rest.provider.DefaultSpringMvcExceptionMapper"/>-->
 
     <!-- 通用视图解析类 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

@@ -12,9 +12,11 @@
     <spring.version>4.1.6.RELEASE</spring.version>
     <!--<jetty.version>9.3.0.v20150612</jetty.version>-->
     <jetty.version>9.3.8.v20160314</jetty.version>
+    <sharding-jdbc.version>1.3.2</sharding-jdbc.version>
+    <commons-dbcp.version>1.4</commons-dbcp.version>
   </properties>
 
-  <repositories>
+  <!--<repositories>
     <repository>
       <id>kugou-releases</id>
       <url>http://nexus.fanxing.kgidc.cn/nexus/content/groups/public/</url>
@@ -35,7 +37,7 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
-  </repositories>
+  </repositories>-->
 
   <dependencies>
     <dependency>
@@ -117,6 +119,11 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-expression</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
       <version>${spring.version}</version>
     </dependency>
     <dependency>
@@ -236,6 +243,39 @@
       <artifactId>kugou-cat</artifactId>
       <version>1.3.14</version>
     </dependency>
+
+    <dependency>
+      <groupId>com.kugou</groupId>
+      <artifactId>sharding-jdbc-core</artifactId>
+      <version>${sharding-jdbc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.kugou</groupId>
+      <artifactId>sharding-jdbc-transaction</artifactId>
+      <version>${sharding-jdbc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.kugou</groupId>
+      <artifactId>sharding-jdbc-config-yaml</artifactId>
+      <version>${sharding-jdbc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.kugou</groupId>
+      <artifactId>sharding-jdbc-config-spring</artifactId>
+      <version>${sharding-jdbc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
+      <version>${commons-dbcp.version}</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.struts/struts2-core -->
+    <dependency>
+      <groupId>org.apache.struts</groupId>
+      <artifactId>struts2-core</artifactId>
+      <version>2.5.2</version>
+    </dependency>
+
 
     <dependency>
       <groupId>junit</groupId>

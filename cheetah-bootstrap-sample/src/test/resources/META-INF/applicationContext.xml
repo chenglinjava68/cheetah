@@ -37,4 +37,6 @@
     <bean id="collector" class="org.cheetah.fighter.DomainEventCollector">
         <constructor-arg index="0" ref="eventBus"/>
     </bean>
+
+    <import resource="applicationContextWithAssignedDataSource.xml"/>
 </beans>

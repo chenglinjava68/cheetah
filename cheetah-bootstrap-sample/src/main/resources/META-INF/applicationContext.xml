@@ -37,4 +37,5 @@
     <bean id="demoService" class="org.cheetah.bootstrap.service.DemoServiceImpl" autowire="byName"/>
 
     <bean id="applicationListenerTest" class="org.cheetah.bootstrap.controller.ApplicationListenerTest"/>
+
 </beans>

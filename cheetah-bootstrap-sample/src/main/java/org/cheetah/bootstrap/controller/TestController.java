@@ -22,17 +22,13 @@ public class TestController {
     }
 
     @RequestMapping(value = "/on", method = RequestMethod.GET)
-    public void test3() {
-
+    public void test3() throws InterruptedException {
+        Thread.sleep(1500);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public User test2(@RequestBody User user) throws InterruptedException {
-        System.out.println(user);
-        if (user.getUsername().equals("username"))
-            throw new RuntimeException();
-        DomainEventPublisher.publish(new ApplicationEventTest("13e"));
-        return user;
+        throw new RuntimeException();
     }
 
     @RequestMapping(value = "timeout", method = RequestMethod.POST)

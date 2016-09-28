@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:limos="http://fx.kugou.com/schema/limos"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://fx.kugou.com/schema/limos http://fx.kugou.com/schema/limos/limos.xsd">
+
+    <context:annotation-config/>
+
+    <limos:service interface="com.kugou.limos.service.DemoService" ref="demoService">
+        <limos:method name="get" retries="3" timeout="1000" mock="" executes="5" actives="3" />
+    </limos:service>
+
+    <limos:reference interface="com.kugou.limos.service.DemoService" actives="5" timeout="3000"
+            retries="3"/>
+
+    <bean id="demoService" class="com.kugou.limos.service.DemoServiceImpl" autowire="byName"/>
+
+</beans>
