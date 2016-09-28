@@ -17,6 +17,9 @@
             <artifactId>spring-context</artifactId>
         </dependency>
 
-
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>limos-common</artifactId>
+        </dependency>
     </dependencies>
 </project>

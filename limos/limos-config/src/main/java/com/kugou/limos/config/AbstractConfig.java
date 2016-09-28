@@ -15,10 +15,14 @@
  */
 package com.kugou.limos.config;
 
-import com.sun.deploy.util.StringUtils;
+import com.google.common.base.Joiner;
+import com.kugou.limos.common.Constants;
+import com.kugou.limos.common.utils.CollectionUtils;
+import com.kugou.limos.common.utils.ConfigUtils;
+import com.kugou.limos.common.utils.ReflectUtils;
+import com.kugou.limos.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cglib.core.ReflectUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -108,7 +112,7 @@ public abstract class AbstractConfig implements Serializable {
                         Class<?> parameterType = ReflectUtils.getBoxedClass(method.getReturnType());
                         if ("filter".equals(property) || "listener".equals(property)) {
                             parameterType = String.class;
-                            value = StringUtils.join((String[]) value, ",");
+                            value = Joiner.on(",").join((String[]) value);
                         } else if ("parameters".equals(property)) {
                             parameterType = Map.class;
                             value = CollectionUtils.toStringMap((String[]) value);
@@ -360,7 +364,7 @@ public abstract class AbstractConfig implements Serializable {
             throw new IllegalStateException("No such extension " + value + " for " + property + "/" + type.getName());
         }
     }
-    
+
     protected static void checkMultiExtension(Class<?> type, String property, String value) {
         checkMultiName(property, value);
         if (value != null && value.length() > 0) {
@@ -370,7 +374,7 @@ public abstract class AbstractConfig implements Serializable {
                     v = v.substring(1);
                 }
                 if (Constants.DEFAULT_KEY.equals(v)) {
-                	continue;
+                    continue;
                 }
                 if (! ExtensionLoader.getExtensionLoader(type).hasExtension(v)) {
                     throw new IllegalStateException("No such extension " + v + " for " + property + "/" + type.getName());
